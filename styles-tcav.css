@@ -936,3 +936,87 @@ body.light-mode .live-card {
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     border-color: rgba(255, 255, 255, 0.18);
 }
+
+/* Scrims eliminados — el degradado estándar maneja la transición */
+
+/* ── Hero H1 accent — gradiente diagonal (abajo-izq → arriba-der) por color ── */
+
+/* Azul (#1855BA → #7499D6) — páginas legales, faq, contacto, blog, taas */
+.hero-legal h1 .text-blue-400,
+.hero-faqs h1 .text-blue-400,
+.hero-contact h1 .text-blue-400,
+.hero-sitemap h1 .text-blue-400,
+.hero-team h1 .text-blue-400,
+.article-hero h1 .text-blue-400 {
+    background: linear-gradient(to top right, #1855BA 0%, #7499D6 100%);
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; display: inline-block;
+}
+
+/* Rojo (#ef4444 → #fca5a5) — Energy */
+.hero-team h1 .text-red-500 {
+    background: linear-gradient(to top right, #ef4444 0%, #fca5a5 100%);
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; display: inline-block;
+}
+
+/* Verde (#22c55e → #86efac) — Real Estate */
+.hero-team h1 .text-green-500 {
+    background: linear-gradient(to top right, #22c55e 0%, #86efac 100%);
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; display: inline-block;
+}
+
+/* Bordeaux (#800020 → #e07080) — Scaleups */
+.hero-team h1 .hero-accent-bordeaux {
+    background: linear-gradient(to top right, #800020 0%, #e07080 100%);
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; display: inline-block;
+}
+
+/* ─── Light mode: contraste en heroes ────────────────────────────────────────
+   El gradiente estándar termina en var(--bg-color) = #f8fafc (claro).
+   Los elementos con text-white/* y bg-white/* son invisibles sobre ese fondo.
+   Solución: negro con opacidad + glassmorphism oscuro para chips/pills.
+────────────────────────────────────────────────────────────────────────────── */
+
+/* 1. Solo opacidades text-white/* → oscuro (NO afecta text-white puro = títulos/subtítulos) */
+body.light-mode .hero-legal [class*="text-white/"],
+body.light-mode .hero-faqs [class*="text-white/"],
+body.light-mode .hero-contact [class*="text-white/"],
+body.light-mode .hero-sitemap [class*="text-white/"],
+body.light-mode .article-hero [class*="text-white/"] {
+    color: rgba(5, 7, 10, 0.80) !important;
+}
+
+/* 2. Chips / pills (rounded-full) → glassmorphism oscuro */
+body.light-mode .hero-legal .rounded-full,
+body.light-mode .hero-faqs .rounded-full,
+body.light-mode .hero-contact .rounded-full,
+body.light-mode .hero-sitemap .rounded-full,
+body.light-mode .article-hero .rounded-full {
+    background: rgba(5, 7, 10, 0.08) !important;
+    border-color: rgba(5, 7, 10, 0.18) !important;
+    color: rgba(5, 7, 10, 0.75) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* 3. Iconos Lucide dentro de chips */
+body.light-mode .hero-legal .rounded-full [data-lucide],
+body.light-mode .hero-faqs .rounded-full [data-lucide],
+body.light-mode .hero-contact .rounded-full [data-lucide],
+body.light-mode .hero-sitemap .rounded-full [data-lucide],
+body.light-mode .article-hero .rounded-full [data-lucide] {
+    color: rgba(5, 7, 10, 0.55);
+}
+
+/* 4. Breadcrumb de artículos de blog */
+body.light-mode .article-hero nav,
+body.light-mode .article-hero nav a,
+body.light-mode .article-hero nav span {
+    color: rgba(5, 7, 10, 0.60) !important;
+}
+body.light-mode .article-hero nav [data-lucide] {
+    color: rgba(5, 7, 10, 0.40);
+}

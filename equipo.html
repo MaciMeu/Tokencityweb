@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Equipo Directivo</title>
+    <meta name="description" content="Conoce al equipo directivo y consejeros de Token City. Experiencia en mercados de capitales, innovación y regulación financiera.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC',
+                            100: '#DCE6F5',
+                            200: '#A3BBE3',
+                            300: '#7499D6',
+                            400: '#4677C8',
+                            500: '#1855BA',
+                            600: '#134495',
+                            700: '#0E3370',
+                            800: '#0A224A',
+                            900: '#051125',
+                            950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                const nightTime = (hour >= 19 || hour < 7);
+                isLight = !systemDark && !nightTime;
+            }
+
+            if (isLight) {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5, 7, 10, 0.95);
+        }
+
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5, 7, 10, 0.95);
+        }
+
+        .heading-text {
+            color: var(--text-main);
+        }
+
+        .body-text {
+            color: var(--text-muted);
+        }
+
+        .section-label {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        body:not(.light-mode) .section-label {
+            color: #60a5fa;
+        }
+
+        .hero-team .section-label {
+            color: #60a5fa;
+        }
+
+        .hero-team {
+            position: relative;
+            overflow: hidden;
+            background: #05070a;
+        }
+
+        .hero-media {
+            position: absolute;
+            inset: 0;
+            background-image: url('mercado.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform: scale(1.03);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+        }
+
+        .hero-grid {
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+        }
+
+        body.light-mode .hero-grid {
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+        }
+
+        .team-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.75rem;
+            overflow: hidden;
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+            backdrop-filter: blur(6px);
+        }
+
+        .team-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(24, 85, 186, 0.6);
+            box-shadow: 0 20px 50px rgba(24, 85, 186, 0.2);
+        }
+
+        .team-image {
+            height: 260px;
+            width: 100%;
+            object-fit: cover;
+            object-position: center;
+            background: linear-gradient(135deg, #0b1426, #1a315d);
+        }
+
+        .team-role {
+            color: #60a5fa;
+            letter-spacing: 0.12em;
+            font-weight: 800;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+        }
+
+        body.light-mode .team-role {
+            color: #1855BA;
+        }
+
+        .team-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: #93c5fd;
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 0.45rem 0.9rem;
+            border-radius: 15px;
+            background: transparent;
+            text-decoration: none;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        .team-link:hover {
+            background: rgba(96, 165, 250, 0.15);
+            color: #ffffff;
+        }
+
+        body.light-mode .team-link {
+            color: #1855BA;
+        }
+
+        body.light-mode .team-link:hover {
+            background: rgba(24, 85, 186, 0.1);
+            color: #1855BA;
+        }
+
+        .nav-item {
+            position: relative;
+            padding: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-item:hover .nav-link {
+            color: #4f86ed;
+        }
+
+        .nav-item:hover .nav-link i {
+            opacity: 1;
+            transform: rotate(180deg);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .nav-link i {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .mega-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 90vw;
+            max-width: 1000px;
+            background: var(--nav-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .nav-item:hover .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .mega-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .mega-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .mega-link {
+            display: block;
+            padding: 0.5rem 0;
+            font-size: 0.875rem;
+            color: var(--nav-text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .mega-link:hover {
+            color: var(--nav-text);
+            padding-left: 0.5rem;
+        }
+
+        .mega-link.active {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        #navOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        body:has(.nav-item:hover) #navOverlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #mobileDrawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 400px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--glass-border);
+        }
+
+        #mobileDrawer.open {
+            transform: translateX(0);
+        }
+
+        .mobile-link {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--nav-text);
+            font-weight: 600;
+        }
+
+        .mobile-submenu {
+            background: rgba(255, 255, 255, 0.03);
+            display: none;
+            padding-left: 1rem;
+        }
+
+        .mobile-submenu.open {
+            display: block;
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+
+        .theme-toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .toggle-track-icon {
+            color: #94a3b8;
+            width: 12px;
+            height: 12px;
+            z-index: 1;
+        }
+
+        .thumb-icon {
+            width: 12px;
+            height: 12px;
+            color: var(--primary-blue);
+        }
+
+        body.light-mode .theme-toggle-thumb {
+            transform: translateX(24px);
+        }
+
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .lang-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #a1a1aa;
+            transition: color 0.3s ease;
+        }
+
+        .lang-label.active {
+            color: #ffffff;
+        }
+
+        .lang-switch-track {
+            position: relative;
+            width: 32px;
+            height: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 999px;
+        }
+
+        .lang-switch-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 10px;
+            height: 10px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.lang-en .lang-switch-thumb {
+            transform: translateX(16px);
+        }
+
+        .controls-bar {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: rgba(5, 7, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .controls-bar .theme-toggle {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .controls-bar .toggle-track-icon {
+            color: #ffffff;
+        }
+
+        .controls-bar .thumb-icon {
+            color: var(--primary-blue);
+        }
+
+        .controls-bar .lang-switch-track {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .reveal-growth {
+            opacity: 0;
+            transform: scale(0.92) translateY(40px);
+            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .reveal-growth.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .reveal-growth.reverse {
+            opacity: 0;
+            transform: scale(0.92) translateY(-40px);
+        }
+
+        .reveal-growth.reverse.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .hero-copy {
+            color: #e2e8f0;
+        }
+
+        body.light-mode .hero-copy {
+            color: #ffffff;
+        }
+
+        .delay-100 {
+            transition-delay: 180ms;
+        }
+
+        .delay-200 {
+            transition-delay: 360ms;
+        }
+
+        .delay-300 {
+            transition-delay: 540ms;
+        }
+
+        body.light-mode .hero-team-title {
+            color: #ffffff;
+        }
+
+        @media (max-width: 640px) {
+            .team-image {
+                height: 220px;
+            }
+
+            .controls-bar {
+                right: 12px;
+                bottom: 16px;
+                padding: 8px 12px;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        if (window.__isThemeLight) document.body.classList.add('light-mode');
+    </script>
+
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+        <section class="hero-team min-h-[78vh] pt-28 md:pt-36 pb-0 px-6 overflow-hidden">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid absolute inset-0"></div>
+            <div class="relative max-w-7xl mx-auto text-center">
+                <div class="max-w-4xl mx-auto reveal-growth delay-100">
+                    <p class="section-label mb-4"><span class="lang-es">Directivos y Consejeros</span><span class="lang-en">Directors and Advisors</span></p>
+                    <h1 class="hero-team-title text-4xl md:text-6xl font-extrabold leading-tight text-white mb-0">
+                        <span class="lang-es">Nuestra experiencia unida abarca varias empresas del sector de la inversión</span>
+                        <span class="lang-en">Our combined experience spans leading companies in the investment sector</span>
+                    </h1>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 pb-20 -mt-40 md:-mt-56 relative z-10">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                <tcav-team-card
+                    name="Yael H. Oaknin"
+                    role="CEO"
+                    image="user4.avif"
+                    linkedin="https://www.linkedin.com/in/yaelhoaknin/"
+                    bio-es="Fundadora de Token City y Adventurees. Referente en innovación e inversión, distinguida en el ecosistema cripto/blockchain. Ingeniera Industrial por la UPM y Centrale Paris, con postgrado en UTSA."
+                    bio-en="Founder of Token City and Adventurees. Innovation and investment leader recognized in the crypto/blockchain ecosystem. Industrial Engineer from UPM and Centrale Paris, with postgraduate studies at UTSA.">
+                </tcav-team-card>
+
+                <tcav-team-card
+                    delay="delay-100"
+                    name="Jaime de Andres"
+                    role="COO"
+                    image="user5.avif"
+                    linkedin="https://www.linkedin.com/in/jaime-andres-05a83626/"
+                    bio-es="Ex director financiero corporativo en Prisa Internacional y director administrativo-financiero en GDM. Especialista en planificación estratégica y gestión en entornos complejos."
+                    bio-en="Former corporate finance director at Prisa Internacional and administrative-financial director at GDM. Specialist in strategic planning and management in high-complexity environments.">
+                </tcav-team-card>
+
+                <tcav-team-card
+                    delay="delay-200"
+                    name="Maria Gracia"
+                    role="Legal"
+                    image="user6.avif"
+                    linkedin="https://www.linkedin.com/in/mariagraciardc/"
+                    bio-es="Mas de 30 anos en finanzas como abogada y consejera independiente. Lidero servicios financieros en Baker & McKenzie Espana y fue abogada en la CNMV."
+                    bio-en="Over 30 years in finance as a lawyer and independent advisor. Led financial services at Baker & McKenzie Spain and served as legal counsel at CNMV.">
+                </tcav-team-card>
+
+                <tcav-team-card
+                    name="Pedro Anton"
+                    role="Consejero"
+                    image="user1.svg"
+                    linkedin="https://www.linkedin.com/in/pedro-anton-ned-consejero-cfo/"
+                    bio-es="Ex CFO y director de tecnologia y RRHH en grupos internacionales, ex director general de Telefonica LATAM y ex COO para Espana en JPMorgan."
+                    bio-en="Former CFO and technology/HR executive in international groups, former Telefonica LATAM Managing Director, and former COO for Spain at JPMorgan.">
+                </tcav-team-card>
+
+                <tcav-team-card
+                    delay="delay-100"
+                    name="Maria Parga"
+                    role="Consejera"
+                    image="user2.svg"
+                    linkedin="https://www.linkedin.com/in/mariapargalanda/"
+                    bio-es="Cofundadora y presidenta de honor de ALASTRIA. Ex directiva en BME, con amplia trayectoria en innovacion abierta, negocio y mercados de capitales."
+                    bio-en="Co-founder and Honorary President of ALASTRIA. Former executive at BME with deep experience in open innovation, business development, and capital markets.">
+                </tcav-team-card>
+
+                <tcav-team-card
+                    delay="delay-200"
+                    name="Ismael Caram"
+                    role="Consejero"
+                    image="user1.svg"
+                    linkedin="https://www.linkedin.com/in/ismaelcaram/"
+                    bio-es="Experto en finanzas con mas de 20 anos en mercados de capitales. Responsable de criptoactivos y activos digitales, centrado en estrategia y ejecucion."
+                    bio-en="Finance expert with 20+ years in capital markets. Leads crypto and digital asset initiatives focused on strategy and execution.">
+                </tcav-team-card>
+            </div>
+        </section>
+
+        <section class="px-6 pb-24">
+            <div class="max-w-7xl mx-auto team-card p-8 md:p-12 reveal-growth delay-300 text-center">
+                <p class="section-label mb-4"><span class="lang-es">Construimos confianza</span><span class="lang-en">We build trust</span></p>
+                <h3 class="text-3xl md:text-4xl font-bold heading-text mb-5">
+                    <span class="lang-es">Equipo multidisciplinar para tokenizacion regulada</span>
+                    <span class="lang-en">Multidisciplinary team for regulated tokenization</span>
+                </h3>
+                <p class="body-text max-w-4xl leading-relaxed mx-auto">
+                    <span class="lang-es">La combinacion de perfiles en finanzas, legal, tecnologia y operaciones permite a Token City acelerar proyectos de activos digitales con cumplimiento normativo y foco en liquidez real.</span>
+                    <span class="lang-en">The combination of finance, legal, technology, and operations expertise enables Token City to accelerate digital asset projects with regulatory compliance and focus on real liquidity.</span>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script>
+        let __equipoInited = false;
+
+        function initEquipoPage() {
+            if (__equipoInited) return;
+            __equipoInited = true;
+            if (window.lucide) window.lucide.createIcons();
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.remove('reverse');
+                        e.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            const observerReverse = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting && e.boundingClientRect.top > 0) {
+                        e.target.classList.remove('active');
+                        e.target.classList.add('reverse');
+                        setTimeout(() => {
+                            e.target.classList.remove('reverse');
+                        }, 1200);
+                    }
+                });
+            }, { threshold: 0 });
+
+            document.querySelectorAll('.reveal-growth').forEach(el => {
+                observer.observe(el);
+                observerReverse.observe(el);
+            });
+
+            updateToggleVisuals();
+        }
+
+        window.addEventListener('tcav:components-loaded', initEquipoPage);
+
+        if (document.readyState !== 'loading') {
+            setTimeout(() => {
+                if (!document.querySelector('#navbar')) return;
+                initEquipoPage();
+            }, 50);
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const html = document.documentElement;
+            const isLight = body.classList.toggle('light-mode');
+
+            if (isLight) {
+                html.classList.remove('dark');
+                localStorage.setItem('themePreference', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('themePreference', 'dark');
+            }
+
+            updateToggleVisuals();
+        }
+
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const isEn = document.body.classList.contains('lang-en');
+
+            document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
+            document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
+
+            const activeIconName = isLight ? 'sun' : 'moon';
+
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
+                </div>
+            `;
+
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.innerHTML = trackHTML;
+            });
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function toggleLanguage() {
+            document.body.classList.toggle('lang-en');
+            updateToggleVisuals();
+        }
+
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobileDrawer');
+            if (!drawer) return;
+            const isOpen = drawer.classList.toggle('open');
+            const overlay = document.getElementById('navOverlay');
+            const controlsBar = document.querySelector('.controls-bar');
+            overlay.style.visibility = isOpen ? 'visible' : (document.querySelector('.nav-item:hover') ? 'visible' : 'hidden');
+            overlay.style.opacity = isOpen ? '1' : (document.querySelector('.nav-item:hover') ? '1' : '0');
+            controlsBar.style.display = isOpen ? 'none' : 'flex';
+        }
+
+        function toggleSubmenu(id) {
+            const node = document.getElementById(id);
+            if (node) node.classList.toggle('open');
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+            const originalText = btnText.textContent;
+
+            btnText.textContent = '';
+            btnLoader.classList.remove('hidden');
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btnText.textContent = originalText;
+                btnLoader.classList.add('hidden');
+                btn.disabled = false;
+                e.target.reset();
+                showToast('¡Suscrito a la newsletter!', 'success');
+            }, 1400);
+        }
+
+        function showToast(message, type = 'success') {
+            let container = document.getElementById('toastContainer');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toastContainer';
+                container.className = 'fixed top-4 right-4 z-50 flex flex-col gap-2';
+                document.body.appendChild(container);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = 'toast p-4 rounded-[15px] shadow-2xl backdrop-blur-md border border-white/10 flex items-center gap-3';
+            toast.style.backgroundColor = type === 'success' ? 'rgba(22, 163, 74, 0.95)' : 'rgba(220, 38, 38, 0.95)';
+            toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'alert-octagon'}" class="w-5 h-5 text-white"></i><span class="text-sm font-bold text-white">${message}</span>`;
+            container.appendChild(toast);
+            if (window.lucide) window.lucide.createIcons();
+
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 260);
+            }, 2600);
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) nav.classList.add('shadow-lg');
+            else nav.classList.remove('shadow-lg');
+        });
+    </script>
+</body>
+
+</html>

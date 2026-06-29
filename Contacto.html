@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Contacto | Token City Exchange</title>
+    <meta name="description"
+        content="Ponte en contacto con Token City Exchange. Llámanos, escríbenos o abre un ticket de soporte. Estamos aquí para ayudarte.">
+
+    <!-- Material Symbols for hand-eye icon -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- TCAV Styles -->
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <style>
+        /* ─── BANNER ─────────────────────────────────── */
+        :root {
+            --contact-overlay-start: rgba(5, 7, 10, 0.92);
+            --contact-overlay-mid: rgba(5, 7, 10, 0.70);
+            --contact-overlay-end: rgba(5, 7, 10, 1);
+        }
+
+        body.light-mode {
+            --contact-overlay-start: rgba(5, 7, 10, 0.88);
+            --contact-overlay-mid: rgba(5, 7, 10, 0.45);
+            --contact-overlay-end: #f8fafc;
+        }
+
+        .contact-banner {
+            width: 100%;
+            height: 480px;
+            display: flex;
+            align-items: flex-start;
+            padding-top: 150px;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background-image: url('./contacto.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: 0;
+            margin-bottom: -1px;
+        }
+
+        .contact-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom,
+                    var(--contact-overlay-start),
+                    var(--contact-overlay-mid),
+                    var(--contact-overlay-end));
+            z-index: 1;
+        }
+
+        .contact-banner-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .contact-banner h1 {
+            color: #ffffff;
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+            margin-bottom: 0.4rem;
+        }
+
+        .contact-banner-subtitle {
+            color: rgba(255, 255, 255, 0.88);
+            font-size: clamp(0.95rem, 2vw, 1.2rem);
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* Accent line under h1 */
+        .banner-accent-line {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #1855BA, #4f86ed);
+            border-radius: 2px;
+            margin: 1rem auto 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .contact-banner {
+                height: 400px;
+                padding-top: 110px;
+                background-attachment: scroll;
+            }
+        }
+
+        /* Dark mode móvil: forzar overlay más opaco */
+        @media (max-width: 768px) {
+            body:not(.light-mode) {
+                --contact-overlay-start: rgba(5, 7, 10, 0.97);
+                --contact-overlay-mid: rgba(5, 7, 10, 0.90);
+                --contact-overlay-end: rgba(5, 7, 10, 1);
+            }
+
+            /* Ocultar canvas animado en móvil dark mode */
+            body:not(.light-mode) #network-canvas {
+                opacity: 0;
+            }
+        }
+
+        /* ─── PAGE CONTENT ───────────────────────────── */
+        .page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 1.5rem 6rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 3.5rem 1rem 5rem;
+            }
+        }
+
+        /* ─── SECTION TITLE ──────────────────────────── */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #1855BA;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-label::before,
+        .section-label::after {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: #1855BA;
+        }
+
+        .section-title {
+            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            line-height: 1.15;
+        }
+
+        /* ─── CONTACT FLIP CARDS ─────────────────────── */
+        .contact-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .contact-cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+        }
+
+        .contact-flip-card {
+            perspective: 1000px;
+            height: 220px;
+        }
+
+        .contact-flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            border-radius: 30px;
+        }
+
+        .contact-flip-card:hover .contact-flip-inner {
+            transform: rotateY(180deg);
+        }
+
+        .contact-face {
+            position: absolute;
+            inset: 0;
+            border-radius: 30px;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+        }
+
+        /* Front Face — matches INdex2 infra-card-style */
+        .contact-face-front {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--card-accent-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+            align-items: flex-start;
+            justify-content: flex-end;
+            padding: 1.75rem 1.5rem;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+        body.light-mode .contact-face-front {
+            background: #ffffff;
+            border: 1px solid transparent;
+            border-left: 4px solid var(--card-accent-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Ghost icon bottom-right */
+        .contact-face-front .ghost-icon {
+            position: absolute;
+            right: -1rem;
+            bottom: -1.5rem;
+            opacity: 0.07;
+            color: var(--card-accent-color);
+            transform: rotate(-12deg);
+            transition: transform 0.5s ease, opacity 0.3s ease;
+        }
+
+        .contact-flip-card:hover .contact-face-front .ghost-icon {
+            transform: rotate(-12deg) scale(1.1);
+            opacity: 0.12;
+        }
+
+        /* Front face text */
+        .card-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-title-front {
+            font-size: 1.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--card-accent-color);
+        }
+
+        /* Hand icon hint */
+        .hand-hint {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            font-family: 'Material Symbols Outlined';
+            font-size: 1.4rem;
+            color: rgba(156, 163, 175, 0.55);
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Back Face */
+        .contact-face-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, var(--card-icon-from), var(--card-icon-to));
+            gap: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .contact-face-back .back-icon {
+            opacity: 0.25;
+            position: absolute;
+            bottom: -12px;
+            right: -8px;
+        }
+
+        .contact-face-back .back-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .contact-face-back .back-value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            word-break: break-all;
+        }
+
+        .contact-face-back .back-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1.2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.25s;
+            backdrop-filter: blur(8px);
+        }
+
+        .contact-face-back .back-cta:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        /* Card accent colors */
+        .card-phone {
+            --card-accent-color: #1855BA;
+            --card-icon-from: #1855BA;
+            --card-icon-to: #2d6fde;
+            --badge-rgb: 24, 85, 186;
+        }
+
+        .card-email {
+            --card-accent-color: #7c3aed;
+            --card-icon-from: #7c3aed;
+            --card-icon-to: #a855f7;
+            --badge-rgb: 124, 58, 237;
+        }
+
+        .card-support {
+            --card-accent-color: #0891b2;
+            --card-icon-from: #0891b2;
+            --card-icon-to: #06b6d4;
+            --badge-rgb: 8, 145, 178;
+        }
+
+        /* Small icon badge — same pattern as INdex2 infra-card rounded icon */
+        .card-icon-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 0.625rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(var(--badge-rgb), 0.18);
+            color: var(--card-accent-color);
+            margin-bottom: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        /* ─── CONTACT FORM SECTION ───────────────────── */
+        .form-section {
+            margin-top: 6rem;
+        }
+
+        .form-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 1.75rem;
+            padding: 3rem;
+            margin-top: 2.5rem;
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.15);
+        }
+
+        body.light-mode .form-card {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 640px) {
+            .form-card {
+                padding: 1.75rem 1.25rem;
+            }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .form-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
+            transition: all 0.25s ease;
+            outline: none;
+            appearance: none;
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.85rem center;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+
+        /* ─── CUSTOM SELECT (INdex2 filter style) ─────────── */
+        .custom-select-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .custom-select-trigger {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
+            cursor: pointer;
+            outline: none;
+            text-align: left;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .custom-select-trigger:focus,
+        .custom-select-trigger.open {
+            border-color: #1855BA;
+            box-shadow: 0 0 0 3px rgba(24, 85, 186, 0.15);
+        }
+
+        .custom-select-panel {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: #111827;
+            /* More opaque for better legibility */
+            border: 1px solid var(--glass-border);
+            border-radius: 0.875rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        body.light-mode .custom-select-panel {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .custom-select-panel.open {
+            display: flex;
+            animation: csDropIn 0.18s ease;
+        }
+
+        @keyframes csDropIn {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Overlay backdrop for mobile bottom sheet */
+        .cs-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 90;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cs-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (min-width: 769px) {
+            .cs-overlay {
+                display: none !important;
+            }
+        }
+
+        /* Bottom sheet on mobile */
+        @media (max-width: 768px) {
+            .custom-select-panel {
+                position: fixed !important;
+                top: auto !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100vw !important;
+                border-radius: 1.5rem 1.5rem 0 0 !important;
+                padding: 0.5rem 0 2.5rem !important;
+                transform: translateY(100%);
+                transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                z-index: 100 !important;
+                border: none !important;
+                border-top: 1px solid var(--glass-border) !important;
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3) !important;
+                background-color: #111827 !important;
+                /* Fixed dark background */
+                animation: none !important;
+                display: flex;
+                pointer-events: none;
+                visibility: hidden;
+                /* Hide while closed */
+            }
+
+            .custom-select-panel.open {
+                transform: translateY(0);
+                animation: none !important;
+                pointer-events: all;
+                visibility: visible;
+                /* Show when open */
+                z-index: 10000 !important;
+                /* Extremely high z-index */
+            }
+
+            /* Drag handle */
+            .custom-select-panel::before {
+                content: '';
+                display: block;
+                width: 40px;
+                height: 4px;
+                background: rgba(156, 163, 175, 0.5);
+                border-radius: 10px;
+                margin: 0.75rem auto 0.5rem;
+                flex-shrink: 0;
+                align-self: center;
+            }
+
+            .custom-select-option {
+                padding: 1rem 1.25rem;
+                border-bottom: 1px solid var(--glass-border);
+                font-size: 0.95rem;
+            }
+
+            .custom-select-option:last-child {
+                border-bottom: none;
+            }
+
+            /* Light mode móvil override */
+            body.light-mode .custom-select-panel {
+                background-color: rgba(255, 255, 255, 0.98) !important;
+                border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+            }
+        }
+
+        .custom-select-option {
+            width: 100%;
+            text-align: left;
+            padding: 0.7rem 1rem;
+            font-size: 0.875rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            color: var(--text-main);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        .custom-select-option:hover {
+            background: rgba(24, 85, 186, 0.08);
+        }
+
+        .custom-select-option.selected {
+            background: transparent;
+            color: #1855BA;
+            font-weight: 700;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: #1855BA;
+            box-shadow: 0 0 0 3px rgba(24, 85, 186, 0.12);
+            background: var(--card-hover-bg);
+        }
+
+        body.light-mode .form-input,
+        body.light-mode .form-select,
+        body.light-mode .form-textarea {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        body.light-mode .form-input:focus,
+        body.light-mode .form-select:focus,
+        body.light-mode .form-textarea:focus {
+            background: #ffffff;
+        }
+
+        /* Checkbox row */
+        .checkbox-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem 0 0;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .checkbox-label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .checkbox-label a {
+            color: #1855BA;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .checkbox-label a:hover {
+            color: #4f86ed;
+            text-decoration: underline;
+        }
+
+        /* Submit button */
+        .submit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2.5rem;
+            background: linear-gradient(135deg, #1855BA, #2d6fde);
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #144a9e, #1855BA);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ─── ERROR MESSAGES ────────────────────────── */
+        .error-msg {
+            display: none;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #ef4444;
+            margin-top: 0.3rem;
+        }
+
+        .error-msg::before {
+            content: '!';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            font-size: 0.6rem;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        @keyframes btn-shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            15% {
+                transform: translateX(-6px);
+            }
+
+            30% {
+                transform: translateX(6px);
+            }
+
+            45% {
+                transform: translateX(-5px);
+            }
+
+            60% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-3px);
+            }
+
+            90% {
+                transform: translateX(3px);
+            }
+        }
+
+        .btn-shake {
+            animation: btn-shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        /* ─── REVEAL ANIMATION ───────────────────────── */
+        .reveal-growth {
+            opacity: 0;
+            transform: scale(0.95) translateY(30px);
+            transition: all 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .reveal-growth.active {
+            opacity: 1;
+            transform: none;
+        }
+
+        .delay-100 {
+            transition-delay: 100ms;
+        }
+
+        .delay-200 {
+            transition-delay: 200ms;
+        }
+
+        .delay-300 {
+            transition-delay: 300ms;
+        }
+
+        .delay-400 {
+            transition-delay: 400ms;
+        }
+
+        /* Floating Controls Bar - Always Dark */
+        .controls-bar {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: rgba(5, 7, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .controls-bar .theme-toggle {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .controls-bar .toggle-track-icon {
+            color: #ffffff;
+        }
+
+        .controls-bar .thumb-icon {
+            color: #1855BA;
+        }
+
+        .controls-bar .lang-label {
+            color: #ffffff;
+        }
+
+        .controls-bar .lang-label.lang-label-en {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .controls-bar .lang-label.lang-label-es {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .controls-bar .lang-label.lang-label-en {
+            color: #ffffff;
+        }
+
+        .controls-bar .lang-switch-track {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .controls-bar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="pb-24 md:pb-0 light-mode">
+    <!-- Auto dark mode after 19:00 -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            if (savedTheme) {
+                if (savedTheme === 'light') document.body.classList.add('light-mode');
+                else document.body.classList.remove('light-mode');
+            } else {
+                const hour = new Date().getHours();
+                if (hour >= 19 || hour < 7) document.body.classList.remove('light-mode');
+                else document.body.classList.add('light-mode');
+            }
+        })();
+    </script>
+
+    <canvas id="network-canvas"></canvas>
+
+    <!-- ── TOP NAV ──────────────────────────────────────────────────── -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300 backdrop-blur-md border-b" id="navbar"
+        style="background-color: var(--nav-bg); border-color: var(--glass-border);">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 h-16 md:h-20">
+            <div class="flex items-center gap-2 select-none">
+                <a href="INdex2.html" class="flex items-baseline tracking-tighter leading-none"
+                    style="color: var(--nav-text);">
+                    <span class="text-sm md:text-2xl font-black tracking-tight">TOKEN CITY</span>
+                    <span class="text-sm md:text-2xl font-thin ml-1 tracking-wide">EXCHANGE</span>
+                </a>
+                <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse self-start mt-1"></div>
+            </div>
+
+            <div class="flex items-center gap-2 md:gap-4">
+                <div class="flex items-center gap-3">
+                    <button
+                        class="hidden md:flex text-xs md:text-sm font-bold px-3 h-[36px] md:h-[40px] border border-white rounded-[15px] hover:bg-white/10 transition-colors whitespace-nowrap items-center gap-2"
+                        style="color: white; line-height: 1;">
+                        <i data-lucide="user" class="w-4 h-4"></i> Iniciar sesión
+                    </button>
+                    <button
+                        class="hidden md:flex bg-[#1855BA] hover:bg-[#144a9e] text-white text-xs md:text-sm font-bold px-3 md:px-6 h-[36px] md:h-[40px] rounded-[15px] transition-all transform hover:scale-105 whitespace-nowrap items-center gap-2"
+                        style="line-height: 1;">
+                        Registrarse
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── MOBILE BOTTOM NAV ────────────────────────────────────────── -->
+    <nav class="fixed bottom-0 left-0 w-full z-[60] md:hidden bottom-nav pb-safe px-4 py-3 flex items-center"
+        style="background-color: var(--bottom-bar-bg); border-top: 1px solid var(--bottom-bar-border); backdrop-filter: blur(12px); height: auto;">
+        <div class="flex justify-between items-center gap-3 w-full">
+            <!-- Botones en móvil -->
+            <div class="flex items-center gap-2">
+                <button
+                    class="flex-shrink-0 text-xs font-bold px-3 h-[36px] border border-white rounded-[15px] hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1.5"
+                    style="color: white; line-height: 1;">
+                    <i data-lucide="user" class="w-4 h-4"></i> Sesión
+                </button>
+                <button
+                    class="flex-shrink-0 text-xs font-bold px-3 h-[36px] bg-[#1855BA] text-white rounded-[15px] hover:bg-[#144a9e] transition-colors whitespace-nowrap flex items-center gap-1.5"
+                    style="line-height: 1;">
+                    Registro
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── TOAST CONTAINER ─────────────────────────────────────────── -->
+    <div id="toastContainer"
+        class="fixed bottom-20 md:bottom-4 right-4 z-[110] flex flex-col gap-2 pointer-events-none"></div>
+
+    <main class="pt-0">
+
+        <!-- ── BANNER ────────────────────────────────────────────────── -->
+        <div class="contact-banner">
+            <div class="contact-banner-content reveal-growth">
+                <h1>Contacto</h1>
+                <p class="contact-banner-subtitle">Estamos aquí para ayudarte. Elige la forma que mejor se adapte a tus
+                    necesidades.</p>
+            </div>
+        </div>
+
+        <!-- ── PAGE CONTENT ─────────────────────────────────────────── -->
+        <div class="page-content">
+
+            <!-- Back button -->
+            <div class="mb-6 reveal-growth">
+                <a href="INdex2.html"
+                    class="px-4 py-2 rounded-[15px] font-bold flex items-center justify-center gap-2 bg-[#1e293b] hover:bg-[#0f172a] text-white border border-slate-700 transition-all shadow-md text-sm md:text-base w-fit">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Volver al inicio
+                </a>
+            </div>
+
+            <!-- FLIP CARDS -->
+            <div class="text-center reveal-growth delay-100">
+                <h2 class="section-title">¿Cómo prefieres contactarnos?</h2>
+            </div>
+
+            <div class="contact-cards-grid">
+
+                <!-- Card: Teléfono -->
+                <div class="contact-flip-card card-phone reveal-growth delay-100" id="card-phone">
+                    <div class="contact-flip-inner">
+                        <!-- Front -->
+                        <div class="contact-face contact-face-front">
+                            <span class="hand-hint">multimodal_hand_eye</span>
+                            <i data-lucide="phone" class="ghost-icon w-28 h-28"></i>
+                            <div class="relative z-10">
+                                <div class="card-icon-badge">
+                                    <i data-lucide="phone" class="w-5 h-5"></i>
+                                </div>
+                                <p class="card-label">Contacto directo</p>
+                                <h3 class="card-title-front">Teléfono</h3>
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="contact-face contact-face-back">
+                            <i data-lucide="phone" class="back-icon w-24 h-24" style="color:#fff;"></i>
+                            <span class="back-title">Llámanos</span>
+                            <span class="back-value">+34 900 123 456</span>
+                            <a href="tel:+34900123456" class="back-cta">
+                                <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+                                Llámanos ahora
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Email -->
+                <div class="contact-flip-card card-email reveal-growth delay-200" id="card-email">
+                    <div class="contact-flip-inner">
+                        <!-- Front -->
+                        <div class="contact-face contact-face-front">
+                            <span class="hand-hint">multimodal_hand_eye</span>
+                            <i data-lucide="mail" class="ghost-icon w-28 h-28"></i>
+                            <div class="relative z-10">
+                                <div class="card-icon-badge">
+                                    <i data-lucide="mail" class="w-5 h-5"></i>
+                                </div>
+                                <p class="card-label">Escríbenos</p>
+                                <h3 class="card-title-front">Email</h3>
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="contact-face contact-face-back">
+                            <i data-lucide="mail" class="back-icon w-24 h-24" style="color:#fff;"></i>
+                            <span class="back-title">Envíanos un email</span>
+                            <span class="back-value">hola@tokencity.es</span>
+                            <a href="mailto:hola@tokencity.es" class="back-cta">
+                                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                                Envíanos un email
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Soporte -->
+                <div class="contact-flip-card card-support reveal-growth delay-300" id="card-support">
+                    <div class="contact-flip-inner">
+                        <!-- Front -->
+                        <div class="contact-face contact-face-front">
+                            <span class="hand-hint">multimodal_hand_eye</span>
+                            <i data-lucide="headphones" class="ghost-icon w-28 h-28"></i>
+                            <div class="relative z-10">
+                                <div class="card-icon-badge">
+                                    <i data-lucide="headphones" class="w-5 h-5"></i>
+                                </div>
+                                <p class="card-label">Ayuda técnica</p>
+                                <h3 class="card-title-front">Soporte</h3>
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="contact-face contact-face-back">
+                            <i data-lucide="headphones" class="back-icon w-24 h-24" style="color:#fff;"></i>
+                            <span class="back-title">Centro de soporte</span>
+                            <span class="back-value" style="font-size:0.9rem;">Atención técnica especializada</span>
+                            <a href="#form-section" class="back-cta">
+                                <i data-lucide="ticket" class="w-3.5 h-3.5"></i>
+                                Abrir un ticket
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Contact form section -->
+            <div class="form-section" id="form-section">
+                <div class="text-center reveal-growth delay-200">
+                    <h2 class="section-title">Cuéntanos qué necesitas</h2>
+                    <p class="mt-3 text-sm md:text-base"
+                        style="color: var(--text-muted); max-width: 560px; margin: 0.75rem auto 0; line-height: 1.7;">
+                        Rellena el formulario y nuestro equipo se pondrá en contacto contigo en menos de 24 horas.
+                    </p>
+                </div>
+
+                <div class="form-card reveal-growth delay-300">
+                    <form id="contactForm" onsubmit="handleContactSubmit(event)" novalidate>
+                        <div class="form-grid">
+
+                            <!-- Nombre -->
+                            <div class="form-field">
+                                <label class="form-label" for="firstName">Nombre *</label>
+                                <input class="form-input" type="text" id="firstName" name="firstName"
+                                    placeholder="Tu nombre" required autocomplete="given-name">
+                                <span class="error-msg" id="err-firstName"></span>
+                            </div>
+
+                            <!-- Apellidos -->
+                            <div class="form-field">
+                                <label class="form-label" for="lastName">Apellidos *</label>
+                                <input class="form-input" type="text" id="lastName" name="lastName"
+                                    placeholder="Tus apellidos" required autocomplete="family-name">
+                                <span class="error-msg" id="err-lastName"></span>
+                            </div>
+
+                            <!-- Empresa -->
+                            <div class="form-field">
+                                <label class="form-label" for="company">Nombre de la empresa</label>
+                                <input class="form-input" type="text" id="company" name="company"
+                                    placeholder="Tu empresa" autocomplete="organization">
+                            </div>
+
+                            <!-- Email -->
+                            <div class="form-field">
+                                <label class="form-label" for="email">Correo electrónico *</label>
+                                <input class="form-input" type="email" id="email" name="email"
+                                    placeholder="tu@email.com" required autocomplete="email">
+                                <span class="error-msg" id="err-email"></span>
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div class="form-field full-width">
+                                <label class="form-label" for="phone">Número de teléfono</label>
+                                <input class="form-input" type="tel" id="phone" name="phone"
+                                    placeholder="+34 600 000 000" autocomplete="tel">
+                            </div>
+
+                            <!-- Cómo podemos ayudarte -->
+                            <div class="form-field full-width">
+                                <label class="form-label" for="message">¿Cómo podemos ayudarte? *</label>
+                                <textarea class="form-textarea" id="message" name="message"
+                                    placeholder="Describe brevemente tu consulta o necesidad…" required></textarea>
+                                <span class="error-msg" id="err-message"></span>
+                            </div>
+
+                            <!-- Cómo nos conociste — custom dropdown -->
+                            <div class="form-field full-width">
+                                <label class="form-label">¿Cómo nos conociste?</label>
+                                <!-- Hidden real input for form read -->
+                                <input type="hidden" id="howFound" name="howFound">
+
+                                <div class="custom-select-wrap" id="howFoundWrap">
+                                    <!-- Trigger -->
+                                    <button type="button" class="custom-select-trigger" id="howFoundTrigger"
+                                        onclick="toggleCustomSelect('howFound')" aria-haspopup="listbox"
+                                        aria-expanded="false">
+                                        <span id="howFoundLabel" style="color:var(--text-muted);opacity:0.7;">Selecciona
+                                            una opción…</span>
+                                        <i data-lucide="chevron-down" class="w-4 h-4 custom-select-chevron"
+                                            id="howFoundChevron"
+                                            style="color:var(--text-muted);flex-shrink:0;transition:transform 0.25s ease;"></i>
+                                    </button>
+                                    <!-- Panel -->
+                                    <div class="custom-select-panel" id="howFoundPanel" role="listbox"
+                                        aria-hidden="true">
+                                        <button type="button" class="custom-select-option" data-val="buscador"
+                                            onclick="selectOption('howFound','buscador','Motor de búsqueda (Google, Bing…)')">Motor
+                                            de búsqueda (Google, Bing…)</button>
+                                        <button type="button" class="custom-select-option" data-val="rrss"
+                                            onclick="selectOption('howFound','rrss','Redes sociales (LinkedIn, Twitter…)')">Redes
+                                            sociales (LinkedIn, Twitter…)</button>
+                                        <button type="button" class="custom-select-option" data-val="recomendacion"
+                                            onclick="selectOption('howFound','recomendacion','Recomendación de un contacto')">Recomendación
+                                            de un contacto</button>
+                                        <button type="button" class="custom-select-option" data-val="prensa"
+                                            onclick="selectOption('howFound','prensa','Prensa / Medios')">Prensa /
+                                            Medios</button>
+                                        <button type="button" class="custom-select-option" data-val="evento"
+                                            onclick="selectOption('howFound','evento','Evento o conferencia')">Evento o
+                                            conferencia</button>
+                                        <button type="button" class="custom-select-option" data-val="otro"
+                                            onclick="selectOption('howFound','otro','Otro')">Otro</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Términos -->
+                            <div class="form-field full-width">
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="terms" name="terms" required>
+                                    <label class="checkbox-label" for="terms">
+                                        Estoy de acuerdo con los
+                                        <a href="/terminos-condiciones.html">términos y condiciones</a>
+                                        y la
+                                        <a href="/politica-privacidad.html">política de privacidad</a>.
+                                    </label>
+                                </div>
+                                <span class="error-msg" id="err-terms"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="mt-6 flex justify-center md:justify-end">
+                            <button type="submit" class="submit-btn" id="submitBtn">
+                                <span class="btn-text">Enviar solicitud</span>
+                                <i data-lucide="send" class="w-4 h-4 btn-icon"></i>
+                                <i data-lucide="loader-2" class="w-4 h-4 animate-spin hidden btn-loader"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <!-- /page-content -->
+
+    </main>
+
+    <!-- ── FOOTER ─────────────────────────────────────────────────── -->
+    <footer class="border-t py-12 md:py-16 px-6 dark-footer">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="space-y-4">
+                <div class="flex items-center gap-2 select-none" style="color: white !important;">
+                    <div class="flex items-baseline tracking-tighter leading-none">
+                        <span class="text-lg font-black tracking-tight">TOKEN CITY</span>
+                        <span class="text-lg font-thin ml-2">EXCHANGE</span>
+                    </div>
+                </div>
+                <p class="text-sm leading-relaxed">
+                    Transformando el mercado de capitales con tecnología blockchain. Seguridad, transparencia y liquidez
+                    para la nueva economía digital.
+                </p>
+                <div class="flex gap-4">
+                    <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#1855BA] transition-colors">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#1855BA] transition-colors">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#1855BA] transition-colors">
+                        <i data-lucide="instagram" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 text-main-force">Compañía</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="INdex2.html" class="hover:text-[#1855BA] transition-colors">Sobre Nosotros</a></li>
+                    <li><a href="INdex2.html" class="hover:text-[#1855BA] transition-colors">Equipo</a></li>
+                    <li><a href="participantes-mercado.html" class="hover:text-[#1855BA] transition-colors">Asociaciones
+                            participantes</a></li>
+                    <li><a href="INdex2.html" class="hover:text-[#1855BA] transition-colors">Prensa</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 text-main-force">Legal</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="/aviso-legal.html" class="hover:text-[#1855BA] transition-colors">Aviso Legal</a></li>
+                    <li><a href="/politica-privacidad.html" class="hover:text-[#1855BA] transition-colors">Política de
+                            Privacidad</a></li>
+                    <li><a href="/politica-cookies.html" class="hover:text-[#1855BA] transition-colors">Política de
+                            Cookies</a></li>
+                    <li><a href="/terminos-condiciones.html" class="hover:text-[#1855BA] transition-colors">Términos y
+                            Condiciones</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 text-main-force">Suscríbete</h4>
+                <p class="text-xs mb-4">Recibe las últimas oportunidades de inversión.</p>
+                <form id="newsletterForm" class="flex flex-col gap-2" onsubmit="handleNewsletterSubmit(event)">
+                    <input type="email" required placeholder="Tu email"
+                        class="rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#1855BA]"
+                        style="background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    <button type="submit"
+                        class="bg-[#1855BA] hover:bg-[#144a9e] text-white py-2 rounded-lg text-sm font-bold transition-all flex items-center justify-center">
+                        <span class="btn-text">Suscribirse</span>
+                        <i data-lucide="loader-2" class="w-4 h-4 animate-spin hidden btn-loader"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-12 pt-8 border-t flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs"
+            style="border-color: rgba(255,255,255,0.1);">
+            <p>© 2026 Token City European Exchange AV. Inscrita en CNMV Nº 334.</p>
+            <p>Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- ── SCRIPTS ────────────────────────────────────────────────── -->
+    <script>
+        // ── Init Lucide Icons ──
+        lucide.createIcons();
+
+        // ── Theme Toggle — same logic as INdex2.html ──
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const activeIconName = isLight ? 'sun' : 'moon';
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
+                </div>
+            `;
+
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.innerHTML = trackHTML;
+            });
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            updateToggleVisuals();
+        }
+
+        updateToggleVisuals();
+
+        // ── Network Canvas ──
+        (function () {
+            const canvas = document.getElementById('network-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let nodes = [], W, H;
+            const N = 55, SPEED = 0.25, LINK_DIST = 160;
+
+            function resize() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            for (let i = 0; i < N; i++) {
+                nodes.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    vx: (Math.random() - 0.5) * SPEED,
+                    vy: (Math.random() - 0.5) * SPEED,
+                    r: Math.random() * 1.5 + 0.8
+                });
+            }
+
+            function isLight() { return document.body.classList.contains('light-mode'); }
+
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+                const light = isLight();
+                const dotColor = light ? 'rgba(24,85,186,0.35)' : 'rgba(255,255,255,0.35)';
+                const lineColor = light ? 'rgba(24,85,186,' : 'rgba(255,255,255,';
+
+                nodes.forEach(n => {
+                    n.x += n.vx; n.y += n.vy;
+                    if (n.x < 0 || n.x > W) n.vx *= -1;
+                    if (n.y < 0 || n.y > H) n.vy *= -1;
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+                    ctx.fillStyle = dotColor;
+                    ctx.fill();
+                });
+
+                for (let i = 0; i < N; i++) {
+                    for (let j = i + 1; j < N; j++) {
+                        const dx = nodes[i].x - nodes[j].x;
+                        const dy = nodes[i].y - nodes[j].y;
+                        const d = Math.sqrt(dx * dx + dy * dy);
+                        if (d < LINK_DIST) {
+                            const alpha = (1 - d / LINK_DIST) * 0.18;
+                            ctx.beginPath();
+                            ctx.moveTo(nodes[i].x, nodes[i].y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            ctx.strokeStyle = lineColor + alpha + ')';
+                            ctx.lineWidth = 0.8;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        // ── Scroll Reveal ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('active');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.reveal-growth').forEach(el => observer.observe(el));
+
+        // ── Contact Form Validation & Submit ──
+        const FIELD_RULES = [
+            { id: 'firstName', label: 'Nombre', required: true },
+            { id: 'lastName', label: 'Apellidos', required: true },
+            { id: 'email', label: 'Correo electrónico', required: true, email: true },
+            { id: 'message', label: '¿Cómo podemos ayudarte?', required: true },
+        ];
+
+        function getErrorEl(fieldId) {
+            return document.getElementById('err-' + fieldId);
+        }
+
+        function showFieldError(fieldId, msg) {
+            const input = document.getElementById(fieldId);
+            const errEl = getErrorEl(fieldId);
+            if (!input || !errEl) return;
+            input.style.borderColor = '#ef4444';
+            input.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.15)';
+            errEl.textContent = msg;
+            errEl.style.display = 'flex';
+        }
+
+        function clearFieldError(fieldId) {
+            const input = document.getElementById(fieldId);
+            const errEl = getErrorEl(fieldId);
+            if (!input || !errEl) return;
+            input.style.borderColor = '';
+            input.style.boxShadow = '';
+            errEl.style.display = 'none';
+            errEl.textContent = '';
+        }
+
+        // Attach live-clear listeners once DOM ready
+        FIELD_RULES.forEach(rule => {
+            const el = document.getElementById(rule.id);
+            if (el) el.addEventListener('input', () => clearFieldError(rule.id));
+        });
+        const termsEl = document.getElementById('terms');
+        if (termsEl) termsEl.addEventListener('change', () => clearFieldError('terms'));
+
+        function validateForm() {
+            let valid = true;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            FIELD_RULES.forEach(rule => {
+                const el = document.getElementById(rule.id);
+                if (!el) return;
+                const val = el.value.trim();
+                if (rule.required && !val) {
+                    showFieldError(rule.id, `${rule.label} es obligatorio.`);
+                    valid = false;
+                } else if (rule.email && val && !emailRegex.test(val)) {
+                    showFieldError(rule.id, 'El formato del correo no es válido.');
+                    valid = false;
+                } else {
+                    clearFieldError(rule.id);
+                }
+            });
+
+            // Terms checkbox
+            const terms = document.getElementById('terms');
+            if (terms && !terms.checked) {
+                showFieldError('terms', 'Debes aceptar los términos y condiciones.');
+                valid = false;
+            } else if (terms) {
+                clearFieldError('terms');
+            }
+
+            return valid;
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            if (!validateForm()) {
+                // Scroll to first error
+                const firstErr = document.querySelector('[id^="err-"][style*="flex"]');
+                if (firstErr) firstErr.closest('.form-field')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            const btnText = btn.querySelector('.btn-text');
+            const btnIcon = btn.querySelector('.btn-icon');
+            const btnLoader = btn.querySelector('.btn-loader');
+            const form = e.target;
+
+            btnText.textContent = 'Enviando…';
+            btnIcon.classList.add('hidden');
+            btnLoader.classList.remove('hidden');
+            btn.disabled = true;
+
+            // Simulate API call — 90% success, 10% error
+            setTimeout(() => {
+                btnLoader.classList.add('hidden');
+                btnIcon.classList.remove('hidden');
+
+                const success = Math.random() > 0.1;
+
+                if (success) {
+                    btnText.textContent = '¡Enviado!';
+                    btn.style.background = 'linear-gradient(135deg,#059669,#10b981)';
+                    btn.style.boxShadow = '0 4px 16px rgba(5,150,105,0.4)';
+                    showToast('¡Solicitud enviada correctamente! Nos pondremos en contacto contigo en menos de 24 h.', 'success');
+                    setTimeout(() => {
+                        form.reset();
+                        FIELD_RULES.forEach(r => clearFieldError(r.id));
+                        clearFieldError('terms');
+                        btnText.textContent = 'Enviar solicitud';
+                        btn.disabled = false;
+                        btn.style.background = '';
+                        btn.style.boxShadow = '';
+                    }, 3500);
+                } else {
+                    // Error state
+                    btnText.textContent = 'Reintentar';
+                    btn.style.background = 'linear-gradient(135deg,#dc2626,#ef4444)';
+                    btn.style.boxShadow = '0 4px 16px rgba(220,38,38,0.35)';
+                    btn.disabled = false;
+                    showToast('Ha ocurrido un error al enviar. Por favor, inténtalo de nuevo.', 'error');
+                    // Shake animation
+                    btn.classList.add('btn-shake');
+                    setTimeout(() => {
+                        btn.classList.remove('btn-shake');
+                        btn.style.background = '';
+                        btn.style.boxShadow = '';
+                        btnText.textContent = 'Enviar solicitud';
+                    }, 3500);
+                }
+            }, 1800);
+        }
+
+        // ── Custom Select Dropdown ──
+        function isMobile() { return window.innerWidth <= 768; }
+
+        function closeAllCustomSelects() {
+            document.querySelectorAll('.custom-select-panel.open').forEach(p => {
+                p.classList.remove('open');
+                p.setAttribute('aria-hidden', 'true');
+            });
+            document.querySelectorAll('.custom-select-trigger.open').forEach(t => {
+                t.classList.remove('open');
+                t.setAttribute('aria-expanded', 'false');
+            });
+            document.querySelectorAll('.custom-select-chevron').forEach(c => c.style.transform = '');
+            document.getElementById('csOverlay')?.classList.remove('active');
+        }
+
+        function toggleCustomSelect(id) {
+            const panel = document.getElementById(id + 'Panel');
+            const trigger = document.getElementById(id + 'Trigger');
+            const chevron = document.getElementById(id + 'Chevron');
+            if (!panel || !trigger) return;
+            const isOpen = panel.classList.contains('open');
+
+            closeAllCustomSelects();
+
+            if (!isOpen) {
+                // If mobile, teleport panel to body to escape parent transforms/z-index issues
+                if (isMobile() && panel.parentElement !== document.body) {
+                    document.body.appendChild(panel);
+                }
+
+                panel.classList.add('open');
+                panel.setAttribute('aria-hidden', 'false');
+                trigger.classList.add('open');
+                trigger.setAttribute('aria-expanded', 'true');
+                if (chevron) chevron.style.transform = 'rotate(180deg)';
+                if (isMobile()) document.getElementById('csOverlay')?.classList.add('active');
+            }
+        }
+
+        function selectOption(id, value, label) {
+            document.getElementById(id).value = value;
+            document.getElementById(id + 'Label').textContent = label;
+            document.getElementById(id + 'Label').style.opacity = '1';
+            document.getElementById(id + 'Label').style.color = 'var(--text-main)';
+            // mark selected by data-val attribute (avoids textContent encoding issues)
+            document.querySelectorAll('#' + id + 'Panel .custom-select-option').forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.val === value);
+            });
+            // close
+            closeAllCustomSelects();
+        }
+
+        // Close on outside click
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.custom-select-wrap') && !e.target.classList.contains('cs-overlay')) {
+                closeAllCustomSelects();
+            }
+        });
+
+        // ── Newsletter ──
+        window.handleNewsletterSubmit = function (e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+            btnText.textContent = '';
+            btnLoader.classList.remove('hidden');
+            btn.disabled = true;
+            setTimeout(() => {
+                btnText.textContent = 'Suscribirse';
+                btnLoader.classList.add('hidden');
+                btn.disabled = false;
+                e.target.reset();
+                showToast('¡Suscrito a la newsletter!', 'success');
+            }, 1500);
+        };
+
+        // ── Theme Logic ──
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const activeIconName = isLight ? 'sun' : 'moon';
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
+                </div>
+            `;
+
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.innerHTML = trackHTML;
+            });
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        window.toggleTheme = function () {
+            const isLight = document.body.classList.toggle('light-mode');
+            localStorage.setItem('themePreference', isLight ? 'light' : 'dark');
+            updateToggleVisuals();
+        };
+
+        // Initialize visuals on load
+        updateToggleVisuals();
+
+        // ── Toast ──
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const colors = { success: '#059669', error: '#dc2626', info: '#1855BA' };
+            const icons = { success: 'check-circle', error: 'x-circle', info: 'info' };
+            const toast = document.createElement('div');
+            toast.className = 'toast pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-[15px] text-white text-sm font-semibold shadow-2xl';
+            toast.style.cssText = `background:${colors[type]};min-width:260px;max-width:380px;`;
+            toast.innerHTML = `<i data-lucide="${icons[type]}" class="w-4 h-4 flex-shrink-0"></i><span>${msg}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons({ nodes: [toast] });
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        }
+    </script>
+
+    <style>
+        footer.dark-footer {
+            background-color: #05070a !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #9ca3af !important;
+        }
+
+        footer.dark-footer h4,
+        footer.dark-footer .text-main-force {
+            color: #ffffff !important;
+        }
+
+        footer.dark-footer a:hover {
+            color: #1855BA !important;
+        }
+
+        footer.dark-footer input {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
+
+        footer.dark-footer input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        footer.dark-footer input:focus {
+            border-color: #1855BA !important;
+            box-shadow: 0 0 0 3px rgba(24, 85, 186, 0.1);
+        }
+
+        body.light-mode footer.dark-footer {
+            background-color: #05070a !important;
+        }
+
+        body.light-mode footer.dark-footer a {
+            color: #9ca3af;
+        }
+    </style>
+    <!-- Mobile bottom-sheet overlay — Moved here to escape stacking contexts -->
+    <div class="cs-overlay" id="csOverlay" onclick="closeAllCustomSelects()"></div>
+
+    <!-- Floating Controls Bar -->
+    <div class="controls-bar">
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <i data-lucide="sun" class="toggle-track-icon"></i>
+            <div class="theme-toggle-thumb">
+                <i data-lucide="moon" class="thumb-icon"></i>
+            </div>
+        </div>
+        <div class="lang-toggle" onclick="toggleLanguage()">
+            <span class="lang-label lang-label-es">ES</span>
+            <div class="lang-switch-track">
+                <div class="lang-switch-thumb"></div>
+            </div>
+            <span class="lang-label lang-label-en">EN</span>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Participantes del Mercado | Token City</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Fuentes de Google -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Importar estilos TCAV -->
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <style>
+        /* Variables de overlay para el banner */
+        :root {
+            --policy-overlay-start: rgba(5, 7, 10, 0.9);
+            --policy-overlay-mid: rgba(5, 7, 10, 0.7);
+            --policy-overlay-end: rgba(5, 7, 10, 1);
+        }
+
+        body.light-mode {
+            --policy-overlay-start: rgba(5, 7, 10, 0.85);
+            --policy-overlay-mid: rgba(5, 7, 10, 0.4);
+            --policy-overlay-end: #f8fafc;
+        }
+
+        /* Banner Hero para Participantes - 360px */
+        .policy-banner {
+            width: 100%;
+            height: 520px;
+            display: flex;
+            align-items: flex-start;
+            padding-top: 160px;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background-image: url('./mercado.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: 0;
+            margin-bottom: -1px;
+            /* Hack para evitar gap subpixel con el contenido */
+        }
+
+        /* Capa de imagen de fondo */
+        .policy-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom,
+                    var(--policy-overlay-start),
+                    var(--policy-overlay-mid),
+                    var(--policy-overlay-end));
+            z-index: 1;
+        }
+
+        /* Contenido del banner */
+        .policy-banner-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .policy-banner h1 {
+            color: #ffffff;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: bold;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .policy-banner-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            font-weight: 300;
+        }
+
+        /* Contenido principal */
+        .page-content {
+            max-width: 1280px;
+            /* max-w-7xl */
+            margin: 0 auto;
+            padding: 4rem 1rem;
+            line-height: 1.8;
+        }
+
+        @media (min-width: 768px) {
+            .page-content {
+                padding: 5rem 2rem;
+            }
+        }
+
+        /* Botón de volver */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            background-color: var(--card-hover-bg);
+            border-color: var(--primary-blue);
+        }
+
+        /* Footer styles */
+        footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            border-top: 1px solid var(--glass-border);
+            text-align: left;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .policy-banner {
+                height: 420px;
+                padding-top: 100px;
+            }
+
+            .policy-banner h1 {
+                font-size: 1.75rem;
+            }
+
+            .page-content {
+                padding: 3rem 1rem;
+            }
+        }
+
+        /* Modo claro ajustes */
+        body.light-mode .policy-banner h1 {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        body.light-mode .policy-banner-subtitle {
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Participant Cards: Interactive Reveal Structure */
+        .participant-card {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            perspective: 1000px;
+            height: 260px;
+            /* Fixed height as requested */
+        }
+
+        .participant-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .participant-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            border-radius: 1.5rem;
+        }
+
+        .participant-card.is-flipped .participant-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Face 1: Logo View (White with colored left border) */
+        .face-front {
+            background-color: #111827;
+            /* Dark gray for dark mode */
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            /* Slightly reduced padding for tighter height */
+            border-left: 4px solid var(--card-accent, var(--primary-blue));
+            transition: background-color 0.3s ease;
+        }
+
+        body.light-mode .face-front {
+            background-color: #ffffff;
+            /* White for light mode */
+        }
+
+        .face-front .company-logo-main {
+            max-width: 190px;
+            max-height: 110px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            /* White logo for dark mode */
+            transition: all 0.3s ease;
+        }
+
+        body.light-mode .face-front .company-logo-main {
+            filter: grayscale(1) brightness(0.2);
+            /* Dark gray for light mode */
+        }
+
+        .participant-card:hover .company-logo-main {
+            transform: scale(1.05);
+        }
+
+        body.light-mode .participant-card:hover .company-logo-main {
+            filter: none !important;
+            /* Show original colors on hover only in light mode */
+        }
+
+        /* Links Contrast Fix for Dark Mode AA Compliance */
+        body:not(.light-mode) .card-website a {
+            color: #60a5fa;
+            /* Lighter blue for dark mode */
+        }
+
+        body:not(.light-mode) .card-website a:hover {
+            color: #93c5fd;
+        }
+
+        /* Face 2: Info View (Restored to original glass look) */
+        .face-back {
+            background-color: var(--glass-bg);
+            transform: rotateY(180deg);
+            padding: 1.75rem 1.5rem;
+            /* Adjusted padding for 260px height */
+            text-align: left;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            justify-content: flex-start;
+        }
+
+        /* Toggle Button (+/-) */
+        .card-toggle-btn {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            border: none;
+        }
+
+        .card-toggle-btn:hover {
+            transform: scale(1.1);
+            background-color: #333333 !important;
+        }
+
+        .participant-logo {
+            width: 54px;
+            height: 54px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .participant-card .card-type-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .participant-card .card-info-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .participant-card .card-website a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .participant-card .card-website a:hover {
+            text-decoration: underline;
+        }
+
+        /* Filter Bar */
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0 1.5rem;
+            background-color: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .back-button:hover {
+            background-color: var(--card-hover-bg);
+            border-color: var(--primary-blue);
+        }
+
+        /* Custom Dropdown Styling */
+        .custom-dropdown {
+            position: relative;
+            min-width: 180px;
+        }
+
+        .dropdown-trigger {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            background-color: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
+            color: var(--text-main);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 0.5rem;
+        }
+
+        .dropdown-trigger:hover {
+            border-color: var(--primary-blue);
+            background-color: var(--card-hover-bg);
+        }
+
+        .dropdown-trigger.active {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(24, 85, 186, 0.15);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            width: 100%;
+            min-width: 220px;
+            background-color: #111827;
+            /* More opaque for dark mode */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 0.5rem;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            white-space: nowrap;
+        }
+
+        body.light-mode .dropdown-menu {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(24, 85, 186, 0.1);
+            color: var(--text-main);
+        }
+
+        .dropdown-item.selected {
+            background-color: transparent;
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        .participant-card.hidden-card {
+            display: none;
+        }
+
+        .participant-card.hidden-card {
+            display: none;
+        }
+
+        /* Overlay para el Bottom Sheet en Móvil */
+        .dropdown-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 90;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .filters-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding-bottom: 0.5rem;
+                flex-wrap: nowrap;
+                overflow-x: visible;
+            }
+
+            .filters-bar>.flex {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                width: 100%;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                /* Firefox */
+                padding-bottom: 0.5rem;
+                /* Space for shadow */
+            }
+
+            .filters-bar>.flex::-webkit-scrollbar {
+                display: none;
+                /* Safari and Chrome */
+            }
+
+            .back-button {
+                flex-shrink: 0;
+            }
+
+            .custom-dropdown {
+                flex-shrink: 0;
+            }
+
+            /* Bottom Sheet Modal Style para el Menú */
+            .dropdown-menu {
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                width: 100vw;
+                border-radius: 1.5rem 1.5rem 0 0;
+                padding: 1.5rem 1rem 2rem 1rem;
+                transform: translateY(100%);
+                z-index: 100;
+                border: none;
+                border-top: 1px solid var(--glass-border);
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+                background-color: #111827;
+                /* Fixed dark background */
+            }
+
+            body.light-mode .dropdown-menu {
+                background-color: rgba(255, 255, 255, 0.98);
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            .dropdown-menu::before {
+                content: '';
+                position: absolute;
+                top: 0.75rem;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40px;
+                height: 4px;
+                background-color: rgba(156, 163, 175, 0.5);
+                /* Neutral gray indicator */
+                border-radius: 10px;
+            }
+
+            .dropdown-menu.open {
+                transform: translateY(0);
+            }
+
+            .dropdown-item {
+                padding: 1rem 0.5rem;
+                border-bottom: 1px solid var(--glass-border);
+                font-size: 0.95rem;
+                /* Larger text for mobile */
+            }
+
+            .dropdown-item:last-child {
+                border-bottom: none;
+            }
+        }
+
+        /* Animations from INdex2.html */
+        .reveal-growth {
+            opacity: 0;
+            transform: scale(0.9) translateY(40px);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .reveal-growth.active {
+            opacity: 1;
+            transform: none;
+            /* 'none' prevents creating a containing block for fixed descendants after animation */
+        }
+
+        .delay-100 {
+            transition-delay: 100ms;
+        }
+
+        .delay-200 {
+            transition-delay: 200ms;
+        }
+
+        .delay-300 {
+            transition-delay: 300ms;
+        }
+
+        /* Floating Controls Bar - Always Dark */
+        .controls-bar {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: rgba(5, 7, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .controls-bar .theme-toggle {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .controls-bar .toggle-track-icon {
+            color: #ffffff;
+        }
+
+        .controls-bar .thumb-icon {
+            color: #1855BA;
+        }
+
+        .controls-bar .lang-label {
+            color: #ffffff;
+        }
+
+        .controls-bar .lang-label.lang-label-en {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .controls-bar .lang-label.lang-label-es {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .controls-bar .lang-label.lang-label-en {
+            color: #ffffff;
+        }
+
+        .controls-bar .lang-switch-track {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .controls-bar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="pb-24 md:pb-0 light-mode">
+    <!-- Script de detección horaria: Modo oscuro automático después de las 19:00 -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            if (savedTheme) {
+                if (savedTheme === 'light') document.body.classList.add('light-mode');
+                else document.body.classList.remove('light-mode');
+            } else {
+                const hour = new Date().getHours();
+                if (hour >= 19 || hour < 7) document.body.classList.remove('light-mode');
+                else document.body.classList.add('light-mode');
+            }
+        })();
+    </script>
+
+    <canvas id="network-canvas"></canvas>
+
+    <!-- Navegación Superior -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300 backdrop-blur-md border-b" id="navbar"
+        style="background-color: var(--nav-bg); border-color: var(--glass-border);">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 h-16 md:h-20">
+            <div class="flex items-center gap-2 select-none">
+                <a href="INdex2.html" class="flex items-baseline tracking-tighter leading-none"
+                    style="color: var(--nav-text);">
+                    <span class="text-sm md:text-2xl font-black tracking-tight">TOKEN CITY</span>
+                    <span class="text-sm md:text-2xl font-thin ml-1 tracking-wide">EXCHANGE</span>
+                </a>
+                <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse self-start mt-1"></div>
+            </div>
+
+            <div class="flex items-center gap-2 md:gap-4">
+                <div class="flex items-center gap-3">
+                    <button
+                        class="hidden md:flex text-xs md:text-sm font-bold px-3 h-[36px] md:h-[40px] border border-white rounded-[15px] hover:bg-white/10 transition-colors whitespace-nowrap items-center gap-2"
+                        style="color: white; line-height: 1;">
+                        <i data-lucide="user" class="w-4 h-4"></i> Iniciar sesión
+                    </button>
+                    <button
+                        class="hidden md:flex bg-[#1855BA] hover:bg-[#144a9e] text-white text-xs md:text-sm font-bold px-3 md:px-6 h-[36px] md:h-[40px] rounded-[15px] transition-all transform hover:scale-105 whitespace-nowrap items-center gap-2"
+                        style="line-height: 1;">
+                        Registrarse
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Navegación Inferior Flotante (Móvil) -->
+    <nav class="fixed bottom-0 left-0 w-full z-[60] md:hidden bottom-nav pb-safe px-4 py-3 flex items-center"
+        style="background-color: var(--bottom-bar-bg); border-top: 1px solid var(--bottom-bar-border); backdrop-filter: blur(12px); height: auto;">
+        <div class="flex justify-between items-center gap-3 w-full">
+            <!-- Botones en móvil -->
+            <div class="flex items-center gap-2">
+                <button
+                    class="flex-shrink-0 text-xs font-bold px-3 h-[36px] border border-white rounded-[15px] hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1.5"
+                    style="color: white; line-height: 1;">
+                    <i data-lucide="user" class="w-4 h-4"></i> Sesión
+                </button>
+                <button
+                    class="flex-shrink-0 text-xs font-bold px-3 h-[36px] bg-[#1855BA] text-white rounded-[15px] hover:bg-[#144a9e] transition-colors whitespace-nowrap flex items-center gap-1.5"
+                    style="line-height: 1;">
+                    Registro
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer"
+        class="fixed bottom-20 md:bottom-4 right-4 z-[110] flex flex-col gap-2 pointer-events-none">
+        <!-- Toasts are injected here -->
+    </div>
+
+    <!-- Dropdown Backdrop Overlay -->
+    <div id="dropdownOverlay" class="dropdown-overlay"></div>
+
+    <main class="pt-0">
+        <!-- Banner Principal con Título - 360px -->
+        <div class="policy-banner">
+            <div class="policy-banner-content">
+                <h1>Asociaciones participantes</h1>
+                <p class="policy-banner-subtitle">Varias instituciones se incorporan a Token City Exchange para modelar
+                    el futuro de la tecnología blockchain.</p>
+            </div>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="page-content reveal-growth">
+            <!-- Barra de filtros -->
+            <div class="filters-bar">
+                <a href="INdex2.html"
+                    class="px-4 py-2 rounded-[15px] font-bold flex items-center justify-center gap-2 bg-[#1e293b] hover:bg-[#0f172a] text-white border border-slate-700 transition-all shadow-md text-sm md:text-base">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Volver al inicio
+                </a>
+                <div class="flex flex-wrap gap-3 md:ml-auto items-center">
+                    <!-- Order Select -->
+                    <div class="custom-dropdown" data-filter="order" data-value="">
+                        <div class="dropdown-trigger" onclick="toggleDropdown(this)">
+                            <span class="dropdown-label">Ordenar: A-Z</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item selected" data-value="" onclick="selectOption(this)">Ordenar: A-Z
+                            </div>
+                            <div class="dropdown-item" data-value="asc" onclick="selectOption(this)">A → Z</div>
+                            <div class="dropdown-item" data-value="desc" onclick="selectOption(this)">Z → A</div>
+                        </div>
+                    </div>
+
+                    <!-- Sector Select -->
+                    <div class="custom-dropdown" data-filter="sector" data-value="">
+                        <div class="dropdown-trigger" onclick="toggleDropdown(this)">
+                            <span class="dropdown-label">Todos los sectores</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item selected" data-value="" onclick="selectOption(this)">Todos los
+                                sectores</div>
+                            <div class="dropdown-item" data-value="ti" onclick="selectOption(this)">TI, Consultoría TI
+                            </div>
+                            <div class="dropdown-item" data-value="legal" onclick="selectOption(this)">Asesoría Jurídica
+                            </div>
+                            <div class="dropdown-item" data-value="gestion" onclick="selectOption(this)">Gestión de
+                                Activos</div>
+                            <div class="dropdown-item" data-value="blockchain" onclick="selectOption(this)">Blockchain,
+                                DLT</div>
+                            <div class="dropdown-item" data-value="auditoria" onclick="selectOption(this)">Auditoría,
+                                Compliance</div>
+                            <div class="dropdown-item" data-value="fintech" onclick="selectOption(this)">Fintech, Pagos
+                            </div>
+                            <div class="dropdown-item" data-value="consultoria" onclick="selectOption(this)">Consultoría
+                                Financiera</div>
+                            <div class="dropdown-item" data-value="custodia" onclick="selectOption(this)">Custodia de
+                                Activos</div>
+                            <div class="dropdown-item" data-value="tokenizacion" onclick="selectOption(this)">
+                                Tokenización Inmobiliaria</div>
+                            <div class="dropdown-item" data-value="data" onclick="selectOption(this)">Big Data,
+                                Analítica</div>
+                        </div>
+                    </div>
+
+                    <!-- Origin Select -->
+                    <div class="custom-dropdown" data-filter="origen" data-value="">
+                        <div class="dropdown-trigger" onclick="toggleDropdown(this)">
+                            <span class="dropdown-label">Todos los orígenes</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item selected" data-value="" onclick="selectOption(this)">Todos los
+                                orígenes</div>
+                            <div class="dropdown-item" data-value="Madrid" onclick="selectOption(this)">Madrid</div>
+                            <div class="dropdown-item" data-value="Barcelona" onclick="selectOption(this)">Barcelona
+                            </div>
+                            <div class="dropdown-item" data-value="Valencia" onclick="selectOption(this)">Valencia</div>
+                            <div class="dropdown-item" data-value="Bilbao" onclick="selectOption(this)">Bilbao</div>
+                            <div class="dropdown-item" data-value="Sevilla" onclick="selectOption(this)">Sevilla</div>
+                            <div class="dropdown-item" data-value="Málaga" onclick="selectOption(this)">Málaga</div>
+                            <div class="dropdown-item" data-value="Zaragoza" onclick="selectOption(this)">Zaragoza</div>
+                            <div class="dropdown-item" data-value="A Coruña" onclick="selectOption(this)">A Coruña</div>
+                            <div class="dropdown-item" data-value="Palma de Mallorca" onclick="selectOption(this)">Palma
+                                de Mallorca</div>
+                            <div class="dropdown-item" data-value="San Sebastián" onclick="selectOption(this)">San
+                                Sebastián</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Participantes -->
+            <div id="participantsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[15px] md:gap-[30px]">
+                <!-- Card: Triangular -->
+                <div class="participant-card" data-name="Triangular" data-sector="data" data-origin="Almería"
+                    style="--card-accent: #00e782;">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="./logotriang.png" alt="Triangular" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #00e782, #00ad62);">T</div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">Triangular</h3>
+                                    <span class="card-type-tag" style="color:#00e782; background:rgba(0,231,130,0.1)">
+                                        <i data-lucide="database" class="w-3 h-3"></i> Big Data, Analítica
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.triangular.es" target="_blank"
+                                        rel="noopener noreferrer">www.triangular.es</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>Almería</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" data-name="Arca habitatum capital SL" data-sector="ti"
+                    data-origin="Madrid" style="--card-accent: #80BB35;">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="./logo01.png" alt="Arca habitatum capital SL" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #80BB35, #608c28);">A</div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">Arca habitatum
+                                        capital SL</h3>
+                                    <span class="card-type-tag" style="color:#80BB35; background:rgba(128,187,53,0.1)">
+                                        <i data-lucide="cpu" class="w-3 h-3"></i> TI, Consultoría TI
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.Arcahabitatumcapital.com" target="_blank"
+                                        rel="noopener noreferrer">www.Arcahabitatumcapital.com</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>Madrid</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card: Global gold International -->
+                <div class="participant-card" data-name="Global gold International" data-sector="ti" data-origin="Cádiz"
+                    style="--card-accent: #a48725; ">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="./globalgol logo.png" alt="Global gold International" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #a48725, #7b651c);">G</div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">Global gold
+                                        International</h3>
+                                    <span class="card-type-tag" style="color:#a48725; background:rgba(164,135,37,0.1)">
+                                        <i data-lucide="cpu" class="w-3 h-3"></i> TI, Consultoría TI
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.triangulartc.es" target="_blank"
+                                        rel="noopener noreferrer">www.triangulartc.es</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>Cádiz</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" data-name="The Muxic" data-sector="legal" data-origin="Barcelona"
+                    style="--card-accent: #F37021;">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="logo02.png" alt="The Muxic" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #f37021, #d9641d);">T
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">The Muxic</h3>
+                                    <span class="card-type-tag bg-green-500/10 text-green-600">
+                                        <i data-lucide="scale" class="w-3 h-3"></i> Asesoría Jurídica
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.Themuxic.com" target="_blank"
+                                        rel="noopener noreferrer">www.Themuxic.com</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>Barcelona</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" data-name="Marv" data-sector="gestion" data-origin="Castellón"
+                    style="--card-accent: #FF4D00; ">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="./logo03.png" alt="Marv" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #FF4D00, #bf3a00);">M</div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">Marv</h3>
+                                    <span class="card-type-tag" style="color:#FF4D00; background:rgba(255,77,0,0.1)">
+                                        <i data-lucide="bar-chart-2" class="w-3 h-3"></i> Gestión de Activos
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.Marv.com" target="_blank"
+                                        rel="noopener noreferrer">www.Marv.com</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>Castellón</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" data-name="Alius Capital" data-sector="blockchain" data-origin="Bilbao"
+                    style="--card-accent: #1855BA;">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="logo04.png" alt="Alius Capital" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #1855ba, #113d85);">A
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">Alius Capital
+                                    </h3>
+                                    <span class="card-type-tag bg-amber-500/10 text-amber-600">
+                                        <i data-lucide="link" class="w-3 h-3"></i> Blockchain, DLT
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.aliuscapital.com" target="_blank"
+                                        rel="noopener noreferrer">www.aliuscapital.com</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>Bilbao</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" data-name="Padelrenting" data-sector="auditoria" data-origin="Sevilla"
+                    style="--card-accent: #FF3131;">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="logo05.png" alt="Padelrenting" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #ff3131, #cc2727);">P
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">Padelrenting</h3>
+                                    <span class="card-type-tag bg-red-500/10 text-red-600">
+                                        <i data-lucide="shield-check" class="w-3 h-3"></i> Auditoría, Compliance
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.Padelrenting.com" target="_blank"
+                                        rel="noopener noreferrer">www.Padelrenting.com</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>Sevilla</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" data-name="Toqen kapital" data-sector="fintech" data-origin="Málaga"
+                    style="--card-accent: #B5A86A;">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="logo06.png" alt="Toqen kapital" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #b5a86a, #8f8450);">T
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">Toqen kapital</h3>
+                                    <span class="card-type-tag bg-sky-500/10 text-sky-600">
+                                        <i data-lucide="wallet" class="w-3 h-3"></i> Fintech, Pagos Digitales
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.Toqenkapital.com" target="_blank"
+                                        rel="noopener noreferrer">www.Toqenkapital.com</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>Málaga</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" data-name="Elevio rent" data-sector="consultoria" data-origin="Zaragoza"
+                    style="--card-accent: #1ECA8F;">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="logo07.png" alt="Elevio rent" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #1eca8f, #159468);">E
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">Elevio rent
+                                    </h3>
+                                    <span class="card-type-tag bg-blue-500/10 text-blue-600">
+                                        <i data-lucide="line-chart" class="w-3 h-3"></i> Consultoría Financiera
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.eleviorent.com" target="_blank"
+                                        rel="noopener noreferrer">www.eleviorent.com</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>Zaragoza</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" data-name="DIANELUM" data-sector="custodia" data-origin="A Coruña"
+                    style="--card-accent: #9BCAA6;">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="logo08.png" alt="DIANELUM" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #9bcaa6, #7da586);">D
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">DIANELUM</h3>
+                                    <span class="card-type-tag bg-slate-500/10 text-slate-600">
+                                        <i data-lucide="key" class="w-3 h-3"></i> Custodia de Activos
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.dianelum.com" target="_blank"
+                                        rel="noopener noreferrer">www.dianelum.com</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>A Coruña</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" data-name="Medulio capital" data-sector="tokenizacion"
+                    data-origin="Palma de Mallorca" style="--card-accent: #1E3768;">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="logo09.png" alt="Medulio capital" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #1e3768, #142546);">M
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">Medulio capital</h3>
+                                    <span class="card-type-tag bg-orange-500/10 text-orange-600">
+                                        <i data-lucide="building-2" class="w-3 h-3"></i> Tokenización Inmobiliaria
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.meduliocapital.com" target="_blank"
+                                        rel="noopener noreferrer">www.meduliocapital.com</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>Palma de Mallorca</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" data-name="Tokenix" data-sector="data" data-origin="San Sebastián"
+                    style="--card-accent: #289DD2;">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="logo010.png" alt="Tokenix" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                    style="background: linear-gradient(135deg, #289dd2, #1d7197);">T
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">Tokenix</h3>
+                                    <span class="card-type-tag bg-[#289dd2]/10 text-[#289dd2]">
+                                        <i data-lucide="bar-chart-3" class="w-3 h-3"></i> Big Data, Analítica
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://www.Tokenix.com" target="_blank"
+                                        rel="noopener noreferrer">www.Tokenix.com</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>San Sebastián</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER COMPONENT -->
+    <div data-component="components/footer-component.html"></div>
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+        <!-- Sección 1: Información de la Empresa -->
+        <div class="space-y-4">
+            <div class="flex items-center gap-2 select-none" style="color: white !important;">
+                <div class="flex items-baseline tracking-tighter leading-none">
+                    <span class="text-lg font-black tracking-tight">TOKEN CITY</span>
+                    <span class="text-lg font-thin ml-2">EXCHANGE</span>
+                </div>
+            </div>
+            <p class="text-sm leading-relaxed">
+                Transformando el mercado de capitales con tecnología blockchain. Seguridad, transparencia y liquidez
+                para la nueva economía digital.
+            </p>
+            <div class="flex gap-4">
+                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-[#1855BA] transition-colors">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-[#1855BA] transition-colors">
+                    <i data-lucide="twitter" class="w-5 h-5"></i>
+                </a>
+                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-[#1855BA] transition-colors">
+                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sección 2: Compañía -->
+        <div>
+            <h4 class="font-bold mb-4 text-main-force">Compañía</h4>
+            <ul class="space-y-2 text-sm">
+                <li><a href="INdex2.html" class="hover:text-[#1855BA] transition-colors">Sobre Nosotros</a></li>
+                <li><a href="INdex2.html" class="hover:text-[#1855BA] transition-colors">Equipo</a></li>
+                <li><a href="participantes-mercado.html" class="hover:text-[#1855BA] transition-colors">Asociaciones
+                        participantes</a></li>
+                <li><a href="INdex2.html" class="hover:text-[#1855BA] transition-colors">Prensa</a></li>
+            </ul>
+        </div>
+
+        <!-- Sección 3: Legal -->
+        <div>
+            <h4 class="font-bold mb-4 text-main-force">Legal</h4>
+            <ul class="space-y-2 text-sm">
+                <li><a href="/aviso-legal.html" class="hover:text-[#1855BA] transition-colors">Aviso Legal</a></li>
+                <li><a href="policy-template.html" class="hover:text-[#1855BA] transition-colors">Política de
+                        Privacidad</a></li>
+                <li><a href="/politica-cookies.html" class="hover:text-[#1855BA] transition-colors">Política de
+                        Cookies</a></li>
+                <li><a href="/terminos-condiciones.html" class="hover:text-[#1855BA] transition-colors">Términos y
+                        Condiciones</a></li>
+                <li><a href="/regulacion-cnmv.html" class="hover:text-[#1855BA] transition-colors">Regulación
+                        CNMV</a></li>
+            </ul>
+        </div>
+
+        <!-- Sección 4: Newsletter -->
+        <div>
+            <h4 class="font-bold mb-4 text-main-force">Suscríbete</h4>
+            <p class="text-xs mb-4">Recibe las últimas oportunidades de inversión.</p>
+            <form id="newsletterForm" class="flex flex-col gap-2" onsubmit="handleNewsletterSubmit(event)">
+                <input type="email" required placeholder="Tu email"
+                    class="rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#1855BA]"
+                    style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white;">
+                <button type="submit"
+                    class="bg-[#1855BA] hover:bg-[#144a9e] text-white py-2 rounded-lg text-sm font-bold transition-all flex items-center justify-center">
+                    <span class="btn-text">Suscribirse</span>
+                    <i data-lucide="loader-2" class="w-4 h-4 animate-spin hidden btn-loader"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Separador y Copyright -->
+    <div class="max-w-7xl mx-auto mt-12 pt-8 border-t flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs"
+        style="border-color: rgba(255,255,255,0.1);">
+        <p>© 2026 Token City European Exchange AV. Inscrita en CNMV Nº 334.</p>
+        <p>Todos los derechos reservados.</p>
+    </div>
+    </div>
+
+    <!-- Script para inicializar la página -->
+    <script src="global-scripts.js"></script>
+    <script>
+        // Page-specific scripts
+        (function () {
+            // Card Toggle Logic
+            window.toggleCard = function (btn) {
+                const card = btn.closest('.participant-card');
+                card.classList.toggle('is-flipped');
+            };
+
+            // Custom Dropdown Logic
+            const dropdownOverlay = document.getElementById('dropdownOverlay');
+
+            window.toggleDropdown = function (trigger) {
+                const menu = trigger.nextElementSibling;
+                const isOpen = menu.classList.contains('open');
+                // Close all other dropdowns
+                document.querySelectorAll('.dropdown-menu.open').forEach(m => {
+                    if (m !== menu) m.classList.remove('open');
+                });
+                document.querySelectorAll('.dropdown-trigger.active').forEach(t => {
+                    if (t !== trigger) t.classList.remove('active');
+                });
+
+                menu.classList.toggle('open');
+                trigger.classList.toggle('active');
+
+                // Handle overlay (Only on mobile)
+                if (window.innerWidth <= 768) {
+                    if (menu.classList.contains('open')) {
+                        dropdownOverlay.classList.add('active');
+                    } else {
+                        dropdownOverlay.classList.remove('active');
+                    }
+                }
+            };
+
+            // Close on overlay click
+            dropdownOverlay.addEventListener('click', function () {
+                document.querySelectorAll('.dropdown-menu.open').forEach(m => m.classList.remove('open'));
+                document.querySelectorAll('.dropdown-trigger.active').forEach(t => t.classList.remove('active'));
+                dropdownOverlay.classList.remove('active');
+            });
+
+            window.selectOption = function (item) {
+                const dropdown = item.closest('.custom-dropdown');
+                const menu = dropdown.querySelector('.dropdown-menu');
+                const trigger = dropdown.querySelector('.dropdown-trigger');
+                const label = trigger.querySelector('.dropdown-label');
+
+                // Update selected state
+                menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+
+                // Update label text
+                label.textContent = item.textContent;
+
+                // Store value
+                dropdown.dataset.value = item.dataset.value;
+
+                // Close menu and overlay
+                menu.classList.remove('open');
+                trigger.classList.remove('active');
+                dropdownOverlay.classList.remove('active');
+
+                // Apply filters
+                applyFilters();
+            };
+
+            // Close dropdowns on outside click (excluding overlay to avoid double triggers)
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.custom-dropdown') && !e.target.closest('.dropdown-overlay')) {
+                    document.querySelectorAll('.dropdown-menu.open').forEach(m => m.classList.remove('open'));
+                    document.querySelectorAll('.dropdown-trigger.active').forEach(t => t.classList.remove('active'));
+                    dropdownOverlay.classList.remove('active');
+                }
+            });
+
+            function applyFilters() {
+                const grid = document.getElementById('participantsGrid');
+                const cards = Array.from(grid.querySelectorAll('.participant-card'));
+
+                const orderDropdown = document.querySelector('.custom-dropdown[data-filter="order"]');
+                const sectorDropdown = document.querySelector('.custom-dropdown[data-filter="sector"]');
+                const origenDropdown = document.querySelector('.custom-dropdown[data-filter="origen"]');
+
+                const order = orderDropdown ? (orderDropdown.dataset.value || '') : '';
+                const sector = sectorDropdown ? (sectorDropdown.dataset.value || '') : '';
+                const origen = origenDropdown ? (origenDropdown.dataset.value || '') : '';
+
+                // Filter
+                cards.forEach(card => {
+                    let show = true;
+                    if (sector && card.dataset.sector !== sector) show = false;
+                    if (origen && card.dataset.origin !== origen) show = false;
+                    card.classList.toggle('hidden-card', !show);
+                });
+
+                // Sort
+                if (order) {
+                    const sorted = cards.sort((a, b) => {
+                        const nameA = a.dataset.name.toLowerCase();
+                        const nameB = b.dataset.name.toLowerCase();
+                        return order === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+                    });
+                    sorted.forEach(card => grid.appendChild(card));
+                }
+            }
+
+            // Set up Interaction Observer for Animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal-growth, .participant-card').forEach(element => {
+                observer.observe(element);
+                // Also add reveal-growth class to cards for consistency if not applied directly in HTML
+                if (element.classList.contains('participant-card') && !element.classList.contains('reveal-growth')) {
+                    element.classList.add('reveal-growth');
+                }
+            });
+        })();
+    </script>
+
+    <div data-component="components/floating-controls-component.html"></div>
+</body>
+
+</html>

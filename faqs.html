@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Preguntas Frecuentes</title>
+    <meta name="description" content="Todas las preguntas importantes merecen una respuesta. FAQs sobre tokenización, Security Tokens, blockchain, clientes e inversores de Token City.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                const nightTime = (hour >= 19 || hour < 7);
+                isLight = !systemDark && !nightTime;
+            }
+            if (isLight) document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255,255,255,0.85);
+            --glass-border: rgba(0,0,0,0.1);
+            --nav-bg: rgba(5,7,10,0.95);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+        }
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255,255,255,0.03);
+            --glass-border: rgba(255,255,255,0.08);
+        }
+        .heading-text { color: var(--text-main); }
+        .body-text    { color: var(--text-muted); }
+        .section-label { color: var(--primary-blue); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        body:not(.light-mode) .section-label { color: #60a5fa; }
+
+        /* ── Hero ── */
+        .hero-faqs {
+            position: relative; overflow: hidden; background: #05070a;
+            min-height: 62vh; display: flex; align-items: center;
+        }
+        .hero-media {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+            opacity: 0.15; transform: scale(1.04);
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+        }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 80%);
+        }
+
+        /* ── Nav ── */
+        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link  { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .mega-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem;
+            opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100;
+        }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        #navOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+        #mobileDrawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+            background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; flex-direction: column; border-left: 1px solid var(--glass-border);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+
+        /* ── Controls ── */
+        .controls-bar {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            background: rgba(5,7,10,0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .theme-toggle {
+            position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1);
+            border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+        }
+        .theme-toggle-thumb {
+            position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: #fff;
+            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2;
+        }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+
+        /* ── Search bar ── */
+        .faq-search-wrap {
+            position: relative; max-width: 580px;
+        }
+        .faq-search-icon {
+            position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%);
+            color: #9ca3af; width: 18px; height: 18px; pointer-events: none;
+        }
+        .faq-search {
+            width: 100%; padding: 1rem 1.25rem 1rem 3rem;
+            background: rgba(255,255,255,0.08) !important;
+            border: 1px solid rgba(255,255,255,0.15) !important;
+            color: #fff !important;
+            border-radius: 1rem; font-size: 0.9rem; font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.25s ease, background 0.25s ease;
+            outline: none !important;
+        }
+        .faq-search::placeholder { color: rgba(255,255,255,0.35); }
+        .faq-search:focus {
+            border-color: rgba(96,165,250,0.5) !important;
+            background: rgba(255,255,255,0.1) !important;
+        }
+        .faq-search-clear {
+            position: absolute; right: 0.875rem; top: 50%; transform: translateY(-50%);
+            display: none; cursor: pointer; color: #9ca3af; padding: 2px;
+            transition: color 0.2s;
+        }
+        .faq-search-clear:hover { color: #fff; }
+        .faq-search-clear.visible { display: flex; }
+
+        /* ── Search bar: light mode overrides ── */
+        /* En light mode el scrim oscuro hace que el hero sea oscuro — el input
+           sigue usando colores del dark mode (texto blanco sobre fondo semi-transparente). */
+        /* Search: glassmorphism oscuro en modo claro */
+        body.light-mode .faq-search {
+            background: rgba(5,7,10,0.07) !important;
+            border: 1px solid rgba(5,7,10,0.18) !important;
+            color: rgba(5,7,10,0.85) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        body.light-mode .faq-search::placeholder { color: rgba(5,7,10,0.35) !important; }
+        body.light-mode .faq-search:focus {
+            border-color: rgba(5,7,10,0.35) !important;
+            background: rgba(5,7,10,0.10) !important;
+        }
+        body.light-mode .faq-search-icon  { color: rgba(5,7,10,0.45); }
+        body.light-mode .faq-search-clear { color: rgba(5,7,10,0.40); }
+        body.light-mode .faq-search-clear:hover { color: rgba(5,7,10,0.80); }
+
+        /* ── Category filters ── */
+        .faq-filters {
+            display: flex; gap: 0.5rem; flex-wrap: wrap;
+        }
+        .faq-filter-btn {
+            display: flex; align-items: center; gap: 0.45rem;
+            padding: 0.4rem 0.875rem; border-radius: 999px;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+            border: 1px solid var(--glass-border); color: var(--text-muted);
+            background: transparent; cursor: pointer; transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .faq-filter-btn:hover { border-color: rgba(24,85,186,0.5); color: var(--text-main); }
+        .faq-filter-btn.active {
+            background: rgba(24,85,186,0.12); border-color: #1855BA; color: #1855BA;
+        }
+        body:not(.light-mode) .faq-filter-btn.active {
+            background: rgba(96,165,250,0.1); border-color: #60a5fa; color: #60a5fa;
+        }
+        .faq-filter-count {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 16px; height: 16px; padding: 0 4px;
+            background: rgba(24,85,186,0.15); border-radius: 999px;
+            font-size: 0.6rem; font-weight: 900;
+        }
+        .faq-filter-btn.active .faq-filter-count { background: #1855BA; color: #fff; }
+        body:not(.light-mode) .faq-filter-btn.active .faq-filter-count { background: #60a5fa; color: #05070a; }
+
+        /* ── Sticky filter bar ── */
+        .faq-sticky-bar {
+            position: sticky; top: 72px; z-index: 20;
+            background: var(--bg-color);
+            padding: 0.875rem 0;
+            border-bottom: 1px solid var(--glass-border);
+            transition: background 0.3s;
+        }
+
+        /* ── Section headers ── */
+        .faq-section { scroll-margin-top: 130px; }
+        .faq-section-header {
+            display: flex; align-items: center; gap: 0.875rem;
+            margin-bottom: 1rem; padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .faq-section-icon {
+            width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(24,85,186,0.1); color: #1855BA;
+        }
+        body:not(.light-mode) .faq-section-icon { background: rgba(96,165,250,0.1); color: #60a5fa; }
+        .faq-section-title {
+            font-size: 0.8rem; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 0.1em; color: #1855BA;
+        }
+        body:not(.light-mode) .faq-section-title { color: #60a5fa; }
+
+        /* ── Accordion items ── */
+        .faq-item {
+            border: 1px solid var(--glass-border);
+            border-radius: 1.25rem;
+            margin-bottom: 0.625rem;
+            background: var(--glass-bg);
+            overflow: hidden;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+        .faq-item:hover { border-color: rgba(24,85,186,0.3); }
+        .faq-item.open {
+            border-color: rgba(24,85,186,0.45);
+            box-shadow: 0 4px 24px rgba(24,85,186,0.08);
+        }
+        body:not(.light-mode) .faq-item.open {
+            border-color: rgba(96,165,250,0.3);
+            box-shadow: 0 4px 24px rgba(96,165,250,0.06);
+        }
+        body.light-mode .faq-item { background: rgba(255,255,255,0.9); }
+
+        .faq-question {
+            width: 100%; display: flex; align-items: flex-start; gap: 1rem;
+            padding: 1.25rem 1.5rem; cursor: pointer;
+            background: transparent; border: none; text-align: left;
+            transition: background 0.2s ease;
+        }
+        .faq-question:hover { background: var(--glass-bg); }
+        .faq-q-icon {
+            width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(24,85,186,0.1); color: #1855BA;
+            font-size: 0.65rem; font-weight: 900;
+        }
+        body:not(.light-mode) .faq-q-icon { background: rgba(96,165,250,0.1); color: #60a5fa; }
+        .faq-item.open .faq-q-icon { background: #1855BA; color: #fff; }
+        body:not(.light-mode) .faq-item.open .faq-q-icon { background: #60a5fa; color: #05070a; }
+
+        .faq-q-text {
+            flex: 1; font-size: 0.925rem; font-weight: 700; color: var(--text-main);
+            line-height: 1.45; padding-right: 0.5rem;
+        }
+        .faq-chevron {
+            width: 18px; height: 18px; flex-shrink: 0; color: var(--text-muted);
+            margin-top: 3px; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+        .faq-item.open .faq-chevron { transform: rotate(180deg); color: #1855BA; }
+        body:not(.light-mode) .faq-item.open .faq-chevron { color: #60a5fa; }
+
+        .faq-answer {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.3s ease;
+            padding: 0 1.5rem;
+        }
+        .faq-item.open .faq-answer { max-height: 2000px; padding: 0 1.5rem 1.5rem; }
+        .faq-answer-inner {
+            font-size: 0.875rem; line-height: 1.8; color: var(--text-muted);
+            border-top: 1px solid var(--glass-border); padding-top: 1.25rem;
+        }
+        .faq-answer-inner p { margin-bottom: 0.875rem; }
+        .faq-answer-inner p:last-child { margin-bottom: 0; }
+        .faq-answer-inner strong { font-weight: 700; color: var(--text-main); }
+
+        /* Answer lists */
+        .faq-list { list-style: none; padding: 0; margin: 0.75rem 0 1rem; display: flex; flex-direction: column; gap: 0.45rem; }
+        .faq-list li { display: flex; align-items: flex-start; gap: 0.625rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
+        .faq-dot { width: 6px; height: 6px; border-radius: 50%; background: #1855BA; margin-top: 0.45rem; flex-shrink: 0; }
+        body:not(.light-mode) .faq-dot { background: #60a5fa; }
+
+        /* Infobox inside answers */
+        .faq-infobox {
+            background: rgba(24,85,186,0.06); border: 1px solid rgba(24,85,186,0.15);
+            border-radius: 0.875rem; padding: 1rem 1.25rem; margin: 0.875rem 0;
+        }
+        body:not(.light-mode) .faq-infobox { background: rgba(96,165,250,0.05); border-color: rgba(96,165,250,0.15); }
+        .faq-infobox-title { font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; color: #1855BA; margin-bottom: 0.375rem; }
+        body:not(.light-mode) .faq-infobox-title { color: #60a5fa; }
+
+        /* No results */
+        .faq-no-results { display: none; text-align: center; padding: 4rem 2rem; }
+        .faq-no-results.visible { display: block; }
+
+        /* Result count badge */
+        .faq-results-badge { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); transition: all 0.2s; }
+
+        /* Hidden items during filter */
+        .faq-item.hidden { display: none; }
+        .faq-section.hidden-section { display: none; }
+
+        @media (max-width: 640px) {
+            .faq-question { padding: 1rem 1.125rem; }
+            .faq-item.open .faq-answer { padding: 0 1.125rem 1.25rem; }
+            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+        }
+    </style>
+</head>
+
+<body>
+    <script>if (window.__isThemeLight) document.body.classList.add('light-mode');</script>
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+
+        <!-- ══════════════════════════ HERO ══════════════════════════ -->
+        <section class="hero-faqs px-6 pt-28 pb-24">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid"></div>
+
+            <div class="relative z-10 max-w-5xl mx-auto reveal-growth">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-[12px] bg-blue-500/15 flex items-center justify-center text-blue-400 shrink-0">
+                        <i data-lucide="help-circle" class="w-5 h-5"></i>
+                    </div>
+                    <p class="section-label !text-blue-400">Recursos · Token City</p>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl font-black text-white mb-5 uppercase tracking-tighter leading-tight">
+                    Preguntas<br><span class="text-blue-400">Frecuentes</span>
+                </h1>
+                <p class="text-gray-300 text-base md:text-lg max-w-2xl font-medium leading-relaxed mb-10">
+                    Todas las preguntas importantes merecen una respuesta adecuada. Encuentra aquí todo lo que necesitas saber sobre tokenización, Security Tokens, inversores y cumplimiento normativo.
+                </p>
+
+                <!-- Search bar -->
+                <div class="faq-search-wrap">
+                    <i data-lucide="search" class="faq-search-icon"></i>
+                    <input type="text" id="faqSearch" class="faq-search" placeholder="Busca una pregunta...">
+                    <button id="faqClear" class="faq-search-clear" aria-label="Limpiar búsqueda">
+                        <i data-lucide="x" style="width:14px;height:14px;"></i>
+                    </button>
+                </div>
+
+                <!-- Stats chips -->
+                <div class="flex flex-wrap gap-3 mt-6">
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/50 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
+                        <i data-lucide="layers" class="w-3 h-3"></i> 8 categorías
+                    </span>
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/50 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
+                        <i data-lucide="message-circle" class="w-3 h-3"></i> 24 preguntas
+                    </span>
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/50 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
+                        <i data-lucide="shield-check" class="w-3 h-3"></i> Actualizado 2025
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════ STICKY FILTER BAR ══════════════════════════ -->
+        <div class="faq-sticky-bar">
+            <div class="max-w-5xl mx-auto px-6">
+                <div class="flex items-center justify-between gap-4 flex-wrap">
+                    <div class="faq-filters" id="faqFilters">
+                        <button class="faq-filter-btn active" data-filter="all">
+                            Todas <span class="faq-filter-count">24</span>
+                        </button>
+                        <button class="faq-filter-btn" data-filter="origen">
+                            <i data-lucide="flag" style="width:10px;height:10px;"></i> Origen <span class="faq-filter-count">1</span>
+                        </button>
+                        <button class="faq-filter-btn" data-filter="actividad">
+                            <i data-lucide="zap" style="width:10px;height:10px;"></i> Actividad <span class="faq-filter-count">2</span>
+                        </button>
+                        <button class="faq-filter-btn" data-filter="clientes">
+                            <i data-lucide="users" style="width:10px;height:10px;"></i> Clientes <span class="faq-filter-count">7</span>
+                        </button>
+                        <button class="faq-filter-btn" data-filter="blockchain">
+                            <i data-lucide="link" style="width:10px;height:10px;"></i> Blockchain <span class="faq-filter-count">3</span>
+                        </button>
+                        <button class="faq-filter-btn" data-filter="emision">
+                            <i data-lucide="coins" style="width:10px;height:10px;"></i> Emisión STO <span class="faq-filter-count">3</span>
+                        </button>
+                        <button class="faq-filter-btn" data-filter="tokenizacion">
+                            <i data-lucide="split" style="width:10px;height:10px;"></i> Tokenización <span class="faq-filter-count">5</span>
+                        </button>
+                        <button class="faq-filter-btn" data-filter="compraventa">
+                            <i data-lucide="arrow-left-right" style="width:10px;height:10px;"></i> Compra-venta <span class="faq-filter-count">1</span>
+                        </button>
+                        <button class="faq-filter-btn" data-filter="blanqueo">
+                            <i data-lucide="shield" style="width:10px;height:10px;"></i> AML <span class="faq-filter-count">2</span>
+                        </button>
+                    </div>
+                    <span class="faq-results-badge" id="faqResultsBadge">24 resultados</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════ FAQ CONTENT ══════════════════════════ -->
+        <section class="max-w-5xl mx-auto px-6 py-14 pb-24">
+
+            <div id="faqNoResults" class="faq-no-results">
+                <div class="w-16 h-16 rounded-[20px] bg-blue-500/10 flex items-center justify-center text-blue-400 mx-auto mb-4">
+                    <i data-lucide="search-x" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-black heading-text mb-2">Sin resultados</h3>
+                <p class="body-text text-sm">Ninguna pregunta coincide con tu búsqueda. Prueba con otros términos.</p>
+            </div>
+
+            <!-- ── 1. ORIGEN ── -->
+            <div class="faq-section mb-10" id="sec-origen" data-section="origen">
+                <div class="faq-section-header">
+                    <div class="faq-section-icon"><i data-lucide="flag" class="w-4 h-4"></i></div>
+                    <div>
+                        <p class="faq-section-title">01 · Origen</p>
+                        <p class="text-xs body-text">El grupo Adventurees y la fundación de Token City</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="origen">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Cuál es el origen de Token City?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Token City forma parte de <strong>Adventurees Global Group</strong>, que engloba Adventurees Alliance, Adventurees Capital PFP y Token City. El grupo está especializado en la innovación en inversión alternativa.</p>
+                            <p>La fundadora y CEO, <strong>Yael H. Oaknin</strong>, cuenta con titulaciones por la Politécnica de Madrid y la École Centrale de Paris, además de un posgrado en gestión tecnológica por la Universidad de Texas. Es también socia en Blockchain Hub Spain. El proyecto ha atraído a más de 40 inversores, entre ellos Randy Goldsmith, Pedro Antón y Cristóbal López.</p>
+                            <p><strong>Adventurees Alliance</strong> desarrolló una solución SaaS para la digitalización del emprendimiento, utilizada por instituciones como BBVA, Bankia, KPMG, Grupo Planeta y diversas universidades en España y Texas.</p>
+                            <p><strong>Adventurees Capital PFP</strong> es una plataforma de crowdfunding autorizada y supervisada por la CNMV, que emplea el reconocido internacionalmente Goldsmith® Model. Fue pionera en la emisión de Security Tokens en España y es la única plataforma regulada por la CNMV que realiza este tipo de operaciones.</p>
+                            <p><strong>Token City</strong> ha desarrollado una solución global que permite la creación, gestión y negociación de Security Tokens para inversores, fondos de inversión, carteras, sociedades de valores y empresas de servicios de inversión.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 2. ACTIVIDAD ── -->
+            <div class="faq-section mb-10" id="sec-actividad" data-section="actividad">
+                <div class="faq-section-header">
+                    <div class="faq-section-icon"><i data-lucide="zap" class="w-4 h-4"></i></div>
+                    <div>
+                        <p class="faq-section-title">02 · Actividad</p>
+                        <p class="text-xs body-text">Qué es Token City y qué servicios ofrece</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="actividad">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué es Token City?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Token City es una <strong>empresa tecnológica</strong> que ofrece a inversores, profesionales y minoristas la infraestructura necesaria para crear, gestionar, comprar y vender Security Tokens de manera ágil y segura, incrementando la liquidez de las inversiones.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="actividad">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué servicios ofrece Token City?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Token City cubre la cadena de valor completa de los derechos y activos financieros tokenizados:</p>
+                            <ul class="faq-list">
+                                <li><span class="faq-dot"></span><strong>Creación / Emisión de Security Tokens y Tokenización.</strong> A través de Adventurees Capital PFP (plataforma de crowdfunding autorizada por la CNMV) sin coste, tokenizando activos financieros existentes como carteras de fondos de deuda, incluyendo diseño económico, estructura jurídica y programación de Smart Contracts.</li>
+                                <li><span class="faq-dot"></span><strong>Gestión de Security Tokens.</strong> Transferencia de tokens a wallets/custodios del inversor para control absoluto, integración automatizada de infraestructura wallet/custodio, trazabilidad completa de transacciones y sincronización de amortizaciones con burning de tokens.</li>
+                                <li><span class="faq-dot"></span><strong>Compra-venta de Security Tokens.</strong> Negociación segura a través de la plataforma, con los pagos retenidos en MangoPay SA hasta que los tokens llegan correctamente a sus destinatarios.</li>
+                                <li><span class="faq-dot"></span><strong>Marketplace as a Service.</strong> Soluciones white-label personalizadas para adaptarse a los procesos específicos de clientes de mayor tamaño.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 3. CLIENTES ── -->
+            <div class="faq-section mb-10" id="sec-clientes" data-section="clientes">
+                <div class="faq-section-header">
+                    <div class="faq-section-icon"><i data-lucide="users" class="w-4 h-4"></i></div>
+                    <div>
+                        <p class="faq-section-title">03 · Clientes e Inversores</p>
+                        <p class="text-xs body-text">Perfiles, clasificación y proceso de onboarding</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="clientes">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Quiénes son los clientes de Token City?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Las soluciones de Token City dan servicio a grandes y pequeños inversores, fondos de deuda e inversión, mercados primarios y secundarios, sociedades de valores, empresas de servicios de inversión y empresas que buscan financiación.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="clientes">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué beneficios tiene ser inversor de Token City?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Los inversores obtienen mayor <strong>liquidez, agilidad y eficiencia</strong>. Los inversores minoristas pueden comprar y vender Security Tokens de forma segura y rápida. Los inversores de mayor tamaño, fondos y empresas de servicios de inversión acceden a una infraestructura tecnológica completa y personalizable, adaptable a las necesidades específicas de sus clientes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="clientes">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué tipo de inversores pueden operar en Token City?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>En Token City pueden operar tanto <strong>Inversores Cualificados</strong> como <strong>Inversores Minoristas</strong>, en función de su clasificación durante el proceso de onboarding.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="clientes">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué inversores son considerados, según la Ley, Inversores Cualificados?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>De acuerdo con el artículo 205.2 de la Ley del Mercado de Valores (LMV), son clientes profesionales, entre otros:</p>
+                            <ul class="faq-list">
+                                <li><span class="faq-dot"></span><strong>Entidades financieras y personas jurídicas reguladas:</strong> entidades de crédito, empresas de servicios de inversión, entidades aseguradoras y reaseguradoras, instituciones de inversión colectiva, entidades de capital riesgo, fondos de pensiones, fondos de titulización y operadores en materias primas y derivados.</li>
+                                <li><span class="faq-dot"></span><strong>Estados y administraciones:</strong> gobiernos regionales, entidades públicas que gestionan deuda pública, bancos centrales y organismos internacionales (Banco Mundial, FMI, BCE, BERD, etc.).</li>
+                                <li><span class="faq-dot"></span><strong>Grandes empresas</strong> que cumplan al menos dos de los siguientes criterios: total de activos ≥ 20 M€, volumen de negocio anual ≥ 40 M€, recursos propios ≥ 2 M€.</li>
+                                <li><span class="faq-dot"></span><strong>Inversores institucionales</strong> cuya actividad habitual sea invertir en valores e instrumentos financieros.</li>
+                            </ul>
+                            <div class="faq-infobox">
+                                <p class="faq-infobox-title">Clientes minoristas que solicitan clasificación como profesionales</p>
+                                <p>Pueden acceder a esta categoría si cumplen al menos dos de: operaciones significativas con frecuencia media de 10 por trimestre en los últimos cuatro trimestres; cartera de instrumentos financieros superior a 500.000 €; o experiencia profesional en el sector financiero de al menos un año.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="clientes">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué inversores son considerados, según la Ley, Inversores Minoristas?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>El artículo 204 de la Ley del Mercado de Valores define como clientes minoristas a <strong>«todos aquellos que no sean profesionales»</strong>. En la práctica, son el perfil más habitual de inversor particular.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="clientes">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿En qué consiste el "Onboarding" de los clientes de Token City?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>El <strong>onboarding</strong> es el proceso de registro e incorporación del inversor a la plataforma. Requiere que los inversores proporcionen sus datos de identificación, documentos y la documentación necesaria para operar como Inversores Cualificados cuando proceda. Su finalidad es garantizar el cumplimiento normativo y la seguridad de todas las partes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="clientes">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Token City clasifica a los inversores en Cualificados y Minoristas?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Sí. Durante el proceso de onboarding, Token City clasifica a los inversores como Cualificados o Minoristas, lo que permite dirigir las ofertas de venta de Security Tokens al perfil de inversor adecuado en cada caso.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 4. BLOCKCHAIN ── -->
+            <div class="faq-section mb-10" id="sec-blockchain" data-section="blockchain">
+                <div class="faq-section-header">
+                    <div class="faq-section-icon"><i data-lucide="link" class="w-4 h-4"></i></div>
+                    <div>
+                        <p class="faq-section-title">04 · Blockchain y Tipos de Tokens</p>
+                        <p class="text-xs body-text">Fundamentos tecnológicos y clasificación de tokens</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="blockchain">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué es Blockchain?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Blockchain —cadena de bloques— es una tecnología que ofrece importantes ventajas para la economía digital, especialmente en materia de fiabilidad y transparencia. Asegura las transacciones entre personas o entidades a través de:</p>
+                            <ul class="faq-list">
+                                <li><span class="faq-dot"></span><strong>Registros íntegros e inmutables</strong> distribuidos en nodos independientes, lo que impide la censura o el control centralizado.</li>
+                                <li><span class="faq-dot"></span><strong>Transparencia total:</strong> las transacciones no pueden ser negadas una vez registradas.</li>
+                                <li><span class="faq-dot"></span><strong>Autonomía:</strong> las partes operan directamente con sus claves privadas, garantizando privacidad y seguridad sin intermediarios.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="blockchain">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué es un token?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Un token es <strong>«una forma avanzada de representar digitalmente una porción de un valor, un derecho o una utilidad»</strong>. Por ejemplo, un token puede representar una participación en el capital de una empresa, el derecho al cobro de las cuotas de un préstamo, o incluso las entradas para un evento.</p>
+                            <p>El registro en blockchain garantiza la integridad del historial de transacciones entre las partes, proporcionando un registro inalterable y auditable de todas las operaciones.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="blockchain">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Cuáles son los tipos de tokens?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Los tokens se clasifican según su naturaleza jurídica, el valor subyacente o su funcionalidad:</p>
+                            <ul class="faq-list">
+                                <li><span class="faq-dot"></span><strong>Criptomonedas:</strong> divisa digital que posee las cualidades del dinero y puede utilizarse como medio de pago. Ejemplos: Bitcoin, Ether.</li>
+                                <li><span class="faq-dot"></span><strong>Utility Tokens:</strong> cupones digitales que otorgan acceso a un servicio o funcionalidad concreta.</li>
+                                <li><span class="faq-dot"></span><strong>Security Tokens:</strong> representan derechos o activos financieros, es decir, son títulos electrónicos que representan derechos/activos financieros del mundo real. Ofrecen la máxima seguridad frente a utility tokens o criptomonedas gracias a su respaldo real en activos como derechos de crédito o acciones de empresas.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 5. EMISIÓN DE SECURITY TOKENS ── -->
+            <div class="faq-section mb-10" id="sec-emision" data-section="emision">
+                <div class="faq-section-header">
+                    <div class="faq-section-icon"><i data-lucide="coins" class="w-4 h-4"></i></div>
+                    <div>
+                        <p class="faq-section-title">05 · Emisión de Security Tokens</p>
+                        <p class="text-xs body-text">STOs, regulación y representación de activos</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="emision">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué es un STO o Security Token Offering?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Un STO (Security Token Offering) es una <strong>nueva emisión de Security Tokens</strong>, generalmente llevada a cabo por empresas que buscan financiación. Las empresas entregan a los inversores Security Tokens que representan derechos como créditos o participaciones en el capital.</p>
+                            <p>Los STOs surgieron como evolución de las ICOs (Initial Coin Offerings), aportando mayor seguridad y garantía al estar respaldados por activos reales, a diferencia de las ICOs que carecen de este respaldo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="emision">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿La emisión de STO es una actividad regulada?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>La emisión de valores está regulada en la mayoría de países. Aunque en España no existe regulación específica para la emisión de Security Tokens, si estos representan activos considerados valores negociables, su emisión debe cumplir el artículo 35 de la Ley del Mercado de Valores (LMV).</p>
+                            <div class="faq-infobox">
+                                <p class="faq-infobox-title">Emisión exclusiva a Inversores Cualificados</p>
+                                <p>Según el artículo 35.2.a LMV, la emisión dirigida exclusivamente a inversores cualificados/profesionales no constituye oferta pública y no requiere folleto ni supervisión específica de la CNMV.</p>
+                            </div>
+                            <div class="faq-infobox">
+                                <p class="faq-infobox-title">Emisión a Inversores No Cualificados</p>
+                                <p>Según los artículos 35.2.b-e y 35.3 LMV, la emisión puede dirigirse a inversores no cualificados sin folleto ni supervisión específica de la CNMV si participa una empresa de servicios de inversión, o si la emisión se realiza a través de plataformas de crowdfunding autorizadas.</p>
+                            </div>
+                            <p><strong>Adventurees Capital PFP S.L.</strong>, plataforma de crowdfunding del Grupo Adventurees autorizada por la CNMV, fue pionera en la emisión de Security Tokens en España y es la única plataforma que realiza este tipo de operaciones con supervisión regulatoria.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="emision">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué representan exactamente los Security Tokens emitidos por Adventurees Capital PFP S.L.?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Actualmente, Adventurees Capital PFP S.L. emite Security Tokens que representan exclusivamente <strong>derechos de crédito</strong> derivados de préstamos, tokenizados en dos formatos:</p>
+                            <ul class="faq-list">
+                                <li><span class="faq-dot"></span><strong>Formato estándar:</strong> 1 Security Token = derechos asociados a 1.000 € de principal de deuda.</li>
+                                <li><span class="faq-dot"></span><strong>Formato avanzado:</strong> 1 Security Token = derecho de deuda convertible en equity, que se convierte en 1 participación de la empresa.</li>
+                            </ul>
+                            <p>Para las ofertas posteriores a inversores en la plataforma, estos Security Tokens no representan valores negociables ni otros instrumentos financieros.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 6. TOKENIZACIÓN DE ACTIVOS FINANCIEROS ── -->
+            <div class="faq-section mb-10" id="sec-tokenizacion" data-section="tokenizacion">
+                <div class="faq-section-header">
+                    <div class="faq-section-icon"><i data-lucide="split" class="w-4 h-4"></i></div>
+                    <div>
+                        <p class="faq-section-title">06 · Tokenización de Activos Financieros</p>
+                        <p class="text-xs body-text">Proceso, ventajas y tipos de activos tokenizables</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="tokenizacion">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué es la tokenización de activos financieros?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>La tokenización consiste en <strong>tomar activos financieros existentes</strong> y utilizar la tecnología Blockchain para crear tokens digitales que representen dichos activos. Es la digitalización de derechos económicos sobre activos reales, dotándoles de las ventajas propias del entorno blockchain: inmutabilidad, transparencia y negociabilidad.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="tokenizacion">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué es un Smart Contract?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Los <strong>Smart Contracts</strong> son código informático que posibilita la tokenización de activos financieros. Este código regula la creación, el funcionamiento y la destrucción (burning) de los tokens, automatizando las condiciones pactadas entre las partes de forma transparente e inmutable en la blockchain.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="tokenizacion">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué ventajas tiene la tokenización de activos financieros?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>La tokenización aporta numerosas ventajas de agilidad, eficiencia y liquidez a los inversores:</p>
+                            <ul class="faq-list">
+                                <li><span class="faq-dot"></span>Proporciona un sistema de registro público de transacciones desintermediado y fiable, ofreciendo seguridad, garantías y reducción de costes.</li>
+                                <li><span class="faq-dot"></span>Aporta <strong>liquidez</strong> a activos que por naturaleza tienen baja liquidez.</li>
+                                <li><span class="faq-dot"></span>Democratiza el acceso a activos, permitiendo que grupos de inversores accedan conjuntamente a activos que individualmente serían inalcanzables.</li>
+                                <li><span class="faq-dot"></span>Reduce los riesgos de inversión gracias a la posibilidad de diversificar la cartera.</li>
+                                <li><span class="faq-dot"></span>Presenta nuevas formas de financiación de proyectos, incluyendo la tokenización parcial de activos.</li>
+                                <li><span class="faq-dot"></span>Habilita nuevos modelos de co-propiedad fraccionada a través de la tokenización.</li>
+                                <li><span class="faq-dot"></span>Elimina barreras temporales y territoriales: cualquier inversor puede acceder a cualquier inversión desde cualquier lugar del mundo.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="tokenizacion">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿El servicio de tokenización de activos financieros es una actividad regulada?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>No. La tokenización es una <strong>actividad puramente tecnológica</strong> que consiste en representar digitalmente en blockchain derechos preexistentes. No requiere ninguna licencia ni regulación específica, independientemente de la naturaleza jurídica, el valor o la función del token resultante.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="tokenizacion">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué tipo de activos se pueden tokenizar en Token City?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Cualquier tipo de activo puede ser tokenizado en Token City. Sin embargo, la compraventa posterior de los activos tokenizados puede quedar sujeta a la normativa del mercado de valores dependiendo de la naturaleza jurídica del token resultante, tal y como se explica en las preguntas correspondientes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 7. COMPRA-VENTA ── -->
+            <div class="faq-section mb-10" id="sec-compraventa" data-section="compraventa">
+                <div class="faq-section-header">
+                    <div class="faq-section-icon"><i data-lucide="arrow-left-right" class="w-4 h-4"></i></div>
+                    <div>
+                        <p class="faq-section-title">07 · Compra-venta de Security Tokens</p>
+                        <p class="text-xs body-text">Marco regulatorio de la negociación secundaria</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="compraventa">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿La actividad de compra-venta de Security Tokens es una actividad regulada?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>La aplicabilidad de la normativa del mercado de valores a la negociación de Security Tokens depende de tres factores:</p>
+                            <div class="faq-infobox">
+                                <p class="faq-infobox-title">1. Tipo de plataforma de intermediación</p>
+                                <p>Token City actúa como empresa de servicios tecnológicos, no como plataforma de exchange. No custodia criptoactivos, no recibe directamente el dinero de los inversores (partnership con MangoPay S.A.) y facilita operaciones peer-to-peer. Por ello, sus actividades quedan fuera de los requisitos regulatorios de los exchanges, aunque Token City aplica voluntariamente estándares de gestión de conflictos de interés, transparencia en comisiones y normativa AML.</p>
+                            </div>
+                            <div class="faq-infobox">
+                                <p class="faq-infobox-title">2. Naturaleza jurídica del criptoactivo</p>
+                                <p>Los Security Tokens que representan derechos de crédito de sociedades limitadas —tanto los emitidos por Adventurees Capital PFP como los derivados de la tokenización directa de carteras de fondos de deuda— no representan Valores Negociables ni otros Instrumentos Financieros según el artículo 2 de la LMV, por lo que quedan fuera del ámbito de aplicación de la normativa del mercado de valores.</p>
+                            </div>
+                            <div class="faq-infobox">
+                                <p class="faq-infobox-title">3. Características de la oferta</p>
+                                <p>Para los Security Tokens clasificables como Valores Negociables, las ofertas de venta deben cumplir el artículo 35 LMV. Quedan exentas de folleto y supervisión específica de la CNMV las ofertas dirigidas exclusivamente a Inversores Cualificados, las que no superen 5 M€ en 12 meses en la UE (con participación de ESI), o las que tengan un valor nominal unitario de 100.000 € o más.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 8. BLANQUEO DE CAPITALES ── -->
+            <div class="faq-section mb-10" id="sec-blanqueo" data-section="blanqueo">
+                <div class="faq-section-header">
+                    <div class="faq-section-icon"><i data-lucide="shield" class="w-4 h-4"></i></div>
+                    <div>
+                        <p class="faq-section-title">08 · Prevención del Blanqueo de Capitales</p>
+                        <p class="text-xs body-text">Protocolo AML y obligaciones de identificación</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="blanqueo">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Qué medidas toma Token City frente al blanqueo de capitales?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Token City actúa como intermediario bajo la Ley 34/2002, conectando usuarios que desean vender o comprar activos digitales tokenizados en blockchain a través de cuentas de depósito seguras gestionadas por MangoPay S.A. (entidad de dinero electrónico regulada), interconectada con la plataforma de Token City mediante API.</p>
+                            <p>Aunque las actividades de Token City no coinciden con las actividades que determinan sujetos obligados según el artículo 2 de la LPBCFT, Token City <strong>adhiere voluntariamente</strong> a las buenas prácticas y medidas de diligencia debida establecidas por SEPBLAC para actividades relacionadas con medios de pago.</p>
+                            <p>A tal efecto, Token City ha elaborado un <strong>«Protocolo Interno sobre Prevención del Blanqueo de Capitales y Financiación del Terrorismo»</strong> (PBCFT) que exige a todos sus miembros:</p>
+                            <ul class="faq-list">
+                                <li><span class="faq-dot"></span>Actuar con diligencia en todo momento, extremando las precauciones ante operaciones sospechosas.</li>
+                                <li><span class="faq-dot"></span>No iniciar relaciones de negocio con clientes que contravengan la Política de Admisión de Clientes del PBCFT.</li>
+                                <li><span class="faq-dot"></span>Comunicar al Órgano de Control Interno cualquier operación potencialmente sospechosa.</li>
+                                <li><span class="faq-dot"></span>Cooperar plenamente con el Órgano de Control Interno.</li>
+                                <li><span class="faq-dot"></span>Mantener la confidencialidad sobre las medidas de prevención adoptadas.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-section="blanqueo">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-q-icon">Q</span>
+                        <span class="faq-q-text">¿Los inversores de Token City deben identificarse para poder operar?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>Sí. Para la segmentación de la cartera de clientes/usuarios y los criterios de gestión de riesgos que reflejan los diferentes perfiles y naturalezas de los clientes, alineándose con estándares internacionales y buenas prácticas, Token City establece <strong>políticas explícitas, graduales y diferenciadas</strong> de admisión, identificación y conocimiento del cliente.</p>
+                            <p>Estas políticas identifican los tipos de clientes cuya actividad puede presentar mayor relación con el blanqueo de capitales o la financiación del terrorismo, y determinan las acciones concretas mediante la aplicación de medidas de diligencia debida y, en su caso, medidas de control interno reforzadas.</p>
+                            <p>Todos los empleados, colaboradores y la Plataforma deben aplicar la política de admisión de clientes antes de iniciar cualquier relación de negocio o de registrarse en la Plataforma.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ══════════════════════════ CTA ══════════════════════════ -->
+        <section class="max-w-5xl mx-auto px-6 pb-28 reveal-growth">
+            <div class="cta-plus-pattern rounded-[2rem] overflow-hidden">
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 px-8 md:px-14 py-12">
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-blue-300 mb-2">¿No encontraste tu respuesta?</p>
+                        <h3 class="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter leading-tight mb-2">
+                            Habla con nuestro equipo
+                        </h3>
+                        <p class="text-white/55 text-sm max-w-md leading-relaxed">Estamos aquí para resolver cualquier pregunta sobre tokenización, inversión y cumplimiento normativo.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                        <a href="mailto:info@token-city.com"
+                           class="bg-white text-[#0f3c8e] font-bold px-7 py-3.5 rounded-[15px] hover:scale-105 transition-all text-sm flex items-center gap-2 justify-center">
+                            <i data-lucide="mail" class="w-4 h-4"></i> Contactar ahora
+                        </a>
+                        <a href="aviso-legal.html"
+                           class="border-2 border-white/35 text-white font-semibold px-6 py-3.5 rounded-[15px] hover:border-white/65 transition-all text-sm flex items-center gap-2 justify-center">
+                            <i data-lucide="file-text" class="w-4 h-4"></i> Aviso legal
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script src="global-scripts.js"></script>
+    <script>
+        /* ── Accordion toggle ── */
+        function toggleFaq(btn) {
+            const item = btn.closest('.faq-item');
+            const isOpen = item.classList.contains('open');
+            // Close all others in same section
+            item.closest('.faq-section').querySelectorAll('.faq-item.open').forEach(el => {
+                if (el !== item) el.classList.remove('open');
+            });
+            item.classList.toggle('open', !isOpen);
+        }
+
+        /* ── Filter by category ── */
+        document.getElementById('faqFilters').addEventListener('click', function (e) {
+            const btn = e.target.closest('.faq-filter-btn');
+            if (!btn) return;
+            const filter = btn.dataset.filter;
+
+            // Update active button
+            this.querySelectorAll('.faq-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Show/hide sections and items
+            const sections = document.querySelectorAll('.faq-section');
+            let total = 0;
+            sections.forEach(section => {
+                const sectionKey = section.dataset.section;
+                const visible = filter === 'all' || sectionKey === filter;
+                section.classList.toggle('hidden-section', !visible);
+                if (visible) {
+                    const items = section.querySelectorAll('.faq-item');
+                    items.forEach(i => i.classList.remove('hidden'));
+                    total += items.length;
+                }
+            });
+
+            document.getElementById('faqResultsBadge').textContent = total + ' resultado' + (total !== 1 ? 's' : '');
+            document.getElementById('faqSearch').value = '';
+            document.getElementById('faqClear').classList.remove('visible');
+        });
+
+        /* ── Search ── */
+        document.getElementById('faqSearch').addEventListener('input', function () {
+            const q = this.value.toLowerCase().trim();
+            document.getElementById('faqClear').classList.toggle('visible', q.length > 0);
+
+            // Reset category filter to 'all' visually
+            document.querySelectorAll('.faq-filter-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.filter === 'all');
+            });
+            document.querySelectorAll('.faq-section').forEach(s => s.classList.remove('hidden-section'));
+
+            let total = 0;
+            const sections = document.querySelectorAll('.faq-section');
+            sections.forEach(section => {
+                let sectionHasResult = false;
+                section.querySelectorAll('.faq-item').forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    const match = !q || text.includes(q);
+                    item.classList.toggle('hidden', !match);
+                    if (match) { sectionHasResult = true; total++; }
+                });
+                section.classList.toggle('hidden-section', !sectionHasResult && q.length > 0);
+            });
+
+            document.getElementById('faqResultsBadge').textContent = total + ' resultado' + (total !== 1 ? 's' : '');
+            document.getElementById('faqNoResults').classList.toggle('visible', total === 0 && q.length > 0);
+        });
+
+        document.getElementById('faqClear').addEventListener('click', function () {
+            const input = document.getElementById('faqSearch');
+            input.value = '';
+            input.dispatchEvent(new Event('input'));
+            input.focus();
+        });
+    </script>
+</body>
+
+</html>

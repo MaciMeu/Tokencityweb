@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token City | Design System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+    <script>
+        (function () {
+            const saved = localStorage.getItem('themePreference');
+            let isLight = saved ? saved === 'light' : !window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (isLight) document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        /* ── Base ── */
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a; --text-muted: #475569;
+            --bg-color: #f8fafc; --glass-bg: rgba(255,255,255,0.85); --glass-border: rgba(0,0,0,0.1);
+            --nav-bg: rgba(5,7,10,0.95); --nav-text: #fff; --nav-text-muted: #9ca3af;
+            --card-hover-bg: rgba(255,255,255,0.1); --card-highlight-bg: rgba(255,255,255,0.85);
+        }
+        body:not(.light-mode) {
+            --text-main: #fff; --text-muted: #9ca3af;
+            --bg-color: #05070a; --glass-bg: rgba(255,255,255,0.03); --glass-border: rgba(255,255,255,0.08);
+            --card-hover-bg: rgba(255,255,255,0.08); --card-highlight-bg: rgba(255,255,255,0.04);
+        }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg-color); color: var(--text-main); transition: background .3s, color .3s; }
+        .heading-text { color: var(--text-main); }
+        .body-text { color: var(--text-muted); }
+        .section-label { color: var(--primary-blue); font-weight: 700; font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; }
+        body:not(.light-mode) .section-label { color: #60a5fa; }
+
+        /* ── Layout ── */
+        .ds-layout { display: flex; min-height: 100vh; padding-top: 60px; }
+        .ds-sidebar {
+            width: 220px; flex-shrink: 0; position: fixed; top: 60px; left: 0; bottom: 0;
+            overflow-y: auto; background: var(--nav-bg); border-right: 1px solid rgba(255,255,255,0.07);
+            padding: 1.5rem 0; z-index: 30;
+        }
+        .ds-content { margin-left: 220px; flex: 1; padding: 2.5rem 2.5rem 6rem; max-width: 1100px; }
+        @media (max-width: 768px) {
+            .ds-sidebar { display: none; }
+            .ds-content { margin-left: 0; padding: 1.5rem 1rem; }
+        }
+
+        /* ── Top bar ── */
+        .ds-topbar {
+            position: fixed; top: 0; left: 0; right: 0; height: 60px; z-index: 50;
+            background: var(--nav-bg); border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem;
+        }
+        .ds-logo { font-weight: 900; font-size: 1rem; color: #fff; letter-spacing: -.02em; }
+        .ds-logo span { color: #60a5fa; }
+
+        /* ── Sidebar nav ── */
+        .ds-nav-group { padding: .75rem 1.25rem; }
+        .ds-nav-group h3 { font-size: .6rem; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; color: #4b5563; margin-bottom: .5rem; }
+        .ds-nav-link {
+            display: block; padding: .35rem .75rem; font-size: .8rem; font-weight: 500;
+            color: #9ca3af; border-radius: .5rem; transition: all .2s; text-decoration: none;
+        }
+        .ds-nav-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .ds-nav-link.active { color: #60a5fa; background: rgba(96,165,250,0.08); }
+
+        /* ── Section ── */
+        .ds-section { margin-bottom: 4rem; scroll-margin-top: 80px; }
+        .ds-section-title { font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: .35rem; }
+        .ds-section-desc { font-size: .85rem; color: var(--text-muted); margin-bottom: 2rem; }
+        .ds-divider { border: none; border-top: 1px solid var(--glass-border); margin: 2.5rem 0; }
+        .ds-subsection-title { font-size: 1rem; font-weight: 700; color: var(--text-main); margin: 2rem 0 1rem; }
+
+        /* ── Preview box ── */
+        .ds-preview {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 1.25rem; padding: 2rem; margin-bottom: .5rem;
+        }
+        .ds-code {
+            font-family: 'JetBrains Mono', monospace; font-size: .72rem;
+            background: rgba(0,0,0,.4); color: #93c5fd; border-radius: .5rem;
+            padding: .4rem .85rem; display: inline-block; margin: .25rem .2rem;
+        }
+        body.light-mode .ds-code { background: rgba(24,85,186,.08); color: #1855BA; }
+
+        /* ── Color swatches ── */
+        .swatch-grid { display: flex; flex-wrap: wrap; gap: .5rem; }
+        .swatch {
+            width: 80px; border-radius: .75rem; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,.2);
+        }
+        .swatch-color { height: 56px; }
+        .swatch-info { padding: .3rem .4rem; font-size: .6rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,.5); color: #e5e7eb; }
+        body.light-mode .swatch-info { background: #1e293b; }
+        .swatch-row { display: flex; border-radius: .75rem; overflow: hidden; margin-bottom: .5rem; }
+        .swatch-row-cell { flex: 1; height: 40px; }
+
+        /* ── Navigation styles (for preview) ── */
+        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link { display: flex; align-items: center; gap: .25rem; transition: color .3s; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .mega-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            width: 600px; background: var(--nav-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem;
+            opacity: 0; visibility: hidden; transition: all .3s ease; z-index: 100;
+        }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .mega-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .mega-link { display: block; padding: .4rem 0; font-size: .875rem; color: var(--nav-text-muted); transition: all .2s; }
+        .mega-link:hover { color: #fff; padding-left: .5rem; }
+        .mega-title { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #60a5fa; margin-bottom: .75rem; display: block; }
+
+        /* ── Floating Controls ── */
+        .controls-bar {
+            display: flex; align-items: center; gap: 12px; padding: 8px 14px;
+            background: rgba(5,7,10,.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,.1); border-radius: 999px;
+        }
+        .theme-toggle {
+            position: relative; width: 52px; height: 28px; background: rgba(255,255,255,.1);
+            border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+        }
+        .theme-toggle-thumb {
+            position: absolute; top: 2px; left: 2px; width: 22px; height: 22px;
+            background: #fff; border-radius: 50%; transition: transform .4s cubic-bezier(.4,0,.2,1);
+            display: flex; align-items: center; justify-content: center; z-index: 2;
+        }
+        .toggle-track-icon { color: #fff; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: #1855BA; }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+        .lang-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+        .lang-label { font-size: 10px; font-weight: 800; color: #a1a1aa; transition: color .3s; }
+        .lang-label.active { color: #fff; }
+        .lang-switch-track { position: relative; width: 32px; height: 16px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); border-radius: 999px; }
+        .lang-switch-thumb { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; background: #fff; border-radius: 50%; transition: transform .3s ease; }
+        body.lang-en .lang-switch-thumb { transform: translateX(16px); }
+
+        /* ── Flip cards ── */
+        .blog-card-flip { perspective: 1000px; height: 240px; cursor: pointer; }
+        .blog-card-inner { position: relative; width: 100%; height: 100%; transition: transform .8s cubic-bezier(.4,0,.2,1); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
+        .blog-card-flip:hover .blog-card-inner { transform: rotateY(180deg); }
+        .blog-card-front, .blog-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 1.875rem; display: flex; flex-direction: column; }
+        body:not(.light-mode) .blog-card-front { background: #1a2235; border: 1px solid rgba(255,255,255,.08); }
+        body.light-mode .blog-card-front { background: #fff; border: 1px solid #e5e7eb; }
+        .blog-card-back { transform: rotateY(180deg); background: linear-gradient(135deg,#1855BA,#0d3a8a) !important; color: #fff; padding: 2rem; align-items: center; justify-content: center; text-align: center; }
+        .participant-card { position: relative; width: 100%; height: 200px; perspective: 1000px; cursor: pointer; transition: transform .25s ease; }
+        .participant-card:hover { transform: scale(1.02); }
+        .participant-card-inner { position: relative; width: 100%; height: 100%; transition: transform .6s; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
+        .participant-card.is-flipped .participant-card-inner { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 1.875rem; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; }
+        body:not(.light-mode) .card-face:not(.face-back) { background: #1a2235; border: 1px solid rgba(255,255,255,.08); }
+        body.light-mode .card-face:not(.face-back) { background: #fff; border: 1px solid #e5e7eb; }
+        .card-face.face-front { border-left: 4px solid var(--sector-color, var(--primary-blue)); }
+        body.light-mode .card-face.face-front { background: #fff !important; }
+        .card-face.face-back { transform: rotateY(180deg); background: linear-gradient(135deg,#1855BA,#0d3a8a) !important; color: #fff; }
+        .sector-icon-flip { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: .75rem; background: color-mix(in srgb, var(--sector-color, #1855BA) 20%, transparent); color: var(--sector-color, var(--primary-blue)); }
+        body:not(.light-mode) .sector-icon-flip { background: rgba(255,255,255,.1); color: #93c5fd; }
+        .card-toggle-btn { position: absolute; bottom: 12px; right: 12px; width: 28px; height: 28px; border-radius: 50%; background: var(--sector-color, var(--primary-blue)); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform .3s ease; }
+        .card-toggle-btn:hover { transform: scale(1.1); }
+        /* ── Text Button ── */
+        .btn-text { display: inline-flex; align-items: center; gap: .375rem; font-size: .875rem; font-weight: 700; padding: .375rem .75rem; border-radius: 15px; background: transparent; color: var(--primary-blue); transition: background .2s ease, transform .15s ease; }
+        .btn-text:hover { background: rgba(24,85,186,.08); }
+        .btn-text:active { transform: translateY(1px); }
+        body:not(.light-mode) .btn-text { color: #ffffff; }
+        body:not(.light-mode) .btn-text:hover { background: rgba(255,255,255,.08); }
+
+        /* ── Animations ── */
+        .reveal-growth { opacity: 0; transform: scale(.92) translateY(40px); transition: all 1.2s cubic-bezier(.34,1.56,.64,1); }
+        .reveal-growth.active { opacity: 1; transform: scale(1) translateY(0); }
+        .delay-100 { transition-delay: 180ms; }
+        .delay-200 { transition-delay: 360ms; }
+        .delay-300 { transition-delay: 540ms; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-marquee { animation: marquee 20s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
+        .media-logo { filter: grayscale(100%) invert(1) opacity(.7); transition: all .4s; max-height: 28px; }
+        .media-logo:hover { opacity: 1; filter: grayscale(0%) invert(1) opacity(1); }
+        body.light-mode .media-logo { filter: grayscale(100%) opacity(.5); }
+        .typo-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: rgba(255,255,255,.45); transition: all .3s; }
+        .typo-logo:hover { color: #fff; }
+        body.light-mode .typo-logo { color: #595959; }
+
+        /* ── Team card ── */
+        .team-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 1.75rem; transition: all .35s; }
+        .team-card:hover { transform: translateY(-6px); border-color: rgba(24,85,186,.5); }
+        .team-role { color: #60a5fa; letter-spacing: .12em; font-weight: 800; font-size: .68rem; text-transform: uppercase; }
+        body.light-mode .team-role { color: #1855BA; }
+
+        /* ── Pricing ── */
+        .pricing-card-item { background: var(--glass-bg); border: 1px solid var(--glass-border); transition: all .3s; }
+        .pricing-card-popular { background: linear-gradient(135deg,#1855BA,#0d3a8a); border-color: rgba(255,255,255,.14); color: #fff; }
+
+        /* ── Market card ── */
+        .market-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 1.5rem; overflow: hidden; transition: all .35s; }
+        .market-card:hover { transform: translateY(-4px); border-color: rgba(24,85,186,.4); }
+        .market-tag { display: inline-flex; align-items: center; gap: .25rem; padding: .2rem .6rem; border-radius: 999px; font-size: .65rem; font-weight: 700; text-transform: uppercase; }
+        .market-tag.sector-tag { background: color-mix(in srgb, var(--sector-color,#1855BA) 20%, transparent); color: var(--sector-color,#1855BA); }
+        body:not(.light-mode) .market-tag.sector-tag { background: var(--sector-color,#1855BA); color: #fff; }
+        .market-tag-mercado { background: #111; color: #d1d5db; }
+        .market-tag-token { background: transparent; border: 1.5px solid currentColor; color: #9ca3af; }
+        body:not(.light-mode) .market-tag-token { color: #fff; border-color: #fff; }
+
+        /* ── Sector colors ── */
+        .sector-real-estate { --sector-color: #22c55e; }
+        .sector-energy       { --sector-color: #ef4444; }
+        .sector-scaleups     { --sector-color: #800020; }
+        .sector-finance      { --sector-color: #1855BA; }
+        .sector-art          { --sector-color: #ec4899; }
+        .sector-commodities  { --sector-color: #f97316; }
+        .sector-agro         { --sector-color: #eab308; }
+        .sector-music        { --sector-color: #a855f7; }
+        .sector-tourism      { --sector-color: #06b6d4; }
+        .sector-pill {
+            display: inline-flex; align-items: center; gap: .4rem; padding: .4rem 1rem;
+            border-radius: 999px; font-size: .8rem; font-weight: 700;
+            border: 2px solid var(--sector-color,#1855BA); color: var(--sector-color,#1855BA);
+            background: color-mix(in srgb, var(--sector-color,#1855BA) 10%, transparent);
+        }
+        .sector-pill.active { background: var(--sector-color,#1855BA); color: #fff; }
+
+        /* ── Hero preview ── */
+        .hero-preview { position: relative; overflow: hidden; background: #05070a; border-radius: 1.5rem; min-height: 280px; display: flex; align-items: center; justify-content: center; }
+        .hero-preview .hero-media { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=60') center/cover; opacity: .4; }
+        .hero-preview .hero-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(5,7,10,.85),rgba(5,7,10,.4)); }
+        .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 40px 40px; }
+
+        /* ── Lead form ── */
+        .lead-form-ds { background: var(--glass-bg); padding: 2rem; border-radius: 2rem; border: 1px solid var(--glass-border); }
+        input, select, textarea { background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.1) !important; color: white !important; outline: none; }
+        body.light-mode input, body.light-mode select, body.light-mode textarea { background: rgba(0,0,0,.03) !important; border: 1px solid rgba(0,0,0,.1) !important; color: #0f172a !important; }
+
+        /* ── Active nav highlight ── */
+        .ds-nav-link[href].active { color: #60a5fa; }
+
+        /* ════════════ LEGAL PAGES ════════════ */
+        .legal-layout { display: grid; grid-template-columns: 200px 1fr; gap: 2.5rem; align-items: start; }
+        .legal-toc { position: sticky; top: 80px; }
+        .legal-toc-group { font-size: .6rem; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; color: #4b5563; margin-bottom: .5rem; }
+        .legal-toc-link {
+            display: flex; align-items: center; gap: .6rem; padding: .4rem .75rem; border-radius: .625rem;
+            font-size: .75rem; font-weight: 600; color: var(--text-muted); text-decoration: none;
+            transition: all .2s; border-left: 2px solid transparent; margin-bottom: .1rem;
+        }
+        .legal-toc-link:hover { color: var(--text-main); background: var(--glass-bg); }
+        .legal-toc-link.active { color: #1855BA; border-left-color: #1855BA; background: rgba(24,85,186,.07); }
+        body:not(.light-mode) .legal-toc-link.active { color: #60a5fa; border-left-color: #60a5fa; background: rgba(96,165,250,.08); }
+        .ds-toc-num { min-width: 18px; height: 18px; padding: 0 3px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .58rem; font-weight: 900; background: rgba(24,85,186,.1); color: #1855BA; flex-shrink: 0; }
+        body:not(.light-mode) .ds-toc-num { background: rgba(96,165,250,.1); color: #93c5fd; }
+        .legal-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-left: 4px solid #1855BA; border-radius: 1.75rem; padding: 2rem 2.5rem;
+            backdrop-filter: blur(12px); transition: border-left-color .35s, box-shadow .35s; margin-bottom: 1.5rem;
+        }
+        .legal-card:hover { border-left-color: #60a5fa; box-shadow: 0 12px 40px rgba(24,85,186,.12); }
+        body.light-mode .legal-card { background: rgba(255,255,255,.92); }
+        .legal-card-header { display: flex; align-items: center; gap: .875rem; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--glass-border); }
+        .legal-card-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .85rem; font-weight: 900; background: rgba(24,85,186,.12); color: #1855BA; flex-shrink: 0; }
+        body:not(.light-mode) .legal-card-num { background: rgba(96,165,250,.12); color: #60a5fa; }
+        .legal-card-title { font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: -.01em; color: var(--text-main); }
+        .legal-body { font-size: .875rem; line-height: 1.85; color: var(--text-muted); }
+        .legal-body p { margin-bottom: 1rem; }
+        .legal-body strong { font-weight: 700; color: var(--text-main); }
+        .legal-list { list-style: none; padding: 0; margin: .75rem 0 1.125rem; display: flex; flex-direction: column; gap: .5rem; }
+        .legal-list li { display: flex; align-items: flex-start; gap: .75rem; font-size: .85rem; color: var(--text-muted); line-height: 1.65; }
+        .legal-list-dot { width: 6px; height: 6px; border-radius: 50%; background: #1855BA; margin-top: .45rem; flex-shrink: 0; }
+        body:not(.light-mode) .legal-list-dot { background: #60a5fa; }
+        .legal-infobox { background: rgba(24,85,186,.06); border: 1px solid rgba(24,85,186,.18); border-radius: 1rem; padding: 1.25rem 1.5rem; margin: 1rem 0; }
+        body:not(.light-mode) .legal-infobox { background: rgba(96,165,250,.06); border-color: rgba(96,165,250,.15); }
+        .legal-infobox-label { font-size: .6rem; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; color: #1855BA; margin-bottom: .25rem; }
+        body:not(.light-mode) .legal-infobox-label { color: #60a5fa; }
+        .legal-infobox-value { font-size: .875rem; font-weight: 600; color: var(--text-main); }
+        .legal-pill { font-size: .72rem; font-weight: 700; padding: .4rem .875rem; border-radius: 999px; border: 1px solid var(--glass-border); color: var(--text-muted); text-decoration: none; transition: all .2s; }
+        .legal-pill:hover { border-color: #1855BA; color: #1855BA; background: rgba(24,85,186,.06); }
+
+        /* ── Cookie table ── */
+        .ds-cookie-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+        .ds-cookie-table th { text-align: left; padding: .6rem .875rem; font-size: .6rem; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; color: #1855BA; border-bottom: 1px solid rgba(24,85,186,.2); }
+        body:not(.light-mode) .ds-cookie-table th { color: #60a5fa; border-color: rgba(96,165,250,.2); }
+        .ds-cookie-table td { padding: .75rem .875rem; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); }
+        .ds-cookie-table tr:last-child td { border-bottom: none; }
+        .ds-cookie-name { font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--text-main); font-weight: 600; }
+        .ds-cookie-badge { display: inline-flex; align-items: center; gap: .3rem; font-size: .7rem; font-weight: 700; padding: .2rem .6rem; border-radius: 999px; background: rgba(24,85,186,.08); color: #1855BA; }
+        body:not(.light-mode) .ds-cookie-badge { background: rgba(96,165,250,.08); color: #93c5fd; }
+
+        /* ── Browser item ── */
+        .ds-browser-item { display: flex; align-items: center; gap: .875rem; padding: .875rem 1rem; border-radius: .875rem; background: var(--glass-bg); border: 1px solid var(--glass-border); margin-bottom: .5rem; transition: border-color .2s; }
+        .ds-browser-item:hover { border-color: rgba(24,85,186,.3); }
+        .ds-browser-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+        /* ════════════ FAQ ════════════ */
+        .ds-faq-search-wrap { position: relative; max-width: 460px; }
+        .ds-faq-search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; width: 16px; height: 16px; pointer-events: none; }
+        .ds-faq-search { width: 100%; padding: .875rem 1.25rem .875rem 2.75rem; background: rgba(255,255,255,.06) !important; border: 1px solid rgba(255,255,255,.14) !important; color: #fff !important; border-radius: .875rem; font-size: .875rem; outline: none !important; }
+        .ds-faq-filter-btn { display: flex; align-items: center; gap: .45rem; padding: .4rem .875rem; border-radius: 999px; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; border: 1px solid var(--glass-border); color: var(--text-muted); background: transparent; cursor: pointer; transition: all .2s; }
+        .ds-faq-filter-btn:hover { border-color: rgba(24,85,186,.5); color: var(--text-main); }
+        .ds-faq-filter-btn.active { background: rgba(24,85,186,.12); border-color: #1855BA; color: #1855BA; }
+        body:not(.light-mode) .ds-faq-filter-btn.active { background: rgba(96,165,250,.1); border-color: #60a5fa; color: #60a5fa; }
+        .ds-faq-count { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 4px; background: rgba(24,85,186,.15); border-radius: 999px; font-size: .6rem; font-weight: 900; }
+        .ds-faq-filter-btn.active .ds-faq-count { background: #1855BA; color: #fff; }
+        .ds-faq-item { border: 1px solid var(--glass-border); border-radius: 1.25rem; margin-bottom: .625rem; background: var(--glass-bg); overflow: hidden; transition: border-color .25s, box-shadow .25s; }
+        .ds-faq-item:hover { border-color: rgba(24,85,186,.3); }
+        .ds-faq-item.open { border-color: rgba(24,85,186,.45); box-shadow: 0 4px 24px rgba(24,85,186,.08); }
+        body.light-mode .ds-faq-item { background: rgba(255,255,255,.9); }
+        .ds-faq-question { width: 100%; display: flex; align-items: flex-start; gap: 1rem; padding: 1.125rem 1.5rem; cursor: pointer; background: transparent; border: none; text-align: left; }
+        .ds-faq-q-icon { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(24,85,186,.1); color: #1855BA; font-size: .65rem; font-weight: 900; }
+        body:not(.light-mode) .ds-faq-q-icon { background: rgba(96,165,250,.1); color: #60a5fa; }
+        .ds-faq-item.open .ds-faq-q-icon { background: #1855BA; color: #fff; }
+        body:not(.light-mode) .ds-faq-item.open .ds-faq-q-icon { background: #60a5fa; color: #05070a; }
+        .ds-faq-q-text { flex: 1; font-size: .9rem; font-weight: 700; color: var(--text-main); line-height: 1.45; }
+        .ds-faq-chevron { width: 16px; height: 16px; flex-shrink: 0; color: var(--text-muted); margin-top: 3px; transition: transform .35s cubic-bezier(.4,0,.2,1); }
+        .ds-faq-item.open .ds-faq-chevron { transform: rotate(180deg); color: #1855BA; }
+        body:not(.light-mode) .ds-faq-item.open .ds-faq-chevron { color: #60a5fa; }
+        .ds-faq-answer { max-height: 0; overflow: hidden; transition: max-height .4s cubic-bezier(.4,0,.2,1), padding .3s; padding: 0 1.5rem; }
+        .ds-faq-item.open .ds-faq-answer { max-height: 300px; padding: 0 1.5rem 1.25rem; }
+        .ds-faq-answer-inner { font-size: .875rem; line-height: 1.8; color: var(--text-muted); border-top: 1px solid var(--glass-border); padding-top: 1rem; }
+
+        /* ════════════ CONTACTO ════════════ */
+        .ds-contact-method { display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem 1.5rem; border-radius: 1.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(10px); transition: all .3s; }
+        .ds-contact-method:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.12); }
+        body.light-mode .ds-contact-method { background: rgba(255,255,255,.9); }
+        .ds-contact-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .ds-contact-btn { display: inline-flex; align-items: center; gap: .5rem; font-size: .75rem; font-weight: 700; padding: .5rem 1rem; border-radius: 999px; transition: all .2s; }
+
+        /* ════════════ TESTIMONIAL ════════════ */
+        .ds-testimonial { position: relative; overflow: hidden; background: linear-gradient(135deg,#0d1a3a,#1855BA); border-radius: 1.75rem; padding: 2.5rem; border: 1px solid rgba(96,165,250,.2); }
+        .ds-testimonial .quote-icon { position: absolute; top: 1.25rem; right: 1.75rem; color: rgba(255,255,255,.1); width: 64px; height: 64px; }
+
+        /* ════════════ BLOG / ARTÍCULOS ════════════ */
+        .ds-article-tag { display: inline-flex; align-items: center; gap: .35rem; padding: .3rem .875rem; border-radius: 999px; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; text-decoration: none; transition: all .2s; }
+        .ds-article-tag-primary { background: rgba(24,85,186,.15); color: #1855BA; border: 1px solid rgba(24,85,186,.3); }
+        body:not(.light-mode) .ds-article-tag-primary { background: rgba(96,165,250,.1); color: #60a5fa; border-color: rgba(96,165,250,.25); }
+        .ds-article-tag-secondary { background: var(--glass-bg); color: var(--text-muted); border: 1px solid var(--glass-border); }
+        .ds-prose-lead { font-size: 1.1rem; line-height: 1.8; color: var(--text-main); font-weight: 500; }
+        .ds-stat-quote { border-left: 4px solid #1855BA; padding: 1.125rem 1.625rem; background: rgba(24,85,186,.06); border-radius: 0 1rem 1rem 0; }
+        body:not(.light-mode) .ds-stat-quote { background: rgba(96,165,250,.06); border-color: #60a5fa; }
+        .ds-stat-quote p { margin: 0; font-style: italic; color: var(--text-main); line-height: 1.7; font-size: .95rem; }
+        .ds-stat-quote cite { display: block; font-size: .7rem; font-style: normal; font-weight: 700; color: #1855BA; margin-top: .4rem; text-transform: uppercase; letter-spacing: .06em; }
+        body:not(.light-mode) .ds-stat-quote cite { color: #60a5fa; }
+        .ds-case-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-left: 4px solid var(--card-accent,#1855BA); border-radius: 1.5rem; padding: 1.5rem 2rem; transition: all .3s; }
+        .ds-case-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,.12); }
+        body.light-mode .ds-case-card { background: rgba(255,255,255,.9); }
+        .ds-case-num { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(24,85,186,.1); color: #1855BA; font-size: .72rem; font-weight: 900; flex-shrink: 0; }
+        body:not(.light-mode) .ds-case-num { background: rgba(96,165,250,.1); color: #60a5fa; }
+        .ds-linea-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-left: 4px solid var(--linea-color,#1855BA); border-radius: 1.5rem; padding: 1.75rem 2rem; transition: all .3s; margin-bottom: 1rem; }
+        .ds-linea-card:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,.12); }
+        body.light-mode .ds-linea-card { background: rgba(255,255,255,.92); }
+        .ds-linea-impact { display: flex; align-items: flex-start; gap: .625rem; background: rgba(24,85,186,.05); border: 1px solid rgba(24,85,186,.12); border-radius: .875rem; padding: .875rem 1rem; }
+        body:not(.light-mode) .ds-linea-impact { background: rgba(96,165,250,.05); border-color: rgba(96,165,250,.12); }
+        .ds-summary-box { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 1.5rem; padding: 1.75rem; backdrop-filter: blur(10px); }
+        .ds-summary-item { display: flex; align-items: flex-start; gap: .875rem; padding: .75rem 0; border-bottom: 1px solid var(--glass-border); }
+        .ds-summary-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .ds-summary-label { font-size: .72rem; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: #1855BA; min-width: 80px; margin-top: .05rem; flex-shrink: 0; }
+        body:not(.light-mode) .ds-summary-label { color: #60a5fa; }
+        .ds-sidebar-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 1.25rem; padding: 1.25rem; backdrop-filter: blur(10px); margin-bottom: 1rem; }
+        .ds-sidebar-title { font-size: .58rem; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; color: #4b5563; margin-bottom: .75rem; }
+        .ds-toc-link { display: flex; align-items: flex-start; gap: .5rem; padding: .35rem .625rem; border-radius: .625rem; font-size: .75rem; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: all .2s; border-left: 2px solid transparent; }
+        .ds-toc-link:hover { color: var(--text-main); background: rgba(24,85,186,.05); }
+        .ds-toc-link.active { color: #1855BA; border-left-color: #1855BA; background: rgba(24,85,186,.07); }
+        body:not(.light-mode) .ds-toc-link.active { color: #60a5fa; border-left-color: #60a5fa; background: rgba(96,165,250,.08); }
+        .ds-social-share { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-muted); transition: all .2s; }
+        .ds-social-share:hover { border-color: rgba(24,85,186,.5); color: #1855BA; }
+        .ds-reading-progress { height: 3px; background: linear-gradient(90deg, #1855BA, #60a5fa); border-radius: 999px; }
+
+        /* ── CTA Mouse Tracking Spotlight ── */
+        .cta-spotlight-wrap { position: relative; overflow: hidden; background: #05070a; border-radius: 2rem; cursor: crosshair; }
+        .cta-orb { position: absolute; width: 520px; height: 520px; border-radius: 50%; pointer-events: none; transform: translate(-50%,-50%); background: radial-gradient(circle, rgba(24,85,186,.32) 0%, rgba(79,70,229,.12) 40%, transparent 70%); transition: left .06s linear, top .06s linear; z-index: 1; }
+        .cta-grid-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: 0; }
+    </style>
+</head>
+
+<body>
+<script>if (window.__isThemeLight) document.body.classList.add('light-mode');</script>
+
+<!-- ══ TOP BAR ══ -->
+<header class="ds-topbar">
+    <div class="flex items-center gap-3">
+        <span class="ds-logo">TOKEN CITY <span>Design System</span></span>
+        <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-azul-acero-500/20 text-blue-400">v1.0</span>
+    </div>
+    <div class="controls-bar">
+        <div class="theme-toggle" onclick="toggleTheme()"></div>
+        <div class="lang-toggle" onclick="toggleLang()">
+            <span class="lang-label lang-label-es active">ES</span>
+            <div class="lang-switch-track"><div class="lang-switch-thumb"></div></div>
+            <span class="lang-label lang-label-en">EN</span>
+        </div>
+    </div>
+</header>
+
+<div class="ds-layout">
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="ds-sidebar">
+    <nav>
+        <div class="ds-nav-group">
+            <h3>Fundamentos</h3>
+            <a href="#colores" class="ds-nav-link">Colores</a>
+            <a href="#sectores" class="ds-nav-link">Colores de Sector</a>
+            <a href="#tipografia" class="ds-nav-link">Tipografía</a>
+            <a href="#variables" class="ds-nav-link">Variables CSS</a>
+        </div>
+        <div class="ds-nav-group">
+            <h3>Componentes</h3>
+            <a href="#botones" class="ds-nav-link">Botones</a>
+            <a href="#badges" class="ds-nav-link">Badges & Tags</a>
+            <a href="#tarjetas" class="ds-nav-link">Tarjetas</a>
+            <a href="#flip-cards" class="ds-nav-link">Flip Cards</a>
+            <a href="#market-cards" class="ds-nav-link">Market Cards</a>
+            <a href="#formularios" class="ds-nav-link">Formularios</a>
+            <a href="#controles" class="ds-nav-link">Floating Controls</a>
+            <a href="#logos" class="ds-nav-link">Logos & Media</a>
+        </div>
+        <div class="ds-nav-group">
+            <h3>Patrones de Página</h3>
+            <a href="#hero" class="ds-nav-link">Hero Section</a>
+            <a href="#proceso" class="ds-nav-link">Proceso 3 Pasos</a>
+            <a href="#bento" class="ds-nav-link">Bento Grid</a>
+            <a href="#lead-form" class="ds-nav-link">Lead Form</a>
+            <a href="#partners" class="ds-nav-link">Partners</a>
+            <a href="#cta" class="ds-nav-link">CTA Patterns</a>
+        </div>
+        <div class="ds-nav-group">
+            <h3>Páginas Legales</h3>
+            <a href="#legal-layout" class="ds-nav-link">Layout Legal</a>
+            <a href="#legal-card" class="ds-nav-link">Tarjeta Legal</a>
+            <a href="#cookie-table" class="ds-nav-link">Tabla Cookies</a>
+        </div>
+        <div class="ds-nav-group">
+            <h3>FAQ &amp; Contacto</h3>
+            <a href="#faq-search" class="ds-nav-link">Buscador FAQ</a>
+            <a href="#faq-filters" class="ds-nav-link">Filtros FAQ</a>
+            <a href="#faq-accordion" class="ds-nav-link">Acordeón FAQ</a>
+            <a href="#contact-method" class="ds-nav-link">Tarjeta Contacto</a>
+            <a href="#testimonial" class="ds-nav-link">Testimonial</a>
+        </div>
+        <div class="ds-nav-group">
+            <h3>Blog / Artículos</h3>
+            <a href="#article-tags" class="ds-nav-link">Tags Artículo</a>
+            <a href="#prose-quote" class="ds-nav-link">Prosa &amp; Cita</a>
+            <a href="#case-card" class="ds-nav-link">Case Card</a>
+            <a href="#linea-card" class="ds-nav-link">Línea Card</a>
+            <a href="#blog-sidebar" class="ds-nav-link">Sidebar Blog</a>
+        </div>
+        <div class="ds-nav-group">
+            <h3>Animaciones</h3>
+            <a href="#animaciones" class="ds-nav-link">Reveal &amp; Marquee</a>
+        </div>
+    </nav>
+</aside>
+
+<!-- ══ CONTENT ══ -->
+<main class="ds-content">
+
+    <!-- ── INTRO ── -->
+    <div class="mb-10">
+        <p class="section-label mb-2">Token City</p>
+        <h1 class="text-4xl font-black heading-text mb-3">Design System</h1>
+        <p class="body-text text-base max-w-xl">Referencia visual de todos los componentes, tokens de color, tipografía y patrones de página usados en energy.html, real-estate.html, scaleups.html, marketplace.html y home.html.</p>
+    </div>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ COLORES ════════════════════════════ -->
+    <section id="colores" class="ds-section">
+        <h2 class="ds-section-title">Paleta de Colores</h2>
+        <p class="ds-section-desc">Escala completa azul-acero. El 500 es el primario de marca.</p>
+
+        <div class="swatch-row mb-4 rounded-xl overflow-hidden shadow-lg">
+            <div class="swatch-row-cell" style="background:#F3F7FC;"></div>
+            <div class="swatch-row-cell" style="background:#DCE6F5;"></div>
+            <div class="swatch-row-cell" style="background:#A3BBE3;"></div>
+            <div class="swatch-row-cell" style="background:#7499D6;"></div>
+            <div class="swatch-row-cell" style="background:#4677C8;"></div>
+            <div class="swatch-row-cell" style="background:#1855BA;"></div>
+            <div class="swatch-row-cell" style="background:#134495;"></div>
+            <div class="swatch-row-cell" style="background:#0E3370;"></div>
+            <div class="swatch-row-cell" style="background:#0A224A;"></div>
+            <div class="swatch-row-cell" style="background:#051125;"></div>
+            <div class="swatch-row-cell" style="background:#020813;"></div>
+        </div>
+
+        <div class="swatch-grid">
+            <div class="swatch"><div class="swatch-color" style="background:#F3F7FC;"></div><div class="swatch-info">50<br>#F3F7FC</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#DCE6F5;"></div><div class="swatch-info">100<br>#DCE6F5</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#A3BBE3;"></div><div class="swatch-info">200<br>#A3BBE3</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#7499D6;"></div><div class="swatch-info">300<br>#7499D6</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#4677C8;"></div><div class="swatch-info">400<br>#4677C8</div></div>
+            <div class="swatch" style="outline: 2px solid #60a5fa; outline-offset: 2px; border-radius: .75rem;"><div class="swatch-color" style="background:#1855BA;"></div><div class="swatch-info">500 ★<br>#1855BA</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#134495;"></div><div class="swatch-info">600<br>#134495</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#0E3370;"></div><div class="swatch-info">700<br>#0E3370</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#0A224A;"></div><div class="swatch-info">800<br>#0A224A</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#051125;"></div><div class="swatch-info">900<br>#051125</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#020813;"></div><div class="swatch-info">950<br>#020813</div></div>
+        </div>
+
+        <h3 class="ds-subsection-title">Colores semánticos</h3>
+        <div class="swatch-grid">
+            <div class="swatch"><div class="swatch-color" style="background:#22c55e;"></div><div class="swatch-info">Success<br>#22c55e</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#ef4444;"></div><div class="swatch-info">Error<br>#ef4444</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#f59e0b;"></div><div class="swatch-info">Warning<br>#f59e0b</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#3b82f6;"></div><div class="swatch-info">Info<br>#3b82f6</div></div>
+            <div class="swatch"><div class="swatch-color" style="background:#8b5cf6;"></div><div class="swatch-info">Purple<br>#8b5cf6</div></div>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ SECTORES ════════════════════════════ -->
+    <section id="sectores" class="ds-section">
+        <h2 class="ds-section-title">Colores de Sector</h2>
+        <p class="ds-section-desc">Cada sector tiene su color primario. Se aplica en bordes izquierdos, botones, labels hero y spans h1.</p>
+        <div class="ds-preview">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div class="flex items-center gap-3 p-3 rounded-xl" style="border-left: 4px solid #22c55e; background: rgba(34,197,94,.05);">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(34,197,94,.15); color:#22c55e;"><i data-lucide="building-2" class="w-4 h-4"></i></div>
+                    <div><div class="text-xs font-bold heading-text">Real Estate</div><div class="font-mono text-[10px] text-green-500">#22c55e</div></div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl" style="border-left: 4px solid #ef4444; background: rgba(239,68,68,.05);">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(239,68,68,.15); color:#ef4444;"><i data-lucide="zap" class="w-4 h-4"></i></div>
+                    <div><div class="text-xs font-bold heading-text">Energía</div><div class="font-mono text-[10px] text-red-500">#ef4444</div></div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl" style="border-left: 4px solid #800020; background: rgba(128,0,32,.05);">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(128,0,32,.15); color:#be123c;"><i data-lucide="rocket" class="w-4 h-4"></i></div>
+                    <div><div class="text-xs font-bold heading-text">Scaleups</div><div class="font-mono text-[10px]" style="color:#be123c">#800020</div></div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl" style="border-left: 4px solid #1855BA; background: rgba(24,85,186,.05);">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(24,85,186,.15); color:#1855BA;"><i data-lucide="landmark" class="w-4 h-4"></i></div>
+                    <div><div class="text-xs font-bold heading-text">Finanzas</div><div class="font-mono text-[10px] text-blue-600">#1855BA</div></div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl" style="border-left: 4px solid #ec4899; background: rgba(236,72,153,.05);">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(236,72,153,.15); color:#ec4899;"><i data-lucide="palette" class="w-4 h-4"></i></div>
+                    <div><div class="text-xs font-bold heading-text">Arte</div><div class="font-mono text-[10px] text-pink-500">#ec4899</div></div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl" style="border-left: 4px solid #f97316; background: rgba(249,115,22,.05);">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(249,115,22,.15); color:#f97316;"><i data-lucide="gem" class="w-4 h-4"></i></div>
+                    <div><div class="text-xs font-bold heading-text">Commodities</div><div class="font-mono text-[10px] text-orange-500">#f97316</div></div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl" style="border-left: 4px solid #eab308; background: rgba(234,179,8,.05);">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(234,179,8,.15); color:#eab308;"><i data-lucide="sprout" class="w-4 h-4"></i></div>
+                    <div><div class="text-xs font-bold heading-text">Agroindustria</div><div class="font-mono text-[10px] text-yellow-500">#eab308</div></div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl" style="border-left: 4px solid #a855f7; background: rgba(168,85,247,.05);">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(168,85,247,.15); color:#a855f7;"><i data-lucide="music" class="w-4 h-4"></i></div>
+                    <div><div class="text-xs font-bold heading-text">Música</div><div class="font-mono text-[10px] text-purple-500">#a855f7</div></div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl" style="border-left: 4px solid #06b6d4; background: rgba(6,182,212,.05);">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(6,182,212,.15); color:#06b6d4;"><i data-lucide="plane" class="w-4 h-4"></i></div>
+                    <div><div class="text-xs font-bold heading-text">Turismo</div><div class="font-mono text-[10px] text-cyan-500">#06b6d4</div></div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="ds-subsection-title">Category Pills (sector-pill)</h3>
+        <div class="ds-preview flex flex-wrap gap-2">
+            <span class="sector-pill sector-real-estate"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+            <span class="sector-pill active sector-energy"><i data-lucide="zap" class="w-3 h-3"></i> Energía</span>
+            <span class="sector-pill sector-scaleups" style="--sector-color:#800020; color:#be123c; border-color:#800020;"><i data-lucide="rocket" class="w-3 h-3"></i> Scaleups</span>
+            <span class="sector-pill sector-art"><i data-lucide="palette" class="w-3 h-3"></i> Arte</span>
+            <span class="sector-pill sector-music"><i data-lucide="music" class="w-3 h-3"></i> Música</span>
+            <span class="sector-pill sector-tourism"><i data-lucide="plane" class="w-3 h-3"></i> Turismo</span>
+        </div>
+        <div class="mt-1"><span class="ds-code">.sector-pill</span> <span class="ds-code">.sector-pill.active</span> <span class="ds-code">--sector-color: #hex</span></div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ TIPOGRAFÍA ════════════════════════════ -->
+    <section id="tipografia" class="ds-section">
+        <h2 class="ds-section-title">Tipografía</h2>
+        <p class="ds-section-desc">Fuente principal: <strong>Montserrat</strong>. Mono: <strong>JetBrains Mono</strong>. Decorativa: <strong>Playfair Display</strong>.</p>
+        <div class="ds-preview space-y-4">
+            <div class="border-b pb-4" style="border-color: var(--glass-border);">
+                <p class="text-[10px] font-mono text-gray-500 mb-1">h1 · font-black text-5xl · heading-text</p>
+                <h1 class="text-5xl font-black heading-text uppercase tracking-tighter leading-tight">Token City</h1>
+            </div>
+            <div class="border-b pb-4" style="border-color: var(--glass-border);">
+                <p class="text-[10px] font-mono text-gray-500 mb-1">h2 · font-extrabold text-4xl · heading-text</p>
+                <h2 class="text-4xl font-extrabold heading-text uppercase tracking-tight">Tokenización de activos</h2>
+            </div>
+            <div class="border-b pb-4" style="border-color: var(--glass-border);">
+                <p class="text-[10px] font-mono text-gray-500 mb-1">h3 · font-bold text-3xl · heading-text</p>
+                <h3 class="text-3xl font-bold heading-text">Infraestructura blockchain</h3>
+            </div>
+            <div class="border-b pb-4" style="border-color: var(--glass-border);">
+                <p class="text-[10px] font-mono text-gray-500 mb-1">h4 · font-semibold text-2xl · heading-text</p>
+                <h4 class="text-2xl font-semibold heading-text">Acceso a capital global</h4>
+            </div>
+            <div class="border-b pb-4" style="border-color: var(--glass-border);">
+                <p class="text-[10px] font-mono text-gray-500 mb-1">h5 · font-medium text-xl · heading-text</p>
+                <h5 class="text-xl font-medium heading-text">Cumplimiento regulatorio</h5>
+            </div>
+            <div class="border-b pb-4" style="border-color: var(--glass-border);">
+                <p class="text-[10px] font-mono text-gray-500 mb-1">h6 · font-medium text-lg · heading-text</p>
+                <h6 class="text-lg font-medium heading-text">Mercados secundarios</h6>
+            </div>
+            <div class="border-b pb-4" style="border-color: var(--glass-border);">
+                <p class="text-[10px] font-mono text-gray-500 mb-1">.section-label</p>
+                <p class="section-label">Tokenización de activos reales</p>
+            </div>
+            <div class="border-b pb-4" style="border-color: var(--glass-border);">
+                <p class="text-[10px] font-mono text-gray-500 mb-1">.body-text text-base</p>
+                <p class="body-text text-base leading-relaxed">Plataforma de infraestructura tecnológica para la digitalización y gestión de activos reales mediante blockchain con pleno reconocimiento jurídico.</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-mono text-gray-500 mb-1">JetBrains Mono · font-mono</p>
+                <p class="font-mono text-sm text-green-400">0x1a2b3c · ISIN: ES0000000001 · Token: RWA-001</p>
+            </div>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ VARIABLES ════════════════════════════ -->
+    <section id="variables" class="ds-section">
+        <h2 class="ds-section-title">Variables CSS</h2>
+        <p class="ds-section-desc">Todas las variables responden automáticamente al tema claro/oscuro vía <code class="ds-code">body:not(.light-mode)</code>.</p>
+        <div class="ds-preview overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead><tr class="border-b" style="border-color:var(--glass-border);">
+                    <th class="text-left pb-2 font-mono text-xs body-text">Variable</th>
+                    <th class="text-left pb-2 font-mono text-xs body-text">Oscuro</th>
+                    <th class="text-left pb-2 font-mono text-xs body-text">Claro</th>
+                </tr></thead>
+                <tbody class="font-mono text-xs">
+                    <tr class="border-b" style="border-color:var(--glass-border);"><td class="py-2 text-blue-400">--primary-blue</td><td class="text-gray-400">#1855BA</td><td class="text-gray-400">#1855BA</td></tr>
+                    <tr class="border-b" style="border-color:var(--glass-border);"><td class="py-2 text-blue-400">--text-main</td><td class="text-gray-400">#ffffff</td><td class="text-gray-400">#0f172a</td></tr>
+                    <tr class="border-b" style="border-color:var(--glass-border);"><td class="py-2 text-blue-400">--text-muted</td><td class="text-gray-400">#9ca3af</td><td class="text-gray-400">#475569</td></tr>
+                    <tr class="border-b" style="border-color:var(--glass-border);"><td class="py-2 text-blue-400">--bg-color</td><td class="text-gray-400">#05070a</td><td class="text-gray-400">#f8fafc</td></tr>
+                    <tr class="border-b" style="border-color:var(--glass-border);"><td class="py-2 text-blue-400">--glass-bg</td><td class="text-gray-400">rgba(255,255,255,.03)</td><td class="text-gray-400">rgba(255,255,255,.85)</td></tr>
+                    <tr class="border-b" style="border-color:var(--glass-border);"><td class="py-2 text-blue-400">--glass-border</td><td class="text-gray-400">rgba(255,255,255,.08)</td><td class="text-gray-400">rgba(0,0,0,.1)</td></tr>
+                    <tr class="border-b" style="border-color:var(--glass-border);"><td class="py-2 text-blue-400">--nav-bg</td><td class="text-gray-400">rgba(5,7,10,.95)</td><td class="text-gray-400">rgba(5,7,10,.95)</td></tr>
+                    <tr><td class="py-2 text-blue-400">--card-highlight-bg</td><td class="text-gray-400">rgba(255,255,255,.04)</td><td class="text-gray-400">rgba(255,255,255,.85)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ BOTONES ════════════════════════════ -->
+    <section id="botones" class="ds-section">
+        <h2 class="ds-section-title">Botones</h2>
+
+        <h3 class="ds-subsection-title">Universales (funcionan en modo claro y oscuro)</h3>
+        <div class="ds-preview flex flex-wrap gap-3 items-center">
+            <button class="bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold px-6 py-3 rounded-[15px] transition-all hover:scale-105 flex items-center gap-2 text-sm">
+                <i data-lucide="user-plus" class="w-4 h-4"></i> Regístrate
+            </button>
+            <button class="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-[15px] transition-all flex items-center gap-2 text-sm group">
+                <span>Consulta sin compromiso</span>
+                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+            <button class="text-white font-bold px-6 py-3 rounded-[15px] transition-all flex items-center gap-2 text-sm" style="background-color:#800020;" onmouseover="this.style.backgroundColor='#6b001a'" onmouseout="this.style.backgroundColor='#800020'">
+                Scaleups CTA
+            </button>
+            <button class="bg-red-500 hover:bg-red-600 text-white font-bold px-6 py-3 rounded-[15px] transition-all flex items-center gap-2 text-sm">
+                <i data-lucide="zap" class="w-4 h-4"></i> Energía CTA
+            </button>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">bg-azul-acero-500 rounded-[15px]</span>
+            <span class="ds-code">bg-green-600 rounded-[15px]</span>
+            <span class="ds-code">style="background-color: [sector-color]"</span>
+        </div>
+
+        <h3 class="ds-subsection-title mt-4">Contexto oscuro — nav, hero <span class="text-[10px] text-orange-400 font-normal ml-2">Solo sobre fondos oscuros</span></h3>
+        <div class="flex flex-wrap gap-3 items-center p-6 rounded-[1.25rem] mb-1" style="background:#05070a; border: 1px solid rgba(255,255,255,.08);">
+            <button class="border-2 border-white text-white bg-transparent font-semibold rounded-[15px] hover:bg-white hover:text-azul-acero-500 transition-colors px-5 py-3 flex items-center gap-2 text-sm">
+                <i data-lucide="log-in" class="w-4 h-4"></i> Acceso
+            </button>
+            <button class="bg-transparent border border-white/20 text-white/70 hover:text-white hover:border-white/40 font-medium px-5 py-2.5 rounded-[15px] transition-all text-sm">
+                Ghost Button
+            </button>
+            <button class="bg-white text-azul-acero-500 font-bold px-6 py-3 rounded-[15px] hover:bg-blue-50 transition-all text-sm">
+                Sólido blanco
+            </button>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">border-2 border-white bg-transparent hover:bg-white hover:text-azul-acero-500</span>
+            <span class="ds-code">border border-white/20 text-white/70</span>
+            <span class="ds-code">bg-white text-azul-acero-500</span>
+        </div>
+
+        <h3 class="ds-subsection-title mt-4">Botón textual · <span class="ds-code">.btn-text</span></h3>
+        <p class="text-xs body-text mb-3">Usado en market cards y en el footer de tarjetas. En modo claro es azul primario; en oscuro blanco con hover sutil.</p>
+        <div class="ds-preview flex flex-wrap gap-4 items-center">
+            <button class="btn-text">
+                Ver detalles <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+            <button class="btn-text">
+                Conocer más <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+            <button class="btn-text">
+                Ver proyecto <i data-lucide="external-link" class="w-4 h-4"></i>
+            </button>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.btn-text</span>
+            <span class="ds-code">inline-flex items-center gap font-bold rounded-[15px] bg-transparent</span>
+            <span class="ds-code">dark: color:#fff · light: color:var(--primary-blue)</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ BADGES ════════════════════════════ -->
+    <section id="badges" class="ds-section">
+        <h2 class="ds-section-title">Badges &amp; Tags</h2>
+        <div class="ds-preview flex flex-wrap gap-3 items-center">
+            <p class="section-label">Tokenización de activos</p>
+            <span class="text-[8px] text-green-400 font-bold bg-green-400/10 px-2 py-0.5 rounded-full">NEW</span>
+            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            <span class="market-tag sector-tag sector-real-estate"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+            <span class="market-tag sector-tag sector-energy"><i data-lucide="zap" class="w-3 h-3"></i> Energía</span>
+            <span class="market-tag market-tag-mercado rounded-full px-2 py-0.5 text-[10px]">Exchange</span>
+            <span class="market-tag market-tag-token rounded-full px-2 py-0.5 text-[10px] border">Security</span>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.section-label</span>
+            <span class="ds-code">.market-tag .sector-tag</span>
+            <span class="ds-code">.market-tag-mercado</span>
+            <span class="ds-code">.market-tag-token</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ TARJETAS ════════════════════════════ -->
+    <section id="tarjetas" class="ds-section">
+        <h2 class="ds-section-title">Tarjetas</h2>
+
+        <h3 class="ds-subsection-title">Glass Card · <span class="ds-code">.glass</span></h3>
+        <div class="ds-preview grid md:grid-cols-3 gap-4">
+            <div class="glass p-6 rounded-[1.5rem]">
+                <p class="section-label mb-2">Categoría</p>
+                <h4 class="text-lg font-semibold heading-text mb-2">Glassmorphism Card</h4>
+                <p class="body-text text-sm">Fondo translúcido con backdrop blur. Usada en hero stats, bento superior.</p>
+            </div>
+            <div class="glass p-6 rounded-[1.5rem]">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 mb-3">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-lg font-semibold heading-text mb-2">Con icono</h4>
+                <p class="body-text text-sm">Variante con icono redondeado con fondo de color tintado.</p>
+            </div>
+            <div class="glass p-6 rounded-[1.5rem] flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-azul-acero-500/10 flex items-center justify-center text-azul-acero-500 shrink-0">
+                    <i data-lucide="trending-up" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="text-2xl font-black heading-text">€2.3M</div>
+                    <div class="body-text text-xs">Volumen tokenizado</div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="ds-subsection-title">Highlight Card · <span class="ds-code">.highlight-card</span></h3>
+        <div class="ds-preview grid md:grid-cols-4 gap-4">
+            <div class="highlight-card p-6 rounded-[1.5rem]">
+                <div class="w-10 h-10 rounded-[12px] bg-green-500/10 flex items-center justify-center text-green-500 mb-4"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                <h4 class="text-lg font-semibold heading-text mb-1">Reconocimiento jurídico</h4>
+                <p class="body-text text-xs">Tokens con plena validez legal.</p>
+            </div>
+            <div class="highlight-card p-6 rounded-[1.5rem]">
+                <div class="w-10 h-10 rounded-[12px] bg-blue-500/10 flex items-center justify-center text-blue-500 mb-4"><i data-lucide="link" class="w-5 h-5"></i></div>
+                <h4 class="text-lg font-semibold heading-text mb-1">Blockchain</h4>
+                <p class="body-text text-xs">Registro inmutable y transparente.</p>
+            </div>
+            <div class="highlight-card p-6 rounded-[1.5rem]">
+                <div class="w-10 h-10 rounded-[12px] bg-purple-500/10 flex items-center justify-center text-purple-500 mb-4"><i data-lucide="split" class="w-5 h-5"></i></div>
+                <h4 class="text-lg font-semibold heading-text mb-1">Fraccionamiento</h4>
+                <p class="body-text text-xs">Democratiza la inversión.</p>
+            </div>
+            <div class="highlight-card p-6 rounded-[1.5rem]">
+                <div class="w-10 h-10 rounded-[12px] bg-green-500/10 flex items-center justify-center text-green-500 mb-4"><i data-lucide="globe" class="w-5 h-5"></i></div>
+                <h4 class="text-lg font-semibold heading-text mb-1">Distribución global</h4>
+                <p class="body-text text-xs">Acceso global regulado.</p>
+            </div>
+        </div>
+
+        <h3 class="ds-subsection-title">Infra Card · <span class="ds-code">.infra-card-style rounded-[30px]</span> + <span class="ds-code">style="border-left-color: #hex"</span></h3>
+        <div class="ds-preview grid md:grid-cols-3 gap-6">
+            <div class="infra-card-style p-8 rounded-[30px] text-center" style="border-left-color: #22c55e;">
+                <div class="w-12 h-12 mx-auto mb-6 rounded-[15px] bg-green-500/10 flex items-center justify-center text-green-500">
+                    <i data-lucide="building-2" class="w-6 h-6"></i>
+                </div>
+                <h4 class="text-xl font-semibold heading-text mb-3 uppercase tracking-tight">1. Activo Real</h4>
+                <p class="body-text text-sm">Evaluamos y estructuramos la tokenización.</p>
+            </div>
+            <div class="infra-card-style p-8 rounded-[30px] text-center" style="border-left-color: #3b82f6;">
+                <div class="w-12 h-12 mx-auto mb-6 rounded-[15px] bg-blue-500/10 flex items-center justify-center text-blue-500">
+                    <i data-lucide="coins" class="w-6 h-6"></i>
+                </div>
+                <h4 class="text-xl font-semibold heading-text mb-3 uppercase tracking-tight">2. Financiación</h4>
+                <p class="body-text text-sm">Infraestructura y cobertura regulatoria.</p>
+            </div>
+            <div class="infra-card-style p-8 rounded-[30px] text-center" style="border-left-color: #8b5cf6;">
+                <div class="w-12 h-12 mx-auto mb-6 rounded-[15px] bg-purple-500/10 flex items-center justify-center text-purple-500">
+                    <i data-lucide="arrow-left-right" class="w-6 h-6"></i>
+                </div>
+                <h4 class="text-xl font-semibold heading-text mb-3 uppercase tracking-tight">3. Negociación</h4>
+                <p class="body-text text-sm">Mercados secundarios con liquidez.</p>
+            </div>
+        </div>
+
+        <h3 class="ds-subsection-title">Bento Benefit Card · <span class="ds-code">.infra-card-style rounded-[1.5rem]</span></h3>
+        <div class="ds-preview grid md:grid-cols-3 gap-4">
+            <div class="infra-card-style p-6 rounded-[1.5rem] relative overflow-hidden hover:-translate-y-1 transition-transform min-h-[140px] flex flex-col justify-center" style="border-left-color: #22c55e;">
+                <div class="relative z-10 flex flex-col items-start gap-3">
+                    <div class="w-10 h-10 rounded-[15px] flex items-center justify-center" style="background:var(--card-hover-bg); color:#22c55e;"><i data-lucide="zap" class="w-5 h-5"></i></div>
+                    <div>
+                        <h4 class="font-semibold text-lg heading-text mb-1 bento-title">Acceso a capital</h4>
+                        <p class="text-xs body-text">Amplía tu red de inversores de forma ágil y regulada.</p>
+                    </div>
+                </div>
+                <i data-lucide="zap" class="absolute -right-2 -bottom-4 w-20 h-20 text-green-500" style="opacity:.07;"></i>
+            </div>
+            <div class="infra-card-style p-6 rounded-[1.5rem] relative overflow-hidden hover:-translate-y-1 transition-transform min-h-[140px] flex flex-col justify-center" style="border-left-color: #3b82f6;">
+                <div class="relative z-10 flex flex-col items-start gap-3">
+                    <div class="w-10 h-10 rounded-[15px] flex items-center justify-center" style="background:var(--card-hover-bg); color:#3b82f6;"><i data-lucide="globe" class="w-5 h-5"></i></div>
+                    <div>
+                        <h4 class="font-semibold text-lg heading-text mb-1 bento-title">Mercado global</h4>
+                        <p class="text-xs body-text">ISIN y distribución a inversores mundiales.</p>
+                    </div>
+                </div>
+                <i data-lucide="globe" class="absolute -right-2 -bottom-4 w-20 h-20 text-blue-500" style="opacity:.07;"></i>
+            </div>
+            <div class="infra-card-style p-6 rounded-[1.5rem] relative overflow-hidden hover:-translate-y-1 transition-transform min-h-[140px] flex flex-col justify-center" style="border-left-color: #8b5cf6;">
+                <div class="relative z-10 flex flex-col items-start gap-3">
+                    <div class="w-10 h-10 rounded-[15px] flex items-center justify-center" style="background:var(--card-hover-bg); color:#8b5cf6;"><i data-lucide="settings" class="w-5 h-5"></i></div>
+                    <div>
+                        <h4 class="font-semibold text-lg heading-text mb-1 bento-title">Flexibilidad y control</h4>
+                        <p class="text-xs body-text">Define las condiciones y mantén el control del activo.</p>
+                    </div>
+                </div>
+                <i data-lucide="settings" class="absolute -right-2 -bottom-4 w-20 h-20 text-purple-500" style="opacity:.07;"></i>
+            </div>
+        </div>
+
+        <h3 class="ds-subsection-title">Team Card · <span class="ds-code">.team-card</span></h3>
+        <div class="ds-preview grid md:grid-cols-3 gap-4">
+            <div class="team-card overflow-hidden">
+                <div class="h-40 bg-gradient-to-br from-[#0b1426] to-[#1a315d] flex items-center justify-center">
+                    <i data-lucide="user" class="w-16 h-16 text-white/20"></i>
+                </div>
+                <div class="p-4">
+                    <p class="team-role mb-1">CEO & Founder</p>
+                    <h4 class="font-bold heading-text text-base">Nombre Apellido</h4>
+                    <p class="body-text text-xs mt-1">Breve descripción del perfil profesional del directivo.</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="ds-subsection-title">Pricing Card · <span class="ds-code">.pricing-card-item .pricing-card-popular</span></h3>
+        <p class="text-xs body-text mb-3">Starter y Enterprise se adaptan al tema. La tarjeta Popular mantiene siempre el gradiente azul.</p>
+        <div class="ds-preview grid md:grid-cols-3 gap-4">
+            <div class="pricing-card-item p-6 rounded-[1.5rem]">
+                <p class="section-label mb-2">Starter</p>
+                <div class="text-3xl font-black heading-text mb-1">€0<span class="text-base font-medium body-text">/mes</span></div>
+                <p class="body-text text-xs mb-4">Para proyectos en exploración</p>
+                <ul class="space-y-2 text-sm body-text"><li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> 1 activo</li><li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Soporte básico</li></ul>
+            </div>
+            <div class="pricing-card-popular p-6 rounded-[1.5rem]">
+                <p class="text-[10px] font-bold uppercase tracking-widest text-blue-300 mb-2">Popular</p>
+                <div class="text-3xl font-black text-white mb-1">€299<span class="text-base font-medium text-white/70">/mes</span></div>
+                <p class="text-white/70 text-xs mb-4">Para emisores activos</p>
+                <ul class="space-y-2 text-sm text-white/80"><li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-400"></i> Activos ilimitados</li><li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-400"></i> API acceso completo</li></ul>
+            </div>
+            <div class="pricing-card-item p-6 rounded-[1.5rem]">
+                <p class="section-label mb-2">Enterprise</p>
+                <div class="text-3xl font-black heading-text mb-1">Custom</div>
+                <p class="body-text text-xs mb-4">Para entidades financieras</p>
+                <ul class="space-y-2 text-sm body-text"><li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> SLA dedicado</li><li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> White label</li></ul>
+            </div>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ FLIP CARDS ════════════════════════════ -->
+    <section id="flip-cards" class="ds-section">
+        <h2 class="ds-section-title">Flip Cards</h2>
+
+        <h3 class="ds-subsection-title">Blog Flip Card (hover) · <span class="ds-code">.blog-card-flip</span></h3>
+        <div class="ds-preview grid md:grid-cols-3 gap-4">
+            <div class="blog-card-flip">
+                <div class="blog-card-inner">
+                    <div class="blog-card-front p-6 justify-between">
+                        <div>
+                            <p class="section-label mb-2">Blockchain</p>
+                            <h4 class="font-bold heading-text text-base leading-snug">¿Qué es la tokenización de activos reales?</h4>
+                        </div>
+                        <p class="body-text text-xs mt-3">Hover para ver más →</p>
+                    </div>
+                    <div class="blog-card-back">
+                        <p class="text-sm text-white/90 leading-relaxed">La tokenización convierte activos físicos en tokens digitales con pleno reconocimiento jurídico en blockchain.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="ds-subsection-title mt-6">Participant Card (click) · <span class="ds-code">.participant-card</span></h3>
+        <p class="text-xs body-text mb-3">Click en la tarjeta o en el botón <i data-lucide="rotate-3d" class="w-3 h-3 inline"></i> para girar. El botón también aparece en el dorso para volver.</p>
+        <div class="ds-preview grid grid-cols-2 md:grid-cols-4 gap-4">
+
+            <!-- Real Estate -->
+            <div class="participant-card" data-category="real-estate" style="--sector-color:#22c55e;" onclick="this.classList.toggle('is-flipped')">
+                <div class="participant-card-inner">
+                    <div class="card-face face-front">
+                        <div class="sector-icon-flip">
+                            <i data-lucide="building-2" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold heading-text text-sm text-center">Real Estate</h4>
+                        <p class="body-text text-xs text-center mt-1">El principal activo físico tokenizado</p>
+                        <button class="card-toggle-btn" onclick="event.stopPropagation();this.closest('.participant-card').classList.toggle('is-flipped')">
+                            <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                        </button>
+                    </div>
+                    <div class="card-face face-back" style="border-right-color:var(--sector-color);">
+                        <h4 class="font-bold text-center text-sm mb-2">Inmobiliario</h4>
+                        <p class="text-xs text-center text-white/80 leading-relaxed">El activo físico más tokenizado del mundo. Acceso fraccionado a proyectos premium.</p>
+                        <button class="card-toggle-btn mt-3" onclick="event.stopPropagation();this.closest('.participant-card').classList.toggle('is-flipped')">
+                            <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Energía -->
+            <div class="participant-card" data-category="energy" style="--sector-color:#ef4444;" onclick="this.classList.toggle('is-flipped')">
+                <div class="participant-card-inner">
+                    <div class="card-face face-front">
+                        <div class="sector-icon-flip">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold heading-text text-sm text-center">Energía</h4>
+                        <p class="body-text text-xs text-center mt-1">Proyectos renovables globales</p>
+                        <button class="card-toggle-btn" onclick="event.stopPropagation();this.closest('.participant-card').classList.toggle('is-flipped')">
+                            <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                        </button>
+                    </div>
+                    <div class="card-face face-back" style="border-right-color:var(--sector-color);">
+                        <h4 class="font-bold text-center text-sm mb-2">Energía</h4>
+                        <p class="text-xs text-center text-white/80 leading-relaxed">Financia parques solares y eólicos con tokenización y liquidez secundaria.</p>
+                        <button class="card-toggle-btn mt-3" onclick="event.stopPropagation();this.closest('.participant-card').classList.toggle('is-flipped')">
+                            <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arte -->
+            <div class="participant-card" data-category="art" style="--sector-color:#ec4899;" onclick="this.classList.toggle('is-flipped')">
+                <div class="participant-card-inner">
+                    <div class="card-face face-front">
+                        <div class="sector-icon-flip">
+                            <i data-lucide="palette" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold heading-text text-sm text-center">Arte</h4>
+                        <p class="body-text text-xs text-center mt-1">Obras únicas y atemporales</p>
+                        <button class="card-toggle-btn" onclick="event.stopPropagation();this.closest('.participant-card').classList.toggle('is-flipped')">
+                            <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                        </button>
+                    </div>
+                    <div class="card-face face-back" style="border-right-color:var(--sector-color);">
+                        <h4 class="font-bold text-center text-sm mb-2">Arte</h4>
+                        <p class="text-xs text-center text-white/80 leading-relaxed">Diversifica tu patrimonio con obras de arte tokenizadas de artistas reconocidos.</p>
+                        <button class="card-toggle-btn mt-3" onclick="event.stopPropagation();this.closest('.participant-card').classList.toggle('is-flipped')">
+                            <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Música -->
+            <div class="participant-card" data-category="music" style="--sector-color:#a855f7;" onclick="this.classList.toggle('is-flipped')">
+                <div class="participant-card-inner">
+                    <div class="card-face face-front">
+                        <div class="sector-icon-flip">
+                            <i data-lucide="music" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold heading-text text-sm text-center">Música</h4>
+                        <p class="body-text text-xs text-center mt-1">Gana regalías con música tokenizada</p>
+                        <button class="card-toggle-btn" onclick="event.stopPropagation();this.closest('.participant-card').classList.toggle('is-flipped')">
+                            <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                        </button>
+                    </div>
+                    <div class="card-face face-back" style="border-right-color:var(--sector-color);">
+                        <h4 class="font-bold text-center text-sm mb-2">Música</h4>
+                        <p class="text-xs text-center text-white/80 leading-relaxed">Invierte en derechos de autor y regalías de artistas emergentes y consolidados.</p>
+                        <button class="card-toggle-btn mt-3" onclick="event.stopPropagation();this.closest('.participant-card').classList.toggle('is-flipped')">
+                            <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.participant-card</span>
+            <span class="ds-code">.card-face.face-front</span>
+            <span class="ds-code">.card-face.face-back</span>
+            <span class="ds-code">.sector-icon-flip</span>
+            <span class="ds-code">.card-toggle-btn</span>
+            <span class="ds-code">--sector-color: #hex</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ MARKET CARDS ════════════════════════════ -->
+    <section id="market-cards" class="ds-section">
+        <h2 class="ds-section-title">Market Cards</h2>
+        <p class="ds-section-desc">Cards del marketplace. Combinan imagen, tags de sector/mercado/token, título y CTA.</p>
+        <div class="ds-preview grid md:grid-cols-2 gap-4">
+            <div class="market-card" style="--sector-color:#22c55e;">
+                <div class="relative h-36 bg-gradient-to-br from-[#0b1426] to-[#0a2a14] overflow-hidden">
+                    <div class="absolute inset-0 opacity-60" style="background:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&q=60') center/cover;"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                </div>
+                <div class="p-4">
+                    <div class="flex gap-1.5 mb-2 flex-wrap">
+                        <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                        <span class="market-tag market-tag-mercado text-[10px] px-2 py-0.5 rounded-full">Exchange</span>
+                        <span class="market-tag market-tag-token text-[10px] px-2 py-0.5 rounded-full">Security</span>
+                    </div>
+                    <h3 class="font-extrabold text-base heading-text mb-1">Proyecto Residencial Madrid</h3>
+                    <p class="text-xs body-text mb-3">Tokenización de complejo residencial con 150 unidades en Madrid centro.</p>
+                    <button class="btn-text">Ver detalles <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+            <div class="market-card" style="--sector-color:#ef4444;">
+                <div class="relative h-36 bg-gradient-to-br from-[#0b1426] to-[#2a0a0a] overflow-hidden">
+                    <div class="absolute inset-0 opacity-50" style="background:url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=400&q=60') center/cover;"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                </div>
+                <div class="p-4">
+                    <div class="flex gap-1.5 mb-2 flex-wrap">
+                        <span class="market-tag sector-tag"><i data-lucide="zap" class="w-3 h-3"></i> Energía</span>
+                        <span class="market-tag market-tag-mercado text-[10px] px-2 py-0.5 rounded-full">Crowdfunding</span>
+                    </div>
+                    <h3 class="font-extrabold text-base heading-text mb-1">Parque Eólico Andalucía</h3>
+                    <p class="text-xs body-text mb-3">50MW de capacidad instalada. TIR objetivo: 8.5% anual.</p>
+                    <button class="btn-text">Ver detalles <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2"><span class="ds-code">.market-card</span> <span class="ds-code">--sector-color: #hex</span> <span class="ds-code">.market-tag.sector-tag</span></div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ FORMULARIOS ════════════════════════════ -->
+    <section id="formularios" class="ds-section">
+        <h2 class="ds-section-title">Formularios</h2>
+        <div class="ds-preview">
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold uppercase tracking-wider opacity-60 heading-text">Nombre</label>
+                    <input type="text" placeholder="Nombre completo" class="w-full px-4 py-3.5 rounded-[15px] border text-sm">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold uppercase tracking-wider opacity-60 heading-text">Email corporativo</label>
+                    <input type="email" placeholder="ejemplo@empresa.com" class="w-full px-4 py-3.5 rounded-[15px] border text-sm">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold uppercase tracking-wider opacity-60 heading-text">Perfil empresarial</label>
+                    <select class="w-full px-4 py-3.5 rounded-[15px] border text-sm">
+                        <option>Startup</option>
+                        <option>Scaleup</option>
+                        <option>Promotor inmobiliario</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold uppercase tracking-wider opacity-60 heading-text">País</label>
+                    <select class="w-full px-4 py-3.5 rounded-[15px] border text-sm">
+                        <option>España</option>
+                        <option>México</option>
+                        <option>Argentina</option>
+                    </select>
+                </div>
+                <div class="space-y-1 md:col-span-2">
+                    <label class="text-[10px] font-bold uppercase tracking-wider opacity-60 heading-text">Descripción</label>
+                    <textarea rows="3" placeholder="Cuéntanos sobre tu proyecto..." class="w-full px-4 py-3.5 rounded-[15px] border text-sm"></textarea>
+                </div>
+                <div class="md:col-span-2 space-y-2 pt-2 border-t" style="border-color:var(--glass-border);">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 rounded accent-blue-500">
+                        <span class="text-[10px] opacity-60 heading-text">Acepto recibir comunicaciones de Token City.</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 rounded accent-blue-500">
+                        <span class="text-[10px] opacity-60 heading-text">Acepto los <a href="#" class="text-azul-acero-400 hover:underline">términos y política de privacidad</a>.</span>
+                    </label>
+                </div>
+                <div class="md:col-span-2">
+                    <button class="w-full py-4 bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold rounded-[15px] transition-all flex items-center justify-center gap-2 group">
+                        Consulta sin compromiso <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2"><span class="ds-code">input/select/textarea rounded-[15px] border</span> <span class="ds-code">.lead-form-* (energy / real-estate / scaleups)</span></div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ FLOATING CONTROLS ════════════════════════════ -->
+    <section id="controles" class="ds-section">
+        <h2 class="ds-section-title">Floating Controls</h2>
+        <p class="ds-section-desc">Barra fija inferior derecha. Cargada vía <code class="ds-code">data-component="components/floating-controls-component.html"</code>.</p>
+        <div class="ds-preview flex items-center justify-center py-6">
+            <div class="controls-bar">
+                <div class="theme-toggle" id="demoToggle" onclick="toggleTheme()"></div>
+                <div class="lang-toggle" onclick="toggleLang()">
+                    <span class="lang-label lang-label-es">ES</span>
+                    <div class="lang-switch-track"><div class="lang-switch-thumb"></div></div>
+                    <span class="lang-label lang-label-en">EN</span>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2"><span class="ds-code">.controls-bar</span> <span class="ds-code">.theme-toggle</span> <span class="ds-code">.lang-toggle</span></div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ LOGOS / MEDIA ════════════════════════════ -->
+    <section id="logos" class="ds-section">
+        <h2 class="ds-section-title">Logos &amp; Media</h2>
+        <p class="ds-section-desc">Logos de prensa y medios. <code class="ds-code">.media-logo</code> (imagen) · <code class="ds-code">.typo-logo</code> (tipografía). Marquee animado con <code class="ds-code">.animate-marquee</code>.</p>
+        <div class="ds-preview overflow-hidden">
+            <div class="flex gap-10 animate-marquee whitespace-nowrap items-center">
+                <span class="typo-logo">El País</span>
+                <span class="typo-logo">Expansión</span>
+                <span class="typo-logo">CincoDías</span>
+                <span class="typo-logo">El Economista</span>
+                <span class="typo-logo">Forbes</span>
+                <span class="typo-logo">El País</span>
+                <span class="typo-logo">Expansión</span>
+                <span class="typo-logo">CincoDías</span>
+                <span class="typo-logo">El Economista</span>
+                <span class="typo-logo">Forbes</span>
+            </div>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ HERO ════════════════════════════ -->
+    <section id="hero" class="ds-section">
+        <h2 class="ds-section-title">Hero Section Pattern</h2>
+        <p class="ds-section-desc">Sección hero estándar con imagen de fondo, overlay, grid y contenido centrado. El color del <code class="ds-code">section-label</code> y el span del h1 se pinta con el color del sector.</p>
+        <div class="hero-preview">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid-bg"></div>
+            <div class="relative z-10 text-center px-6 max-w-3xl">
+                <p class="section-label mb-4 !text-green-500">Tokenización de activos inmobiliarios</p>
+                <h1 class="text-3xl font-black text-white mb-4 uppercase tracking-tighter leading-tight">
+                    Financia tus proyectos, <br><span class="text-green-500">hazlos más accesibles y líquidos</span>
+                </h1>
+                <p class="text-sm text-gray-300 max-w-xl mx-auto">Descubre una nueva forma de hacer crecer tu patrimonio con la tokenización en blockchain.</p>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.hero-team .hero-media .hero-overlay .hero-grid</span>
+            <span class="ds-code">section-label !text-[sector-color]</span>
+            <span class="ds-code">h1 span style="color: [sector-lighter]"</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ PROCESO ════════════════════════════ -->
+    <section id="proceso" class="ds-section">
+        <h2 class="ds-section-title">Proceso 3 Pasos</h2>
+        <p class="ds-section-desc">Patrón estándar en energy, real-estate y scaleups. Sector color en card 1, azul en card 2, morado en card 3.</p>
+        <div class="ds-preview">
+            <div class="text-center mb-10">
+                <p class="section-label mb-2">Líderes en activos reales</p>
+                <h2 class="text-3xl font-extrabold heading-text uppercase tracking-tight">¿Cómo tokenizamos tu activo?</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="infra-card-style p-8 rounded-[30px] text-center" style="border-left-color: #22c55e;">
+                    <div class="w-12 h-12 mx-auto mb-6 rounded-[15px] bg-green-500/10 flex items-center justify-center text-green-500"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
+                    <h4 class="text-xl font-semibold heading-text mb-3 uppercase tracking-tight">1. Activo Real</h4>
+                    <p class="body-text text-sm">Evaluamos y estructuramos la tokenización.</p>
+                </div>
+                <div class="infra-card-style p-8 rounded-[30px] text-center" style="border-left-color: #3b82f6;">
+                    <div class="w-12 h-12 mx-auto mb-6 rounded-[15px] bg-blue-500/10 flex items-center justify-center text-blue-500"><i data-lucide="coins" class="w-6 h-6"></i></div>
+                    <h4 class="text-xl font-semibold heading-text mb-3 uppercase tracking-tight">2. Financiación</h4>
+                    <p class="body-text text-sm">Infraestructura y cobertura regulatoria para la venta de tokens.</p>
+                </div>
+                <div class="infra-card-style p-8 rounded-[30px] text-center" style="border-left-color: #8b5cf6;">
+                    <div class="w-12 h-12 mx-auto mb-6 rounded-[15px] bg-purple-500/10 flex items-center justify-center text-purple-500"><i data-lucide="arrow-left-right" class="w-6 h-6"></i></div>
+                    <h4 class="text-xl font-semibold heading-text mb-3 uppercase tracking-tight">3. Negociación</h4>
+                    <p class="body-text text-sm">Acceso a mercados secundarios y liquidez.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ BENTO ════════════════════════════ -->
+    <section id="bento" class="ds-section">
+        <h2 class="ds-section-title">Bento Grid</h2>
+        <p class="ds-section-desc">Grid 4 cols. Fila superior: tarjeta título (span 2) + imagen (span 2). Fila inferior: 3 benefit cards. El span del h2 usa el color de sector.</p>
+        <div class="ds-preview">
+            <div class="flex flex-col gap-4">
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="col-span-2 p-8 rounded-[1.5rem] glass flex flex-col justify-center relative overflow-hidden" style="background-color:var(--card-highlight-bg);">
+                        <div class="relative z-10">
+                            <p class="section-label mb-3">¿Por qué Token City?</p>
+                            <h2 class="text-2xl font-extrabold heading-text leading-tight mb-3 bento-title">
+                                ¿Por qué tokenizar tus<br><span class="text-green-500">activos con Token City?</span>
+                            </h2>
+                            <p class="body-text text-sm">Acompañamos todas las fases del proceso.</p>
+                        </div>
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-green-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                    </div>
+                    <div class="col-span-2 rounded-[1.5rem] relative overflow-hidden group shadow-xl min-h-[180px]">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=60" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700">
+                        <div class="absolute inset-0 bg-green-600/10 group-hover:bg-transparent transition-all"></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="infra-card-style p-5 rounded-[1.5rem] relative overflow-hidden hover:-translate-y-1 transition-transform" style="border-left-color:#22c55e;">
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-[12px] flex items-center justify-center shrink-0" style="background:var(--card-hover-bg);color:#22c55e;"><i data-lucide="zap" class="w-4 h-4"></i></div>
+                            <div><h4 class="font-semibold text-sm heading-text mb-1 bento-title">Acceso a capital</h4><p class="text-[10px] body-text">Inversores minoristas e institucionales.</p></div>
+                        </div>
+                    </div>
+                    <div class="infra-card-style p-5 rounded-[1.5rem] relative overflow-hidden hover:-translate-y-1 transition-transform" style="border-left-color:#3b82f6;">
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-[12px] flex items-center justify-center shrink-0" style="background:var(--card-hover-bg);color:#3b82f6;"><i data-lucide="globe" class="w-4 h-4"></i></div>
+                            <div><h4 class="font-semibold text-sm heading-text mb-1 bento-title">Mercado global</h4><p class="text-[10px] body-text">ISIN y distribución internacional.</p></div>
+                        </div>
+                    </div>
+                    <div class="infra-card-style p-5 rounded-[1.5rem] relative overflow-hidden hover:-translate-y-1 transition-transform" style="border-left-color:#8b5cf6;">
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-[12px] flex items-center justify-center shrink-0" style="background:var(--card-hover-bg);color:#8b5cf6;"><i data-lucide="settings" class="w-4 h-4"></i></div>
+                            <div><h4 class="font-semibold text-sm heading-text mb-1 bento-title">Flexibilidad</h4><p class="text-[10px] body-text">Tú defines las condiciones.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ LEAD FORM ════════════════════════════ -->
+    <section id="lead-form" class="ds-section">
+        <h2 class="ds-section-title">Lead Form Pattern</h2>
+        <p class="ds-section-desc">Formulario de captación. Se posiciona con <code class="ds-code">-mt-40 md:-mt-56 relative z-30</code> para superponerse al hero. El botón usa el color del sector.</p>
+        <div class="ds-preview">
+            <div class="lead-form-ds">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-extrabold heading-text mb-1 uppercase tracking-tight">¿Listo para dar el siguiente paso?</h2>
+                    <p class="body-text text-sm">Cuéntanos sobre tu activo.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-3">
+                    <div class="space-y-1"><label class="text-[10px] font-bold uppercase tracking-wider opacity-60 heading-text">Nombre</label><input type="text" placeholder="Nombre completo" class="w-full px-4 py-3 rounded-[15px] border text-sm"></div>
+                    <div class="space-y-1"><label class="text-[10px] font-bold uppercase tracking-wider opacity-60 heading-text">Email</label><input type="email" placeholder="email@empresa.com" class="w-full px-4 py-3 rounded-[15px] border text-sm"></div>
+                    <div class="md:col-span-2"><button class="w-full py-3.5 text-white font-bold rounded-[15px] flex items-center justify-center gap-2 group text-sm" style="background:#22c55e;">Consulta sin compromiso <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button></div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2"><span class="ds-code">.lead-form-energy</span> <span class="ds-code">.lead-form-realestate</span> <span class="ds-code">.lead-form-scaleups</span></div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ PARTNERS ════════════════════════════ -->
+    <section id="partners" class="ds-section">
+        <h2 class="ds-section-title">Partners Section</h2>
+        <div class="ds-preview">
+            <div class="text-center mb-8">
+                <p class="section-label mb-2">Ecosistema</p>
+                <h2 class="text-3xl font-extrabold heading-text uppercase tracking-tight">Aliados con visión y compromiso</h2>
+                <p class="body-text text-sm mt-3 max-w-lg mx-auto">Para transformar el sector inmobiliario.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <div class="infra-card-style p-6 rounded-[30px] flex flex-col gap-4" style="border-left-color:#22c55e;">
+                    <div class="w-12 h-12 rounded-[15px] bg-green-500/10 flex items-center justify-center text-green-500"><i data-lucide="handshake" class="w-6 h-6"></i></div>
+                    <div>
+                        <h4 class="text-xl font-semibold heading-text mb-1">JV20 Investment</h4>
+                        <p class="body-text text-sm">Asesoramiento en estructuración de activos tokenizados.</p>
+                    </div>
+                </div>
+                <div class="infra-card-style p-6 rounded-[30px] flex flex-col gap-4" style="border-left-color:#3b82f6;">
+                    <div class="w-12 h-12 rounded-[15px] bg-blue-500/10 flex items-center justify-center text-blue-500"><i data-lucide="users" class="w-6 h-6"></i></div>
+                    <div>
+                        <h4 class="text-xl font-semibold heading-text mb-1">BAnCLUBS</h4>
+                        <p class="body-text text-sm">Clubes de inversión especializados en startups.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ CTA PATTERNS ════════════════════════════ -->
+    <section id="cta" class="ds-section">
+        <h2 class="ds-section-title">CTA Patterns</h2>
+        <p class="ds-section-desc">Tres variantes de sección de llamada a acción: spotlight interactivo con el ratón, gradiente animado meta-fluid y patrón de cruces.</p>
+
+        <h3 class="ds-subsection-title">1. Mouse Tracking Spotlight · <span class="ds-code">.cta-spotlight-wrap + .cta-orb</span></h3>
+        <p class="ds-section-desc" style="margin-top:-1rem; font-size:.8rem;">Mueve el cursor sobre el área para ver el efecto de luz.</p>
+        <div class="cta-spotlight-wrap" id="ctaSpotlight" style="min-height:260px;">
+            <div class="cta-orb" id="ctaOrb" style="left:50%;top:50%;"></div>
+            <div class="cta-grid-lines"></div>
+            <div class="relative z-10 text-center px-6 py-16 flex flex-col items-center">
+                <p class="section-label mb-4" style="color:#60a5fa;">Plataforma de inversión blockchain</p>
+                <h2 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter leading-tight">
+                    ¿Listo para tokenizar<br><span class="text-blue-400">tus activos reales?</span>
+                </h2>
+                <button class="bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold px-8 py-3.5 rounded-[15px] transition-all hover:scale-105 flex items-center gap-2 text-sm">
+                    Empezar ahora <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.cta-spotlight-wrap</span>
+            <span class="ds-code">.cta-orb</span>
+            <span class="ds-code">.cta-grid-lines</span>
+            <span class="ds-code">mousemove → orb.style.left/top</span>
+        </div>
+
+        <h3 class="ds-subsection-title mt-8">2. Meta Fluid Animated · <span class="ds-code">.meta-fluid-bg</span> (styles-tcav.css)</h3>
+        <p class="ds-section-desc" style="margin-top:-1rem; font-size:.8rem;">Conic gradient rotatorio con blur. Animación pasiva, sin interacción.</p>
+        <div class="relative rounded-[2rem] overflow-hidden" style="min-height:240px; background:#05070a;">
+            <div class="meta-fluid-bg"></div>
+            <div class="absolute inset-0" style="backdrop-filter:blur(80px); -webkit-backdrop-filter:blur(80px);"></div>
+            <div class="relative z-10 text-center px-6 py-14 flex flex-col items-center">
+                <p class="section-label mb-4" style="color:#93c5fd;">Ecosistema Token City</p>
+                <h2 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter leading-tight">
+                    Únete a la revolución<br><span class="text-blue-300">de los activos digitales</span>
+                </h2>
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <button class="bg-white text-[#1855BA] font-bold px-8 py-3.5 rounded-[15px] hover:scale-105 transition-all text-sm">Conocer más</button>
+                    <button class="border-2 border-white/40 text-white font-semibold px-8 py-3.5 rounded-[15px] hover:border-white/70 transition-all text-sm">Ver documentación</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.meta-fluid-bg</span>
+            <span class="ds-code">parent: overflow:hidden + bg:#05070a</span>
+            <span class="ds-code">sibling: backdrop-filter:blur(80px)</span>
+        </div>
+
+        <h3 class="ds-subsection-title mt-8">3. Plus Pattern · <span class="ds-code">.cta-plus-pattern</span> (styles-tcav.css)</h3>
+        <p class="ds-section-desc" style="margin-top:-1rem; font-size:.8rem;">Fondo azul oscuro con patrón de puntos radiales. Estático, clásico.</p>
+        <div class="cta-plus-pattern rounded-[2rem] overflow-hidden" style="min-height:210px;">
+            <div class="relative z-10 text-center px-6 py-14 flex flex-col items-center">
+                <p class="text-[10px] font-bold uppercase tracking-widest text-blue-300 mb-4">Solución empresarial</p>
+                <h2 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter leading-tight">¿Tienes un proyecto que<br>quieres tokenizar?</h2>
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <button class="bg-white text-[#0f3c8e] font-bold px-7 py-3.5 rounded-[15px] hover:scale-105 transition-all text-sm">Hablar con un experto</button>
+                    <button class="border-2 border-white text-white font-semibold px-7 py-3.5 rounded-[15px] hover:bg-white hover:text-[#0f3c8e] transition-all text-sm">Ver documentación</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.cta-plus-pattern</span>
+            <span class="ds-code">background-color: #0f3c8e + radial-gradient dots</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ ANIMACIONES ════════════════════════════ -->
+    <section id="animaciones" class="ds-section">
+        <h2 class="ds-section-title">Animaciones</h2>
+
+        <h3 class="ds-subsection-title">reveal-growth · Activado por IntersectionObserver</h3>
+        <div class="ds-preview grid md:grid-cols-3 gap-4">
+            <div class="glass p-6 rounded-[1.5rem] text-center reveal-growth">
+                <p class="body-text text-sm">Sin delay</p>
+                <span class="ds-code">.reveal-growth</span>
+            </div>
+            <div class="glass p-6 rounded-[1.5rem] text-center reveal-growth delay-100">
+                <p class="body-text text-sm">+180ms</p>
+                <span class="ds-code">.reveal-growth .delay-100</span>
+            </div>
+            <div class="glass p-6 rounded-[1.5rem] text-center reveal-growth delay-200">
+                <p class="body-text text-sm">+360ms</p>
+                <span class="ds-code">.reveal-growth .delay-200</span>
+            </div>
+        </div>
+        <p class="body-text text-xs mt-2">El observer está en <code class="ds-code">global-scripts.js</code> · Activa clase <code class="ds-code">.active</code> al entrar en viewport.</p>
+
+        <h3 class="ds-subsection-title mt-6">Hover transitions estándar</h3>
+        <div class="ds-preview flex flex-wrap gap-4">
+            <div class="glass p-4 rounded-xl cursor-pointer hover:-translate-y-2 transition-transform">hover:-translate-y-2</div>
+            <div class="glass p-4 rounded-xl cursor-pointer hover:scale-105 transition-transform">hover:scale-105</div>
+            <button class="bg-azul-acero-500 text-white font-bold px-5 py-2.5 rounded-[15px] hover:scale-105 transition-all">hover:scale-105 button</button>
+        </div>
+    </section>
+
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ LEGAL LAYOUT ════════════════════════════ -->
+    <section id="legal-layout" class="ds-section">
+        <h2 class="ds-section-title">Layout Legal</h2>
+        <p class="ds-section-desc">Grid de dos columnas: sidebar TOC sticky (220px) + contenido. Colapsa a una columna en móvil. Usado en aviso-legal, política de privacidad, términos y condiciones y cookie policy.</p>
+        <div class="ds-preview" style="min-height:200px;">
+            <div class="legal-layout" style="max-width:100%;">
+                <aside class="legal-toc">
+                    <p class="legal-toc-group">Contenido</p>
+                    <nav class="flex flex-col">
+                        <a href="#" class="legal-toc-link active"><span class="ds-toc-num">1</span> Sección activa</a>
+                        <a href="#" class="legal-toc-link"><span class="ds-toc-num">2</span> Siguiente sección</a>
+                        <a href="#" class="legal-toc-link"><span class="ds-toc-num">3</span> Otra sección</a>
+                    </nav>
+                    <div class="glass p-3 rounded-xl mt-4">
+                        <p class="text-xs font-bold heading-text mb-1">¿Tienes dudas?</p>
+                        <a href="#" class="text-xs text-blue-400 font-bold">info@token-city.com</a>
+                    </div>
+                </aside>
+                <div>
+                    <p class="body-text text-sm">Área de contenido principal donde se renderizan las <span class="ds-code">.legal-card</span> de cada sección numerada.</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.legal-layout</span>
+            <span class="ds-code">.legal-toc</span>
+            <span class="ds-code">.legal-toc-link</span>
+            <span class="ds-code">.legal-toc-link.active</span>
+            <span class="ds-code">.ds-toc-num</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ LEGAL CARD ════════════════════════════ -->
+    <section id="legal-card" class="ds-section">
+        <h2 class="ds-section-title">Tarjeta Legal</h2>
+        <p class="ds-section-desc">Tarjeta de sección legal: <code class="ds-code">border-left: 4px solid #1855BA</code>, header con número circular + título en mayúsculas, cuerpo prose, listas con punto azul e infoboxes para datos destacados.</p>
+        <div class="ds-preview">
+            <div class="legal-card">
+                <div class="legal-card-header">
+                    <span class="legal-card-num">1</span>
+                    <h3 class="legal-card-title">Identificación del responsable</h3>
+                </div>
+                <div class="legal-body">
+                    <p>Párrafo de contenido legal con texto normal. La información se presenta con <strong>buen contraste</strong> y línea de altura cómoda para lectura.</p>
+                    <div class="legal-infobox">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><p class="legal-infobox-label">Razón social</p><p class="legal-infobox-value">Token City S.L.</p></div>
+                            <div><p class="legal-infobox-label">NIF</p><p class="legal-infobox-value font-mono">B-01729144</p></div>
+                        </div>
+                    </div>
+                    <ul class="legal-list">
+                        <li><span class="legal-list-dot"></span>Primer elemento de lista con punto azul.</li>
+                        <li><span class="legal-list-dot"></span>Segundo elemento de lista con punto azul.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.legal-card</span>
+            <span class="ds-code">.legal-card-header</span>
+            <span class="ds-code">.legal-card-num</span>
+            <span class="ds-code">.legal-body</span>
+            <span class="ds-code">.legal-list</span>
+            <span class="ds-code">.legal-list-dot</span>
+            <span class="ds-code">.legal-infobox</span>
+            <span class="ds-code">.legal-infobox-label</span>
+            <span class="ds-code">.legal-infobox-value</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ COOKIE TABLE ════════════════════════════ -->
+    <section id="cookie-table" class="ds-section">
+        <h2 class="ds-section-title">Tabla Cookies &amp; Browser Item</h2>
+        <p class="ds-section-desc">Tabla para listar cookies con columnas Nombre · Propósito · Vencimiento · Proveedor. Instrucciones de navegador con ícono de color y ruta.</p>
+
+        <h3 class="ds-subsection-title">Cookie Table · <span class="ds-code">.ds-cookie-table</span></h3>
+        <div class="ds-preview overflow-x-auto">
+            <div class="legal-infobox overflow-x-auto">
+                <table class="ds-cookie-table">
+                    <thead><tr>
+                        <th>Nombre</th><th>Propósito</th><th>Vencimiento</th><th>Proveedor</th>
+                    </tr></thead>
+                    <tbody>
+                        <tr>
+                            <td class="ds-cookie-name">_ga</td>
+                            <td class="body-text text-sm">Distingue usuarios únicos</td>
+                            <td class="font-mono text-xs body-text">2 años</td>
+                            <td><span class="ds-cookie-badge"><i data-lucide="bar-chart-2" style="width:10px;height:10px;"></i> Google Analytics</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ds-cookie-name">cookie_control_consent</td>
+                            <td class="body-text text-sm">Almacena consentimiento</td>
+                            <td class="font-mono text-xs body-text">1 año</td>
+                            <td><span class="ds-cookie-badge"><i data-lucide="building-2" style="width:10px;height:10px;"></i> Token City</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h3 class="ds-subsection-title mt-6">Browser Item · <span class="ds-code">.ds-browser-item</span></h3>
+        <div class="ds-preview flex flex-col gap-2">
+            <div class="ds-browser-item">
+                <div class="ds-browser-icon" style="background:rgba(249,115,22,0.1);"><i data-lucide="flame" class="w-4 h-4 text-orange-400"></i></div>
+                <div><p class="text-sm font-bold heading-text mb-0.5">Mozilla Firefox</p><p class="text-xs body-text">Menú → Opciones → Privacidad y Seguridad</p></div>
+            </div>
+            <div class="ds-browser-item">
+                <div class="ds-browser-icon" style="background:rgba(34,197,94,0.1);"><i data-lucide="circle-dot" class="w-4 h-4 text-green-400"></i></div>
+                <div><p class="text-sm font-bold heading-text mb-0.5">Google Chrome</p><p class="text-xs body-text">Menú → Configuración → Privacidad y Seguridad</p></div>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.ds-cookie-table</span>
+            <span class="ds-code">.ds-cookie-name</span>
+            <span class="ds-code">.ds-cookie-badge</span>
+            <span class="ds-code">.ds-browser-item</span>
+            <span class="ds-code">.ds-browser-icon</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ FAQ SEARCH ════════════════════════════ -->
+    <section id="faq-search" class="ds-section">
+        <h2 class="ds-section-title">Buscador FAQ</h2>
+        <p class="ds-section-desc">Input de búsqueda con ícono, placeholder y botón ✕. En dark mode blanco/semitransparente; en light mode el scrim oscuro garantiza visibilidad.</p>
+        <div class="ds-preview" style="background:#05070a;">
+            <div class="ds-faq-search-wrap">
+                <i data-lucide="search" class="ds-faq-search-icon"></i>
+                <input type="text" class="ds-faq-search" placeholder="Busca una pregunta...">
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.ds-faq-search-wrap</span>
+            <span class="ds-code">.ds-faq-search</span>
+            <span class="ds-code">.ds-faq-search-icon</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ FAQ FILTERS ════════════════════════════ -->
+    <section id="faq-filters" class="ds-section">
+        <h2 class="ds-section-title">Filtros FAQ</h2>
+        <p class="ds-section-desc">Pills de filtro por categoría. El activo tiene fondo y borde azul. El contador usa un mini badge. La barra se pega al scroll con <code class="ds-code">position: sticky; top: 72px</code>.</p>
+        <div class="ds-preview flex flex-wrap gap-2">
+            <button class="ds-faq-filter-btn active">Todas <span class="ds-faq-count">24</span></button>
+            <button class="ds-faq-filter-btn"><i data-lucide="zap" style="width:10px;height:10px;"></i> Energía <span class="ds-faq-count">3</span></button>
+            <button class="ds-faq-filter-btn"><i data-lucide="users" style="width:10px;height:10px;"></i> Clientes <span class="ds-faq-count">7</span></button>
+            <button class="ds-faq-filter-btn"><i data-lucide="link" style="width:10px;height:10px;"></i> Blockchain <span class="ds-faq-count">3</span></button>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.ds-faq-filter-btn</span>
+            <span class="ds-code">.ds-faq-filter-btn.active</span>
+            <span class="ds-code">.ds-faq-count</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ FAQ ACCORDION ════════════════════════════ -->
+    <section id="faq-accordion" class="ds-section">
+        <h2 class="ds-section-title">Acordeón FAQ</h2>
+        <p class="ds-section-desc">Click en pregunta → expande la respuesta con <code class="ds-code">max-height</code> animado. El ítem abierto resalta con borde azul y sombra. El chevron rota 180°. El número "Q" se rellena al abrir.</p>
+        <div class="ds-preview flex flex-col gap-2">
+            <div class="ds-faq-item open">
+                <button class="ds-faq-question" onclick="this.closest('.ds-faq-item').classList.toggle('open')">
+                    <span class="ds-faq-q-icon">Q</span>
+                    <span class="ds-faq-q-text">¿Qué es Token City?</span>
+                    <i data-lucide="chevron-down" class="ds-faq-chevron"></i>
+                </button>
+                <div class="ds-faq-answer">
+                    <div class="ds-faq-answer-inner">
+                        <p class="text-sm">Token City es una empresa tecnológica que ofrece la infraestructura para crear, gestionar, comprar y vender Security Tokens de forma ágil y segura.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ds-faq-item">
+                <button class="ds-faq-question" onclick="this.closest('.ds-faq-item').classList.toggle('open')">
+                    <span class="ds-faq-q-icon">Q</span>
+                    <span class="ds-faq-q-text">¿Qué es un Security Token?</span>
+                    <i data-lucide="chevron-down" class="ds-faq-chevron"></i>
+                </button>
+                <div class="ds-faq-answer">
+                    <div class="ds-faq-answer-inner">
+                        <p class="text-sm">Representa derechos o activos financieros reales, registrados en blockchain con pleno reconocimiento jurídico.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.ds-faq-item</span>
+            <span class="ds-code">.ds-faq-item.open</span>
+            <span class="ds-code">.ds-faq-question</span>
+            <span class="ds-code">.ds-faq-q-icon</span>
+            <span class="ds-code">.ds-faq-answer</span>
+            <span class="ds-code">.ds-faq-chevron</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ CONTACT METHOD ════════════════════════════ -->
+    <section id="contact-method" class="ds-section">
+        <h2 class="ds-section-title">Tarjeta Contacto</h2>
+        <p class="ds-section-desc">Card de método de contacto: borde izquierdo de color, ícono con fondo tintado, label, valor y botón pill de acción. Tres variantes de color (azul/morado/verde).</p>
+        <div class="ds-preview grid md:grid-cols-3 gap-4">
+            <div class="ds-contact-method" style="border-left:4px solid #1855BA;">
+                <div class="ds-contact-icon" style="background:rgba(24,85,186,0.12);color:#1855BA;"><i data-lucide="phone" class="w-5 h-5"></i></div>
+                <div class="flex-1">
+                    <p class="text-[10px] font-black uppercase tracking-wider text-blue-400 mb-0.5">Teléfono</p>
+                    <p class="font-bold heading-text text-sm font-mono">+34 919 890 429</p>
+                    <p class="body-text text-xs mt-0.5 mb-2">Lun–Vie · 9:00–18:00 CET</p>
+                    <a href="#" class="ds-contact-btn" style="background:rgba(24,85,186,0.1);color:#1855BA;"><i data-lucide="phone-call" class="w-3 h-3"></i> Llámanos</a>
+                </div>
+            </div>
+            <div class="ds-contact-method" style="border-left:4px solid #8b5cf6;">
+                <div class="ds-contact-icon" style="background:rgba(139,92,246,0.12);color:#8b5cf6;"><i data-lucide="mail" class="w-5 h-5"></i></div>
+                <div class="flex-1">
+                    <p class="text-[10px] font-black uppercase tracking-wider text-purple-400 mb-0.5">Email</p>
+                    <p class="font-bold heading-text text-sm">sales@token-city.com</p>
+                    <p class="body-text text-xs mt-0.5 mb-2">Ventas y proyectos</p>
+                    <a href="#" class="ds-contact-btn" style="background:rgba(139,92,246,0.1);color:#8b5cf6;"><i data-lucide="send" class="w-3 h-3"></i> Enviar mensaje</a>
+                </div>
+            </div>
+            <div class="ds-contact-method" style="border-left:4px solid #22c55e;">
+                <div class="ds-contact-icon" style="background:rgba(34,197,94,0.12);color:#22c55e;"><i data-lucide="headphones" class="w-5 h-5"></i></div>
+                <div class="flex-1">
+                    <p class="text-[10px] font-black uppercase tracking-wider text-green-400 mb-0.5">Soporte</p>
+                    <p class="font-bold heading-text text-sm">support@token-city.com</p>
+                    <p class="body-text text-xs mt-0.5 mb-2">Plataforma y wallets</p>
+                    <a href="#" class="ds-contact-btn" style="background:rgba(34,197,94,0.1);color:#22c55e;"><i data-lucide="life-buoy" class="w-3 h-3"></i> Abrir ticket</a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.ds-contact-method</span>
+            <span class="ds-code">.ds-contact-icon</span>
+            <span class="ds-code">.ds-contact-btn</span>
+            <span class="ds-code">border-left: 4px solid [color]</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ TESTIMONIAL ════════════════════════════ -->
+    <section id="testimonial" class="ds-section">
+        <h2 class="ds-section-title">Testimonial Card</h2>
+        <p class="ds-section-desc">Card con degradado azul oscuro, SVG de comillas decorativas y datos del autor. Usado en TaaS y páginas de producto.</p>
+        <div class="ds-preview">
+            <div class="ds-testimonial max-w-2xl">
+                <svg class="quote-icon" fill="currentColor" viewBox="0 0 32 32"><path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/></svg>
+                <div class="relative z-10">
+                    <p class="text-lg font-semibold text-white leading-relaxed mb-6 italic">"La tokenización de activos es el origen de los nuevos mercados de capitales en la era digital."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><i data-lucide="user" class="w-5 h-5 text-white/60"></i></div>
+                        <div><p class="font-black text-white text-sm">Javier Mera</p><p class="text-blue-300 text-xs font-medium">CEO · Linx Capital Investments</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.ds-testimonial</span>
+            <span class="ds-code">.quote-icon (SVG absoluto decorativo)</span>
+            <span class="ds-code">background: linear-gradient(135deg, #0d1a3a, #1855BA)</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ ARTICLE TAGS ════════════════════════════ -->
+    <section id="article-tags" class="ds-section">
+        <h2 class="ds-section-title">Tags Artículo</h2>
+        <p class="ds-section-desc">Dos variantes: primaria (azul con borde) y secundaria (glass adaptativo). Usadas en el hero de artículos del blog, breadcrumb y pie de artículo.</p>
+        <div class="ds-preview flex flex-wrap gap-2" style="background:#05070a;">
+            <span class="ds-article-tag ds-article-tag-primary"><i data-lucide="tag" style="width:10px;height:10px;"></i> Tokenización</span>
+            <span class="ds-article-tag ds-article-tag-secondary">Real Estate</span>
+            <span class="ds-article-tag ds-article-tag-secondary">Regulación UE</span>
+            <span class="ds-article-tag ds-article-tag-secondary">ERIR</span>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.ds-article-tag</span>
+            <span class="ds-code">.ds-article-tag-primary</span>
+            <span class="ds-code">.ds-article-tag-secondary</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ PROSA & CITA ════════════════════════════ -->
+    <section id="prose-quote" class="ds-section">
+        <h2 class="ds-section-title">Prosa &amp; Cita Estadística</h2>
+        <p class="ds-section-desc">Tipografía del artículo: párrafo lead (mayor tamaño/peso), cuerpo prose y blockquote con borde azul y cita en itálica + fuente en mayúsculas.</p>
+        <div class="ds-preview space-y-4">
+            <p class="ds-prose-lead">Lead paragraph — España consolida su posición como mercado inmobiliario relevante. La inversión alcanzó <strong>16.928 millones de euros</strong> en 2025.</p>
+            <div class="ds-stat-quote">
+                <p>"El peso del país en la inversión inmobiliaria europea ha pasado del 6% en 2019 al 15% en 2025."</p>
+                <cite>Asociación de Consultores Inmobiliarios</cite>
+            </div>
+            <p class="body-text text-sm leading-relaxed">Cuerpo prose estándar — textura de texto secundario con <strong class="heading-text">énfasis en negrita</strong> para datos relevantes. Line-height: 1.85.</p>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.ds-prose-lead</span>
+            <span class="ds-code">.ds-stat-quote</span>
+            <span class="ds-code">.ds-stat-quote cite</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ CASE CARD ════════════════════════════ -->
+    <section id="case-card" class="ds-section">
+        <h2 class="ds-section-title">Case Card &amp; Linea Card</h2>
+
+        <h3 class="ds-subsection-title">Case Card · <span class="ds-code">.ds-case-card + --card-accent</span></h3>
+        <p class="ds-section-desc">Para casos de uso en artículos de blog. Borde izquierdo con <code class="ds-code">--card-accent</code>, número circular y título + cuerpo.</p>
+        <div class="ds-preview grid md:grid-cols-3 gap-4">
+            <div class="ds-case-card" style="--card-accent:#1855BA;">
+                <div class="flex items-center gap-3 mb-3"><span class="ds-case-num">1</span><h4 class="font-black heading-text">OTESA</h4></div>
+                <p class="body-text text-sm">Bono tokenizado al 10% anual con garantía hipotecaria sobre suelo.</p>
+            </div>
+            <div class="ds-case-card" style="--card-accent:#3b82f6;">
+                <div class="flex items-center gap-3 mb-3"><span class="ds-case-num">2</span><h4 class="font-black heading-text">Equalice</h4></div>
+                <p class="body-text text-sm">14 proyectos inmobiliarios con énfasis en transparencia y accesibilidad.</p>
+            </div>
+            <div class="ds-case-card" style="--card-accent:#8b5cf6;">
+                <div class="flex items-center gap-3 mb-3"><span class="ds-case-num">3</span><h4 class="font-black heading-text">Equito</h4></div>
+                <p class="body-text text-sm">142 propiedades bajo gestión. Inversión desde 100€.</p>
+            </div>
+        </div>
+
+        <h3 class="ds-subsection-title mt-6">Línea Card · <span class="ds-code">.ds-linea-card + --linea-color</span></h3>
+        <p class="ds-section-desc">Para secciones estructuradas (ej. "4 Líneas Maestras"). Incluye sub-boxes de "Cambios prácticos" e "Impacto".</p>
+        <div class="ds-preview">
+            <div class="ds-linea-card" style="--linea-color:#1855BA;">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="ds-case-num" style="background:rgba(24,85,186,0.1);color:#1855BA;">1</span>
+                    <h4 class="font-bold heading-text uppercase tracking-tight text-sm">Pasaporte Europeo: Licencia única</h4>
+                </div>
+                <p class="body-text text-sm mb-3">Entidades autorizadas en un país del EEE ofrecen servicios en toda la UE sin nuevas licencias.</p>
+                <div class="grid md:grid-cols-2 gap-3">
+                    <div class="ds-linea-impact">
+                        <i data-lucide="settings" class="w-4 h-4 text-blue-400 shrink-0 mt-0.5"></i>
+                        <div><p class="text-[10px] font-black uppercase tracking-wider text-blue-400 mb-1">Cambios prácticos</p><p class="text-xs body-text">Eliminación de barreras ocultas.</p></div>
+                    </div>
+                    <div class="ds-linea-impact">
+                        <i data-lucide="zap" class="w-4 h-4 text-green-400 shrink-0 mt-0.5"></i>
+                        <div><p class="text-[10px] font-black uppercase tracking-wider text-green-400 mb-1">Impacto</p><p class="text-xs body-text">Expansión más rápida y económica.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.ds-case-card</span>
+            <span class="ds-code">.ds-case-num</span>
+            <span class="ds-code">.ds-linea-card</span>
+            <span class="ds-code">.ds-linea-impact</span>
+            <span class="ds-code">--card-accent / --linea-color: #hex</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+    <!-- ════════════════════════════ BLOG SIDEBAR ════════════════════════════ -->
+    <section id="blog-sidebar" class="ds-section">
+        <h2 class="ds-section-title">Sidebar Blog &amp; Summary Box</h2>
+
+        <h3 class="ds-subsection-title">Sidebar Blog · <span class="ds-code">.ds-sidebar-card + .ds-toc-link</span></h3>
+        <p class="ds-section-desc">Panel sticky lateral del artículo: TOC, tags, CTA card azul y artículos relacionados. El TOC activo sigue el scroll.</p>
+        <div class="ds-preview grid md:grid-cols-3 gap-4 items-start">
+            <div class="md:col-span-1 flex flex-col gap-3">
+                <div class="ds-sidebar-card">
+                    <p class="ds-sidebar-title">En este artículo</p>
+                    <nav class="flex flex-col">
+                        <a href="#" class="ds-toc-link active">Sección activa</a>
+                        <a href="#" class="ds-toc-link">Segunda sección</a>
+                        <a href="#" class="ds-toc-link">Tercera sección</a>
+                    </nav>
+                </div>
+                <div class="ds-sidebar-card" style="background:linear-gradient(135deg,#0d1a3a,#1855BA);border-color:rgba(96,165,250,0.2);">
+                    <p class="text-[10px] font-black uppercase tracking-wider text-blue-300 mb-2">Plataforma</p>
+                    <h4 class="text-sm font-black text-white mb-2 leading-tight">Infraestructura regulada de activos tokenizados</h4>
+                    <p class="text-white/60 text-xs mb-3">100% digital y con reconocimiento jurídico.</p>
+                    <a href="#" class="block text-center bg-white text-[#0f3c8e] font-bold px-3 py-2 rounded-[10px] text-xs">Registrarse</a>
+                </div>
+            </div>
+            <div class="md:col-span-2">
+                <p class="body-text text-sm">Contenido principal del artículo. El sidebar se posiciona con <code class="ds-code">position: sticky; top: 100px</code> en desktop y desaparece en móvil.</p>
+                <div class="flex items-center gap-2 mt-4">
+                    <a href="#" class="ds-social-share"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286z"/></svg></a>
+                    <a href="#" class="ds-social-share"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z"/></svg></a>
+                    <span class="text-xs body-text ml-1">Botones compartir artículo</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="ds-subsection-title mt-6">Summary Box · <span class="ds-code">.ds-summary-box</span></h3>
+        <p class="ds-section-desc">Resumen estructurado con etiqueta + descripción por fila. Usado al final de artículos con múltiples puntos clave.</p>
+        <div class="ds-preview">
+            <div class="ds-summary-box">
+                <div class="ds-summary-item">
+                    <span class="ds-summary-label">Grupos</span>
+                    <p class="text-sm body-text">Menos duplicación regulatoria para entidades en múltiples países de la UE.</p>
+                </div>
+                <div class="ds-summary-item">
+                    <span class="ds-summary-label">Pasaporte</span>
+                    <p class="text-sm body-text">Licencia única efectiva en toda la UE, sin barreras encubiertas.</p>
+                </div>
+                <div class="ds-summary-item">
+                    <span class="ds-summary-label">Tecnología</span>
+                    <p class="text-sm body-text">Marco legal flexible para blockchain y Régimen Piloto revisado.</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+            <span class="ds-code">.ds-sidebar-card</span>
+            <span class="ds-code">.ds-sidebar-title</span>
+            <span class="ds-code">.ds-toc-link</span>
+            <span class="ds-code">.ds-toc-link.active</span>
+            <span class="ds-code">.ds-social-share</span>
+            <span class="ds-code">.ds-summary-box</span>
+            <span class="ds-code">.ds-summary-item</span>
+            <span class="ds-code">.ds-summary-label</span>
+        </div>
+    </section>
+    <hr class="ds-divider">
+
+</main>
+</div>
+
+<script>
+    // ── Toggle Theme ──
+    function toggleTheme() {
+        const isLight = document.body.classList.toggle('light-mode');
+        if (isLight) document.documentElement.classList.remove('dark');
+        else document.documentElement.classList.add('dark');
+        localStorage.setItem('themePreference', isLight ? 'light' : 'dark');
+        updateToggles();
+    }
+    function toggleLang() {
+        document.body.classList.toggle('lang-en');
+        updateToggles();
+    }
+    function updateToggles() {
+        const isLight = document.body.classList.contains('light-mode');
+        const isEn = document.body.classList.contains('lang-en');
+        document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
+        document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
+        const html = `
+            <div class="absolute left-1 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity">
+                <i data-lucide="moon" class="toggle-track-icon"></i>
+            </div>
+            <div class="absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity">
+                <i data-lucide="sun" class="toggle-track-icon"></i>
+            </div>
+            <div class="theme-toggle-thumb"><i data-lucide="${isLight ? 'sun' : 'moon'}" class="thumb-icon"></i></div>
+        `;
+        document.querySelectorAll('.theme-toggle').forEach(t => t.innerHTML = html);
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    // ── Sidebar active state ──
+    function updateSidebarActive() {
+        const sections = document.querySelectorAll('.ds-section');
+        const links = document.querySelectorAll('.ds-nav-link');
+        let current = '';
+        sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+        links.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+    }
+
+    // ── Reveal Growth ──
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal-growth').forEach(el => observer.observe(el));
+
+    // ── Flip card buttons ──
+    document.querySelectorAll('.card-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            btn.closest('.participant-card')?.classList.toggle('is-flipped');
+        });
+    });
+
+    // ── CTA Mouse Tracking Spotlight ──
+    (function() {
+        const wrap = document.getElementById('ctaSpotlight');
+        const orb  = document.getElementById('ctaOrb');
+        if (!wrap || !orb) return;
+        wrap.addEventListener('mousemove', e => {
+            const r = wrap.getBoundingClientRect();
+            orb.style.left = (e.clientX - r.left) + 'px';
+            orb.style.top  = (e.clientY - r.top)  + 'px';
+        });
+        wrap.addEventListener('mouseleave', () => {
+            orb.style.left = '50%';
+            orb.style.top  = '50%';
+        });
+    })();
+
+    window.addEventListener('scroll', updateSidebarActive);
+    document.addEventListener('DOMContentLoaded', () => {
+        updateToggles();
+        updateSidebarActive();
+        if (window.lucide) window.lucide.createIcons();
+    });
+    setTimeout(() => { if (window.lucide) window.lucide.createIcons(); }, 200);
+</script>
+</body>
+</html>

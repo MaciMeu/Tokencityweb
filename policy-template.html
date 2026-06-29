@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Política de Privacidad | Token City</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Fuentes de Google -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Importar estilos TCAV -->
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <style>
+        /* Variables de overlay para el banner (similar a INdex2) */
+        :root {
+            --policy-overlay-start: rgba(5, 7, 10, 0.9);
+            --policy-overlay-mid: rgba(5, 7, 10, 0.7);
+            --policy-overlay-end: rgba(5, 7, 10, 1);
+        }
+
+        body.light-mode {
+            --policy-overlay-start: rgba(5, 7, 10, 0.85);
+            --policy-overlay-mid: rgba(5, 7, 10, 0.4);
+            --policy-overlay-end: #f8fafc;
+        }
+
+        /* Banner Hero para Políticas */
+        .policy-banner {
+            width: 100%;
+            height: 320px;
+            display: flex;
+            align-items: flex-start;
+            padding-top: 110px;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background-image: url('./privacy-policy.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: 0;
+            margin-bottom: -1px;
+            /* Hack para evitar gap subpixel con el contenido */
+        }
+
+        /* Capa de imagen de fondo */
+        .policy-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom,
+                    var(--policy-overlay-start),
+                    var(--policy-overlay-mid),
+                    var(--policy-overlay-end));
+            z-index: 1;
+        }
+
+        /* Contenido del banner */
+        .policy-banner-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .policy-banner h1 {
+            color: #ffffff;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: bold;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Contenido principal */
+        .policy-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            line-height: 1.8;
+        }
+
+        .policy-content h2 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 0.5rem;
+        }
+
+        .policy-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .policy-content p {
+            margin-bottom: 1.25rem;
+            color: var(--text-muted);
+            text-align: justify;
+        }
+
+        .policy-content ul,
+        .policy-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        .policy-content li {
+            margin-bottom: 0.75rem;
+            line-height: 1.8;
+        }
+
+        .policy-content a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .policy-content a:hover {
+            text-decoration: underline;
+            color: #144a9e;
+        }
+
+        /* Tabla de contenidos */
+        .toc-box {
+            background-color: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--primary-blue);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .toc-box h3 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .toc-box ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc-box li {
+            margin-bottom: 1rem;
+        }
+
+        .toc-box a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .toc-box a:hover {
+            padding-left: 0.5rem;
+            color: #144a9e;
+        }
+
+        /* Sección destacada */
+        .highlight-section {
+            background-color: var(--card-highlight-bg);
+            border-left: 4px solid #22c55e;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0.5rem;
+        }
+
+        .highlight-section p {
+            margin-bottom: 0;
+        }
+
+        /* Botón de volver */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            background-color: var(--card-hover-bg);
+            border-color: var(--primary-blue);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            border-top: 1px solid var(--glass-border);
+            text-align: left;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .policy-banner {
+                height: 200px;
+            }
+
+            .policy-banner h1 {
+                font-size: 1.75rem;
+            }
+
+            .policy-content {
+                padding: 2rem 1rem;
+            }
+
+            .policy-content h2 {
+                font-size: 1.5rem;
+                margin-top: 2rem;
+            }
+
+            .policy-content h3 {
+                font-size: 1.1rem;
+            }
+
+            .toc-box {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Modo claro ajustes */
+
+        body.light-mode .policy-banner h1 {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        body.light-mode .policy-banner-subtitle {
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+    <style>
+        /* Links Contrast Fix for Dark Mode AA Compliance */
+        body:not(.light-mode) .policy-content a {
+            color: #60a5fa;
+            /* Lighter blue for dark mode */
+        }
+
+        body:not(.light-mode) .policy-content a:hover {
+            color: #93c5fd;
+        }
+
+        /* Floating Controls Bar - Always Dark */
+        .controls-bar {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: rgba(5, 7, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .controls-bar .theme-toggle {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .controls-bar .toggle-track-icon {
+            color: #ffffff;
+        }
+
+        .controls-bar .thumb-icon {
+            color: #1855BA;
+        }
+
+        .controls-bar .lang-label {
+            color: #ffffff;
+        }
+
+        .controls-bar .lang-label.lang-label-en {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .controls-bar .lang-label.lang-label-es {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .controls-bar .lang-label.lang-label-en {
+            color: #ffffff;
+        }
+
+        .controls-bar .lang-switch-track {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .controls-bar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="pb-24 md:pb-0 light-mode">
+    <!-- Script de detección horaria: Modo oscuro automático después de las 19:00 -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            if (savedTheme) {
+                if (savedTheme === 'light') document.body.classList.add('light-mode');
+                else document.body.classList.remove('light-mode');
+            } else {
+                const hour = new Date().getHours();
+                if (hour >= 19 || hour < 7) document.body.classList.remove('light-mode');
+                else document.body.classList.add('light-mode');
+            }
+        })();
+    </script>
+
+    <canvas id="network-canvas"></canvas>
+
+    <!-- Navegación Superior -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300 backdrop-blur-md border-b" id="navbar"
+        style="background-color: var(--nav-bg); border-color: var(--glass-border);">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 h-16 md:h-20">
+            <div class="flex items-center gap-2 select-none">
+                <a href="#" class="flex items-baseline tracking-tighter leading-none" style="color: var(--nav-text);">
+                    <span class="text-sm md:text-2xl font-black tracking-tight">TOKEN CITY</span>
+                    <span class="text-sm md:text-2xl font-thin ml-1 tracking-wide">EXCHANGE</span>
+                </a>
+                <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse self-start mt-1"></div>
+            </div>
+
+            <div class="flex items-center gap-2 md:gap-4">
+                <div class="flex items-center gap-3">
+                    <button
+                        class="hidden md:flex text-xs md:text-sm font-bold px-3 h-[36px] md:h-[40px] border border-white rounded-[15px] hover:bg-white/10 transition-colors whitespace-nowrap items-center gap-2"
+                        style="color: white; line-height: 1;">
+                        <i data-lucide="user" class="w-4 h-4"></i> Iniciar sesión
+                    </button>
+                    <button
+                        class="hidden md:flex bg-[#1855BA] hover:bg-[#144a9e] text-white text-xs md:text-sm font-bold px-3 md:px-6 h-[36px] md:h-[40px] rounded-[15px] transition-all transform hover:scale-105 whitespace-nowrap items-center gap-2"
+                        style="line-height: 1;">
+                        Registrarse
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Navegación Inferior Flotante (Móvil) -->
+    <nav class="fixed bottom-0 left-0 w-full z-[60] md:hidden bottom-nav pb-safe px-4 py-3 flex items-center"
+        style="background-color: var(--bottom-bar-bg); border-top: 1px solid var(--bottom-bar-border); backdrop-filter: blur(12px); height: auto;">
+        <div class="flex justify-between items-center gap-3 w-full">
+            <!-- Botones en móvil -->
+            <div class="flex items-center gap-2">
+                <button
+                    class="flex-shrink-0 text-xs font-bold px-3 h-[36px] border border-white rounded-[15px] hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1.5"
+                    style="color: white; line-height: 1;">
+                    <i data-lucide="user" class="w-4 h-4"></i> Sesión
+                </button>
+                <button
+                    class="flex-shrink-0 text-xs font-bold px-3 h-[36px] bg-[#1855BA] text-white rounded-[15px] hover:bg-[#144a9e] transition-colors whitespace-nowrap flex items-center gap-1.5"
+                    style="line-height: 1;">
+                    Registro
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer"
+        class="fixed bottom-20 md:bottom-4 right-4 z-[110] flex flex-col gap-2 pointer-events-none">
+        <!-- Toasts are injected here -->
+    </div>
+
+    <main class="pt-0">
+        <!-- Banner Principal con Título -->
+        <div class="policy-banner">
+            <div class="policy-banner-content">
+                <h1>Política de Privacidad</h1>
+            </div>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="policy-content">
+            <!-- Botón de volver -->
+            <a href="INdex2.html"
+                class="px-4 py-2 rounded-[15px] font-bold flex items-center justify-center gap-2 bg-[#1e293b] hover:bg-[#0f172a] !text-white hover:!text-white hover:!no-underline border border-slate-700 transition-all shadow-md text-sm md:text-base w-fit mb-8">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Volver al inicio
+            </a>
+
+            <!-- Última actualización -->
+            <div class="highlight-section">
+                <p><strong>Última actualización:</strong> 23 de febrero de 2026</p>
+            </div>
+
+            <!-- Tabla de contenidos -->
+            <div class="toc-box">
+                <h3>Tabla de Contenidos</h3>
+                <ul>
+                    <li><a href="#introduccion">1. Introducción</a></li>
+                    <li><a href="#informacion-que-recopilamos">2. Información que recopilamos</a></li>
+                    <li><a href="#como-usamos">3. Cómo usamos tu información</a></li>
+                    <li><a href="#proteccion-datos">4. Protección de datos</a></li>
+                    <li><a href="#derechos">5. Tus derechos</a></li>
+                    <li><a href="#cookies">6. Cookies</a></li>
+                    <li><a href="#contacto">7. Contacto</a></li>
+                </ul>
+            </div>
+
+            <!-- Contenido -->
+            <section id="introduccion">
+                <h2>1. Introducción</h2>
+                <p>
+                    En Token City Exchange, nos comprometemos a proteger tu privacidad y garantizar que tengas una
+                    experiencia positiva en nuestra plataforma. Esta Política de Privacidad explica cómo recopilamos,
+                    usamos, divulgamos y salvaguardamos tu información cuando visitas nuestro sitio web y utilizas
+                    nuestros servicios.
+                </p>
+                <p>
+                    Por favor, lee esta política de privacidad cuidadosamente. Si no estás de acuerdo con nuestras
+                    prácticas, no utilices nuestros servicios.
+                </p>
+            </section>
+
+            <section id="informacion-que-recopilamos">
+                <h2>2. Información que recopilamos</h2>
+                <p>
+                    Recopilamos información de varias formas:
+                </p>
+
+                <h3>2.1 Información que nos proporcionas directamente</h3>
+                <ul>
+                    <li>Información de registro (nombre, correo electrónico, contraseña)</li>
+                    <li>Datos de perfil y preferencias</li>
+                    <li>Información de contacto y comunicación</li>
+                    <li>Documentación de verificación de identidad</li>
+                    <li>Información bancaria y de pago</li>
+                </ul>
+
+                <h3>2.2 Información recopilada automáticamente</h3>
+                <ul>
+                    <li>Dirección IP y tipo de navegador</li>
+                    <li>Páginas visitadas y tiempo de permanencia</li>
+                    <li>Cookies y tecnologías similares</li>
+                    <li>Datos de dispositivo (sistema operativo, tipo de dispositivo)</li>
+                    <li>Ubicación geográfica aproximada</li>
+                </ul>
+
+                <h3>2.3 Información de terceros</h3>
+                <p>
+                    Podemos recibir información sobre ti de terceros, incluyendo:
+                </p>
+                <ul>
+                    <li>Proveedores de verificación de identidad</li>
+                    <li>Instituciones financieras</li>
+                    <li>Proveedores de servicios de análisis</li>
+                    <li>Redes sociales (si conectas tu cuenta)</li>
+                </ul>
+            </section>
+
+            <section id="como-usamos">
+                <h2>3. Cómo usamos tu información</h2>
+                <p>
+                    Utilizamos la información recopilada para:
+                </p>
+                <ul>
+                    <li>Proporcionar, mantener y mejorar nuestros servicios</li>
+                    <li>Procesar transacciones y enviar información relacionada</li>
+                    <li>Verificar tu identidad y prevenir fraude</li>
+                    <li>Cumplir con obligaciones legales y regulatorias</li>
+                    <li>Comunicarnos contigo sobre actualizaciones y cambios</li>
+                    <li>Personalizar tu experiencia en nuestra plataforma</li>
+                    <li>Realizar análisis y mejoras de nuestros servicios</li>
+                    <li>Cumplimiento de normativas CNMV y regulaciones financieras</li>
+                </ul>
+            </section>
+
+            <section id="proteccion-datos">
+                <h2>4. Protección de datos</h2>
+                <p>
+                    Implementamos medidas de seguridad técnicas, administrativas y físicas para proteger tu información
+                    personal:
+                </p>
+                <ul>
+                    <li>Encriptación SSL/TLS de datos en tránsito</li>
+                    <li>Encriptación AES-256 de datos en reposo</li>
+                    <li>Autenticación de dos factores (2FA)</li>
+                    <li>Auditorías de seguridad regulares</li>
+                    <li>Acceso limitado al personal autorizado</li>
+                    <li>Monitoreo continuo de seguridad</li>
+                </ul>
+
+                <div class="highlight-section">
+                    <p>
+                        <strong>Nota de seguridad:</strong> A pesar de nuestros esfuerzos, ningún método de transmisión
+                        por internet o almacenamiento electrónico es 100% seguro. Por lo tanto, no podemos garantizar
+                        seguridad absoluta.
+                    </p>
+                </div>
+            </section>
+
+            <section id="derechos">
+                <h2>5. Tus derechos</h2>
+                <p>
+                    De conformidad con el RGPD y las leyes de protección de datos, tienes derecho a:
+                </p>
+                <ul>
+                    <li><strong>Derecho de acceso:</strong> Acceder a tus datos personales</li>
+                    <li><strong>Derecho de rectificación:</strong> Corregir información inexacta</li>
+                    <li><strong>Derecho de eliminación:</strong> Solicitar la eliminación de tus datos</li>
+                    <li><strong>Derecho a la portabilidad:</strong> Recibir tus datos en formato estructurado</li>
+                    <li><strong>Derecho a objetar:</strong> Objetar al procesamiento de tus datos</li>
+                    <li><strong>Derechos relacionados con decisiones automatizadas:</strong> No ser sometido a
+                        decisiones basadas únicamente en lógica automatizada</li>
+                </ul>
+
+                <p>
+                    Para ejercer cualquiera de estos derechos, contacta con nosotros en <a
+                        href="mailto:privacy@tokencity.exchange">privacy@tokencity.exchange</a>.
+                </p>
+            </section>
+
+            <section id="cookies">
+                <h2>6. Cookies</h2>
+                <p>
+                    Utilizamos cookies y tecnologías similares para mejorar tu experiencia:
+                </p>
+
+                <h3>6.1 Tipos de cookies que usamos</h3>
+                <ul>
+                    <li><strong>Cookies esenciales:</strong> Necesarias para la funcionalidad básica</li>
+                    <li><strong>Cookies de rendimiento:</strong> Para analizar cómo usas nuestro sitio</li>
+                    <li><strong>Cookies de funcionalidad:</strong> Para recordar tus preferencias</li>
+                    <li><strong>Cookies de publicidad:</strong> Para personalizar el contenido</li>
+                </ul>
+
+                <h3>6.2 Gestión de cookies</h3>
+                <p>
+                    Puedes controlar las cookies a través de tu navegador. Ten en cuenta que desactivar cookies puede
+                    afectar la funcionalidad de nuestro sitio.
+                </p>
+            </section>
+
+            <section id="contacto">
+                <h2>7. Contacto</h2>
+                <p>
+                    Si tienes preguntas sobre esta Política de Privacidad o nuestras prácticas de privacidad, contacta
+                    con nosotros:
+                </p>
+
+                <div class="highlight-section">
+                    <p>
+                        <strong>Token City Exchange, A.V.</strong><br>
+                        Correo electrónico: <a
+                            href="mailto:privacy@tokencity.exchange">privacy@tokencity.exchange</a><br>
+                        Registro CNMV: 334<br>
+                        <br>
+                        <strong>Regulador:</strong>
+                        <a href="https://www.cnmv.es" target="_blank" rel="noopener noreferrer">Comisión Nacional del
+                            Mercado de Valores (CNMV)</a>
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <h2>8. Cambios en esta política</h2>
+                <p>
+                    Nos reservamos el derecho de actualizar esta Política de Privacidad en cualquier momento. Los
+                    cambios entrarán en vigor cuando se publiquen en este sitio. Te recomendamos que revises esta
+                    política periódicamente para estar informado sobre cómo protegemos tu información.
+                </p>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- FOOTER COMPONENT -->
+    <div data-component="components/footer-component.html"></div>
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 text-left">
+        <!-- Sección 1: Información de la Empresa -->
+        <div class="space-y-4">
+            <div class="flex items-center gap-2 select-none" style="color: white !important;">
+                <div class="flex items-baseline tracking-tighter leading-none">
+                    <span class="text-lg font-black tracking-tight">TOKEN CITY</span>
+                    <span class="text-lg font-thin ml-2">EXCHANGE</span>
+                </div>
+            </div>
+            <p class="text-sm leading-relaxed">
+                Transformando el mercado de capitales con tecnología blockchain. Seguridad, transparencia y liquidez
+                para la nueva economía digital.
+            </p>
+            <div class="flex gap-4">
+                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-[#1855BA] transition-colors">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-[#1855BA] transition-colors">
+                    <i data-lucide="twitter" class="w-5 h-5"></i>
+                </a>
+                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-[#1855BA] transition-colors">
+                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sección 2: Compañía -->
+        <div>
+            <h4 class="font-bold mb-4 text-main-force">Compañía</h4>
+            <ul class="space-y-2 text-sm">
+                <li><a href="INdex2.html" class="hover:text-[#1855BA] transition-colors">Sobre Nosotros</a></li>
+                <li><a href="INdex2.html" class="hover:text-[#1855BA] transition-colors">Equipo</a></li>
+                <li><a href="participantes-mercado.html" class="hover:text-[#1855BA] transition-colors">Asociaciones
+                        participantes</a></li>
+                <li><a href="INdex2.html" class="hover:text-[#1855BA] transition-colors">Prensa</a></li>
+            </ul>
+        </div>
+
+        <!-- Sección 3: Legal -->
+        <div>
+            <h4 class="font-bold mb-4 text-main-force">Legal</h4>
+            <ul class="space-y-2 text-sm">
+                <li><a href="/aviso-legal.html" class="hover:text-[#1855BA] transition-colors">Aviso Legal</a></li>
+                <li><a href="/politica-privacidad.html" class="hover:text-[#1855BA] transition-colors">Política de
+                        Privacidad</a></li>
+                <li><a href="/politica-cookies.html" class="hover:text-[#1855BA] transition-colors">Política de
+                        Cookies</a></li>
+                <li><a href="/terminos-condiciones.html" class="hover:text-[#1855BA] transition-colors">Términos y
+                        Condiciones</a></li>
+                <li><a href="/regulacion-cnmv.html" class="hover:text-[#1855BA] transition-colors">Regulación
+                        CNMV</a></li>
+            </ul>
+        </div>
+
+        <!-- Sección 4: Newsletter -->
+        <div>
+            <h4 class="font-bold mb-4 text-main-force">Suscríbete</h4>
+            <p class="text-xs mb-4">Recibe las últimas oportunidades de inversión.</p>
+            <form id="newsletterForm" class="flex flex-col gap-2" onsubmit="handleNewsletterSubmit(event)">
+                <input type="email" required placeholder="Tu email"
+                    class="rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#1855BA]"
+                    style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white;">
+                <button type="submit"
+                    class="bg-[#1855BA] hover:bg-[#144a9e] text-white py-2 rounded-lg text-sm font-bold transition-all flex items-center justify-center">
+                    <span class="btn-text">Suscribirse</span>
+                    <i data-lucide="loader-2" class="w-4 h-4 animate-spin hidden btn-loader"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Separador y Copyright -->
+    <div class="max-w-7xl mx-auto mt-12 pt-8 border-t flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs"
+        style="border-color: rgba(255,255,255,0.1);">
+        <p>© 2026 Token City European Exchange AV. Inscrita en CNMV Nº 334.</p>
+        <div class="lang-toggle" onclick="toggleLanguage()">
+            <span class="lang-label lang-label-es">ES</span>
+            <div class="lang-switch-track">
+                <div class="lang-switch-thumb"></div>
+            </div>
+            <span class="lang-label lang-label-en">EN</span>
+        </div>
+        <p>Todos los derechos reservados.</p>
+    </div>
+    </footer>
+
+    <!-- Estilos adicionales del Footer -->
+    <style>
+        footer.dark-footer {
+            background-color: #05070a !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #9ca3af !important;
+        }
+
+        footer.dark-footer h4,
+        footer.dark-footer .text-main-force {
+            color: #ffffff !important;
+        }
+
+        footer.dark-footer a:hover {
+            color: #1855BA !important;
+        }
+
+        footer.dark-footer input {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
+
+        footer.dark-footer input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        footer.dark-footer input:focus {
+            border-color: #1855BA !important;
+            box-shadow: 0 0 0 3px rgba(24, 85, 186, 0.1);
+        }
+
+        body.light-mode footer.dark-footer {
+            background-color: #05070a !important;
+        }
+
+        body.light-mode footer.dark-footer a {
+            color: #9ca3af;
+        }
+    </style>
+
+    <!-- Script para inicializar la página -->
+    <script>
+        // --- LANGUAGE LOGIC ---
+        window.toggleLanguage = function () {
+            const body = document.body;
+            const isEn = body.classList.toggle('lang-en');
+            localStorage.setItem('tcav-lang', isEn ? 'en' : 'es');
+        };
+
+        if (localStorage.getItem('tcav-lang') === 'en') {
+            document.body.classList.add('lang-en');
+        }
+
+        // Theme Toggle
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const activeIconName = isLight ? 'sun' : 'moon';
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
+                </div>
+            `;
+
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.innerHTML = trackHTML;
+            });
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        window.toggleTheme = function () {
+            const isLight = document.body.classList.toggle('light-mode');
+            localStorage.setItem('themePreference', isLight ? 'light' : 'dark');
+            updateToggleVisuals();
+        };
+
+        // Network Canvas Animation
+        const canvas = document.getElementById('network-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.size = Math.random() * 2;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+
+                draw() {
+                    const isLight = document.body.classList.contains('light-mode');
+                    ctx.fillStyle = isLight ? 'rgba(24, 85, 186, 0.4)' : 'rgba(24, 85, 186, 0.5)';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+            function animateNetwork() {
+                ctx.clearRect(0, 0, width, height);
+                const isLight = document.body.classList.contains('light-mode');
+
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+
+                    for (let j = i; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 150) {
+                            ctx.strokeStyle = isLight ? `rgba(24, 85, 186, ${0.15 - dist / 1000})` : `rgba(24, 85, 186, ${0.1 - dist / 1500})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                requestAnimationFrame(animateNetwork);
+            }
+
+            animateNetwork();
+        }
+
+        // Inicializar visuales
+        updateToggleVisuals();
+
+        // Newsletter Handler
+        window.handleNewsletterSubmit = function (e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+            const originalText = btnText.textContent;
+
+            btnText.textContent = "";
+            btnLoader.classList.remove('hidden');
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btnText.textContent = originalText;
+                btnLoader.classList.add('hidden');
+                btn.disabled = false;
+                e.target.reset();
+                // Mostrar un mensaje de éxito (opcional - requiere showToast)
+                alert('¡Suscrito a la newsletter!');
+            }, 1500);
+        };
+
+        // Scroll suave para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        }) ();
+    </script>
+
+    <div data-component="components/floating-controls-component.html"></div>
+</body>
+
+</html>

@@ -1,0 +1,2656 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crear Participante | Token City</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- Estilos TCAV -->
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <!-- Swiper.js (Premium Slider) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <style>
+        :root {
+            --policy-overlay-start: rgba(5, 7, 10, 0.9);
+            --policy-overlay-mid: rgba(5, 7, 10, 0.7);
+            --policy-overlay-end: rgba(5, 7, 10, 1);
+        }
+
+        body.light-mode {
+            --policy-overlay-start: rgba(5, 7, 10, 0.85);
+            --policy-overlay-mid: rgba(5, 7, 10, 0.4);
+            --policy-overlay-end: #f8fafc;
+        }
+
+        /* ── Banner ── */
+        .policy-banner {
+            width: 100%;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background-image: url('./mercado.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin-bottom: -1px;
+        }
+
+        .policy-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, var(--policy-overlay-start), var(--policy-overlay-mid), var(--policy-overlay-end));
+            z-index: 1;
+        }
+
+        .policy-banner-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .policy-banner h1 {
+            color: #fff;
+            font-size: clamp(1.75rem, 4vw, 3rem);
+            font-weight: 800;
+        }
+
+        /* ── Layout ── */
+        .page-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 1.25rem 5rem;
+        }
+
+        @media(min-width:768px) {
+            .page-content {
+                padding: 4rem 2rem 6rem;
+            }
+        }
+
+        /* ── Card Preview ── */
+        .participant-card {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            transition: all .4s cubic-bezier(.4, 0, .2, 1);
+            position: relative;
+            perspective: 1000px;
+            height: 260px;
+            width: 100%;
+            transform-style: preserve-3d;
+            /* Prevent z-fighting and mirror effect */
+        }
+
+        .participant-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform .6s cubic-bezier(.4, 0, .2, 1);
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+            border-radius: 1.5rem;
+        }
+
+        .participant-card.is-flipped .participant-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .face-front {
+            background-color: #111827;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            border-left: 4px solid var(--card-accent, var(--primary-blue));
+            transition: border-color .3s ease, background-color .3s ease;
+        }
+
+        body.light-mode .face-front {
+            background-color: #ffffff;
+        }
+
+        .face-front .company-logo-main {
+            max-width: 190px;
+            max-height: 110px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            transition: all .3s ease;
+        }
+
+        body.light-mode .face-front .company-logo-main {
+            filter: grayscale(1) brightness(.2);
+        }
+
+        .face-back {
+            background-color: var(--glass-bg);
+            transform: rotateY(180deg);
+            padding: 1.75rem 1.5rem;
+            text-align: left;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            justify-content: flex-start;
+        }
+
+        .card-toggle-btn {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all .3s ease;
+            background: #000 !important;
+            color: #fff !important;
+            border: none;
+        }
+
+        .card-toggle-btn:hover {
+            transform: scale(1.1);
+            background: #333 !important;
+        }
+
+        .participant-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: .75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+            transition: background .3s ease;
+        }
+
+        .card-type-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            padding: .2rem .6rem;
+            border-radius: 9999px;
+            font-size: .65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .card-info-row {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .8rem;
+        }
+
+        .card-website a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .card-website a:hover {
+            text-decoration: underline;
+        }
+
+        body:not(.light-mode) .card-website a {
+            color: #60a5fa;
+        }
+
+        /* ── Skeleton shimmer ── */
+        @keyframes shimmer {
+            0% {
+                background-position: -600px 0;
+            }
+
+            100% {
+                background-position: 600px 0;
+            }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, var(--skeleton-primary) 25%, var(--skeleton-secondary) 50%, var(--skeleton-primary) 75%);
+            background-size: 600px 100%;
+            animation: shimmer 1.5s infinite linear;
+            border-radius: .5rem;
+        }
+
+        .skeleton-logo {
+            width: 120px;
+            height: 60px;
+            border-radius: .5rem;
+        }
+
+        .skeleton-name {
+            height: 18px;
+            width: 65%;
+        }
+
+        .skeleton-tag {
+            height: 14px;
+            width: 40%;
+        }
+
+        .skeleton-url {
+            height: 14px;
+            width: 80%;
+        }
+
+        .skeleton-loc {
+            height: 14px;
+            width: 45%;
+        }
+
+        .skeleton-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: .75rem;
+            flex-shrink: 0;
+        }
+
+        /* ── Drop zone ── */
+        .drop-zone {
+            border: 2px dashed var(--glass-border);
+            border-radius: 1rem;
+            padding: 2.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: .75rem;
+            cursor: pointer;
+            transition: all .3s ease;
+            background-color: var(--glass-bg);
+            text-align: center;
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--primary-blue);
+            background-color: rgba(24, 85, 186, .08);
+        }
+
+        .drop-zone.has-file {
+            border-style: solid;
+            border-color: var(--primary-blue);
+        }
+
+        .drop-zone img {
+            max-width: 140px;
+            max-height: 70px;
+            object-fit: contain;
+        }
+
+        /* ── Form controls ── */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+
+        .form-label {
+            font-size: .8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: .75rem 1rem;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: .75rem;
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            font-size: .9rem;
+            transition: all .3s ease;
+            outline: none;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(24, 85, 186, .15);
+        }
+
+        .form-select option {
+            background-color: var(--bg-color);
+        }
+
+        /* ── Color picker area ── */
+        .color-picker-row {
+            display: flex;
+            gap: .75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: .75rem;
+            border: 2px solid var(--glass-border);
+            cursor: pointer;
+            transition: all .3s ease;
+            flex-shrink: 0;
+        }
+
+        .color-swatch-btn:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-blue);
+        }
+
+        .color-hex-input {
+            flex: 1;
+            min-width: 110px;
+            padding: .75rem 1rem;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: .75rem;
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .9rem;
+            outline: none;
+            transition: all .3s ease;
+        }
+
+        .color-hex-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(24, 85, 186, .15);
+        }
+
+        .eyedropper-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .4rem;
+            padding: .65rem 1rem;
+            border-radius: .75rem;
+            border: 1px solid var(--glass-border);
+            background-color: var(--glass-bg);
+            color: var(--text-muted);
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .3s ease;
+            white-space: nowrap;
+        }
+
+        .eyedropper-btn:hover {
+            border-color: var(--primary-blue);
+            color: var(--text-main);
+        }
+
+        /* ── Preset colors ── */
+        .preset-colors {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap;
+            margin-top: .25rem;
+        }
+
+        .preset-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all .25s ease;
+        }
+
+        .preset-dot:hover {
+            transform: scale(1.15);
+        }
+
+        .preset-dot.active {
+            border-color: var(--text-main);
+            transform: scale(1.1);
+        }
+
+        /* ── Output block ── */
+        /* ── Theme Toggle ── */
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .theme-toggle:hover {
+            border-color: #fff !important;
+            background: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .theme-toggle-thumb {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .thumb-icon {
+            width: 14px;
+            height: 14px;
+            color: #000;
+        }
+
+        .toggle-track-icon {
+            width: 14px;
+            height: 14px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-mercado {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            color: #fff !important;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-mercado:hover {
+            background: var(--primary-blue) !important;
+            border-color: var(--primary-blue) !important;
+            color: #fff !important;
+            transform: translateX(-4px);
+        }
+
+        /* Override light-mode for Mercado button as requested (always white/linear) */
+        body.light-mode .btn-mercado {
+            background: rgba(255, 255, 255, 0.1) !important;
+            color: #fff !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+        }
+
+        #publishBtn:disabled {
+            background-color: #9ca3af !important;
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-tertiary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1.1rem;
+            border-radius: 0.8rem;
+            border: 1px solid var(--glass-border);
+            background-color: transparent;
+            color: var(--text-main);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        body.light-mode .btn-tertiary {
+            border-color: rgba(0, 0, 0, 0.1);
+            color: #1e293b;
+        }
+
+        .btn-tertiary:hover {
+            border-color: var(--primary-blue);
+            background-color: rgba(13, 110, 253, 0.05);
+            color: var(--primary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .btn-tertiary:hover {
+            background-color: rgba(13, 110, 253, 0.1);
+            border-color: var(--primary-blue);
+        }
+
+        .participant-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .4);
+        }
+
+        /* Matching market logo hover effect */
+        .participant-card:hover .company-logo-main {
+            transform: scale(1.05);
+        }
+
+        body.light-mode .participant-card:hover .company-logo-main {
+            filter: none !important;
+        }
+
+        .participant-card.is-flipped .participant-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .output-block {
+            background-color: #0d1117 !important;
+            border: 1px solid #30363d;
+            border-radius: 0 0 .75rem .75rem;
+            padding: 1.25rem 1.5rem;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: .73rem;
+            color: #c9d1d9;
+            overflow-x: auto;
+            overflow-y: auto;
+            white-space: pre;
+            line-height: 1.7;
+            max-height: 320px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-blue);
+            color: #fff;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 85, 186, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .65rem 1.5rem;
+            border-radius: .75rem;
+            background-color: var(--primary-blue);
+            color: #fff;
+            font-weight: 700;
+            font-size: .85rem;
+            cursor: pointer;
+            border: none;
+            transition: all .3s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #0f3c8e;
+            transform: translateY(-1px);
+        }
+
+        .copy-btn.copied {
+            background-color: #16a34a;
+        }
+
+        /* ── Code Tabs ── */
+        /* ── Code Tabs ── */
+        .code-tab {
+            flex: 1;
+            color: #8b949e !important;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            min-width: 0;
+        }
+
+        .code-tab.active {
+            background-color: #0d1117 !important;
+            color: #c9d1d9 !important;
+            box-shadow: none;
+            border-bottom: 2px solid #1855BA !important;
+        }
+
+        .code-tab:hover:not(.active) {
+            color: #c9d1d9 !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        #outputSection .code-tabs-bar {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-bottom: none;
+            border-radius: .75rem .75rem 0 0;
+            margin-bottom: 0 !important;
+            min-width: 0;
+        }
+
+        #outputSection .code-output-wrap {
+            overflow: hidden;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+        }
+
+
+        /* ── Flip button ── */
+        .flip-preview-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .55rem 1.1rem;
+            border-radius: .75rem;
+            border: 1px solid var(--glass-border);
+            background-color: var(--glass-bg);
+            color: var(--text-muted);
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .3s ease;
+        }
+
+        .flip-preview-btn:hover {
+            border-color: var(--primary-blue);
+            color: var(--text-main);
+        }
+
+        /* ── Section card ── */
+        .form-section {
+            background-color: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.25rem;
+            padding: 1.75rem;
+            max-width: 664px;
+        }
+
+        .section-title {
+            font-size: .75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--primary-blue);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        /* Responsive layout */
+        @media(max-width:767px) {
+            .two-col {
+                flex-direction: column;
+            }
+        }
+
+        /* Sticky preview on desktop */
+        @media(min-width:768px) {
+            .preview-sticky {
+                position: sticky;
+                top: 6rem;
+            }
+        }
+
+        /* back button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .6rem 1.25rem;
+            border-radius: .75rem;
+            background-color: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: .85rem;
+            font-weight: 600;
+            transition: all .3s ease;
+            margin-bottom: 2rem;
+        }
+
+        /* ── Management Section ── */
+        .management-section {
+            margin-top: 4rem;
+            padding: 3rem 0;
+            border-top: 1px solid var(--glass-border);
+            background: var(--card-bg);
+            opacity: 0.95;
+        }
+
+        .mgmt-card-item {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            position: relative;
+        }
+
+        .mgmt-card-item.is-hidden {
+            opacity: 0.4 !important;
+            filter: grayscale(1);
+            background: rgba(0, 0, 0, 0.05) !important;
+        }
+
+        body.light-mode .mgmt-card-item.is-hidden {
+            background: rgba(0, 0, 0, 0.02) !important;
+        }
+
+        /* Essential for Mercado Sync */
+        .participant-hidden {
+            opacity: 0.5 !important;
+            pointer-events: none !important;
+            filter: grayscale(0.8);
+        }
+
+        .mgmt-card-item:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .mgmt-card-logo {
+            height: 40px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        body.light-mode .mgmt-card-logo {
+            filter: none;
+        }
+
+        .mgmt-btn-edit {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .mgmt-btn-delete {
+            background: #ef4444 !important;
+            color: white !important;
+            border: none !important;
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 0.6rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            position: absolute !important;
+            top: 0.75rem !important;
+            right: 0.75rem !important;
+            z-index: 20 !important;
+            transition: all 0.2s !important;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+        }
+
+        .mgmt-btn-delete:hover {
+            transform: scale(1.1) !important;
+            background: #dc2626 !important;
+        }
+
+        .mgmt-btn-hide {
+            background: var(--card-bg) !important;
+            color: var(--text-main) !important;
+            border: 1px solid var(--glass-border) !important;
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 0.6rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            position: absolute !important;
+            top: 0.75rem !important;
+            right: 3.25rem !important;
+            z-index: 20 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+            transition: all 0.2s !important;
+        }
+
+        body.light-mode .mgmt-btn-hide {
+            background: #fff !important;
+            border-color: rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .mgmt-btn-hide:hover {
+            border-color: var(--primary-blue) !important;
+            color: var(--primary-blue) !important;
+            transform: scale(1.1) !important;
+        }
+
+        /* Swiper Navigation Fixes */
+        .mgmtSwiper .swiper-button-next,
+        .mgmtSwiper .swiper-button-prev {
+            color: var(--text-main) !important;
+            background: var(--card-bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.light-mode .mgmtSwiper .swiper-button-next,
+        body.light-mode .mgmtSwiper .swiper-button-prev {
+            background: #fff;
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .mgmtSwiper .swiper-button-next:after,
+        .mgmtSwiper .swiper-button-prev:after {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .mgmtSwiper .swiper-pagination-bullet {
+            background: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .mgmtSwiper .swiper-pagination-bullet-active {
+            background: var(--primary-blue);
+            opacity: 1;
+        }
+
+        .sync-banner {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px dashed #22c55e;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        /* Floating Controls Bar - Always Dark */
+        .controls-bar {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: rgba(5, 7, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .controls-bar .theme-toggle {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .controls-bar .toggle-track-icon {
+            color: #ffffff;
+        }
+
+        .controls-bar .thumb-icon {
+            color: #1855BA;
+        }
+
+        .controls-bar .lang-label {
+            color: #ffffff;
+        }
+
+        .controls-bar .lang-label.lang-label-en {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .controls-bar .lang-label.lang-label-es {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .controls-bar .lang-label.lang-label-en {
+            color: #ffffff;
+        }
+
+        .controls-bar .lang-switch-track {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .controls-bar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <script>
+        (function () {
+            const h = new Date().getHours();
+            if (h >= 19 || h < 8) document.body.classList.remove('light-mode');
+        })();
+    </script>
+
+    <canvas id="network-canvas"></canvas>
+
+    <!-- ── Compact toolbar ── -->
+    <header id="toolBar" style="
+        position: sticky; top: 0; z-index: 50;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 1rem; padding: 0.75rem 1.25rem;
+        background-color: var(--nav-bg);
+        border-bottom: 1px solid var(--glass-border);
+        backdrop-filter: blur(12px);
+    ">
+        <!-- Volver -->
+        <a href="participantes-mercado.html" class="btn-mercado">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Mercado
+        </a>
+
+        <!-- Title -->
+        <span
+            style="font-size:.85rem; font-weight:800; color:#fff; letter-spacing:.04em; white-space:nowrap; text-transform:uppercase;">
+            Alta de Participante
+        </span>
+
+        <!-- Right controls -->
+        <div style="display:flex; align-items:center; gap:.75rem; flex-shrink:0;">
+            <!-- Cancel Edit button (Hidden by default) -->
+            <button id="cancelEditBtn" onclick="cancelEdit()" class="btn-tertiary hidden"
+                style="border-color: #ef4444; color: #ef4444; padding: 0.5rem 1rem; border-radius: 0.6rem; font-size: 0.8rem; font-weight: 800;">
+                <i data-lucide="x" class="w-4 h-4"></i> Cancelar
+            </button>
+            <!-- Publish button -->
+            <button id="publishBtn" onclick="publishCard()" disabled style="
+                display:inline-flex; align-items:center; gap:.4rem;
+                padding:.5rem 1rem; border-radius:.6rem;
+                background-color:#16a34a; color:#fff;
+                font-size:.8rem; font-weight:800;
+                border:none; cursor:pointer; transition:all .25s ease;"
+                onmouseover="if(!this.disabled) this.style.backgroundColor='#15803d'"
+                onmouseout="if(!this.disabled) this.style.backgroundColor='#16a34a'">
+                <i data-lucide="send" class="w-4 h-4"></i> Publicar
+            </button>
+        </div>
+    </header>
+
+    <main class="pt-0">
+
+        <div class="page-content">
+
+
+            <!-- Grid principal: Preview + Formulario -->
+            <div class="flex flex-col md:flex-row gap-8 two-col">
+
+                <!-- ── Columna izquierda: Preview ── -->
+                <div class="md:w-[340px] flex-shrink-0">
+                    <div class="preview-sticky">
+                        <!-- Etiqueta y flip -->
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="section-title mb-0"><i data-lucide="eye" class="w-4 h-4"></i>Vista
+                                previa</span>
+                            <button class="flip-preview-btn" onclick="flipPreview()" id="flipBtn">
+                                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Girar
+                            </button>
+                        </div>
+
+                        <!-- Tarjeta de Preview -->
+                        <div class="participant-card" id="previewCard" style="--card-accent:#1855BA;">
+                            <div class="participant-card-inner">
+
+                                <!-- CARA FRONTAL -->
+                                <div class="card-face face-front">
+                                    <!-- Skeleton / logo -->
+                                    <div id="preview-logo-wrap"
+                                        class="flex flex-col items-center justify-center w-full">
+                                        <div class="skeleton skeleton-logo" id="skeleton-logo"></div>
+                                        <img id="preview-logo-img" src="" alt="" class="company-logo-main hidden">
+                                    </div>
+                                    <button class="card-toggle-btn" onclick="toggleCard(this)">
+                                        <i data-lucide="plus" class="w-5 h-5"></i>
+                                    </button>
+                                </div>
+
+                                <!-- CARA TRASERA -->
+                                <div class="card-face face-back">
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <!-- Avatar / inicial -->
+                                        <div id="preview-avatar" class="participant-logo skeleton skeleton-avatar"
+                                            style="background:linear-gradient(135deg,#1855BA,#0f3c8e);">
+                                        </div>
+                                        <div class="flex-1 flex flex-col gap-2">
+                                            <div id="preview-name-wrap">
+                                                <div class="skeleton skeleton-name" id="skeleton-name"></div>
+                                                <h3 id="preview-name-text" class="text-base font-bold hidden"
+                                                    style="color:var(--text-main);"></h3>
+                                            </div>
+                                            <div id="preview-sector-wrap">
+                                                <div class="skeleton skeleton-tag" id="skeleton-tag"></div>
+                                                <span id="preview-sector-tag" class="card-type-tag hidden"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-3">
+                                        <div class="card-info-row card-website">
+                                            <i data-lucide="globe" class="w-4 h-4 flex-shrink-0"
+                                                style="color:var(--primary-blue);"></i>
+                                            <div id="preview-url-wrap" class="flex-1">
+                                                <div class="skeleton skeleton-url" id="skeleton-url"></div>
+                                                <a id="preview-url-link" href="#" class="hidden" target="_blank"
+                                                    rel="noopener noreferrer"></a>
+                                            </div>
+                                        </div>
+                                        <div class="card-info-row" style="color:var(--text-muted);">
+                                            <i data-lucide="map-pin" class="w-4 h-4 flex-shrink-0"></i>
+                                            <div id="preview-loc-wrap" class="flex-1">
+                                                <div class="skeleton skeleton-loc" id="skeleton-loc"></div>
+                                                <span id="preview-loc-text" class="hidden"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="card-toggle-btn" onclick="toggleCard(this)">
+                                        <i data-lucide="minus" class="w-5 h-5"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div><!-- /previewCard -->
+
+                        <!-- Indicador modo -->
+                        <p class="text-center text-xs mt-3" style="color:var(--text-muted);">
+                            <span id="cardSideLabel">Viendo la cara frontal</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ── Columna derecha: Formulario ── -->
+                <div class="flex-1 flex flex-col gap-5">
+
+                    <!-- 1. Logo -->
+                    <div class="form-section">
+                        <div class="section-title"><i data-lucide="image" class="w-4 h-4"></i> Logotipo</div>
+                        <div class="drop-zone" id="dropZone" ondragover="handleDragOver(event)"
+                            ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)"
+                            onclick="document.getElementById('logoFileInput').click()">
+                            <input type="file" id="logoFileInput" accept=".png,.svg" class="hidden"
+                                onchange="handleFileSelect(event)">
+                            <div id="dropZoneContent">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-1"
+                                    style="background-color:rgba(24,85,186,.1);">
+                                    <i data-lucide="upload-cloud" class="w-6 h-6"
+                                        style="color:var(--primary-blue);"></i>
+                                </div>
+                                <p class="font-bold text-sm" style="color:var(--text-main);">Arrastra el logo aquí</p>
+                                <p class="text-xs" style="color:var(--text-muted);">o haz clic para seleccionar · Solo
+                                    PNG o SVG</p>
+                            </div>
+                            <div id="dropZonePreview" class="hidden flex-col items-center gap-2">
+                                <img id="dropZoneImg" src="" alt="Logo preview" class="max-h-16 object-contain">
+                                <p id="dropZoneFilename" class="text-xs font-mono" style="color:var(--text-muted);"></p>
+                                <button onclick="clearLogo(event)"
+                                    class="text-xs font-bold px-3 py-1 rounded-lg border transition-all"
+                                    style="border-color:var(--glass-border); color:var(--text-muted);">
+                                    Cambiar logo
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs mt-2" style="color:var(--text-muted);">
+                            <i data-lucide="info" class="w-3 h-3 inline-block mr-1"></i>
+                            Usa un archivo PNG o SVG con fondo transparente para mejores resultados.
+                        </p>
+                    </div>
+
+                    <!-- 2. Color de acento -->
+                    <div class="form-section">
+                        <div class="section-title"><i data-lucide="palette" class="w-4 h-4"></i> Color de acento</div>
+                        <div class="color-picker-row">
+                            <!-- Swatch clickable -->
+                            <div class="relative">
+                                <div class="color-swatch-btn" id="colorSwatch" style="background-color:#1855BA;"
+                                    onclick="document.getElementById('nativeColorPicker').click()"></div>
+                                <input type="color" id="nativeColorPicker" value="#1855BA"
+                                    class="absolute opacity-0 w-0 h-0 pointer-events-none"
+                                    oninput="onNativeColorChange(this.value)">
+                            </div>
+                            <!-- Hex input -->
+                            <input type="text" id="colorHexInput" class="color-hex-input" value="#1855BA" maxlength="7"
+                                placeholder="#1855BA" oninput="onHexInput(this.value)">
+                            <!-- Eyedropper (Chrome/Edge) -->
+                            <button class="eyedropper-btn" id="eyedropperBtn" onclick="launchEyedropper()"
+                                title="Capturar color de pantalla">
+                                <i data-lucide="pipette" class="w-4 h-4"></i>
+                                <span>Cuentagotas</span>
+                            </button>
+                        </div>
+
+                        <!-- Colores predefinidos -->
+                        <div class="mt-3">
+                            <p class="text-xs mb-2 font-semibold" style="color:var(--text-muted);">Colores sugeridos</p>
+                            <div class="preset-colors" id="presetColors">
+                                <!-- se genera por JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Datos de empresa -->
+                    <div class="form-section">
+                        <div class="section-title"><i data-lucide="building-2" class="w-4 h-4"></i> Datos de la empresa
+                        </div>
+                        <div class="flex flex-col gap-4">
+                            <div class="form-group">
+                                <label class="form-label" for="inputName">Nombre de la empresa</label>
+                                <input type="text" id="inputName" class="form-input" placeholder="Ej: Acme Fintech"
+                                    oninput="updatePreview()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="inputWeb">Página web</label>
+                                <input type="text" id="inputWeb" class="form-input"
+                                    placeholder="Ej: www.acmefintech.com" oninput="updatePreview()">
+                            </div>
+                            <div class="flex gap-4 flex-col md:flex-row">
+                                <div class="form-group flex-1">
+                                    <label class="form-label" for="selectProvincia">Provincia</label>
+                                    <select id="selectProvincia" class="form-select" onchange="updatePreview()">
+                                        <option value="">Selecciona una provincia</option>
+                                        <optgroup label="Andalucía">
+                                            <option>Almería</option>
+                                            <option>Cádiz</option>
+                                            <option>Córdoba</option>
+                                            <option>Granada</option>
+                                            <option>Huelva</option>
+                                            <option>Jaén</option>
+                                            <option>Málaga</option>
+                                            <option>Sevilla</option>
+                                        </optgroup>
+                                        <optgroup label="Aragón">
+                                            <option>Huesca</option>
+                                            <option>Teruel</option>
+                                            <option>Zaragoza</option>
+                                        </optgroup>
+                                        <optgroup label="Asturias">
+                                            <option>Asturias</option>
+                                        </optgroup>
+                                        <optgroup label="Baleares">
+                                            <option>Illes Balears</option>
+                                        </optgroup>
+                                        <optgroup label="Canarias">
+                                            <option>Las Palmas</option>
+                                            <option>Santa Cruz de Tenerife</option>
+                                        </optgroup>
+                                        <optgroup label="Cantabria">
+                                            <option>Cantabria</option>
+                                        </optgroup>
+                                        <optgroup label="Castilla-La Mancha">
+                                            <option>Albacete</option>
+                                            <option>Ciudad Real</option>
+                                            <option>Cuenca</option>
+                                            <option>Guadalajara</option>
+                                            <option>Toledo</option>
+                                        </optgroup>
+                                        <optgroup label="Castilla y León">
+                                            <option>Ávila</option>
+                                            <option>Burgos</option>
+                                            <option>León</option>
+                                            <option>Palencia</option>
+                                            <option>Salamanca</option>
+                                            <option>Segovia</option>
+                                            <option>Soria</option>
+                                            <option>Valladolid</option>
+                                            <option>Zamora</option>
+                                        </optgroup>
+                                        <optgroup label="Cataluña">
+                                            <option>Barcelona</option>
+                                            <option>Girona</option>
+                                            <option>Lleida</option>
+                                            <option>Tarragona</option>
+                                        </optgroup>
+                                        <optgroup label="Extremadura">
+                                            <option>Badajoz</option>
+                                            <option>Cáceres</option>
+                                        </optgroup>
+                                        <optgroup label="Galicia">
+                                            <option>A Coruña</option>
+                                            <option>Lugo</option>
+                                            <option>Ourense</option>
+                                            <option>Pontevedra</option>
+                                        </optgroup>
+                                        <optgroup label="La Rioja">
+                                            <option>La Rioja</option>
+                                        </optgroup>
+                                        <optgroup label="Madrid">
+                                            <option>Madrid</option>
+                                        </optgroup>
+                                        <optgroup label="Murcia">
+                                            <option>Murcia</option>
+                                        </optgroup>
+                                        <optgroup label="Navarra">
+                                            <option>Navarra</option>
+                                        </optgroup>
+                                        <optgroup label="País Vasco">
+                                            <option>Álava</option>
+                                            <option>Gipuzkoa</option>
+                                            <option>Bizkaia</option>
+                                        </optgroup>
+                                        <optgroup label="Valencia">
+                                            <option>Alicante</option>
+                                            <option>Castellón</option>
+                                            <option>Valencia</option>
+                                        </optgroup>
+                                        <optgroup label="Ciudades Autónomas">
+                                            <option>Ceuta</option>
+                                            <option>Melilla</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label class="form-label" for="selectSector">Sector</label>
+                                    <select id="selectSector" class="form-select" onchange="updatePreview()">
+                                        <option value="">Selecciona un sector</option>
+                                        <option value="ti">TI, Consultoría TI</option>
+                                        <option value="legal">Asesoría Jurídica</option>
+                                        <option value="gestion">Gestión de Activos</option>
+                                        <option value="blockchain">Blockchain, DLT</option>
+                                        <option value="auditoria">Auditoría, Compliance</option>
+                                        <option value="fintech">Fintech, Pagos</option>
+                                        <option value="consultoria">Consultoría Financiera</option>
+                                        <option value="custodia">Custodia de Activos</option>
+                                        <option value="tokenizacion">Tokenización Inmobiliaria</option>
+                                        <option value="data">Big Data, Analítica</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Código generado -->
+                    <div class="form-section" id="outputSection">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="section-title mb-0"><i data-lucide="code-2" class="w-4 h-4"></i> Código generado
+                            </div>
+                            <button class="copy-btn" id="copyBtn" onclick="copyCode()">
+                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar
+                            </button>
+                        </div>
+                        <!-- Nav Tabs -->
+                        <div class="code-tabs-bar flex gap-1 p-1">
+                            <button id="tab-html" onclick="switchTab('html')"
+                                class="code-tab active flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <i data-lucide="file-code" class="w-3.5 h-3.5"></i> HTML
+                            </button>
+                            <button id="tab-vue" onclick="switchTab('vue')"
+                                class="code-tab flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <i data-lucide="component" class="w-3.5 h-3.5"></i> Vue / Nuxt
+                            </button>
+                            <button id="tab-css" onclick="switchTab('css')"
+                                class="code-tab flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <i data-lucide="paintbrush" class="w-3.5 h-3.5"></i> CSS
+                            </button>
+                        </div>
+                        <!-- Output blocks -->
+                        <div class="code-output-wrap">
+                            <div class="output-block" id="htmlOutput"></div>
+                            <div class="output-block hidden" id="vueOutput"></div>
+                            <div class="output-block hidden" id="cssOutput"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- ── SECCIÓN DE GESTIÓN ── -->
+            <div class="management-section reveal-growth" id="mgmtSection">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h2 class="text-2xl font-extrabold flex items-center gap-3" style="color: var(--text-main);">
+                            <i data-lucide="layers" class="w-6 h-6 text-blue-400"></i>
+                            Gestión de Participantes
+                        </h2>
+                        <p class="text-sm mt-1" style="color: var(--text-muted);">Edita o elimina tarjetas ya publicadas
+                            en el mercado.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="importFromMarket()" class="btn-tertiary" style="border-style: dashed;">
+                            <i data-lucide="download" class="w-4 h-4"></i> Importar del Mercado
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="mgmtEmptyState" class="py-12 text-center border-2 border-dashed rounded-[30px]"
+                    style="border-color: var(--glass-border);">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                        style="background: var(--card-hover-bg);">
+                        <i data-lucide="database" class="w-8 h-8" style="color: var(--text-muted); opacity: 0.3;"></i>
+                    </div>
+                    <p class="font-medium" style="color: var(--text-muted); opacity: 0.6;">No hay tarjetas importadas.
+                        Pulsa "Importar" para empezar.</p>
+                </div>
+
+                <!-- Slider Container -->
+                <div id="mgmtSliderContainer" class="hidden relative px-12">
+                    <div class="swiper mgmtSwiper overflow-hidden">
+                        <div class="swiper-wrapper" id="mgmtCardsWrapper">
+                            <!-- JS will inject cards here -->
+                        </div>
+                    </div>
+                    <!-- Navigation Buttons -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-pagination !-bottom-8"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ───────────────────── SCRIPTS ──────────────────────── -->
+
+    <!-- Shared TCAV scripts (canvas, theme, etc.) -->
+    <script>
+        // ─── Theme Toggle ───────────────────────────────────────
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const activeIconName = isLight ? 'sun' : 'moon';
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
+                </div>
+            `;
+
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.innerHTML = trackHTML;
+            });
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            updateToggleVisuals();
+            updatePreview();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateToggleVisuals();
+        });
+
+        // ─── Reveal animation ───────────────────────────────────
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: .05 });
+        document.querySelectorAll('.reveal-growth').forEach(el => observer.observe(el));
+
+        // ─── Network Canvas (subtle) ────────────────────────────
+        (function () {
+            const canvas = document.getElementById('network-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let nodes = [], W, H;
+            function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+            function init() { nodes = []; for (let i = 0; i < 40; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .4, vy: (Math.random() - .5) * .4 }); }
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+                nodes.forEach(n => {
+                    n.x += n.vx; n.y += n.vy;
+                    if (n.x < 0 || n.x > W) n.vx *= -1;
+                    if (n.y < 0 || n.y > H) n.vy *= -1;
+                    ctx.beginPath(); ctx.arc(n.x, n.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(24,85,186,.5)'; ctx.fill();
+                });
+                for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx * dx + dy * dy);
+                    if (d < 120) {
+                        ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.strokeStyle = `rgba(24,85,186,${.15 * (1 - d / 120)})`; ctx.stroke();
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            window.addEventListener('resize', () => { resize(); init(); });
+            resize(); init(); draw();
+        })();
+    </script>
+
+    <script>
+        // ─── Estado ─────────────────────────────────────────────
+        const state = {
+            name: '',
+            web: '',
+            provincia: '',
+            sector: '',
+            color: '#1855BA',
+            logoFile: null,
+            logoFileName: '',
+            logoDataUrl: null,
+            editingId: null,
+            originalEditData: null,
+            managedCards: [],
+            hasChanges: false,
+            fileHandle: null // Persistent file handle
+        };
+        let isFlipped = false;
+
+        // Sector → label + icon
+        const sectorMap = {
+            ti: { label: 'TI, Consultoría TI', icon: 'cpu', color: '#80BB35' },
+            legal: { label: 'Asesoría Jurídica', icon: 'scale', color: '#F37021' },
+            gestion: { label: 'Gestión de Activos', icon: 'bar-chart-2', color: '#1855BA' },
+            blockchain: { label: 'Blockchain, DLT', icon: 'link', color: '#8B5CF6' },
+            auditoria: { label: 'Auditoría, Compliance', icon: 'shield-check', color: '#0EA5E9' },
+            fintech: { label: 'Fintech, Pagos', icon: 'credit-card', color: '#F59E0B' },
+            consultoria: { label: 'Consultoría Financiera', icon: 'briefcase', color: '#6366F1' },
+            custodia: { label: 'Custodia de Activos', icon: 'lock', color: '#EC4899' },
+            tokenizacion: { label: 'Tokenización Inmobiliaria', icon: 'home', color: '#14B8A6' },
+            data: { label: 'Big Data, Analítica', icon: 'database', color: '#F97316' },
+        };
+
+        // ─── Persistencia (IndexedDB & LocalStorage) ──────────────
+        const DB_NAME = 'TCAV_Manager';
+        const STORE_NAME = 'FileHandles';
+
+        async function getDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = () => request.result.createObjectStore(STORE_NAME);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function setFileHandle(handle) {
+            state.fileHandle = handle;
+            const db = await getDB();
+            const tx = db.transaction(STORE_NAME, 'readwrite');
+            tx.objectStore(STORE_NAME).put(handle, 'marketHandle');
+            return tx.complete;
+        }
+
+        async function getFileHandle() {
+            const db = await getDB();
+            return new Promise((resolve) => {
+                const request = db.transaction(STORE_NAME).objectStore(STORE_NAME).get('marketHandle');
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => resolve(null);
+            });
+        }
+
+        function saveLocalCards() {
+            localStorage.setItem('TCAV_managedCards', JSON.stringify(state.managedCards));
+        }
+
+        function loadLocalCards() {
+            const saved = localStorage.getItem('TCAV_managedCards');
+            if (saved) {
+                state.managedCards = JSON.parse(saved);
+                if (state.managedCards.length > 0) {
+                    document.getElementById('mgmtEmptyState').classList.add('hidden');
+                    document.getElementById('mgmtSliderContainer').classList.remove('hidden');
+                    renderMgmtSlider();
+                }
+            }
+        }
+
+        // Colores preset
+        const PRESETS = ['#1855BA', '#80BB35', '#F37021', '#8B5CF6', '#0EA5E9', '#F59E0B', '#EC4899', '#14B8A6', '#EF4444', '#6366F1'];
+        (function buildPresets() {
+            const wrap = document.getElementById('presetColors');
+            PRESETS.forEach(c => {
+                const d = document.createElement('div');
+                d.className = 'preset-dot'; d.style.backgroundColor = c; d.dataset.color = c;
+                d.title = c;
+                d.onclick = () => applyColor(c);
+                wrap.appendChild(d);
+            });
+        })();
+
+        function applyColor(hex) {
+            state.color = hex;
+            document.getElementById('colorSwatch').style.backgroundColor = hex;
+            document.getElementById('colorHexInput').value = hex;
+            document.getElementById('nativeColorPicker').value = hex;
+            // update preset dots
+            document.querySelectorAll('.preset-dot').forEach(d => {
+                d.classList.toggle('active', d.dataset.color === hex);
+            });
+            updatePreview();
+        }
+
+        function onNativeColorChange(val) { applyColor(val); }
+        function onHexInput(val) {
+            if (/^#[0-9A-Fa-f]{6}$/.test(val)) applyColor(val);
+        }
+
+        // Eyedropper API
+        async function launchEyedropper() {
+            if (!window.EyeDropper) { alert('El cuentagotas solo está disponible en Chrome / Edge.'); return; }
+            try {
+                const ed = new EyeDropper();
+                const result = await ed.open();
+                applyColor(result.sRGBHex);
+            } catch (e) { }
+        }
+
+        // ─── Drag & Drop ─────────────────────────────────────────
+        function handleDragOver(e) { e.preventDefault(); document.getElementById('dropZone').classList.add('drag-over'); }
+        function handleDragLeave() { document.getElementById('dropZone').classList.remove('drag-over'); }
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('dropZone').classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file) processLogoFile(file);
+        }
+        function handleFileSelect(e) { const f = e.target.files[0]; if (f) processLogoFile(f); }
+
+        function processLogoFile(file) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (!['png', 'svg'].includes(ext)) {
+                alert('Solo se permiten archivos PNG o SVG.'); return;
+            }
+            const reader = new FileReader();
+            reader.onload = ev => {
+                state.logoDataUrl = ev.target.result;
+                state.logoFileName = file.name;
+                state.logoFile = file; // Store the original file object
+                // Drop zone UI
+                document.getElementById('dropZone').classList.add('has-file');
+                document.getElementById('dropZoneContent').classList.add('hidden');
+                const prev = document.getElementById('dropZonePreview');
+                prev.classList.remove('hidden'); prev.classList.add('flex');
+                document.getElementById('dropZoneImg').src = state.logoDataUrl;
+                document.getElementById('dropZoneFilename').textContent = file.name;
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearLogo(e) {
+            e.stopPropagation();
+            state.logoDataUrl = null; state.logoFileName = '';
+            state.logoFile = null;
+            const dz = document.getElementById('dropZone');
+            dz.classList.remove('has-file');
+            document.getElementById('dropZoneContent').classList.remove('hidden');
+            const prev = document.getElementById('dropZonePreview');
+            prev.classList.add('hidden'); prev.classList.remove('flex');
+            document.getElementById('logoFileInput').value = '';
+            updatePreview();
+        }
+
+        // ─── Update preview ─────────────────────────────────────
+        function updatePreview() {
+            state.name = document.getElementById('inputName').value.trim();
+            state.web = document.getElementById('inputWeb').value.trim();
+            state.provincia = document.getElementById('selectProvincia').value;
+            state.sector = document.getElementById('selectSector').value;
+
+            const publishBtn = document.getElementById('publishBtn');
+            let isDirty = false;
+
+            if (state.editingId) {
+                // If editing, check if anything changed from original snapshot
+                const og = state.originalEditData;
+                if (og) {
+                    isDirty = (
+                        state.name !== og.name ||
+                        state.web !== og.web ||
+                        state.provincia !== og.origin ||
+                        state.sector !== og.sector ||
+                        state.color !== og.color ||
+                        state.logoFileName !== og.logoFileName
+                    );
+                }
+            } else {
+                // If new card, enable if name and either logo or web are present
+                isDirty = !!(state.name && (state.web || state.logoDataUrl));
+            }
+
+            publishBtn.disabled = !isDirty;
+            state.hasChanges = isDirty;
+
+            const card = document.getElementById('previewCard');
+            card.style.setProperty('--card-accent', state.color);
+
+            /* LOGO / face-front */
+            const skelLogo = document.getElementById('skeleton-logo');
+            const previewImg = document.getElementById('preview-logo-img');
+            if (state.logoDataUrl) {
+                skelLogo.classList.add('hidden'); previewImg.classList.remove('hidden');
+                previewImg.src = state.logoDataUrl;
+            } else {
+                skelLogo.classList.remove('hidden'); previewImg.classList.add('hidden');
+            }
+
+            /* Avatar */
+            const avatar = document.getElementById('preview-avatar');
+            avatar.classList.remove('skeleton', 'skeleton-avatar');
+            const initial = state.name ? state.name.charAt(0).toUpperCase() : '';
+            if (state.name) {
+                avatar.style.background = `linear-gradient(135deg, ${state.color}, ${darkenHex(state.color, .25)})`;
+                avatar.textContent = initial;
+            } else {
+                avatar.classList.add('skeleton', 'skeleton-avatar');
+                avatar.textContent = '';
+                avatar.style.background = '';
+            }
+
+            /* Name */
+            const skelName = document.getElementById('skeleton-name'), nameText = document.getElementById('preview-name-text');
+            if (state.name) {
+                skelName.classList.add('hidden'); nameText.classList.remove('hidden');
+                nameText.textContent = state.name;
+            } else {
+                skelName.classList.remove('hidden'); nameText.classList.add('hidden');
+            }
+
+            /* Sector tag */
+            const skelTag = document.getElementById('skeleton-tag'), secTag = document.getElementById('preview-sector-tag');
+            if (state.sector && sectorMap[state.sector]) {
+                const s = sectorMap[state.sector];
+                skelTag.classList.add('hidden'); secTag.classList.remove('hidden');
+                secTag.innerHTML = `<i data-lucide="${s.icon}" class="w-3 h-3"></i> ${s.label}`;
+                secTag.style.color = state.color;
+                secTag.style.backgroundColor = hexToRgba(state.color, .1);
+                lucide.createIcons();
+            } else {
+                skelTag.classList.remove('hidden'); secTag.classList.add('hidden');
+            }
+
+            /* URL */
+            const skelUrl = document.getElementById('skeleton-url'), urlLink = document.getElementById('preview-url-link');
+            if (state.web) {
+                const cleanUrl = state.web.replace(/^https?:\/\//, '');
+                skelUrl.classList.add('hidden'); urlLink.classList.remove('hidden');
+                urlLink.textContent = cleanUrl; urlLink.href = 'https://' + cleanUrl;
+            } else {
+                skelUrl.classList.remove('hidden'); urlLink.classList.add('hidden');
+            }
+
+            /* Location */
+            const skelLoc = document.getElementById('skeleton-loc'), locText = document.getElementById('preview-loc-text');
+            if (state.provincia) {
+                skelLoc.classList.add('hidden'); locText.classList.remove('hidden');
+                locText.textContent = state.provincia;
+            } else {
+                skelLoc.classList.remove('hidden'); locText.classList.add('hidden');
+            }
+
+            generateHTML();
+        }
+
+        // ─── Flip preview ────────────────────────────────────────
+        window.flipPreview = function () {
+            isFlipped = !isFlipped;
+            const card = document.getElementById('previewCard');
+            if (!card) return;
+            card.classList.toggle('is-flipped', isFlipped);
+            const label = document.getElementById('cardSideLabel');
+            if (label) label.textContent = isFlipped ? 'Viendo la cara trasera' : 'Viendo la cara frontal';
+        }
+
+        // Add the missing toggleCard function for the +/- buttons
+        window.toggleCard = function (el) {
+            window.flipPreview();
+        }
+
+        // ─── HTML Code Generator ────────────────────────────────
+        function generateHTML() {
+            const s = state;
+            const sec = s.sector && sectorMap[s.sector] ? sectorMap[s.sector] : null;
+            const secLabel = sec ? sec.label : '';
+            const secIcon = sec ? sec.icon : 'briefcase';
+            const initial = s.name ? s.name.charAt(0).toUpperCase() : '?';
+            const cleanUrl = s.web ? s.web.replace(/^https?:\/\//, '') : '';
+            const accentDark = darkenHex(s.color, .25);
+            const logoSrc = s.logoFileName ? `./logos/${s.logoFileName}` : `logo_${toSlug(s.name || 'empresa')}.png`;
+
+            const code = `<!-- Card: ${s.name || 'Nueva Empresa'} -->
+<div class="participant-card"
+     data-name="${s.name || ''}"
+     data-sector="${s.sector || ''}"
+     data-origin="${s.provincia || ''}"
+     style="--card-accent: ${s.color};">
+  <div class="participant-card-inner">
+
+    <!-- Cara frontal -->
+    <div class="card-face face-front">
+      <img src="${logoSrc}"
+           alt="${s.name || ''}"
+           class="company-logo-main">
+      <div class="card-toggle-btn" onclick="toggleCard(this)">
+        <i data-lucide="plus" class="w-5 h-5"></i>
+      </div>
+    </div>
+
+    <!-- Cara trasera -->
+    <div class="card-face face-back">
+      <div class="flex items-center gap-4 mb-5">
+        <div class="participant-logo"
+          style="background: linear-gradient(135deg, ${s.color}, ${accentDark});">
+          ${initial}
+        </div>
+        <div>
+          <h3 class="text-lg font-bold"
+              style="color: var(--text-main);">
+            ${s.name || ''}
+          </h3>
+          <span class="card-type-tag"
+            style="color:${s.color}; background:${hexToRgba(s.color, .1)}">
+            <i data-lucide="${secIcon}" class="w-3 h-3"></i>
+            ${secLabel}
+          </span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3">
+        <div class="card-info-row card-website">
+          <i data-lucide="globe" class="w-4 h-4"
+             style="color: var(--primary-blue);"></i>
+          <a href="https://${cleanUrl}"
+             target="_blank"
+             rel="noopener noreferrer">
+            ${cleanUrl}
+          </a>
+        </div>
+        <div class="card-info-row"
+             style="color: var(--text-muted);">
+          <i data-lucide="map-pin" class="w-4 h-4"></i>
+          <span>${s.provincia || ''}</span>
+        </div>
+      </div>
+      <div class="card-toggle-btn" onclick="toggleCard(this)">
+        <i data-lucide="minus" class="w-5 h-5"></i>
+      </div>
+    </div>
+
+  </div>
+</div>`;
+            document.getElementById('htmlOutput').textContent = code;
+            generateVue();
+            generateCSS();
+        }
+
+        // ─── Vue / Nuxt SFC Generator ────────────────────────────
+        function generateVue() {
+            const s = state;
+            const sec = s.sector && sectorMap[s.sector] ? sectorMap[s.sector] : null;
+            const secLabel = sec ? sec.label : '';
+            const secIcon = sec ? sec.icon : 'briefcase';
+            const initial = s.name ? s.name.charAt(0).toUpperCase() : '?';
+            const cleanUrl = s.web ? s.web.replace(/^https?:\/\//, '') : '';
+            const accentDark = darkenHex(s.color, .25);
+            const logoSrc = s.logoFileName ? './logos/' + s.logoFileName : 'logo_' + toSlug(s.name || 'empresa') + '.png';
+
+            const vue = [
+                '<template>',
+                '  <!-- Card: ' + (s.name || 'Nueva Empresa') + ' -->',
+                '  <div class="participant-card"',
+                '       :data-name="name" :data-sector="sector" :data-origin="origin"',
+                '       :style="{ \'--card-accent\': color }">',
+                '    <div class="participant-card-inner" :class="{ \'is-flipped\': flipped }">',
+                '',
+                '      <!-- Cara frontal -->',
+                '      <div class="card-face face-front">',
+                '        <img :src="logoSrc" :alt="name" class="company-logo-main" />',
+                '        <button class="card-toggle-btn" @click="flipped = true">',
+                '          <i data-lucide="plus" class="w-5 h-5" />',
+                '        </button>',
+                '      </div>',
+                '',
+                '      <!-- Cara trasera -->',
+                '      <div class="card-face face-back">',
+                '        <div class="flex items-center gap-4 mb-5">',
+                '          <div class="participant-logo" :style="avatarStyle">{{ initial }}</div>',
+                '          <div>',
+                '            <h3 class="text-lg font-bold" style="color:var(--text-main)">{{ name }}</h3>',
+                '            <span class="card-type-tag" :style="tagStyle">{{ secLabel }}</span>',
+                '          </div>',
+                '        </div>',
+                '        <div class="flex flex-col gap-3">',
+                '          <div class="card-info-row card-website">',
+                '            <i data-lucide="globe" class="w-4 h-4" style="color:var(--primary-blue)" />',
+                '            <a :href="\'https://\' + cleanUrl" target="_blank" rel="noopener noreferrer">{{ cleanUrl }}</a>',
+                '          </div>',
+                '          <div class="card-info-row" style="color:var(--text-muted)">',
+                '            <i data-lucide="map-pin" class="w-4 h-4" />',
+                '            <span>{{ origin }}</span>',
+                '          </div>',
+                '        </div>',
+                '        <button class="card-toggle-btn" @click="flipped = false">',
+                '          <i data-lucide="minus" class="w-5 h-5" />',
+                '        </button>',
+                '      </div>',
+                '    </div>',
+                '  </div>',
+                '</template>',
+                '',
+                '<script setup>',
+                'import { ref, computed } from "vue"',
+                'const props = defineProps({',
+                '  name:    { type: String, default: "' + (s.name || 'Nueva Empresa') + '" },',
+                '  sector:  { type: String, default: "' + (s.sector || '') + '" },',
+                '  origin:  { type: String, default: "' + (s.provincia || '') + '" },',
+                '  color:   { type: String, default: "' + s.color + '" },',
+                '  logoSrc: { type: String, default: "' + logoSrc + '" },',
+                '  web:     { type: String, default: "' + (s.web || '') + '" },',
+                '})',
+                'const flipped  = ref(false)',
+                'const initial  = computed(() => props.name?.charAt(0).toUpperCase() ?? "?")',
+                'const cleanUrl = computed(() => props.web.replace(/^https?:\\/\\//, ""))',
+                'const secLabel = "' + secLabel + '"',
+                'const avatarStyle = computed(() => ({',
+                '  background: "linear-gradient(135deg, " + props.color + ", ' + accentDark + ')"',
+                '}))',
+                'const tagStyle = computed(() => ({',
+                '  color: props.color,',
+                '  background: hexToRgba(props.color, 0.1)',
+                '}))',
+                '<\/script>',
+                '',
+                '<style scoped>',
+                '@import url("./participantes-styles.css");',
+                '<\/style>'
+            ].join('\n');
+
+            document.getElementById('vueOutput').textContent = vue;
+        }
+
+        // ─── CSS Generator ───────────────────────────────────────
+        function generateCSS() {
+            const s = state;
+            const accentDark = darkenHex(s.color, .25);
+
+            const lines = [
+                '/* == Participant Card: ' + (s.name || 'Nueva Empresa') + ' == */',
+                '/* Accent: ' + s.color + ' */',
+                '',
+                '.participant-card {',
+                '  --card-accent: ' + s.color + ';',
+                '  background-color: transparent;',
+                '  perspective: 1000px;',
+                '  height: 260px;',
+                '  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);',
+                '}',
+                '.participant-card:hover { transform: translateY(-8px); }',
+                '',
+                '.participant-card-inner {',
+                '  position: relative; width: 100%; height: 100%;',
+                '  text-align: center;',
+                '  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);',
+                '  transform-style: preserve-3d;',
+                '  border-radius: 1.5rem;',
+                '  box-shadow: 0 10px 15px -3px rgba(0,0,0,.1);',
+                '}',
+                '.participant-card.is-flipped .participant-card-inner { transform: rotateY(180deg); }',
+                '',
+                '.card-face {',
+                '  position: absolute; inset: 0;',
+                '  backface-visibility: hidden;',
+                '  border-radius: inherit;',
+                '}',
+                '.face-front {',
+                '  background-color: var(--glass-bg);',
+                '  border: 1px solid var(--glass-border);',
+                '  display: flex; align-items: center; justify-content: center;',
+                '}',
+                '.face-back {',
+                '  background-color: var(--glass-bg);',
+                '  border: 1px solid var(--glass-border);',
+                '  transform: rotateY(180deg);',
+                '  padding: 1.5rem;',
+                '  display: flex; flex-direction: column; justify-content: space-between;',
+                '  text-align: left;',
+                '}',
+                '.company-logo-main { max-width: 70%; max-height: 70%; object-fit: contain; }',
+                '',
+                '.participant-logo {',
+                '  width: 2.5rem; height: 2.5rem; border-radius: 9999px;',
+                '  display: flex; align-items: center; justify-content: center;',
+                '  font-weight: 700; color: #fff; flex-shrink: 0;',
+                '  background: linear-gradient(135deg, ' + s.color + ', ' + accentDark + ');',
+                '}',
+                '',
+                '.card-type-tag {',
+                '  display: inline-flex; align-items: center; gap: .25rem;',
+                '  font-size: .7rem; font-weight: 700;',
+                '  padding: .2rem .6rem; border-radius: 9999px;',
+                '  color: ' + s.color + ';',
+                '  background: ' + hexToRgba(s.color, 0.1) + ';',
+                '}',
+                '',
+                '.card-toggle-btn {',
+                '  position: absolute; bottom: .75rem; right: .75rem;',
+                '  width: 1.75rem; height: 1.75rem; border-radius: 9999px;',
+                '  display: flex; align-items: center; justify-content: center;',
+                '  background: var(--card-accent); color: #fff;',
+                '  cursor: pointer; border: none; transition: opacity .2s;',
+                '}',
+                '',
+                '.card-info-row { display: flex; align-items: center; gap: .5rem; font-size: .875rem; }',
+                '.card-website a { color: var(--primary-blue); text-decoration: none; font-weight: 500; }',
+                '.card-website a:hover { text-decoration: underline; }'
+            ];
+
+            document.getElementById('cssOutput').textContent = lines.join('\n');
+        }
+
+        // ─── Tab switcher ────────────────────────────────────────
+        let activeTab = 'html';
+        window.switchTab = function (tab) {
+            activeTab = tab;
+            ['html', 'vue', 'css'].forEach(function (t) {
+                document.getElementById(t + 'Output').classList.toggle('hidden', t !== tab);
+                document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+            });
+            lucide.createIcons();
+        };
+
+        // ─── Copy code ───────────────────────────────────────────
+        function copyCode() {
+            const outputId = activeTab === 'vue' ? 'vueOutput' : activeTab === 'css' ? 'cssOutput' : 'htmlOutput';
+            const txt = document.getElementById(outputId).textContent;
+            navigator.clipboard.writeText(txt).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.classList.add('copied');
+                btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> ¡Copiado!';
+                lucide.createIcons();
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<i data-lucide="copy" class="w-4 h-4"></i> Copiar';
+                    lucide.createIcons();
+                }, 2500);
+            });
+        }
+
+        // ─── Color helpers ───────────────────────────────────────
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r},${g},${b},${alpha})`;
+        }
+        function darkenHex(hex, amount) {
+            let r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+            r = Math.round(r * (1 - amount)); g = Math.round(g * (1 - amount)); b = Math.round(b * (1 - amount));
+            return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+        }
+        function toSlug(str) { return str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''); }
+
+        // Init
+        applyColor('#1855BA');
+        generateHTML();
+        lucide.createIcons();
+
+        // ─── Toast helper ─────────────────────────────
+        function showToast(msg, type = 'success') {
+            const colors = { success: '#16a34a', error: '#dc2626', info: '#1855BA' };
+            const t = document.createElement('div');
+            t.style.cssText = `
+                position:fixed; bottom:1.5rem; right:1.5rem; z-index:999;
+                padding:.75rem 1.25rem; border-radius:.75rem;
+                background:${colors[type] || colors.info}; color:#fff;
+                font-size:.85rem; font-weight:700;
+                box-shadow:0 8px 24px rgba(0,0,0,.3);
+                display:flex; align-items:center; gap:.5rem;
+                transform:translateX(120%); transition:transform .3s ease;
+            `;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            requestAnimationFrame(() => { t.style.transform = 'translateX(0)'; });
+            setTimeout(() => {
+                t.style.transform = 'translateX(120%)';
+                t.addEventListener('transitionend', () => t.remove());
+            }, 3500);
+        }
+
+        // ─── Publish: inject card into participantes-mercado.html ───
+        async function publishCard() {
+            // Validate minimum data
+            if (!state.name) { showToast('⚠️ Debes introducir el nombre de la empresa.', 'error'); return; }
+            if (!state.web) { showToast('⚠️ Debes introducir la página web.', 'error'); return; }
+
+            // IF EDITING: Just update the slider item
+            if (state.editingId) {
+                const idx = state.managedCards.findIndex(c => c.id === state.editingId);
+                if (idx !== -1) {
+                    // ... (snippet generation logic) ...
+                    // Re-generate the snippet for this card with new state
+                    const sec = state.sector && sectorMap[state.sector] ? sectorMap[state.sector] : null;
+                    const secLabel = sec ? sec.label : '';
+                    const secIcon = sec ? sec.icon : 'briefcase';
+                    const initial = state.name.charAt(0).toUpperCase();
+                    const cleanUrl = state.web.replace(/^https?:\/\//, '');
+                    const accentDark = darkenHex(state.color, .25);
+                    const logoSrc = state.logoFileName ? `./${state.logoFileName}` : `./logo_${toSlug(state.name)}.png`;
+
+                    const isHidden = state.managedCards[idx].isHidden;
+                    const hiddenClass = isHidden ? ' participant-hidden' : '';
+                    const hiddenStyle = isHidden ? 'opacity: 0.5; pointer-events: none;' : '';
+
+                    const newSnippet = `
+                    <!-- Card: ${state.name} -->
+                    <div class="participant-card${hiddenClass}"
+                         data-name="${state.name}"
+                         data-sector="${state.sector || ''}"
+                         data-origin="${state.provincia || ''}"
+                         style="--card-accent: ${state.color}; ${hiddenStyle}">
+                        <div class="participant-card-inner">
+                            <div class="card-face face-front">
+                                <img src="${logoSrc}" alt="${state.name}" class="company-logo-main">
+                                <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                            <div class="card-face face-back">
+                                <div class="flex items-center gap-4 mb-5">
+                                    <div class="participant-logo"
+                                         style="background: linear-gradient(135deg, ${state.color}, ${accentDark});">${initial}</div>
+                                    <div>
+                                        <h3 class="text-lg font-bold" style="color: var(--text-main);">${state.name}</h3>
+                                        <span class="card-type-tag" style="color:${state.color}; background:${hexToRgba(state.color, .1)}">
+                                            <i data-lucide="${secIcon}" class="w-3 h-3"></i> ${secLabel}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-3">
+                                    <div class="card-info-row card-website">
+                                        <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                        <a href="https://${cleanUrl}" target="_blank" rel="noopener noreferrer">${cleanUrl}</a>
+                                    </div>
+                                    <div class="card-info-row" style="color: var(--text-muted);">
+                                        <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                        <span>${state.provincia || ''}</span>
+                                    </div>
+                                </div>
+                                <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                    <i data-lucide="minus" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`.trim();
+
+                    state.managedCards[idx] = {
+                        ...state.managedCards[idx],
+                        name: state.name,
+                        sector: state.sector,
+                        origin: state.provincia,
+                        color: state.color,
+                        web: state.web,
+                        logoSrc: logoSrc,
+                        htmlOriginal: newSnippet
+                    };
+
+                    renderMgmtSlider();
+                    saveLocalCards();
+                    state.editingId = null;
+                    state.hasChanges = false;
+
+                    // Reset button
+                    const pb = document.getElementById('publishBtn');
+                    pb.innerHTML = '<i data-lucide="send" class="w-4 h-4"></i> Publicar';
+                    pb.style.backgroundColor = '#16a34a';
+                    pb.disabled = true;
+
+                    // Hide Cancel button
+                    document.getElementById('cancelEditBtn').classList.add('hidden');
+
+                    lucide.createIcons();
+
+                    // AUTO SYNC after edit
+                    await syncChanges();
+                    return;
+                }
+            }
+
+            // Check for File System Access API support
+            if (!window.showOpenFilePicker) {
+                showToast('⚠️ Tu navegador no soporta la API de acceso a ficheros. Copia el HTML generado manualmente.', 'error');
+                return;
+            }
+
+            try {
+                // STEP 1: If there is a logo, save it to the folder
+                if (state.logoFile) {
+                    try {
+                        showToast('📁 Selecciona dónde guardar la imagen del logo (en la misma carpeta del proyecto).', 'info');
+                        const logoHandle = await window.showSaveFilePicker({
+                            suggestedName: state.logoFileName,
+                            types: [{
+                                description: 'Image File',
+                                accept: { [state.logoFile.type]: ['.png', '.svg'] }
+                            }]
+                        });
+                        const logoWritable = await logoHandle.createWritable();
+                        await logoWritable.write(state.logoFile);
+                        await logoWritable.close();
+                        // Update the filename in case user changed it in the save dialog
+                        state.logoFileName = logoHandle.name;
+                    } catch (err) {
+                        if (err.name === 'AbortError') {
+                            showToast('❌ Guardado de logo cancelado. No se publicará la tarjeta.', 'error');
+                            return;
+                        }
+                        throw err;
+                    }
+                }
+
+                // STEP 2: Build the card snippet and object
+                const sec = state.sector && sectorMap[state.sector] ? sectorMap[state.sector] : null;
+                const secLabel = sec ? sec.label : '';
+                const secIcon = sec ? sec.icon : 'briefcase';
+                const initial = state.name.charAt(0).toUpperCase();
+                const cleanUrl = state.web.replace(/^https?:\/\//, '');
+                const accentDark = darkenHex(state.color, .25);
+                const logoSrc = state.logoFileName
+                    ? `./${state.logoFileName}`
+                    : `logo_${toSlug(state.name)}.png`;
+
+                const cardSnippet = `
+                <!-- Card: ${state.name} -->
+                <div class="participant-card"
+                     data-name="${state.name}"
+                     data-sector="${state.sector || ''}"
+                     data-origin="${state.provincia || ''}"
+                     style="--card-accent: ${state.color};">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front">
+                            <img src="${logoSrc}" alt="${state.name}" class="company-logo-main">
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="card-face face-back">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="participant-logo"
+                                     style="background: linear-gradient(135deg, ${state.color}, ${accentDark});">${initial}</div>
+                                <div>
+                                    <h3 class="text-lg font-bold" style="color: var(--text-main);">${state.name}</h3>
+                                    <span class="card-type-tag" style="color:${state.color}; background:${hexToRgba(state.color, .1)}">
+                                        <i data-lucide="${secIcon}" class="w-3 h-3"></i> ${secLabel}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div class="card-info-row card-website">
+                                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary-blue);"></i>
+                                    <a href="https://${cleanUrl}" target="_blank" rel="noopener noreferrer">${cleanUrl}</a>
+                                </div>
+                                <div class="card-info-row" style="color: var(--text-muted);">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span>${state.provincia || ''}</span>
+                                </div>
+                            </div>
+                            <div class="card-toggle-btn" onclick="toggleCard(this)">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>`.trim();
+
+                // STEP 3: Add to state and persist
+                const newCard = {
+                    id: Date.now(),
+                    name: state.name,
+                    sector: state.sector,
+                    origin: state.provincia,
+                    color: state.color,
+                    logoSrc: logoSrc,
+                    web: state.web,
+                    isHidden: false,
+                    htmlOriginal: cardSnippet
+                };
+
+                state.managedCards.unshift(newCard); // Add to the beginning of the list
+                document.getElementById('mgmtEmptyState').classList.add('hidden');
+                document.getElementById('mgmtSliderContainer').classList.remove('hidden');
+                renderMgmtSlider();
+                saveLocalCards();
+
+                // STEP 4: Persist to file using unified syncChanges
+                await syncChanges();
+
+                // Success feedback
+                const btn = document.getElementById('publishBtn');
+                const originalHTML = btn.innerHTML;
+                btn.style.backgroundColor = '#0f3c8e';
+                btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i> ¡Publicado!';
+                lucide.createIcons();
+                setTimeout(() => {
+                    btn.style.backgroundColor = '#16a34a';
+                    btn.innerHTML = originalHTML;
+                    lucide.createIcons();
+                }, 3000);
+
+                const logoMsg = (state.logoDataUrl && state.logoDataUrl.startsWith('data:')) ? ' (Recuerda copiar el fichero del logo junto al HTML).' : '.';
+                showToast(`✅ "${state.name}" publicado en el mercado${logoMsg}`, 'success');
+
+                // Clear form after successful publish
+                cancelEdit();
+
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error(err);
+                    showToast('⚠️ Error al publicar. Asegúrate de que el archivo esté vinculado.', 'error');
+                }
+            }
+        } // Closing publishCard properly
+
+        // ─── Gestión (Slider, Editar, Borrar) ───────────────────
+        let mgmtSwiper = null;
+
+        async function importFromMarket() {
+            try {
+                const [handle] = await window.showOpenFilePicker({
+                    types: [{ description: 'HTML', accept: { 'text/html': ['.html', '.htm'] } }],
+                    multiple: false
+                });
+                await setFileHandle(handle);
+                const file = await handle.getFile();
+                const content = await file.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(content, 'text/html');
+                let grid = doc.getElementById('participantsGrid');
+
+                // Robust Fallback
+                if (!grid) {
+                    grid = doc.querySelector('.grid') || doc.querySelector('[class*="grid"]');
+                    console.log('Grid not found by ID, trying class fallback:', grid);
+                }
+
+                if (!grid) {
+                    showToast('⚠️ No se encontró el contenedor de participantes en el archivo.', 'error');
+                    return;
+                }
+
+                const cards = Array.from(grid.querySelectorAll('.participant-card'));
+                state.managedCards = cards.map((card, idx) => {
+                    const name = card.dataset.name || 'Sin nombre';
+                    const sector = card.dataset.sector || '';
+                    const origin = card.dataset.origin || '';
+                    const color = card.style.getPropertyValue('--card-accent').trim() || '#1855BA';
+                    const logoImg = card.querySelector('.company-logo-main');
+                    const logoSrc = logoImg ? logoImg.getAttribute('src') : '';
+                    const webLink = card.querySelector('.card-website a');
+                    const web = webLink ? webLink.getAttribute('href') : '';
+                    const isHidden = card.classList.contains('participant-hidden') || card.style.opacity === '0.5';
+
+                    return {
+                        id: Date.now() + idx,
+                        name, sector, origin, color, logoSrc, web,
+                        isHidden: isHidden,
+                        htmlOriginal: card.outerHTML.trim()
+                    };
+                });
+
+                if (state.managedCards.length === 0) {
+                    showToast('ℹ️ No se encontraron tarjetas para importar.', 'info');
+                } else {
+                    document.getElementById('mgmtEmptyState').classList.add('hidden');
+                    document.getElementById('mgmtSliderContainer').classList.remove('hidden');
+                    saveLocalCards();
+                    renderMgmtSlider();
+                    showToast(`✅ ${state.managedCards.length} tarjetas importadas.`, 'success');
+                }
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error(err);
+                    showToast('❌ Error al importar.', 'error');
+                }
+            }
+        }
+
+        function renderMgmtSlider() {
+            const wrapper = document.getElementById('mgmtCardsWrapper');
+            wrapper.innerHTML = state.managedCards.map((card, idx) => `
+                <div class="swiper-slide h-auto">
+                    <div class="mgmt-card-item ${card.isHidden ? 'is-hidden' : ''}" id="mgmt-card-${card.id}">
+                        <button class="mgmt-btn-delete" onclick="deleteCard(${card.id})" title="Eliminar">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                        <button class="mgmt-btn-hide" onclick="toggleHideCard(${card.id})" title="${card.isHidden ? 'Mostrar' : 'Ocultar'}">
+                            <i data-lucide="${card.isHidden ? 'eye' : 'eye-off'}" class="w-4 h-4"></i>
+                        </button>
+                        <div class="flex-grow flex flex-col items-center justify-center p-4">
+                            <img src="${card.logoSrc}" alt="${card.name}" class="mgmt-card-logo mb-3">
+                            <h4 class="font-bold text-sm text-center line-clamp-1" style="color: var(--text-main);">${card.name}</h4>
+                            <p class="text-[10px] uppercase tracking-wider" style="color: var(--text-muted); opacity: 0.6;">${card.sector}</p>
+                        </div>
+                        <div class="pt-2 border-t" style="border-color: var(--glass-border);">
+                            <button class="mgmt-btn-edit w-full flex items-center justify-center gap-2" onclick="editCard(${card.id})">
+                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+
+            if (mgmtSwiper) mgmtSwiper.destroy();
+            mgmtSwiper = new Swiper('.mgmtSwiper', {
+                slidesPerView: 2,
+                spaceBetween: 24,
+                grabCursor: true,
+                watchSlidesProgress: true,
+                pagination: { el: '.swiper-pagination', clickable: true },
+                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+                breakpoints: {
+                    640: { slidesPerView: 3 },
+                    1024: { slidesPerView: 4 },
+                    1280: { slidesPerView: 5 }
+                }
+            });
+        }
+
+        function editCard(id) {
+            const card = state.managedCards.find(c => c.id === id);
+            if (!card) return;
+
+            // Load into form
+            document.getElementById('inputName').value = card.name;
+            document.getElementById('inputWeb').value = card.web;
+            document.getElementById('selectProvincia').value = card.origin;
+            document.getElementById('selectSector').value = card.sector;
+
+            // Color
+            const cleanColor = card.color.startsWith('#') ? card.color : '#1855BA';
+            onNativeColorChange(cleanColor);
+
+            // Logo (Reference existing path)
+            state.logoDataUrl = card.logoSrc;
+            state.logoFileName = card.logoSrc.split('/').pop();
+            state.logoFile = null;
+
+            // UI Update
+            document.getElementById('dropZone').classList.add('has-file');
+            document.getElementById('dropZoneContent').classList.add('hidden');
+            const prev = document.getElementById('dropZonePreview');
+            prev.classList.remove('hidden'); prev.classList.add('flex');
+            document.getElementById('dropZoneImg').src = card.logoSrc;
+            document.getElementById('dropZoneFilename').textContent = state.logoFileName;
+
+            // Sync state
+            state.editingId = id;
+            state.originalEditData = { ...card, logoFileName: state.logoFileName }; // Snapshot
+            updatePreview();
+
+            // Switch Publish button to "Update" mode
+            const publishBtn = document.getElementById('publishBtn');
+            publishBtn.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4"></i> Guardar en Slider';
+            publishBtn.style.backgroundColor = '#fbbf24'; // Orange-ish
+
+            // Show Cancel button
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+            lucide.createIcons();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showToast(`📝 Editando: ${card.name}. Haz tus cambios y pulsa "Guardar en Slider".`, 'info');
+        }
+
+        async function toggleHideCard(id) {
+            const card = state.managedCards.find(c => c.id === id);
+            if (!card) return;
+
+            card.isHidden = !card.isHidden;
+
+            // Update htmlOriginal snippet with/without hidden class
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(card.htmlOriginal, 'text/html');
+            const el = doc.querySelector('.participant-card');
+            if (el) {
+                if (card.isHidden) {
+                    el.classList.add('participant-hidden');
+                    el.style.opacity = '0.5';
+                    el.style.pointerEvents = 'none';
+                } else {
+                    el.classList.remove('participant-hidden');
+                    el.style.opacity = '';
+                    el.style.pointerEvents = '';
+                }
+                card.htmlOriginal = el.outerHTML;
+            }
+
+            renderMgmtSlider();
+            saveLocalCards();
+            showToast(card.isHidden ? 'Empresa ocultada. Sincronizando...' : 'Empresa visible. Sincronizando...', 'info');
+
+            // AUTO SYNC
+            await syncChanges();
+        }
+
+        function cancelEdit() {
+            state.editingId = null;
+            state.hasChanges = false;
+
+            // Reset Publish button
+            const pb = document.getElementById('publishBtn');
+            pb.innerHTML = '<i data-lucide="send" class="w-4 h-4"></i> Publicar';
+            pb.style.backgroundColor = '#16a34a';
+            pb.disabled = true;
+
+            // Hide Cancel button
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+
+            // Clear form
+            document.getElementById('inputName').value = '';
+            document.getElementById('inputWeb').value = '';
+            document.getElementById('selectProvincia').value = '';
+            document.getElementById('selectSector').value = '';
+            clearLogo(new Event('click'));
+
+            updatePreview();
+            lucide.createIcons();
+            showToast('Edición cancelada.', 'info');
+        }
+
+        async function deleteCard(id) {
+            if (!confirm('¿Seguro que quieres eliminar esta tarjeta? Se sincronizará con el archivo inmediatamente.')) return;
+            state.managedCards = state.managedCards.filter(c => c.id !== id);
+            renderMgmtSlider();
+            saveLocalCards();
+            if (state.managedCards.length === 0) {
+                document.getElementById('mgmtEmptyState').classList.remove('hidden');
+                document.getElementById('mgmtSliderContainer').classList.add('hidden');
+            }
+            await syncChanges();
+        }
+
+        async function syncChanges() {
+            try {
+                let handle = state.fileHandle;
+
+                // 1. Try to get handle from IndexedDB if not in state
+                if (!handle) handle = await getFileHandle();
+
+                // 2. If we have a handle, check permissions
+                if (handle) {
+                    const opts = { mode: 'readwrite' };
+                    if (await handle.queryPermission(opts) !== 'granted') {
+                        if (await handle.requestPermission(opts) !== 'granted') {
+                            handle = null; // Permission denied, fallback to picker
+                        }
+                    }
+                }
+
+                // 3. Fallback to picker if no handle or permission
+                if (!handle) {
+                    showToast('📄 Selecciona participantes-mercado.html para vincularlo.', 'info');
+                    const [newHandle] = await window.showOpenFilePicker({
+                        types: [{ description: 'HTML', accept: { 'text/html': ['.html', '.htm'] } }],
+                        multiple: false
+                    });
+                    handle = newHandle;
+                    await setFileHandle(handle);
+                }
+
+                const file = await handle.getFile();
+                let content = await file.text();
+
+                // Find grid boundaries
+                const gridId = 'id="participantsGrid"';
+                const startIdx = content.indexOf(gridId);
+                if (startIdx === -1) {
+                    showToast('⚠️ No se encontró el grid en el archivo.', 'error');
+                    return;
+                }
+
+                const gridStart = content.indexOf('>', startIdx) + 1;
+                // Find first closing div after gridStart that matches the grid (careful with nesting)
+                // Since this is a simple grid, we look for the next closing </div> that isn't inside a card.
+                // A better way is to find the end of the content or use DOMParser to reconstruct.
+                // Let's use DOMParser for a cleaner reconstruction.
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(content, 'text/html');
+                const grid = doc.getElementById('participantsGrid');
+
+                if (!grid) return;
+
+                // Clear and rebuild
+                grid.innerHTML = state.managedCards.map(c => c.htmlOriginal).join('\n');
+
+                const serializer = new XMLSerializer();
+                const newContent = serializer.serializeToString(doc);
+
+                // XMLSerializer might add xmlns or mess up doctype/meta. 
+                // Let's stick to string replacement for safety if it's a fixed structure.
+
+                // Alternative: detect end of grid by looking for the next section or the end of the div.
+                // In our file, participantsGrid is followed by </main> soon?
+
+                // Simple approach: find </div> matching the grid.
+                let depth = 1;
+                let currentPos = gridStart;
+                while (depth > 0 && currentPos < content.length) {
+                    const nextOpen = content.indexOf('<div', currentPos);
+                    const nextClose = content.indexOf('</div', currentPos);
+
+                    if (nextClose === -1) break;
+
+                    if (nextOpen !== -1 && nextOpen < nextClose) {
+                        depth++;
+                        currentPos = nextOpen + 4;
+                    } else {
+                        depth--;
+                        currentPos = nextClose + 5;
+                    }
+                }
+
+                const gridEnd = currentPos - 6; // Back past </div>
+
+                const rebuiltGridHTML = '\n            ' + state.managedCards.map(c => c.htmlOriginal).join('\n            ') + '\n        ';
+                const finalContent = content.slice(0, gridStart) + rebuiltGridHTML + content.slice(gridEnd);
+
+                const writable = await handle.createWritable();
+                await writable.write(finalContent);
+                await writable.close();
+
+                showToast('✅ Mercado sincronizado correctamente.', 'success');
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error(err);
+                    showToast('❌ Error al sincronizar.', 'error');
+                }
+            }
+        }
+
+        // --- LANGUAGE LOGIC ---
+        window.toggleLanguage = function () {
+            const body = document.body;
+            const isEn = body.classList.toggle('lang-en');
+            localStorage.setItem('tcav-lang', isEn ? 'en' : 'es');
+        };
+
+        if (localStorage.getItem('tcav-lang') === 'en') {
+            document.body.classList.add('lang-en');
+        }
+
+        // ─── Inicialización ──────────────────────────────────────
+        window.onload = async () => {
+            loadLocalCards();
+            state.fileHandle = await getFileHandle();
+            if (state.fileHandle) {
+                console.log('File handle recovered from IndexedDB');
+            }
+        };
+    </script>
+
+    <!-- Floating Controls Bar -->
+    <div class="controls-bar">
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <i data-lucide="sun" class="toggle-track-icon"></i>
+            <div class="theme-toggle-thumb">
+                <i data-lucide="moon" class="thumb-icon"></i>
+            </div>
+        </div>
+        <div class="lang-toggle" onclick="toggleLanguage()">
+            <span class="lang-label lang-label-es">ES</span>
+            <div class="lang-switch-track">
+                <div class="lang-switch-thumb"></div>
+            </div>
+            <span class="lang-label lang-label-en">EN</span>
+        </div>
+    </div>
+</body>
+
+</html>

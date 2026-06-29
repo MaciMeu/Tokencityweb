@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | La oportunidad inmobiliaria de España en clave tokenizada</title>
+    <meta name="description" content="España consolida su posición como mercado inmobiliario relevante en Europa. La tokenización representa una alternativa complementaria a la financiación bancaria tradicional.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const saved = localStorage.getItem('themePreference');
+            let isLight;
+            if (saved) { isLight = saved === 'light'; }
+            else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                isLight = !systemDark && !(hour >= 19 || hour < 7);
+            }
+            if (isLight) document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a; --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255,255,255,0.85); --glass-border: rgba(0,0,0,0.1);
+            --nav-bg: rgba(5,7,10,0.95); --nav-text: #ffffff; --nav-text-muted: #9ca3af;
+        }
+        body:not(.light-mode) {
+            --text-main: #ffffff; --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255,255,255,0.03); --glass-border: rgba(255,255,255,0.08);
+        }
+        .heading-text { color: var(--text-main); }
+        .body-text    { color: var(--text-muted); }
+        .section-label { color: var(--primary-blue); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        body:not(.light-mode) .section-label { color: #60a5fa; }
+
+        /* ── Hero ── */
+        .article-hero {
+            position: relative; overflow: hidden; background: #05070a;
+            min-height: 68vh; display: flex; align-items: flex-end; padding-bottom: 4rem;
+        }
+        .article-hero-media {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+            opacity: 0.42; transform: scale(1.03);
+        }
+        .article-hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+        }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.6) 100%);
+        }
+
+        /* ── Nav ── */
+        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link  { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .mega-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem;
+            opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100;
+        }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        #navOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+        #mobileDrawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+            background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; flex-direction: column; border-left: 1px solid var(--glass-border);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+
+        /* ── Controls ── */
+        .controls-bar {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            background: rgba(5,7,10,0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .theme-toggle {
+            position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1);
+            border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+        }
+        .theme-toggle-thumb {
+            position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: #fff;
+            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2;
+        }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+
+        /* ── Article layout ── */
+        .article-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 4rem;
+            align-items: start;
+        }
+        @media (max-width: 1024px) { .article-layout { grid-template-columns: 1fr; } }
+
+        /* ── Article tag pill ── */
+        .article-tag {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.3rem 0.875rem; border-radius: 999px;
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+            text-decoration: none; transition: all 0.2s ease;
+        }
+        .article-tag-primary { background: rgba(24,85,186,0.15); color: #1855BA; border: 1px solid rgba(24,85,186,0.3); }
+        body:not(.light-mode) .article-tag-primary { background: rgba(96,165,250,0.1); color: #60a5fa; border-color: rgba(96,165,250,0.25); }
+        .article-tag-secondary { background: var(--glass-bg); color: var(--text-muted); border: 1px solid var(--glass-border); }
+        .article-tag-secondary:hover { border-color: rgba(24,85,186,0.4); color: #1855BA; }
+        body:not(.light-mode) .article-tag-secondary:hover { color: #60a5fa; border-color: rgba(96,165,250,0.4); }
+
+        /* ── Prose typography ── */
+        .prose-article {
+            font-size: 1rem;
+            line-height: 1.85;
+            color: var(--text-muted);
+        }
+        .prose-article p { margin-bottom: 1.5rem; }
+        .prose-article p:last-child { margin-bottom: 0; }
+        .prose-article strong { font-weight: 700; color: var(--text-main); }
+
+        .prose-article h2 {
+            font-size: 1.5rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: -0.02em; color: var(--text-main);
+            margin: 3rem 0 1.25rem; scroll-margin-top: 100px;
+            padding-bottom: 0.75rem; border-bottom: 1px solid var(--glass-border);
+        }
+        .prose-article h3 {
+            font-size: 1.125rem; font-weight: 700; color: var(--text-main);
+            margin: 2rem 0 0.875rem;
+        }
+
+        /* Lead paragraph */
+        .prose-lead {
+            font-size: 1.125rem; line-height: 1.8; color: var(--text-main);
+            font-weight: 500; margin-bottom: 2rem;
+        }
+
+        /* Blockquote stat */
+        .stat-quote {
+            border-left: 4px solid #1855BA; padding: 1.25rem 1.75rem;
+            background: rgba(24,85,186,0.06); border-radius: 0 1rem 1rem 0;
+            margin: 2rem 0;
+        }
+        body:not(.light-mode) .stat-quote { background: rgba(96,165,250,0.06); border-color: #60a5fa; }
+        .stat-quote p { margin: 0; font-size: 1rem; font-style: italic; color: var(--text-main); line-height: 1.7; }
+        .stat-quote cite { display: block; font-size: 0.75rem; font-style: normal; font-weight: 700; color: #1855BA; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.06em; }
+        body:not(.light-mode) .stat-quote cite { color: #60a5fa; }
+
+        /* Case study cards */
+        .case-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--card-accent, #1855BA);
+            border-radius: 1.5rem; padding: 1.75rem 2rem;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .case-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); }
+        body.light-mode .case-card { background: rgba(255,255,255,0.9); }
+        .case-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; border-radius: 50%;
+            background: rgba(24,85,186,0.1); color: #1855BA;
+            font-size: 0.75rem; font-weight: 900; flex-shrink: 0;
+        }
+        body:not(.light-mode) .case-num { background: rgba(96,165,250,0.1); color: #60a5fa; }
+
+        /* ── Sidebar ── */
+        .article-sidebar { position: sticky; top: 100px; }
+
+        .sidebar-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 1.5rem; padding: 1.5rem;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            margin-bottom: 1.25rem;
+        }
+        body.light-mode .sidebar-card { background: rgba(255,255,255,0.9); }
+
+        .sidebar-title { font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.12em; color: #4b5563; margin-bottom: 0.875rem; }
+
+        .toc-link {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.4rem 0.625rem; border-radius: 0.625rem;
+            font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+            text-decoration: none; transition: all 0.2s ease;
+            border-left: 2px solid transparent; margin-bottom: 0.1rem;
+        }
+        .toc-link:hover { color: var(--text-main); background: rgba(24,85,186,0.05); }
+        .toc-link.active { color: #1855BA; border-left-color: #1855BA; background: rgba(24,85,186,0.07); }
+        body:not(.light-mode) .toc-link.active { color: #60a5fa; border-left-color: #60a5fa; background: rgba(96,165,250,0.08); }
+
+        /* Reading progress bar */
+        .reading-progress {
+            position: fixed; top: 0; left: 0; height: 3px; background: #1855BA;
+            z-index: 200; transition: width 0.1s linear; width: 0%;
+        }
+
+        @media (max-width: 640px) {
+            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+            .prose-article h2 { font-size: 1.25rem; }
+            .prose-lead { font-size: 1rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Reading progress -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <script>if (window.__isThemeLight) document.body.classList.add('light-mode');</script>
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+
+        <!-- ══════════════════════════ ARTICLE HERO ══════════════════════════ -->
+        <section class="article-hero px-6 pt-28">
+            <div class="article-hero-media"></div>
+            <div class="article-hero-overlay"></div>
+            <div class="hero-grid"></div>
+
+            <div class="relative z-10 max-w-5xl mx-auto w-full">
+
+                <!-- Breadcrumb -->
+                <nav class="flex items-center gap-2 text-xs text-white/55 mb-6">
+                    <a href="home.html" class="hover:text-white/70 transition-colors">Token City</a>
+                    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                    <a href="blog.html" class="hover:text-white/70 transition-colors">Recursos</a>
+                    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                    <span class="text-white/60">Artículo</span>
+                </nav>
+
+                <!-- Tags -->
+                <div class="flex flex-wrap gap-2 mb-5">
+                    <span class="article-tag article-tag-primary">
+                        <i data-lucide="tag" style="width:10px;height:10px;"></i> Tokenización
+                    </span>
+                    <span class="article-tag article-tag-secondary">Tokenización de activos</span>
+                    <span class="article-tag article-tag-secondary">Tokenización inmobiliaria</span>
+                </div>
+
+                <!-- Title -->
+                <h1 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter leading-tight mb-6 max-w-4xl">
+                    La oportunidad inmobiliaria de España<br>
+                    <span class="text-blue-400">en clave tokenizada</span>
+                </h1>
+
+                <!-- Meta -->
+                <div class="flex flex-wrap items-center gap-5 text-sm text-white/50">
+                    <span class="flex items-center gap-1.5">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-blue-400"></i>
+                        4 de mayo de 2026
+                    </span>
+                    <span class="flex items-center gap-1.5">
+                        <i data-lucide="clock" class="w-3.5 h-3.5 text-blue-400"></i>
+                        5 min de lectura
+                    </span>
+                    <span class="flex items-center gap-1.5">
+                        <i data-lucide="folder" class="w-3.5 h-3.5 text-blue-400"></i>
+                        Blog
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════ ARTICLE CONTENT ══════════════════════════ -->
+        <section class="max-w-7xl mx-auto px-6 py-16 pb-24">
+            <div class="article-layout">
+
+                <!-- ── Main Article ── -->
+                <article>
+
+                    <!-- Lead paragraph -->
+                    <p class="prose-lead reveal-growth">
+                        España consolida su posición como mercado inmobiliario relevante en Europa. La inversión inmobiliaria alcanzó los <strong>16.928 millones de euros en 2025</strong>, representando un incremento del 30% respecto al año anterior.
+                    </p>
+
+                    <div class="prose-article reveal-growth">
+
+                        <!-- Stat blockquote -->
+                        <div class="stat-quote">
+                            <p>"El peso del país en la inversión inmobiliaria europea ha pasado del 6% en 2019 al 15% en 2025"</p>
+                            <cite>Asociación de Consultores Inmobiliarios</cite>
+                        </div>
+
+                        <p>El sector combina tres características idóneas para la tokenización: activos reales, necesidades recurrentes de financiación e inversores que buscan oportunidades comprensibles. Los segmentos <strong>residencial (27% de inversión)</strong> y <strong>hotelero (24%)</strong> destacan particularmente en España respecto a otros mercados europeos.</p>
+
+                        <p>Para promotores e inmobiliarias, la tokenización representa una alternativa complementaria a la financiación bancaria tradicional, permitiendo estructurar operaciones de deuda o equity, ampliar la base inversora, digitalizar procesos y preparar activos para mercados secundarios regulados.</p>
+
+                        <!-- Section 1: Casos de uso -->
+                        <h2 id="casos-uso">Casos de uso destacables</h2>
+
+                        <p>El ecosistema español ya cuenta con casos de uso concretos que demuestran el potencial de la tokenización inmobiliaria. A continuación, tres ejemplos que ilustran el abanico de modelos posibles:</p>
+
+                    </div>
+
+                    <!-- Case study cards -->
+                    <div class="grid md:grid-cols-3 gap-5 my-10 reveal-growth">
+
+                        <div class="case-card" style="--card-accent: #1855BA;">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="case-num">1</span>
+                                <h3 class="text-lg font-black heading-text tracking-tight">OTESA</h3>
+                            </div>
+                            <p class="body-text text-sm leading-relaxed">Operación estructurada como <strong class="heading-text">bono tokenizado</strong> con interés anual del 10%, garantía hipotecaria sobre suelo, lanzada mediante Alius Capital con infraestructura de Token City.</p>
+                        </div>
+
+                        <div class="case-card" style="--card-accent: #3b82f6;">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="case-num">2</span>
+                                <h3 class="text-lg font-black heading-text tracking-tight">Equalice</h3>
+                            </div>
+                            <p class="body-text text-sm leading-relaxed">Plataforma que ha lanzado <strong class="heading-text">14 proyectos inmobiliarios</strong>, democratizando la inversión profesional mediante importes reducidos con énfasis en transparencia y accesibilidad.</p>
+                        </div>
+
+                        <div class="case-card" style="--card-accent: #8b5cf6;">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="case-num">3</span>
+                                <h3 class="text-lg font-black heading-text tracking-tight">Equito</h3>
+                            </div>
+                            <p class="body-text text-sm leading-relaxed">Modelo de inversión fraccionada en residencial con <strong class="heading-text">142 propiedades bajo gestión</strong>, permitiendo invertir desde 100€ con participación en rentas de alquiler y plusvalías.</p>
+                        </div>
+
+                    </div>
+
+                    <!-- Section 2: Token City -->
+                    <div class="prose-article reveal-growth">
+
+                        <h2 id="papel-token-city">El papel de Token City</h2>
+
+                        <p>Token City se posiciona en la intersección de asesoramiento, tecnología e infraestructura regulada para emitir, registrar, distribuir y facilitar la negociación de instrumentos tokenizados.</p>
+
+                        <div class="stat-quote">
+                            <p>"Estructuración, cumplimiento normativo, registro nativo en blockchain, canales regulados y capacidad de distribución."</p>
+                            <cite>Propuesta de valor · Token City</cite>
+                        </div>
+
+                        <p>La propuesta combina todas las fases del proceso: desde la estructuración económica y legal del instrumento, hasta su registro en blockchain y distribución a través de canales regulados, incluyendo la habilitación de mercados secundarios que dotan al activo de mayor liquidez.</p>
+
+                    </div>
+
+                    <!-- Share bar -->
+                    <div class="flex flex-wrap items-center justify-between gap-4 pt-8 mt-8 border-t" style="border-color:var(--glass-border);">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="article-tag article-tag-secondary"><i data-lucide="tag" style="width:10px;height:10px;"></i> Tokenización</span>
+                            <span class="article-tag article-tag-secondary">Tokenización de activos</span>
+                            <span class="article-tag article-tag-secondary">Tokenización inmobiliaria</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs body-text">Compartir:</span>
+                            <a href="#" class="social-share-btn" title="LinkedIn">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
+                            </a>
+                            <a href="#" class="social-share-btn" title="Twitter/X">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+
+                <!-- ── Sidebar ── -->
+                <aside class="article-sidebar hidden lg:block">
+
+                    <!-- TOC -->
+                    <div class="sidebar-card">
+                        <p class="sidebar-title">En este artículo</p>
+                        <nav class="flex flex-col">
+                            <a href="#casos-uso"       class="toc-link active">Casos de uso destacables</a>
+                            <a href="#papel-token-city" class="toc-link">El papel de Token City</a>
+                        </nav>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="sidebar-card">
+                        <p class="sidebar-title">Tags</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <a href="blog.html" class="article-tag article-tag-secondary">Tokenización</a>
+                            <a href="blog.html" class="article-tag article-tag-secondary">Activos reales</a>
+                            <a href="blog.html" class="article-tag article-tag-secondary">Real Estate</a>
+                            <a href="blog.html" class="article-tag article-tag-secondary">España</a>
+                        </div>
+                    </div>
+
+                    <!-- CTA card -->
+                    <div class="sidebar-card" style="background: linear-gradient(135deg, #0d1a3a, #1855BA); border-color: rgba(96,165,250,0.2);">
+                        <p class="text-[10px] font-black uppercase tracking-wider text-blue-300 mb-2">Plataforma</p>
+                        <h4 class="text-base font-black text-white mb-2 leading-tight uppercase tracking-tight">
+                            Infraestructura regulada de activos tokenizados
+                        </h4>
+                        <p class="text-white/60 text-xs mb-4 leading-relaxed">Invierte en instrumentos financieros tokenizados con pleno reconocimiento jurídico y 100% digital.</p>
+                        <a href="contacto-tc.html"
+                           class="w-full block text-center bg-white text-[#0f3c8e] font-bold px-4 py-2.5 rounded-[12px] text-xs hover:scale-105 transition-all">
+                            Registrarse
+                        </a>
+                    </div>
+
+                    <!-- Related articles -->
+                    <div class="sidebar-card">
+                        <p class="sidebar-title">También te puede interesar</p>
+                        <div class="flex flex-col gap-3">
+                            <a href="blog.html" class="group flex items-start gap-2.5">
+                                <div class="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
+                                    <i data-lucide="zap" class="w-5 h-5 text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold heading-text leading-snug group-hover:text-blue-400 transition-colors">Energía renovable y tokenización</p>
+                                    <p class="text-[10px] body-text mt-0.5">Tokenización</p>
+                                </div>
+                            </a>
+                            <a href="blog.html" class="group flex items-start gap-2.5">
+                                <div class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center shrink-0">
+                                    <i data-lucide="rocket" class="w-5 h-5 text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold heading-text leading-snug group-hover:text-blue-400 transition-colors">Scaleups y financiación blockchain</p>
+                                    <p class="text-[10px] body-text mt-0.5">Tokenización de activos</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </aside>
+
+            </div>
+        </section>
+
+        <!-- ══════════════════════════ CTA ══════════════════════════ -->
+        <section class="max-w-7xl mx-auto px-6 pb-28 reveal-growth">
+            <div class="cta-plus-pattern rounded-[2rem] overflow-hidden">
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 px-8 md:px-14 py-12">
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-blue-300 mb-2">El futuro de los mercados financieros</p>
+                        <h3 class="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter leading-tight mb-2">
+                            Infraestructura regulada<br>de activos tokenizados
+                        </h3>
+                        <p class="text-white/55 text-sm max-w-md leading-relaxed">Invierte en instrumentos financieros tokenizados con pleno reconocimiento jurídico y 100% digital.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                        <a href="contacto-tc.html"
+                           class="bg-white text-[#0f3c8e] font-bold px-7 py-3.5 rounded-[15px] hover:scale-105 transition-all text-sm flex items-center gap-2 justify-center">
+                            <i data-lucide="user-plus" class="w-4 h-4"></i> Registrarse
+                        </a>
+                        <a href="blog.html"
+                           class="border-2 border-white/35 text-white font-semibold px-6 py-3.5 rounded-[15px] hover:border-white/65 transition-all text-sm flex items-center gap-2 justify-center">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i> Más artículos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script src="global-scripts.js"></script>
+    <style>
+        .social-share-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; border-radius: 8px;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            color: var(--text-muted); transition: all 0.2s;
+        }
+        .social-share-btn:hover { border-color: rgba(24,85,186,0.5); color: #1855BA; }
+        body:not(.light-mode) .social-share-btn:hover { color: #60a5fa; border-color: rgba(96,165,250,0.4); }
+    </style>
+    <script>
+        /* ── Reading progress bar ── */
+        window.addEventListener('scroll', () => {
+            const article = document.querySelector('article');
+            if (!article) return;
+            const articleTop = article.offsetTop;
+            const articleH   = article.offsetHeight;
+            const scrolled   = window.scrollY - articleTop;
+            const pct = Math.min(100, Math.max(0, (scrolled / articleH) * 100));
+            document.getElementById('readingProgress').style.width = pct + '%';
+        }, { passive: true });
+
+        /* ── Sidebar TOC active ── */
+        (function () {
+            const headings = document.querySelectorAll('.prose-article h2[id]');
+            const links    = document.querySelectorAll('.toc-link');
+            function update() {
+                let current = '';
+                headings.forEach(h => { if (window.scrollY >= h.offsetTop - 130) current = h.id; });
+                links.forEach(l => {
+                    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+                });
+            }
+            window.addEventListener('scroll', update, { passive: true });
+            update();
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Blog - Token City</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC',
+                            100: '#DCE6F5',
+                            200: '#A3BBE3',
+                            300: '#7499D6',
+                            400: '#4677C8',
+                            500: '#1855BA',
+                            600: '#134495',
+                            700: '#0E3370',
+                            800: '#0A224A',
+                            900: '#051125',
+                            950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                const nightTime = (hour >= 19 || hour < 7);
+                isLight = !systemDark && !nightTime;
+            }
+
+            if (isLight) {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(15, 23, 42, 0.12);
+            --nav-bg: rgba(5, 7, 10, 0.95);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+        }
+
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .hero-blog {
+            position: relative;
+            overflow: hidden;
+            background: #05070a;
+        }
+
+        .hero-media {
+            position: absolute;
+            inset: 0;
+            background-image: url('mercado.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.32;
+            transform: scale(1.03);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+            pointer-events: none;
+        }
+
+        .hero-blog-title {
+            color: #ffffff;
+        }
+
+        body.light-mode .hero-blog-title {
+            color: #ffffff;
+        }
+
+        .hero-grid {
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+        }
+
+        body.light-mode .hero-grid {
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+        }
+
+        .section-label {
+            color: var(--primary-blue);
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        body:not(.light-mode) .section-label {
+            color: #60a5fa;
+        }
+
+        .body-text {
+            color: var(--text-muted);
+        }
+
+        .nav-item {
+            position: relative;
+            padding: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-item:hover .nav-link {
+            color: #4f86ed;
+        }
+
+        .nav-item:hover .nav-link i {
+            opacity: 1;
+            transform: rotate(180deg);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .nav-link i {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .mega-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 90vw;
+            max-width: 1000px;
+            background: var(--nav-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .nav-item:hover .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #navOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        body:has(.nav-item:hover) #navOverlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #mobileDrawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 400px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--glass-border);
+        }
+
+        #mobileDrawer.open {
+            transform: translateX(0);
+        }
+
+        .mobile-link {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--nav-text);
+            font-weight: 600;
+        }
+
+        .mobile-submenu {
+            background: rgba(255, 255, 255, 0.03);
+            display: none;
+            padding-left: 1rem;
+        }
+
+        .mobile-submenu.open {
+            display: block;
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+
+        .theme-toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .toggle-track-icon {
+            color: #94a3b8;
+            width: 12px;
+            height: 12px;
+            z-index: 1;
+        }
+
+        .thumb-icon {
+            width: 12px;
+            height: 12px;
+            color: var(--primary-blue);
+        }
+
+        body.light-mode .theme-toggle-thumb {
+            transform: translateX(24px);
+        }
+
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .lang-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #a1a1aa;
+            transition: color 0.3s ease;
+        }
+
+        .lang-label.active {
+            color: #ffffff;
+        }
+
+        .lang-switch-track {
+            position: relative;
+            width: 32px;
+            height: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 999px;
+        }
+
+        .lang-switch-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 10px;
+            height: 10px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.lang-en .lang-switch-thumb {
+            transform: translateX(16px);
+        }
+
+        .filter-chip {
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-main);
+            border-radius: 999px;
+            padding: 0.55rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            transition: all 0.25s ease;
+        }
+
+        .filter-chip:hover {
+            border-color: rgba(24, 85, 186, 0.55);
+            transform: translateY(-2px);
+        }
+
+        .filter-chip.active {
+            background: linear-gradient(135deg, #1855BA, #0d3a8a);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: 1.25rem;
+        }
+
+        .blog-card {
+            grid-column: span 12;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.6rem;
+            overflow: hidden;
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(24, 85, 186, 0.52);
+            box-shadow: 0 20px 45px rgba(24, 85, 186, 0.17);
+        }
+
+        .blog-card-main {
+            padding: 1.4rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 250px;
+        }
+
+        body:not(.light-mode) .blog-card {
+            background: rgba(10, 20, 40, 0.78);
+            border-color: rgba(96, 165, 250, 0.25);
+        }
+
+        .blog-card-media {
+            position: relative;
+            width: 100%;
+            height: 190px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #12386f, #0b1d3f);
+            border-bottom: 1px solid var(--glass-border);
+            border-radius: 15px;
+        }
+
+        .blog-card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0.85;
+            transform: scale(1.02);
+            border-radius: 15px;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.7rem;
+        }
+
+        body:not(.light-mode) .post-meta {
+            color: #b6c7e6;
+        }
+
+        .post-title {
+            font-size: clamp(1.2rem, 2vw, 1.42rem);
+            font-weight: 800;
+            line-height: 1.22;
+            margin-bottom: 0.65rem;
+            color: var(--text-main);
+        }
+
+        body:not(.light-mode) .post-title {
+            color: #f8fbff;
+        }
+
+        .post-excerpt {
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        body:not(.light-mode) .post-excerpt {
+            color: #c7d6ee;
+        }
+
+        .read-more-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 15px;
+            background: transparent;
+            transition: background-color 0.25s ease, color 0.25s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .read-more-link:hover {
+            background: rgba(24, 85, 186, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .read-more-link:active {
+            background: rgba(24, 85, 186, 0.18);
+        }
+
+        body:not(.light-mode) .read-more-link {
+            color: #60a5fa;
+        }
+
+        body:not(.light-mode) .read-more-link:hover {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+        }
+
+        .promo-card {
+            grid-column: span 12;
+            border-radius: 1.7rem;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: linear-gradient(145deg, #1855BA, #0d3a8a);
+            color: #ffffff;
+            padding: 2rem;
+        }
+
+        .promo-title {
+            font-size: clamp(1.4rem, 2.4vw, 2rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.7rem;
+        }
+
+        .promo-text {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .promo-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            border-radius: 999px;
+            padding: 0.62rem 1.1rem;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.83rem;
+        }
+
+        .pagination-wrap {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            width: 100%;
+            text-align: center;
+        }
+
+        .page-link {
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: all 0.25s ease;
+        }
+
+        .page-link:hover {
+            transform: translateY(-2px);
+            border-color: rgba(24, 85, 186, 0.55);
+            background: rgba(24, 85, 186, 0.14);
+            color: #0e3370;
+        }
+
+        body:not(.light-mode) .page-link {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.16);
+            color: #e5edf9;
+        }
+
+        body:not(.light-mode) .page-link:hover {
+            background: rgba(24, 85, 186, 0.26);
+            border-color: rgba(96, 165, 250, 0.7);
+            color: #ffffff;
+            box-shadow: 0 8px 18px rgba(24, 85, 186, 0.28);
+        }
+
+        .page-link.active {
+            background: linear-gradient(135deg, #1855BA, #0d3a8a);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 8px 18px rgba(24, 85, 186, 0.28);
+        }
+
+        .reveal-growth {
+            opacity: 0;
+            transform: scale(0.92) translateY(40px);
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .reveal-growth.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .controls-bar {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: rgba(5, 7, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .controls-bar .theme-toggle {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .controls-bar .toggle-track-icon {
+            color: #ffffff;
+        }
+
+        .controls-bar .thumb-icon {
+            color: var(--primary-blue);
+        }
+
+        .controls-bar .lang-switch-track {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 640px) {
+            .controls-bar {
+                right: 12px;
+                bottom: 16px;
+                padding: 8px 12px;
+                gap: 10px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .blog-card {
+                grid-column: span 6;
+            }
+
+            .promo-card {
+                grid-column: span 12;
+            }
+        }
+
+        @media (min-width: 1120px) {
+            .blog-card {
+                grid-column: span 4;
+            }
+
+            .promo-card {
+                grid-column: span 4;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <script>
+        if (window.__isThemeLight) document.body.classList.add('light-mode');
+    </script>
+
+    <div data-component="components/header-component.html"></div>
+
+    <main class="pt-0 pb-24">
+        <section class="hero-blog min-h-[78vh] pt-28 md:pt-36 pb-0 px-6 overflow-hidden">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid absolute inset-0"></div>
+            <div class="relative max-w-7xl mx-auto text-center">
+                <div class="max-w-4xl mx-auto reveal-growth">
+                <span class="section-label">Medios</span>
+                <h1 class="hero-blog-title text-4xl md:text-6xl font-extrabold mt-3 mb-4 tracking-tight">Blog</h1>
+                <div class="flex flex-wrap justify-center gap-2 md:gap-3">
+                    <a href="https://www.token-city.com/es/recursos" class="filter-chip">Ver Todas</a>
+                    <a href="https://www.token-city.com/es/recursos/categoria/token-city-tv" class="filter-chip">Token City Show</a>
+                    <a href="https://www.token-city.com/es/recursos/categoria/noticias" class="filter-chip">Noticias</a>
+                    <span class="filter-chip active">Blog</span>
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto px-6 md:px-10 relative z-10" style="margin-top: -300px;">
+            <div class="blog-grid">
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1636587224433-3cd253788c40?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y3J5cHRvY3VycmVuY3klMjB0b2tlbnN8ZW58MHx8MHx8fDA%3D" alt="Los activos tokenizados ya superan los 31.000 millones" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>20 may 2026</span><span>Blog</span></div>
+                        <h2 class="post-title">Los activos tokenizados ya superan los 31.000 millones</h2>
+                        <p class="post-excerpt">El mercado de activos tokenizados cerró en 31.400 millones de dólares frente a 11.200 millones en junio de 2025.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/los-activos-tokenizados-ya-superan-los-31-000-millones">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1639603683079-7398c604497a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y3J5cHRvY3VycmVuY3klMjB0b2tlbnN8ZW58MHx8MHx8fDA%3D" alt="La oportunidad inmobiliaria de España en clave tokenizada" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>4 may 2026</span><span>Blog</span></div>
+                        <h2 class="post-title">La oportunidad inmobiliaria de España en clave tokenizada</h2>
+                        <p class="post-excerpt">El inmobiliario combina activos reales, financiación recurrente y una base inversora orientada a oportunidades comprensibles.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/la-oportunidad-inmobiliaria-de-espana-en-clave-tokenizada">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1635237393024-65a481e1c170?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGNyeXB0b2N1cnJlbmN5JTIwdG9rZW5zfGVufDB8fDB8fHww" alt="Guía práctica sobre la nueva Unión de Ahorros e Inversión de la UE" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>16 abr 2026</span><span>Blog</span></div>
+                        <h2 class="post-title">Guía práctica sobre la nueva Unión de Ahorros e Inversión de la UE</h2>
+                        <p class="post-excerpt">Con estas medidas, los mercados de capitales europeos serán más profundos y eficaces para canalizar el ahorro.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/guia-practica-sobre-la-nueva-union-de-ahorros-e-inversion-de-la-ue">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1651340791611-615c3e30ba58?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNyeXB0b2N1cnJlbmN5JTIwdG9rZW5zfGVufDB8fDB8fHww" alt="Mitsubishi inicia la transición a la tokenización empezando por su tesorería" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>6 abr 2026</span><span>Blog</span></div>
+                        <h2 class="post-title">Mitsubishi inicia la transición a la tokenización empezando por su tesorería</h2>
+                        <p class="post-excerpt">Mitsubishi mejoró su capacidad de mover liquidez global, reforzando la eficiencia operativa de su tesorería.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/mitsubishi-inicia-la-transicion-a-la-tokenizacion-empezando-por-su-tesoreria">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1635840418688-4fd9541c580d?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGNyeXB0b2N1cnJlbmN5JTIwdG9rZW5zfGVufDB8fDB8fHww" alt="Qivalis: ¿El método de pago tokenizado que le falta a Europa?" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>4 mar 2026</span><span>Blog</span></div>
+                        <h2 class="post-title">Qivalis: ¿El método de pago tokenizado que le falta a Europa?</h2>
+                        <p class="post-excerpt">En mercados tokenizados, la confianza en el tramo de efectivo depende de reservas, transparencia y reembolso.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/qivalis-el-metodo-de-pago-tokenizado-que-le-falta-a-europa">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1696506121021-18b5254066e4?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNyeXB0b2N1cnJlbmN5JTIwdG9rZW5zfGVufDB8fDB8fHww" alt="El amanecer de los mercados tokenizados 24/7" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>2 mar 2026</span><span>Blog</span></div>
+                        <h2 class="post-title">El amanecer de los mercados tokenizados 24/7</h2>
+                        <p class="post-excerpt">El ecosistema bursátil de EE. UU. impulsa una negociación extendida hacia un modelo de mercados casi continuo.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/el-amanecer-de-los-mercados-tokenizados-24-7">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1706086699531-c0591a87c73a?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGNyeXB0b2N1cnJlbmN5JTIwdG9rZW5zfGVufDB8fDB8fHww" alt="El tiempo apremia: La UE debe salvar sus mercados de capitales" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>6 feb 2026</span><span>Blog</span></div>
+                        <h2 class="post-title">El tiempo apremia: La UE debe salvar sus mercados de capitales</h2>
+                        <p class="post-excerpt">Se proponen tres ajustes técnicos para reforzar la competitividad de los mercados de capitales europeos.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/el-tiempo-apremia-la-ue-debe-salvar-sus-mercados-de-capitales">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1707075891530-30f9b3a6577c?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y3J5cHRvY3VycmVuY3klMjB0b2tlbnN8ZW58MHx8MHx8fDA%3D" alt="La Nueva Economía del Espacio ya está siendo tokenizada" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>20 ene 2026</span><span>Blog</span></div>
+                        <h2 class="post-title">La Nueva Economía del Espacio ya está siendo tokenizada</h2>
+                        <p class="post-excerpt">La industria espacial mantiene crecimiento sostenido y la tokenización avanza en nuevos modelos de financiación.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/la-nueva-economia-del-espacio-ya-esta-siendo-tokenizada">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1600275411995-66b1d2a79fc7?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y3J5cHRvY3VycmVuY3klMjB0b2tlbnN8ZW58MHx8MHx8fDA%3D" alt="CEO de BNY: La tokenización es una Megatendencia" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>8 ene 2026</span><span>Blog</span></div>
+                        <h2 class="post-title">CEO de BNY: La tokenización es una Megatendencia</h2>
+                        <p class="post-excerpt">El CEO de BNY destacó la tokenización como megatendencia dentro de la infraestructura global de mercados.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/ceo-de-bny-la-tokenizacion-es-una-megatendencia">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1694219782948-afcab5c095d3?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y3J5cHRvY3VycmVuY3klMjB0b2tlbnN8ZW58MHx8MHx8fDA%3D" alt="Los gigantes entran en la tokenización: DTCC y Clearstream" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>13 dic 2025</span><span>Blog</span></div>
+                        <h2 class="post-title">Los gigantes entran en la tokenización: DTCC y Clearstream</h2>
+                        <p class="post-excerpt">DTCC y Clearstream, actores clave en custodia y liquidación global, avanzan en tokenización de activos.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/los-gigantes-entran-en-la-tokenizacion-dtcc-y-clearstream">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://images.unsplash.com/photo-1635840418679-d6e52fbbb6fc?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNyeXB0b2N1cnJlbmN5JTIwdG9rZW5zfGVufDB8fDB8fHww" alt="Token City Exchange: Aceleramos la economía tokenizada en Europa" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>12 dic 2025</span><span>Blog</span></div>
+                        <h2 class="post-title">Token City Exchange: Aceleramos la economía tokenizada en Europa</h2>
+                        <p class="post-excerpt">Token City Exchange amplía su rol con funciones de intermediación y registro para impulsar la economía tokenizada.</p>
+                        <a class="read-more-link" href="https://www.token-city.com/es/recursos/token-city-exchange-aceleramos-la-economia-tokenizada-en-europa">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+            </div>
+
+            <nav class="pagination-wrap reveal-growth" aria-label="Paginación de blog">
+                <a class="page-link active" href="https://www.token-city.com/es/recursos/categoria/blog" aria-label="Página 1">1</a>
+                <a class="page-link" href="https://www.token-city.com/es/recursos/categoria/blog/pagina/2">2</a>
+                <a class="page-link" href="https://www.token-city.com/es/recursos/categoria/blog/pagina/3">3</a>
+                <a class="page-link" href="https://www.token-city.com/es/recursos/categoria/blog/pagina/4" aria-label="Página 4">...</a>
+                <a class="page-link" href="https://www.token-city.com/es/recursos/categoria/blog/pagina/9">9</a>
+                <a class="page-link" href="https://www.token-city.com/es/recursos/categoria/blog/pagina/2" aria-label="Siguiente página">&gt;</a>
+            </nav>
+        </section>
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script>
+        let __blogInit = false;
+
+        function initBlogPage() {
+            if (__blogInit) return;
+            __blogInit = true;
+            if (window.__isThemeLight) document.body.classList.add('light-mode');
+
+            const drawer = document.getElementById('mobileDrawer');
+            if (drawer) drawer.classList.remove('open');
+
+            const overlay = document.getElementById('navOverlay');
+            if (overlay) {
+                overlay.style.visibility = 'hidden';
+                overlay.style.opacity = '0';
+            }
+
+            const controlsBar = document.querySelector('.controls-bar');
+            if (controlsBar) controlsBar.style.display = 'flex';
+
+            updateToggleVisuals();
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        window.addEventListener('tcav:components-loaded', initBlogPage);
+
+        function toggleTheme() {
+            const body = document.body;
+            const html = document.documentElement;
+            const isLight = body.classList.toggle('light-mode');
+            if (isLight) {
+                html.classList.remove('dark');
+                localStorage.setItem('themePreference', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('themePreference', 'dark');
+            }
+            updateToggleVisuals();
+        }
+
+        function toggleLanguage() {
+            document.body.classList.toggle('lang-en');
+            updateToggleVisuals();
+        }
+
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const isEn = document.body.classList.contains('lang-en');
+
+            document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
+            document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
+
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${isLight ? 'sun' : 'moon'}" class="thumb-icon"></i>
+                </div>
+            `;
+
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.innerHTML = trackHTML;
+            });
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobileDrawer');
+            if (!drawer) return;
+            const isOpen = drawer.classList.toggle('open');
+            const overlay = document.getElementById('navOverlay');
+            const controlsBar = document.querySelector('.controls-bar');
+            overlay.style.visibility = isOpen ? 'visible' : (document.querySelector('.nav-item:hover') ? 'visible' : 'hidden');
+            overlay.style.opacity = isOpen ? '1' : (document.querySelector('.nav-item:hover') ? '1' : '0');
+            if (controlsBar) controlsBar.style.display = isOpen ? 'none' : 'flex';
+        }
+
+        function toggleSubmenu(id) {
+            const submenu = document.getElementById(id);
+            if (submenu) submenu.classList.toggle('open');
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+            const originalText = btnText.textContent;
+
+            btnText.textContent = '';
+            btnLoader.classList.remove('hidden');
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btnText.textContent = originalText;
+                btnLoader.classList.add('hidden');
+                btn.disabled = false;
+                e.target.reset();
+            }, 1200);
+        }
+
+        // ── Scroll Reveal Animation ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.remove('reverse');
+                    e.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const observerReverse = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (!e.isIntersecting && e.boundingClientRect.top > 0) {
+                    e.target.classList.remove('active');
+                    e.target.classList.add('reverse');
+                    setTimeout(() => {
+                        e.target.classList.remove('reverse');
+                    }, 1500);
+                }
+            });
+        }, { threshold: 0 });
+
+        document.querySelectorAll('.reveal-growth').forEach(el => {
+            observer.observe(el);
+            observerReverse.observe(el);
+        });
+    </script>
+</body>
+
+</html>

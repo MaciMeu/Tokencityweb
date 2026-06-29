@@ -1,0 +1,50 @@
+/* Colores para cada filtro de sector */
+.category-pill[data-category="real-estate"] {
+  background: #e6f0fa;
+  color: #1855BA;
+  border-color: #1855BA22;
+}
+.category-pill[data-category="art"] {
+  background: #f9f5f7;
+  color: #b91c5c;
+  border-color: #b91c5c22;
+}
+.category-pill[data-category="commodities"] {
+  background: #f7fafc;
+  color: #a16207;
+  border-color: #a1620722;
+}
+.category-pill[data-category="agro"] {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #15803d22;
+}
+.category-pill[data-category="music"] {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border-color: #7c3aed22;
+}
+.category-pill[data-category="tourism"] {
+  background: #f0fdfa;
+  color: #0e7490;
+  border-color: #0e749022;
+}
+.category-pill[data-category="finance"] {
+  background: #f1f5f9;
+  color: #334155;
+  border-color: #33415522;
+}
+.category-pill[data-category="energy"] {
+  background: #fef9c3;
+  color: #ca8a04;
+  border-color: #ca8a0422;
+}
+.category-pill.active[data-category]:not([data-category="all"]) {
+  background: currentColor;
+  color: #fff;
+  border-color: currentColor;
+}
+.category-pill.active[data-category]:not([data-category="all"]):focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Mapa del sitio</title>
+    <meta name="description" content="Mapa completo del sitio web de Token City. Todas las páginas organizadas por secciones.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const saved = localStorage.getItem('themePreference');
+            let isLight;
+            if (saved) { isLight = saved === 'light'; }
+            else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                isLight = !systemDark && !(hour >= 19 || hour < 7);
+            }
+            if (isLight) document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a; --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255,255,255,0.85); --glass-border: rgba(0,0,0,0.1);
+            --nav-bg: rgba(5,7,10,0.95); --nav-text: #ffffff; --nav-text-muted: #9ca3af;
+        }
+        body:not(.light-mode) {
+            --text-main: #ffffff; --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255,255,255,0.03); --glass-border: rgba(255,255,255,0.08);
+        }
+        .heading-text { color: var(--text-main); }
+        .body-text    { color: var(--text-muted); }
+        .section-label { color: var(--primary-blue); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        body:not(.light-mode) .section-label { color: #60a5fa; }
+
+        /* ── Hero ── */
+        .hero-sitemap {
+            position: relative; overflow: hidden; background: #05070a;
+            min-height: 52vh; display: flex; align-items: center;
+        }
+        .hero-media {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+            opacity: 0.14; transform: scale(1.03);
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+        }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 85%);
+        }
+
+        /* ── Nav ── */
+        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link  { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .mega-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem;
+            opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100;
+        }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        #navOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s; }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+        #mobileDrawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+            background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; flex-direction: column; border-left: 1px solid var(--glass-border);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+
+        /* ── Controls ── */
+        .controls-bar {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            background: rgba(5,7,10,0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .theme-toggle {
+            position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1);
+            border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+        }
+        .theme-toggle-thumb {
+            position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: #fff;
+            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2;
+        }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+
+        /* ── Sitemap cards ── */
+        .sm-section { margin-bottom: 3.5rem; }
+        .sm-section-header {
+            display: flex; align-items: center; gap: 0.875rem;
+            margin-bottom: 1.25rem; padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .sm-icon {
+            width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .sm-title { font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); }
+        .sm-count { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 700; color: var(--text-muted); margin-left: auto; padding: 0.2rem 0.6rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 999px; }
+
+        .sm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 0.75rem; }
+
+        /* URL card — infra-card-style adapted */
+        .sm-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-left: 3px solid var(--card-accent, #1855BA);
+            border-radius: 1.25rem; padding: 1rem 1.25rem;
+            display: flex; align-items: center; gap: 0.875rem;
+            text-decoration: none; transition: all 0.25s ease;
+            backdrop-filter: blur(10px);
+        }
+        .sm-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(96,165,250,0.35);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .sm-card:hover { border-left-color: var(--card-accent, #60a5fa); }
+        body.light-mode .sm-card { background: rgba(255,255,255,0.85); }
+
+        .sm-card-icon { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .sm-card-body { flex: 1; min-width: 0; }
+        .sm-card-label { font-size: 0.82rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; line-height: 1.35; }
+        .sm-card-url { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sm-card-ext { flex-shrink: 0; color: var(--text-muted); opacity: 0.4; }
+
+        /* Article row */
+        .sm-article {
+            display: flex; align-items: flex-start; gap: 1rem;
+            padding: 0.75rem 1rem; text-decoration: none;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 1rem; margin-bottom: 0.5rem;
+            transition: all 0.2s ease; backdrop-filter: blur(10px);
+        }
+        .sm-article:hover { background: rgba(24,85,186,0.06); border-color: rgba(24,85,186,0.25); transform: translateX(4px); }
+        body:not(.light-mode) .sm-article:hover { background: rgba(96,165,250,0.05); border-color: rgba(96,165,250,0.2); }
+        body.light-mode .sm-article { background: rgba(255,255,255,0.85); }
+        .sm-article-num { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 900; color: #1855BA; width: 20px; flex-shrink: 0; padding-top: 2px; }
+        body:not(.light-mode) .sm-article-num { color: #60a5fa; }
+        .sm-article-body { flex: 1; min-width: 0; }
+        .sm-article-title { font-size: 0.82rem; font-weight: 600; color: var(--text-main); line-height: 1.4; margin-bottom: 0.2rem; }
+        .sm-article-meta { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+        .sm-article-date { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text-muted); }
+        .sm-article-url { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 320px; }
+
+        /* Sector pills */
+        .sm-pill { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; border: 1px solid var(--glass-border); color: var(--text-muted); background: var(--glass-bg); }
+
+        @media (max-width: 640px) {
+            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+            .sm-grid { grid-template-columns: 1fr; }
+            .sm-article-url { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <script>if (window.__isThemeLight) document.body.classList.add('light-mode');</script>
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+
+        <!-- ══════════ HERO ══════════ -->
+        <section class="hero-sitemap px-6 pt-28 pb-20">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid"></div>
+            <div class="relative z-10 max-w-5xl mx-auto reveal-growth">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-[12px] bg-blue-500/15 flex items-center justify-center text-blue-400 shrink-0">
+                        <i data-lucide="map" class="w-5 h-5"></i>
+                    </div>
+                    <p class="section-label !text-blue-400">Token City · www.token-city.com/es</p>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-black text-white mb-5 uppercase tracking-tighter leading-tight">
+                    Mapa del<br><span class="text-blue-400">sitio web</span>
+                </h1>
+                <p class="text-gray-300 text-base max-w-xl font-medium leading-relaxed mb-8">
+                    Estructura completa de todas las páginas, secciones y recursos del sitio web de Token City organizada por categorías.
+                </p>
+                <!-- Stats -->
+                <div class="flex flex-wrap gap-3">
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/55 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i data-lucide="layers" class="w-3 h-3"></i> 7 secciones</span>
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/55 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i data-lucide="file" class="w-3 h-3"></i> 18+ páginas</span>
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/55 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i data-lucide="pen-line" class="w-3 h-3"></i> 12 artículos</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════ CONTENIDO ══════════ -->
+        <section class="max-w-7xl mx-auto px-6 py-16 pb-28">
+
+            <!-- ── 1. Páginas principales ── -->
+            <div class="sm-section">
+                <div class="sm-section-header">
+                    <div class="sm-icon" style="background:rgba(24,85,186,0.1);color:#60a5fa;"><i data-lucide="home" class="w-4 h-4"></i></div>
+                    <span class="sm-title">Páginas principales</span>
+                    <span class="sm-count">2</span>
+                </div>
+                <div class="sm-grid">
+                    <a href="https://www.token-city.com/es" target="_blank" class="sm-card" style="--card-accent:#1855BA;">
+                        <div class="sm-card-icon" style="background:rgba(24,85,186,0.1);color:#60a5fa;"><i data-lucide="home" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Inicio</div><div class="sm-card-url">/es</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/contacto" target="_blank" class="sm-card" style="--card-accent:#1855BA;">
+                        <div class="sm-card-icon" style="background:rgba(24,85,186,0.1);color:#60a5fa;"><i data-lucide="message-circle" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Contacto</div><div class="sm-card-url">/es/contacto</div></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ── 2. Plataforma & Productos ── -->
+            <div class="sm-section">
+                <div class="sm-section-header">
+                    <div class="sm-icon" style="background:rgba(139,92,246,0.1);color:#a78bfa;"><i data-lucide="layers" class="w-4 h-4"></i></div>
+                    <span class="sm-title">Plataforma & Productos</span>
+                    <span class="sm-count">5</span>
+                </div>
+                <div class="sm-grid">
+                    <a href="https://www.token-city.com/es/marketplace" target="_blank" class="sm-card" style="--card-accent:#8b5cf6;">
+                        <div class="sm-card-icon" style="background:rgba(139,92,246,0.1);color:#a78bfa;"><i data-lucide="store" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Marketplace</div><div class="sm-card-url">/es/marketplace</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/plataforma/taas" target="_blank" class="sm-card" style="--card-accent:#8b5cf6;">
+                        <div class="sm-card-icon" style="background:rgba(139,92,246,0.1);color:#a78bfa;"><i data-lucide="cpu" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">TaaS — Tokenization as a Service</div><div class="sm-card-url">/es/plataforma/taas</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/plataforma/maas" target="_blank" class="sm-card" style="--card-accent:#8b5cf6;">
+                        <div class="sm-card-icon" style="background:rgba(139,92,246,0.1);color:#a78bfa;"><i data-lucide="layout" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Plataforma Marca Blanca</div><div class="sm-card-url">/es/plataforma/maas</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/plataforma/blockchain" target="_blank" class="sm-card" style="--card-accent:#8b5cf6;">
+                        <div class="sm-card-icon" style="background:rgba(139,92,246,0.1);color:#a78bfa;"><i data-lucide="code-2" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Token City API (Blockchain)</div><div class="sm-card-url">/es/plataforma/blockchain</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/plataforma/erir" target="_blank" class="sm-card" style="--card-accent:#8b5cf6;">
+                        <div class="sm-card-icon" style="background:rgba(139,92,246,0.1);color:#a78bfa;"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Infraestructura ERIR</div><div class="sm-card-url">/es/plataforma/erir</div></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ── 3. Mercados ── -->
+            <div class="sm-section">
+                <div class="sm-section-header">
+                    <div class="sm-icon" style="background:rgba(6,182,212,0.1);color:#22d3ee;"><i data-lucide="arrow-left-right" class="w-4 h-4"></i></div>
+                    <span class="sm-title">Mercados externos</span>
+                    <span class="sm-count">2</span>
+                </div>
+                <div class="sm-grid">
+                    <a href="https://exchange.token-city.com" target="_blank" class="sm-card" style="--card-accent:#06b6d4;">
+                        <div class="sm-card-icon" style="background:rgba(6,182,212,0.1);color:#22d3ee;"><i data-lucide="trending-up" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Token City Exchange</div><div class="sm-card-url">exchange.token-city.com</div></div>
+                        <div class="sm-card-ext"><i data-lucide="external-link" style="width:12px;height:12px;"></i></div>
+                    </a>
+                    <a href="https://www.aliuscap.com/" target="_blank" class="sm-card" style="--card-accent:#06b6d4;">
+                        <div class="sm-card-icon" style="background:rgba(6,182,212,0.1);color:#22d3ee;"><i data-lucide="users" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Alius Capital — Crowdfunding CNMV</div><div class="sm-card-url">aliuscap.com</div></div>
+                        <div class="sm-card-ext"><i data-lucide="external-link" style="width:12px;height:12px;"></i></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ── 4. Sectores ── -->
+            <div class="sm-section">
+                <div class="sm-section-header">
+                    <div class="sm-icon" style="background:rgba(34,197,94,0.1);color:#4ade80;"><i data-lucide="building-2" class="w-4 h-4"></i></div>
+                    <span class="sm-title">Sectores / Clientes</span>
+                    <span class="sm-count">3 páginas + 6 en marketplace</span>
+                </div>
+                <div class="sm-grid">
+                    <a href="https://www.token-city.com/es/real-estate" target="_blank" class="sm-card" style="--card-accent:#22c55e;">
+                        <div class="sm-card-icon" style="background:rgba(34,197,94,0.1);color:#4ade80;"><i data-lucide="building-2" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Real Estate</div><div class="sm-card-url">/es/real-estate</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/scaleups" target="_blank" class="sm-card" style="--card-accent:#22c55e;">
+                        <div class="sm-card-icon" style="background:rgba(34,197,94,0.1);color:#4ade80;"><i data-lucide="rocket" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Scaleups & Startups</div><div class="sm-card-url">/es/scaleups</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/energy" target="_blank" class="sm-card" style="--card-accent:#f59e0b;">
+                        <div class="sm-card-icon" style="background:rgba(245,158,11,0.1);color:#fbbf24;"><i data-lucide="zap" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Energía</div><div class="sm-card-url">/es/energy</div></div>
+                    </a>
+                </div>
+                <div class="mt-3 flex flex-wrap gap-2 items-center">
+                    <span class="text-[10px] font-bold uppercase tracking-widest body-text mr-1" style="font-family:'JetBrains Mono',monospace;">Marketplace:</span>
+                    <span class="sm-pill"><i data-lucide="palette" class="w-3 h-3"></i> Arte</span>
+                    <span class="sm-pill"><i data-lucide="gem" class="w-3 h-3"></i> Commodities</span>
+                    <span class="sm-pill"><i data-lucide="sprout" class="w-3 h-3"></i> Agroindustria</span>
+                    <span class="sm-pill"><i data-lucide="music" class="w-3 h-3"></i> Música</span>
+                    <span class="sm-pill"><i data-lucide="plane" class="w-3 h-3"></i> Turismo</span>
+                    <span class="sm-pill"><i data-lucide="landmark" class="w-3 h-3"></i> Financiero</span>
+                </div>
+            </div>
+
+            <!-- ── 5. Recursos ── -->
+            <div class="sm-section">
+                <div class="sm-section-header">
+                    <div class="sm-icon" style="background:rgba(245,158,11,0.1);color:#fbbf24;"><i data-lucide="library" class="w-4 h-4"></i></div>
+                    <span class="sm-title">Recursos</span>
+                    <span class="sm-count">5 secciones + 12 artículos</span>
+                </div>
+                <div class="sm-grid mb-6">
+                    <a href="https://www.token-city.com/es/recursos/categoria/blog" target="_blank" class="sm-card" style="--card-accent:#f59e0b;">
+                        <div class="sm-card-icon" style="background:rgba(245,158,11,0.1);color:#fbbf24;"><i data-lucide="file-text" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Blog</div><div class="sm-card-url">/es/recursos/categoria/blog</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/recursos/categoria/noticias" target="_blank" class="sm-card" style="--card-accent:#f59e0b;">
+                        <div class="sm-card-icon" style="background:rgba(245,158,11,0.1);color:#fbbf24;"><i data-lucide="newspaper" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Noticias</div><div class="sm-card-url">/es/recursos/categoria/noticias</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/recursos/categoria/token-city-tv" target="_blank" class="sm-card" style="--card-accent:#ef4444;">
+                        <div class="sm-card-icon" style="background:rgba(239,68,68,0.1);color:#f87171;"><i data-lucide="play-circle" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">TC Show — Token City TV</div><div class="sm-card-url">/es/recursos/categoria/token-city-tv</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/eventos" target="_blank" class="sm-card" style="--card-accent:#ef4444;">
+                        <div class="sm-card-icon" style="background:rgba(239,68,68,0.1);color:#f87171;"><i data-lucide="calendar" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Eventos</div><div class="sm-card-url">/es/eventos</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/recursos/faqs" target="_blank" class="sm-card" style="--card-accent:#f59e0b;">
+                        <div class="sm-card-icon" style="background:rgba(245,158,11,0.1);color:#fbbf24;"><i data-lucide="help-circle" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">FAQs — Preguntas frecuentes</div><div class="sm-card-url">/es/recursos/faqs</div></div>
+                    </a>
+                </div>
+
+                <!-- Artículos -->
+                <p class="text-[10px] font-black uppercase tracking-wider body-text mb-3" style="font-family:'JetBrains Mono',monospace;">Artículos — /es/recursos/</p>
+
+                <a href="https://www.token-city.com/es/recursos/los-activos-tokenizados-ya-superan-los-31-000-millones" target="_blank" class="sm-article">
+                    <span class="sm-article-num">01</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">Los activos tokenizados ya superan los 31.000 millones</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">20 May 2026</span><span class="sm-article-url">/es/recursos/los-activos-tokenizados-ya-superan-los-31-000-millones</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/la-oportunidad-inmobiliaria-de-espana-en-clave-tokenizada" target="_blank" class="sm-article">
+                    <span class="sm-article-num">02</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">La oportunidad inmobiliaria de España en clave tokenizada</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">4 May 2026</span><span class="sm-article-url">/es/recursos/la-oportunidad-inmobiliaria-de-espana-en-clave-tokenizada</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/guia-practica-sobre-la-nueva-union-de-ahorros-e-inversion-de-la-ue" target="_blank" class="sm-article">
+                    <span class="sm-article-num">03</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">Guía práctica sobre la nueva Unión de Ahorros e Inversión de la UE</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">16 Abr 2026</span><span class="sm-article-url">/es/recursos/guia-practica-sobre-la-nueva-union-de-ahorros-e-inversion-de-la-ue</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/mitsubishi-inicia-la-transicion-a-la-tokenizacion-empezando-por-su-tesoreria" target="_blank" class="sm-article">
+                    <span class="sm-article-num">04</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">Mitsubishi inicia la transición a la tokenización empezando por su tesorería</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">6 Abr 2026</span><span class="sm-article-url">/es/recursos/mitsubishi-inicia-la-transicion…</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/qivalis-el-metodo-de-pago-tokenizado-que-le-falta-a-europa" target="_blank" class="sm-article">
+                    <span class="sm-article-num">05</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">Qivalis: ¿El método de pago tokenizado que le falta a Europa?</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">4 Mar 2026</span><span class="sm-article-url">/es/recursos/qivalis-el-metodo-de-pago-tokenizado…</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/el-amanecer-de-los-mercados-tokenizados-24-7" target="_blank" class="sm-article">
+                    <span class="sm-article-num">06</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">El amanecer de los mercados tokenizados 24/7</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">2 Mar 2026</span><span class="sm-article-url">/es/recursos/el-amanecer-de-los-mercados-tokenizados-24-7</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/el-tiempo-apremia-la-ue-debe-salvar-sus-mercados-de-capitales" target="_blank" class="sm-article">
+                    <span class="sm-article-num">07</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">El tiempo apremia: La UE debe salvar sus mercados de capitales</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">6 Feb 2026</span><span class="sm-article-url">/es/recursos/el-tiempo-apremia-la-ue-debe-salvar…</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/la-nueva-economia-del-espacio-ya-esta-siendo-tokenizada" target="_blank" class="sm-article">
+                    <span class="sm-article-num">08</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">La Nueva Economía del Espacio ya está siendo tokenizada</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">20 Ene 2026</span><span class="sm-article-url">/es/recursos/la-nueva-economia-del-espacio…</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/ceo-de-bny-la-tokenizacion-es-una-megatendencia" target="_blank" class="sm-article">
+                    <span class="sm-article-num">09</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">CEO de BNY: La tokenización es una Megatendencia</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">8 Ene 2026</span><span class="sm-article-url">/es/recursos/ceo-de-bny-la-tokenizacion-es-una-megatendencia</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/los-gigantes-entran-en-la-tokenizacion-dtcc-y-clearstream" target="_blank" class="sm-article">
+                    <span class="sm-article-num">10</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">Los gigantes entran en la tokenización: DTCC y Clearstream</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">13 Dic 2025</span><span class="sm-article-url">/es/recursos/los-gigantes-entran-en-la-tokenizacion…</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/token-city-exchange-aceleramos-la-economia-tokenizada-en-europa" target="_blank" class="sm-article">
+                    <span class="sm-article-num">11</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">Token City Exchange: Aceleramos la economía tokenizada en Europa</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">12 Dic 2025</span><span class="sm-article-url">/es/recursos/token-city-exchange-aceleramos…</span></div>
+                    </div>
+                </a>
+                <a href="https://www.token-city.com/es/recursos/la-erir-en-las-emisiones-de-activos-tokenizados-en-espana" target="_blank" class="sm-article">
+                    <span class="sm-article-num">12</span>
+                    <div class="sm-article-body">
+                        <div class="sm-article-title">La ERIR en las Emisiones de Activos Tokenizados en España</div>
+                        <div class="sm-article-meta"><span class="sm-article-date">7 Feb 2025</span><span class="sm-article-url">/es/recursos/la-erir-en-las-emisiones-de-activos-tokenizados-en-espana</span></div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- ── 6. Empresa ── -->
+            <div class="sm-section">
+                <div class="sm-section-header">
+                    <div class="sm-icon" style="background:rgba(24,85,186,0.1);color:#60a5fa;"><i data-lucide="building" class="w-4 h-4"></i></div>
+                    <span class="sm-title">Empresa</span>
+                    <span class="sm-count">3</span>
+                </div>
+                <div class="sm-grid">
+                    <a href="https://www.token-city.com/es/acerca-de/equipo" target="_blank" class="sm-card" style="--card-accent:#1855BA;">
+                        <div class="sm-card-icon" style="background:rgba(24,85,186,0.1);color:#60a5fa;"><i data-lucide="users" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Directivos & Consejeros</div><div class="sm-card-url">/es/acerca-de/equipo</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/presskit" target="_blank" class="sm-card" style="--card-accent:#1855BA;">
+                        <div class="sm-card-icon" style="background:rgba(24,85,186,0.1);color:#60a5fa;"><i data-lucide="archive" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Dosier de Prensa</div><div class="sm-card-url">/es/presskit</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/contacto" target="_blank" class="sm-card" style="--card-accent:#1855BA;">
+                        <div class="sm-card-icon" style="background:rgba(24,85,186,0.1);color:#60a5fa;"><i data-lucide="mail" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Contacto</div><div class="sm-card-url">/es/contacto</div></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ── 7. Legal ── -->
+            <div class="sm-section">
+                <div class="sm-section-header">
+                    <div class="sm-icon" style="background:rgba(148,163,184,0.1);color:#94a3b8;"><i data-lucide="scale" class="w-4 h-4"></i></div>
+                    <span class="sm-title">Legal & Privacidad</span>
+                    <span class="sm-count">4</span>
+                </div>
+                <div class="sm-grid">
+                    <a href="https://www.token-city.com/es/aviso-legal" target="_blank" class="sm-card" style="--card-accent:#475569;">
+                        <div class="sm-card-icon" style="background:rgba(148,163,184,0.08);color:#94a3b8;"><i data-lucide="file-text" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Aviso Legal</div><div class="sm-card-url">/es/aviso-legal</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/politica-privacidad" target="_blank" class="sm-card" style="--card-accent:#475569;">
+                        <div class="sm-card-icon" style="background:rgba(148,163,184,0.08);color:#94a3b8;"><i data-lucide="lock" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Política de Privacidad</div><div class="sm-card-url">/es/politica-privacidad</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/es/tc-token-city" target="_blank" class="sm-card" style="--card-accent:#475569;">
+                        <div class="sm-card-icon" style="background:rgba(148,163,184,0.08);color:#94a3b8;"><i data-lucide="scroll-text" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Términos y Condiciones</div><div class="sm-card-url">/es/tc-token-city</div></div>
+                    </a>
+                    <a href="https://www.token-city.com/cookie-policy" target="_blank" class="sm-card" style="--card-accent:#475569;">
+                        <div class="sm-card-icon" style="background:rgba(148,163,184,0.08);color:#94a3b8;"><i data-lucide="shield" class="w-4 h-4"></i></div>
+                        <div class="sm-card-body"><div class="sm-card-label">Cookie Policy</div><div class="sm-card-url">/cookie-policy</div></div>
+                    </a>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+    <script src="global-scripts.js"></script>
+</body>
+
+</html>

@@ -4,128 +4,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Token City | Gestión de Activos Digitales Blockchain</title>
-    <meta name="description" content="Infraestructura tecnológica blockchain para la digitalización y gestión de activos digitales. Tokenización de activos reales (RWA) con cumplimiento normativo.">
+    <title>Token City | European Exchange AV</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'azul-acero': {
-                            50: '#F3F7FC',
-                            100: '#DCE6F5',
-                            200: '#A3BBE3',
-                            300: '#7499D6',
-                            400: '#4677C8',
-                            500: '#1855BA',
-                            600: '#134495',
-                            700: '#0E3370',
-                            800: '#0A224A',
-                            900: '#051125',
-                            950: '#020813',
-                        },
-                        'azul-acero-dark': {
-                            50: '#010409',
-                            100: '#040D1C',
-                            200: '#0A224A',
-                            300: '#0E3370',
-                            400: '#134495',
-                            500: '#1855ba',
-                            600: '#4677C8',
-                            700: '#7499D6',
-                            800: '#A3BBE3',
-                            900: '#D1DDF1',
-                            950: '#E8EEF8',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles-tcav.css">
-    <script>
-        (function () {
-            const savedTheme = localStorage.getItem('themePreference');
-            let isLight;
-            if (savedTheme) {
-                isLight = savedTheme === 'light';
-            } else {
-                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const hour = new Date().getHours();
-                const nightTime = (hour >= 19 || hour < 7);
-                isLight = !systemDark && !nightTime;
-            }
-
-            if (isLight) {
-                document.documentElement.classList.remove('dark');
-            } else {
-                document.documentElement.classList.add('dark');
-            }
-            // Store it globally so body script can see it
-            window.__isThemeLight = isLight;
-        })();
-    </script>
     <style>
-        /* ===== CSS VARIABLES FOR COLORS ===== */
         :root {
+            /* Variables de Color */
             --primary-blue: #1855BA;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --bg-color: #f8fafc;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --input-bg: #f1f5f9;
-            --input-border: #cbd5e1;
-            --nav-text: #ffffff;
-            --nav-text-muted: #9ca3af;
-        }
 
-        body:not(.light-mode) {
+            /* Variables Modo Oscuro (Default) */
+            --bg-color: #05070a;
             --text-main: #ffffff;
             --text-muted: #9ca3af;
-            --bg-color: #05070a;
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --input-border: rgba(255, 255, 255, 0.1);
-            --nav-text: #ffffff;
-            --nav-text-muted: #9ca3af;
-        }
-
-        body.light-mode {
+            --card-hover-bg: rgba(255, 255, 255, 0.06);
             --nav-bg: rgba(5, 7, 10, 0.95);
             --nav-text: #ffffff;
             --nav-text-muted: #9ca3af;
+            --ticker-bg: rgba(5, 7, 10, 0.95);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --input-border: rgba(255, 255, 255, 0.1);
+
+            /* Chart Variables - UPDATED TO SOFTER GREEN FOR BETTER CONTRAST */
+            --chart-stroke: rgba(34, 197, 94, 0.3);
+            /* Green 500 with 30% opacity */
+            --chart-opacity-top: 0.1;
+            /* Reduced from 0.2 */
+            --chart-opacity-bottom: 0.0;
+
+            --hero-overlay-start: rgba(5, 7, 10, 0.9);
+            --hero-overlay-mid: rgba(5, 7, 10, 0.7);
+            --hero-overlay-end: rgba(5, 7, 10, 1);
+            --toggle-thumb-bg: #ffffff;
+            --toggle-icon-color: #000000;
+            --toggle-track-bg: rgba(255, 255, 255, 0.1);
+            --toggle-track-icon: #64748b;
+
+            /* Modal & Menu Specifics */
+            --modal-bg: #111827;
+            --modal-border: rgba(255, 255, 255, 0.15);
+            --close-btn-hover: #ffffff;
+
+            /* Bottom Bar */
+            --bottom-bar-bg: rgba(5, 7, 10, 0.95);
+            --bottom-bar-border: rgba(255, 255, 255, 0.1);
         }
 
-        /* ===== HERO ===== */
-        .hero-section {
-            background: #05070a;
-            overflow: hidden;
+        /* Variables Modo Claro */
+        body.light-mode {
+            --bg-color: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #334155;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --card-hover-bg: #ffffff;
+            --nav-bg: rgba(5, 7, 10, 0.95);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+
+            --ticker-bg: #ffffff;
+            --input-bg: #f1f5f9;
+            --input-border: #cbd5e1;
+
+            --chart-stroke: rgba(21, 128, 61, 0.25);
+            /* Green 700 with 25% opacity */
+            --chart-opacity-top: 0.05;
+            /* Reduced from 0.15 */
+            --chart-opacity-bottom: 0.0;
+
+            --hero-overlay-start: rgba(255, 255, 255, 0.85);
+            --hero-overlay-mid: rgba(255, 255, 255, 0.6);
+            --hero-overlay-end: #f8fafc;
+            --toggle-thumb-bg: #ffffff;
+            --toggle-icon-color: #000000;
+            --toggle-track-bg: rgba(255, 255, 255, 0.2);
+            --toggle-track-icon: #94a3b8;
+
+            /* Modal & Menu Light */
+            --modal-bg: #ffffff;
+            --modal-border: #e2e8f0;
+            --close-btn-hover: #000000;
+
+            /* Bottom Bar Light - AHORA IGUAL QUE DARK (Fixed) */
+            --bottom-bar-bg: rgba(5, 7, 10, 0.95);
+            --bottom-bar-border: rgba(255, 255, 255, 0.1);
         }
 
-        .hero-overlay {
-            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+        /* Ajustes específicos para Light Mode */
+        body.light-mode .hero-title-text {
+            color: #0f172a;
+            text-shadow: none;
         }
 
-        /* ===== CLIENT CARDS ===== */
-        .client-card {
-            border-top: 4px solid var(--primary-blue);
-            border-radius: 1.5rem !important;
+        body.light-mode .hero-desc-text {
+            color: #334155;
+            font-weight: 600;
         }
 
-        /* ===== MEDIA / PRESS LOGOS (= INdex2 pattern) ===== */
+        body.light-mode .glass {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        body.light-mode .glass:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: rgba(24, 85, 186, 0.3);
+        }
+
+        body.light-mode #network-canvas {
+            opacity: 0.2;
+        }
+
+        body.light-mode .hero-text-glow {
+            background: linear-gradient(to right, #1855BA, #4f86ed, #1855BA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            background-size: 200% auto;
+        }
+
+        /* LOGOS */
         .media-logo {
             filter: grayscale(100%) invert(1) opacity(0.7);
             transition: all 0.4s ease;
-            max-height: 28px;
+            max-height: 24px;
             width: auto;
         }
 
@@ -134,44 +139,100 @@
         }
 
         body.light-mode .media-logo {
-            filter: grayscale(100%) invert(0) opacity(0.5);
+            filter: grayscale(100%) invert(0) opacity(0.6);
         }
 
         body.light-mode .media-logo:hover {
             filter: grayscale(100%) invert(0) opacity(1) brightness(0);
         }
 
-        /* Default (dark mode) — white text, dimmed */
         .typo-logo {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-size: 1.4rem;
-            color: rgba(255, 255, 255, 0.45);
-            /* passes 3:1 AA on dark bg as non-text UI */
-            opacity: 1;
-            transition: color 0.3s ease, opacity 0.3s ease;
+            font-size: 1.5rem;
+            color: #888;
+            opacity: 0.6;
+            transition: all 0.3s ease;
             white-space: nowrap;
-            user-select: none;
         }
 
-        /* Dark mode hover → bright white ✓ */
         .typo-logo:hover {
-            color: #ffffff;
+            color: white;
+            opacity: 1;
         }
 
-        /* Light mode overrides */
         body.light-mode .typo-logo {
-            color: #595959;
+            color: #666;
         }
 
-        /* 7:1 on white ✓ */
         body.light-mode .typo-logo:hover {
-            color: #111111;
+            color: #000;
         }
 
-        /* 16:1 ✓ */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
 
-        /* ===== MARQUEE ANIMATION (= INdex2 pattern) ===== */
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        #network-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+            transition: opacity 0.5s ease;
+        }
+
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: rgba(5, 7, 10, 0.95) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(5px);
+            position: fixed;
+            top: 0;
+            z-index: 60;
+        }
+
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 40s linear infinite;
+        }
+
+        .ticker-item {
+            padding: 0 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .ticker-item {
+                padding: 0 2rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Animación para los logos (Marquee) */
         @keyframes marquee {
             0% {
                 transform: translateX(0);
@@ -183,17 +244,76 @@
         }
 
         .animate-marquee {
-            animation: marquee 35s linear infinite;
+            animation: marquee 30s linear infinite;
         }
 
-        .animate-marquee:hover {
-            animation-play-state: paused;
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s ease, border-color 0.5s ease;
+        }
+
+        .glass:hover {
+            background: var(--card-hover-bg);
+            border-color: rgba(24, 85, 186, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(24, 85, 186, 0.15);
+        }
+
+        input,
+        textarea,
+        select {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        input[type="checkbox"] {
+            accent-color: var(--primary-blue);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        ::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        ::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+        }
+
+        body.light-mode ::-webkit-calendar-picker-indicator {
+            filter: invert(0);
+        }
+
+        .hero-text-glow {
+            background: linear-gradient(to right, #4f86ed, #a5b4fc, #4f86ed);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 4s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
         }
 
         .reveal-growth {
             opacity: 0;
             transform: scale(0.9) translateY(40px);
-            transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .reveal-growth.active {
@@ -201,324 +321,63 @@
             transform: scale(1) translateY(0);
         }
 
-        .reveal-growth.reverse {
-            opacity: 0;
-            transform: scale(0.9) translateY(-40px);
+        .delay-100 {
+            transition-delay: 100ms;
         }
 
-        .reveal-growth.reverse.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
+        .delay-200 {
+            transition-delay: 200ms;
         }
 
-        /* Card Dealing Animation */
-        .deal-cards {
-            opacity: 1;
-            transform: translateY(30px);
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        .deal-cards.active {
-            opacity: 1;
-            transform: translateY(0);
+        .delay-300 {
+            transition-delay: 300ms;
         }
 
-        .deal-cards:nth-child(1) { transition-delay: 0ms; }
-        .deal-cards:nth-child(2) { transition-delay: 150ms; }
-        .deal-cards:nth-child(3) { transition-delay: 300ms; }
-        .deal-cards:nth-child(4) { transition-delay: 450ms; }
-
-        .delay-100 { transition-delay: 200ms; }
-        .delay-200 { transition-delay: 400ms; }
-        .delay-300 { transition-delay: 600ms; }
-        .delay-400 { transition-delay: 800ms; }
-
-        /* ===== FLIP CARD BLOG — 3:2 rectangular ===== */
-        .blog-card-flip {
-            perspective: 1000px;
-            height: 300px;
-            /* rectangular: wider than tall */
+        .delay-400 {
+            transition-delay: 400ms;
         }
 
-        @media (min-width: 768px) {
-            .blog-card-flip {
-                height: 320px;
-            }
+        .delay-500 {
+            transition-delay: 500ms;
         }
 
-        .blog-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-
-        .blog-card-flip:hover .blog-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .blog-card-front,
-        .blog-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 1.875rem;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .blog-card-flip:hover .blog-card-front {
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-        }
-
-        .blog-card-back {
-            transform: rotateY(180deg);
-            background: var(--card-highlight-bg);
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        /* ===== MODERN CTA ===== */
-        .modern-cta {
-            position: relative;
-            overflow: hidden;
-            background: #05070a;
-            border-radius: 2.5rem;
-            margin: 0 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .modern-cta {
-                margin: 0 4rem;
-            }
-        }
-
-        /* ===== AA CONTRAST UTILITIES ===== */
-        /* Section overline labels */
-        .section-label {
-            color: var(--primary-blue);
-            font-weight: 700;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        body:not(.light-mode) .section-label {
-            color: #60a5fa;
-        }
-
-        /* Body copy — both modes pass 4.5:1 (AA normal text) */
-        .body-text {
-            color: var(--text-muted);
-        }
-
-        body:not(.light-mode) .body-text {
-            color: var(--text-muted);
-        }
-
-        /* Secondary/muted copy — still AA */
-        .muted-text {
-            color: var(--text-muted);
-        }
-
-        body:not(.light-mode) .muted-text {
-            color: var(--text-muted);
-        }
-
-        /* Headings — inherit from CSS var which already passes */
-        .heading-text {
-            color: var(--text-main);
-        }
-
-        body:not(.light-mode) .heading-text {
-            color: var(--text-main);
-        }
-
-        /* ===== NAVIGATION & MEGA MENU ===== */
-        .nav-item {
-            position: relative;
-            padding: 1.5rem 0;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .mega-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            width: 90vw;
-            max-width: 1000px;
-            background: var(--nav-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            border-radius: 1.5rem;
-            padding: 2rem;
-            opacity: 0;
-            visibility: hidden;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-        }
-
-        .nav-item:hover .mega-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .mega-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-
-        .mega-title {
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #60a5fa; /* always light blue — mega-menu bg is always dark */
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .mega-link {
-            display: block;
-            padding: 0.5rem 0;
-            font-size: 0.875rem;
-            color: var(--nav-text-muted);
-            transition: all 0.2s ease;
-        }
-
-        .mega-link:hover {
-            color: var(--nav-text);
-            padding-left: 0.5rem;
-        }
-
-        .mega-link-feat {
-            display: block;
-            background: rgba(24, 85, 186, 0.03);
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-top: 0.5rem;
-            border: 1px solid rgba(24, 85, 186, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .mega-link-feat:hover {
-            border-color: rgba(24, 85, 186, 0.6);
-            background: rgba(24, 85, 186, 0.08);
-            box-shadow: 0 10px 25px -5px rgba(24, 85, 186, 0.2);
-            transform: translateY(-4px);
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            transition: color 0.3s ease;
-        }
-
-        .nav-item:hover .nav-link {
-            color: #4f86ed;
-            /* Token City Blue */
-        }
-
-        .nav-item:hover .nav-link i {
-            opacity: 1;
-            transform: rotate(180deg);
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .nav-link i {
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        /* Nav Overlay for focus */
-        #navOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 40;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
-        }
-
-        body:has(.nav-item:hover) #navOverlay {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Mobile Menu Drawer */
-        #mobileDrawer {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            max-width: 400px;
-            background: var(--nav-bg);
-            backdrop-filter: blur(20px);
-            z-index: 100;
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            border-left: 1px solid var(--glass-border);
-        }
-
-        #mobileDrawer.open {
-            transform: translateX(0);
-        }
-
-        .mobile-link {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--nav-text);
-            font-weight: 600;
-        }
-
-        .mobile-submenu {
-            background: rgba(255, 255, 255, 0.03);
-            display: none;
-            padding-left: 1rem;
-        }
-
-        .mobile-submenu.open {
-            display: block;
-        }
-
-        /* Updated Controls matching main pattern */
         .theme-toggle {
             position: relative;
             width: 52px;
             height: 28px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--toggle-track-bg);
             border-radius: 999px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--glass-border);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 4px;
+        }
+
+        @media (min-width: 768px) {
+            .theme-toggle {
+                width: 60px;
+                height: 30px;
+                padding: 0 5px;
+            }
+        }
+
+        .toggle-track-icon {
+            color: var(--toggle-track-icon);
+            width: 12px;
+            height: 12px;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .toggle-track-icon {
+                width: 14px;
+                height: 14px;
+            }
         }
 
         .theme-toggle-thumb {
@@ -527,7 +386,7 @@
             left: 2px;
             width: 22px;
             height: 22px;
-            background-color: #ffffff;
+            background-color: var(--toggle-thumb-bg);
             border-radius: 50%;
             transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
             display: flex;
@@ -537,40 +396,129 @@
             z-index: 2;
         }
 
-        .toggle-track-icon {
-            color: #94a3b8;
-            width: 12px;
-            height: 12px;
-            z-index: 1;
+        @media (min-width: 768px) {
+            .theme-toggle-thumb {
+                width: 24px;
+                height: 24px;
+            }
         }
 
         .thumb-icon {
             width: 12px;
             height: 12px;
-            color: var(--primary-blue);
+            color: var(--toggle-icon-color);
+        }
+
+        @media (min-width: 768px) {
+            .thumb-icon {
+                width: 14px;
+                height: 14px;
+            }
         }
 
         body.light-mode .theme-toggle-thumb {
             transform: translateX(24px);
         }
 
+        @media (min-width: 768px) {
+            body.light-mode .theme-toggle-thumb {
+                transform: translateX(30px);
+            }
+        }
+
+        #chartFill,
+        #chartLine {
+            transition: none;
+        }
+
+        /* MODAL STYLES */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background-color: var(--modal-bg);
+            border: 1px solid var(--modal-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-close-btn {
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .modal-close-btn:hover {
+            color: var(--close-btn-hover);
+        }
+
+        /* Estilos para la barra inferior flotante */
+        .bottom-nav {
+            /* FORZADO: Siempre oscuro independientemente del modo */
+            background-color: rgba(5, 7, 10, 0.95) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(12px);
+        }
+
+        /* Ajuste específico para el Switch Móvil sobre fondo negro siempre */
+        #themeToggleMobile {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            /* Track siempre visible sobre negro */
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+
+        /* Mobile Menu */
+        #mobileMenu {
+            background-color: var(--nav-bg);
+            /* Use nav bg color (always dark) */
+            padding-top: 5rem;
+        }
+
+        #mobileMenu a {
+            color: var(--nav-text);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* LANGUAGE TOGGLE STYLES — AA Contrast Compliant */
         .lang-toggle {
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
             user-select: none;
+            --lang-active: var(--text-main);
+            --lang-muted: var(--text-muted);
+        }
+
+        /* Zonas siempre oscuras: nav, bottom bar, footer oscuro */
+        nav .lang-toggle,
+        .bottom-nav .lang-toggle,
+        footer.dark-footer .lang-toggle {
+            --lang-active: #ffffff;
+            --lang-muted: #a1a1aa;
+            /* ratio ~5.3:1 sobre #05070a — cumple AA */
+        }
+
+        body.light-mode nav .lang-toggle,
+        body.light-mode .bottom-nav .lang-toggle,
+        body.light-mode footer.dark-footer .lang-toggle {
+            --lang-active: #ffffff;
+            --lang-muted: #a1a1aa;
+            /* nav sigue siendo oscura en light-mode */
         }
 
         .lang-label {
             font-size: 10px;
             font-weight: 800;
-            color: #a1a1aa;
+            letter-spacing: 0.05em;
             transition: color 0.3s ease;
+            color: var(--lang-muted);
         }
 
-        .lang-label.active {
-            color: #ffffff;
+        @media (min-width: 768px) {
+            .lang-label {
+                font-size: 11px;
+            }
         }
 
         .lang-switch-track {
@@ -578,8 +526,16 @@
             width: 32px;
             height: 16px;
             background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 999px;
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .lang-switch-track {
+                width: 36px;
+                height: 18px;
+            }
         }
 
         .lang-switch-thumb {
@@ -591,66 +547,42 @@
             background-color: #ffffff;
             border-radius: 50%;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
+        @media (min-width: 768px) {
+            .lang-switch-thumb {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        /* English position */
         body.lang-en .lang-switch-thumb {
             transform: translateX(16px);
         }
 
-        /* Testimonial Carousel */
-        .testimonial-carousel-wrapper {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            padding: 1rem 0;
-            margin-top: -1rem;
-            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        }
-
-        .testimonial-track {
-            display: flex;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            margin: 0 -15px;
-        }
-
-        .testimonial-slide {
-            flex: 0 0 100%;
-            padding: 0 15px;
-            box-sizing: border-box;
-        }
-
         @media (min-width: 768px) {
-            .testimonial-slide {
-                flex: 0 0 50%;
+            body.lang-en .lang-switch-thumb {
+                transform: translateX(18px);
             }
         }
 
-        @media (min-width: 1024px) {
-            .testimonial-slide {
-                flex: 0 0 33.333333%;
-            }
+        /* Contrast Control */
+        body.lang-en .lang-label-es {
+            color: var(--lang-muted);
         }
 
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
+        body.lang-en .lang-label-en {
+            color: var(--lang-active);
         }
 
-        .carousel-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 4px;
-            background-color: var(--glass-border);
-            cursor: pointer;
-            transition: all 0.3s ease;
+        body:not(.lang-en) .lang-label-es {
+            color: var(--lang-active);
         }
 
-        .carousel-dot.active {
-            width: 24px;
-            background-color: var(--primary-blue);
+        body:not(.lang-en) .lang-label-en {
+            color: var(--lang-muted);
         }
 
         /* Floating Controls Bar - Always Dark */
@@ -680,1538 +612,903 @@
         }
 
         .controls-bar .thumb-icon {
-            color: var(--primary-blue);
+            color: #1855BA;
         }
 
+        .controls-bar .lang-label {
+            color: #ffffff;
+        }
+
+        .controls-bar .lang-label.lang-label-en {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .controls-bar .lang-label.lang-label-es {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .controls-bar .lang-label.lang-label-en {
+            color: #ffffff;
+        }
 
         .controls-bar .lang-switch-track {
             background-color: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.15);
         }
 
-        /* ===== FOOTER ALWAYS DARK ===== */
-        footer.dark-footer {
-            background-color: #05070a !important;
-            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-            color: #9ca3af !important;
-        }
-
-        footer.dark-footer h4,
-        footer.dark-footer .text-main-force {
-            color: #ffffff !important;
-        }
-
-        footer.dark-footer a:hover {
-            color: #60a5fa !important; /* blue-400: ~5.5:1 on dark bg, passes AA */
-        }
-
-        footer.dark-footer input {
-            background-color: rgba(255, 255, 255, 0.05) !important;
-            border-color: rgba(255, 255, 255, 0.1) !important;
-            color: #ffffff !important;
-        }
-
-        /* ANIMACIÓN DE DIBUJO PARA EL CHECK */
-        @keyframes drawCheck {
-            0% {
-                stroke-dashoffset: 50;
-                opacity: 0;
+        @media (max-width: 768px) {
+            .controls-bar {
+                display: none;
             }
-            10% {
-                opacity: 1;
-            }
-            100% {
-                stroke-dashoffset: 0;
-                opacity: 1;
-            }
-        }
-
-        @keyframes drawCircle {
-            0% {
-                stroke-dashoffset: 70;
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            100% {
-                stroke-dashoffset: 0;
-                opacity: 1;
-            }
-        }
-
-        .svg-draw-check {
-            stroke-dasharray: 50;
-            stroke-dashoffset: 50;
-        }
-
-        .svg-draw-circle {
-            stroke-dasharray: 70;
-            stroke-dashoffset: 70;
-        }
-
-        #contactSuccess.flex .svg-draw-circle {
-            animation: drawCircle 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        #contactSuccess.flex .svg-draw-check {
-            animation: drawCheck 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            animation-delay: 0.6s;
         }
     </style>
-
 </head>
 
-<body>
-    <script>
-        if (window.__isThemeLight) document.body.classList.add('light-mode');
-    </script>
-    <div id="navOverlay"></div>
+<body class="pb-24 md:pb-0">
+    <canvas id="network-canvas"></canvas>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 transition-all duration-300 backdrop-blur-md border-b" id="navbar"
-        style="background-color: var(--nav-bg); border-color: var(--glass-border);">
-        <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 h-16 md:h-20">
-            <div class="flex items-center gap-2 select-none pointer-events-auto cursor-pointer"
-                onclick="window.location.reload()">
-                <div class="flex items-baseline tracking-tighter leading-none" style="color: var(--nav-text);">
-                    <span class="text-sm md:text-2xl font-black tracking-tight uppercase">TOKEN CITY</span>
-                </div>
-            </div>
-
-            <!-- Main Menu with Mega Menu (Desktop) -->
-            <div class="hidden lg:flex items-center gap-1 text-sm font-medium ml-auto" style="color: var(--nav-text-muted);">
-                <!-- Markets -->
-                <div class="nav-item">
-                    <span class="nav-link px-4 py-2 rounded-lg hover:bg-white/5 transition-colors">
-                        <span class="lang-es">Mercados</span><span class="lang-en">Markets</span> <i data-lucide="chevron-down" class="w-3 h-3 opacity-50"></i>
-                    </span>
-                    <div class="mega-menu">
-                        <div class="mega-grid grid-cols-2">
-                            <div>
-                                <span class="mega-title">Regulated</span>
-                                <a href="https://exchange.token-city.com" class="mega-link flex items-center gap-2">
-                                    Token City Exchange
-                                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                </a>
-                                <a href="https://www.aliuscap.com/" class="mega-link">Alius Capital</a>
-                            </div>
-                            <div>
-                                <span class="mega-title">Private</span>
-                                <a href="#" class="mega-link">Marketplace</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Products -->
-                <div class="nav-item">
-                    <span class="nav-link px-4 py-2 rounded-lg hover:bg-white/5 transition-colors">
-                        <span class="lang-es">Productos</span><span class="lang-en">Products</span> <i data-lucide="chevron-down" class="w-3 h-3 opacity-50"></i>
-                    </span>
-                    <div class="mega-menu">
-                        <div class="mega-grid">
-                            <div>
-                                <a href="#" class="mega-link-feat group">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-500 dark:text-blue-400 group-hover:bg-blue-400 group-hover:text-white transition-colors">
-                                        <i data-lucide="layout" class="w-4 h-4"></i>
-                                    </div>
-                                    <div>
-                                        <div class="font-bold text-white group-hover:text-blue-500 dark:text-blue-400 transition-colors"><span class="lang-es">Plataforma Marca Blanca</span><span class="lang-en">White Label Platform</span></div>
-                                        <div class="text-[10px] opacity-60"><span class="lang-es">Solución personalizada de emisión</span><span class="lang-en">Custom issuance solution</span></div>
-                                    </div>
-                                </a>
-                                <a href="#" class="mega-link-feat group mt-4">
-                                    <div class="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-colors">
-                                        <i data-lucide="code-2" class="w-4 h-4"></i>
-                                    </div>
-                                    <div>
-                                        <div class="font-bold text-white group-hover:text-cyan-400 transition-colors">API Blockchain</div>
-                                        <div class="text-[10px] opacity-60"><span class="lang-es">Web3 y Smart Contracts</span><span class="lang-en">Web3 and Smart Contracts</span></div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div>
-                                <a href="#" class="mega-link-feat group">
-                                    <div class="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-white transition-colors">
-                                        <i data-lucide="shield-check" class="w-4 h-4"></i>
-                                    </div>
-                                    <div>
-                                        <div class="font-bold text-white group-hover:text-green-400 transition-colors"><span class="lang-es">Infraestructura ERIR</span><span class="lang-en">DLT Infrastructure</span></div>
-                                        <div class="text-[10px] opacity-60"><span class="lang-es">Registro de activos tokenizados</span><span class="lang-en">Tokenized assets register</span></div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Clients -->
-                <div class="nav-item">
-                    <span class="nav-link px-4 py-2 rounded-lg hover:bg-white/5 transition-colors">
-                        <span class="lang-es">Clientes</span><span class="lang-en">Clients</span> <i data-lucide="chevron-down" class="w-3 h-3 opacity-50"></i>
-                    </span>
-                    <div class="mega-menu">
-                        <div class="mega-grid grid-cols-2">
-                            <div>
-                                <span class="mega-title"><span class="lang-es">Industrias</span><span class="lang-en">Industries</span></span>
-                                <a href="#" class="mega-link"><span class="lang-es">Inmobiliario</span><span class="lang-en">Real Estate</span></a>
-                                <a href="#" class="mega-link">Scaleups</a>
-                                <a href="#" class="mega-link"><span class="lang-es">Energía</span><span class="lang-en">Energy</span></a>
-                                <a href="#" class="mega-link"><span class="lang-es">Otros</span><span class="lang-en">Others</span></a>
-                            </div>
-                            <div>
-                                <span class="mega-title"><span class="lang-es">En la práctica</span><span class="lang-en">In practice</span></span>
-                                <a href="#" class="mega-link"><span class="lang-es">Casos de éxito</span><span class="lang-en">Success stories</span> <span class="text-[8px] text-green-400 font-bold">NEW</span></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ecosystem -->
-                <div class="nav-item">
-                    <span class="nav-link px-4 py-2 rounded-lg hover:bg-white/5 transition-colors">
-                        <span class="lang-es">Ecosistema</span><span class="lang-en">Ecosystem</span> <i data-lucide="chevron-down" class="w-3 h-3 opacity-50"></i>
-                    </span>
-                    <div class="mega-menu">
-                        <div class="mega-grid grid-cols-2">
-                            <a href="#" class="mega-link">TC Show</a>
-                            <a href="#" class="mega-link"><span class="lang-es">Eventos</span><span class="lang-en">Events</span></a>
-                            <a href="#blog" class="mega-link">Blog</a>
-                            <a href="#" class="mega-link"><span class="lang-es">Noticias</span><span class="lang-en">News</span></a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- About us -->
-                <div class="nav-item">
-                    <span class="nav-link px-4 py-2 rounded-lg hover:bg-white/5 transition-colors">
-                        <span class="lang-es">Nosotros</span><span class="lang-en">About Us</span> <i data-lucide="chevron-down" class="w-3 h-3 opacity-50"></i>
-                    </span>
-                    <div class="mega-menu">
-                        <div class="mega-grid grid-cols-2">
-                            <a href="#" class="mega-link"><span class="lang-es">Equipo Directivo</span><span class="lang-en">Management Team</span></a>
-                            <a href="#" class="mega-link"><span class="lang-es">Sala de Prensa</span><span class="lang-en">Press Room</span></a>
-                            <a href="#" class="mega-link"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="flex items-center gap-3 md:gap-4 flex-shrink-0">
-                <button class="hidden md:flex border-2 border-white text-white bg-transparent font-semibold rounded-[15px] hover:bg-white hover:text-azul-acero-500 transition-colors text-sm px-4 h-[36px] md:h-[40px] items-center gap-2">
-                    <i data-lucide="log-in" class="w-4 h-4"></i>
-                    <span class="lang-es">Acceso</span><span class="lang-en">Login</span>
-                </button>
-                <button class="hidden lg:flex bg-azul-acero-500 hover:bg-azul-acero-600 text-white text-xs md:text-sm font-bold px-4 md:px-6 h-[36px] md:h-[40px] rounded-[15px] transition-all transform hover:scale-105 whitespace-nowrap flex items-center gap-2">
-                    <i data-lucide="user-plus" class="w-4 h-4"></i>
-                    <span class="lang-es">Regístrate</span><span class="lang-en">Sign up</span>
-                </button>
-                <!-- Mobile Menu Toggle -->
-                <button class="lg:hidden p-2 text-white" onclick="toggleMobileMenu()">
-                    <i data-lucide="menu" id="menuIcon" class="w-6 h-6"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Mobile Drawer -->
-    <div id="mobileDrawer">
-        <div class="p-6 flex items-center justify-end border-b border-white/10">
-            <button onclick="toggleMobileMenu()" class="p-2 text-white/60 hover:text-white">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-        </div>
-        <div class="flex-1 overflow-y-auto">
-            <!-- Mobile Navigation Items -->
-            <div class="mobile-nav-item">
-                <div class="mobile-link" onclick="toggleSubmenu('mob-mercados')"><span class="lang-es">Mercados</span><span class="lang-en">Markets</span> <i data-lucide="chevron-down"
-                        class="w-4 h-4"></i></div>
-                <div id="mob-mercados" class="mobile-submenu">
-                    <a href="https://exchange.token-city.com" class="block p-4 text-sm text-white/70">Token City
-                        Exchange</a>
-                    <a href="https://www.aliuscap.com/" class="block p-4 text-sm text-white/70">Alius Capital</a>
-                    <a href="#" class="block p-4 text-sm text-white/70">Marketplace</a>
-                </div>
-            </div>
-            <div class="mobile-nav-item">
-                <div class="mobile-link" onclick="toggleSubmenu('mob-productos')"><span class="lang-es">Productos</span><span class="lang-en">Products</span> <i
-                        data-lucide="chevron-down" class="w-4 h-4"></i></div>
-                <div id="mob-productos" class="mobile-submenu">
-                    <a href="#" class="block p-4 text-sm text-white/70"><span class="lang-es">Marca Blanca</span><span class="lang-en">White Label</span></a>
-                    <a href="#" class="block p-4 text-sm text-white/70"><span class="lang-es">API Blockchain</span><span class="lang-en">Blockchain API</span></a>
-                    <a href="#" class="block p-4 text-sm text-white/70"><span class="lang-es">Infraestructura ERIR</span><span class="lang-en">ERIR Infrastructure</span></a>
-                </div>
-            </div>
-            <div class="mobile-nav-item">
-                <div class="mobile-link" onclick="toggleSubmenu('mob-clientes')"><span class="lang-es">Clientes</span><span class="lang-en">Clients</span> <i data-lucide="chevron-down"
-                        class="w-4 h-4"></i></div>
-                <div id="mob-clientes" class="mobile-submenu">
-                    <a href="#" class="block p-4 text-sm text-white/70"><span class="lang-es">Inmobiliario</span><span class="lang-en">Real Estate</span></a>
-                    <a href="#" class="block p-4 text-sm text-white/70">Scaleups</a>
-                    <a href="#" class="block p-4 text-sm text-white/70"><span class="lang-es">Energía</span><span class="lang-en">Energy</span></a>
-                    <a href="#" class="block p-4 text-sm text-white/70"><span class="lang-es">Otros</span><span class="lang-en">Others</span></a>
-                    <a href="#" class="block p-4 text-sm text-white/70"><span class="lang-es">Casos de éxito</span><span class="lang-en">Success stories</span></a>
-                </div>
-            </div>
-            <a href="#" class="mobile-link"><span class="lang-es">Ecosistema</span><span class="lang-en">Ecosystem</span></a>
-            <a href="#" class="mobile-link"><span class="lang-es">Nosotros</span><span class="lang-en">About Us</span></a>
-        </div>
-        <div class="p-6 border-t border-white/10 space-y-4">
-            <div class="flex gap-3">
-                <button class="flex-1 border-2 border-white text-white bg-transparent font-semibold rounded-[15px] hover:bg-white hover:text-azul-acero-500 transition-colors py-2 px-4 flex items-center justify-center gap-2 text-sm">
-                    <i data-lucide="log-in" class="w-4 h-4"></i>
-                    <span class="lang-es">Acceso</span><span class="lang-en">Login</span>
-                </button>
-                <button class="flex-1 bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold py-2 px-4 rounded-[15px] flex items-center justify-center gap-2 text-sm">
-                    <i data-lucide="user-plus" class="w-4 h-4"></i>
-                    <span class="lang-es">Regístrate</span><span class="lang-en">Sign up</span>
-                </button>
-            </div>
+    <!-- Top Ticker Seamless Loop -->
+    <div class="ticker-wrap h-8 md:h-10 flex items-center">
+        <div class="ticker">
+            <span class="ticker-item text-green-500 font-bold">TKN-CITY ▲ +2.45%</span>
+            <span class="ticker-item text-red-500">BOND-EU ▼ -0.12%</span>
+            <span class="ticker-item text-green-500 font-bold">REAL-EST ▲ +5.80%</span>
+            <span class="ticker-item text-[#1855BA]">ENERGY-X ▬ 0.00%</span>
+            <span class="ticker-item text-green-500 font-bold">TECH-FUND ▲ +12.3%</span>
+            <span class="ticker-item text-red-500">AGRI-TOK ▼ -1.05%</span>
+            <span class="ticker-item text-green-500 font-bold">SOLAR-Y ▲ +3.20%</span>
+            <span class="ticker-item text-[#1855BA]">H2-GREEN ▬ 0.00%</span>
+            <!-- DUPLICADO PARA CAROUSEL INFINITO -->
+            <span class="ticker-item text-green-500 font-bold">TKN-CITY ▲ +2.45%</span>
+            <span class="ticker-item text-red-500">BOND-EU ▼ -0.12%</span>
+            <span class="ticker-item text-green-500 font-bold">REAL-EST ▲ +5.80%</span>
+            <span class="ticker-item text-[#1855BA]">ENERGY-X ▬ 0.00%</span>
+            <span class="ticker-item text-green-500 font-bold">TECH-FUND ▲ +12.3%</span>
+            <span class="ticker-item text-red-500">AGRI-TOK ▼ -1.05%</span>
+            <span class="ticker-item text-green-500 font-bold">SOLAR-Y ▲ +3.20%</span>
+            <span class="ticker-item text-[#1855BA]">H2-GREEN ▬ 0.00%</span>
         </div>
     </div>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="hero-section relative h-[600px] md:h-[700px] flex items-center justify-center text-center px-4 pt-20 overflow-hidden">
-            <!-- Video Background -->
-            <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
-                <source src="BANNERHOME.mp4" type="video/mp4">
-            </video>
-            <div class="absolute inset-0 hero-overlay z-0"></div>
-            <div class="relative z-10 max-w-4xl mx-auto space-y-6 reveal-growth delay-100">
-                <p class="text-azul-acero-400 font-bold tracking-widest uppercase text-sm"><span class="lang-es">Tokeniza, invierte, infórmate</span><span class="lang-en">Tokenize, invest, get informed</span></p>
-                <h1 class="text-4xl md:text-7xl font-extrabold text-white leading-tight">
-                    <span class="lang-es">Líder en Tokenización de Activos</span><span class="lang-en">Asset Tokenization Leader</span>
-                </h1>
-                <div class="pt-4">
+    <!-- Navegación Superior -->
+    <nav class="fixed top-8 md:top-10 w-full z-50 px-3 py-2 md:px-6 md:py-4 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto flex items-center justify-between glass rounded-[30px] px-3 py-2 md:px-8 md:py-3 backdrop-blur-md h-16"
+            style="background-color: var(--nav-bg); border-color: rgba(255,255,255,0.1);">
+
+            <!-- LOGO: Compacto en móvil -->
+            <div class="flex items-center gap-2 select-none">
+                <div class="flex items-baseline tracking-tighter leading-none" style="color: var(--nav-text);">
+                    <span class="text-base md:text-2xl font-bold tracking-tight">TOKEN CITY</span>
+                    <span class="text-base md:text-2xl font-thin ml-1 tracking-wide hidden sm:inline">EXCHANGE</span>
+                    <span class="text-base font-thin ml-1 tracking-wide sm:hidden">EX</span>
+                </div>
+                <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse self-start mt-1"></div>
+            </div>
+
+            <!-- Menú Desktop -->
+            <div class="hidden lg:flex items-center gap-8 text-sm font-medium transition-colors"
+                style="color: var(--nav-text-muted);">
+                <a href="#" class="hover:text-[#1855BA] transition-colors">Invertir</a>
+                <a href="#" class="hover:text-[#1855BA] transition-colors">Emitir</a>
+                <a href="#" class="hover:text-[#1855BA] transition-colors">Salir a bolsa</a>
+                <a href="#" class="hover:text-[#1855BA] transition-colors">Servicios</a>
+            </div>
+
+            <!-- Controles Derecha (VISIBLE SOLO EN TABLET/DESKTOP) -->
+            <div class="hidden md:flex items-center gap-2 md:gap-4">
+                <div class="flex items-center gap-3">
                     <button
-                        class="bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold px-10 py-5 rounded-[15px] transition-all flex items-center gap-2 mx-auto tracking-wider text-sm">
-                        <span class="lang-es">Solicita información</span><span class="lang-en">Request info</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        class="hidden md:flex text-[10px] md:text-sm font-bold px-3 h-[36px] md:h-[40px] border border-white rounded-[15px] hover:bg-white/10 transition-colors whitespace-nowrap items-center gap-2"
+                        style="color: white; line-height: 1;">
+                        <i data-lucide="user" class="w-3.5 h-3.5 md:w-4 md:h-4"></i> Iniciar sesión
+                    </button>
+                    <button
+                        class="hidden md:flex bg-[#1855BA] hover:bg-[#144a9e] text-white text-[10px] md:text-sm font-bold px-3 md:px-6 h-[36px] md:h-[40px] rounded-[15px] transition-all transform hover:scale-105 whitespace-nowrap items-center gap-2"
+                        style="line-height: 1;">
+                        Registrarse
                     </button>
                 </div>
             </div>
-        </section>
 
-        <!-- Solutions Section -->
-        <section class="py-20 px-4 bg-gray-50 dark:bg-transparent">
-            <div class="max-w-7xl mx-auto text-center space-y-4 mb-[30px] reveal-growth">
-                <p class="section-label"><span class="lang-es">NUESTROS SERVICIOS</span><span class="lang-en">OUR SERVICES</span></p>
-                <h2 class="text-3xl md:text-4xl font-bold heading-text"><span class="lang-es">Soluciones prácticas y asequibles</span><span class="lang-en">Practical and affordable solutions</span></h2>
-                <p class="body-text max-w-2xl mx-auto">
-                    <span class="lang-es">Creamos productos para que cualquier institución financiera pueda digitalizar sus procesos
-                    financieros.</span><span class="lang-en">We create products so any financial institution can digitize its financial processes.</span>
-                </p>
-            </div>
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[30px]">
-                <!-- Card 1 -->
-                <div class="infra-card-style p-8 rounded-[30px] text-center space-y-4 hover:shadow-xl transition-all border-l-azul-acero-500 reveal-growth delay-100">
-                    <div class="w-12 h-12 bg-azul-acero-100 dark:bg-azul-acero-900/30 rounded-[15px] flex items-center justify-center mx-auto text-azul-acero-500">
-                        <i data-lucide="layout" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="font-bold text-lg heading-text"><span class="lang-es">Plataforma de emisión personalizada</span><span class="lang-en">Custom issuance platform</span></h3>
-                    <p class="text-sm muted-text"><span class="lang-es">Ahorra tiempo y costes con nuestra infraestructura "marca blanca" llave en mano para digitalizar tus activos.</span><span class="lang-en">Save time and costs with our turnkey "white label" infrastructure to digitize your assets.</span></p>
-                    <a href="#" class="text-azul-acero-500 dark:text-blue-400 font-bold text-xs bg-transparent px-3 py-1.5 rounded-[15px] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center gap-1 hover:gap-2 transition-all w-fit mx-auto">
-                        <span class="lang-es">Más info</span><span class="lang-en">More info</span> <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                    </a>
-                </div>
-                <!-- Card 2 -->
-                <div class="infra-card-style p-8 rounded-[30px] text-center space-y-4 hover:shadow-xl transition-all border-l-purple-500 reveal-growth delay-200">
-                    <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-[15px] flex items-center justify-center mx-auto text-purple-600">
-                        <i data-lucide="cpu" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="font-bold text-lg heading-text"><span class="lang-es">Servicio Blockchain - API Web 3</span><span class="lang-en">Blockchain Service - Web 3 API</span></h3>
-                    <p class="text-sm muted-text"><span class="lang-es">Tecnología escalable preparada para conectar tus activos con el ecosistema blockchain de forma eficiente.</span><span class="lang-en">Scalable technology ready to connect your assets to the blockchain ecosystem efficiently.</span></p>
-                    <a href="#" class="text-azul-acero-500 dark:text-blue-400 font-bold text-xs bg-transparent px-3 py-1.5 rounded-[15px] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center gap-1 hover:gap-2 transition-all w-fit mx-auto">
-                        <span class="lang-es">Más info</span><span class="lang-en">More info</span> <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                    </a>
-                </div>
-                <!-- Card 3 -->
-                <div class="infra-card-style p-8 rounded-[30px] text-center space-y-4 hover:shadow-xl transition-all border-l-cyan-500 reveal-growth delay-300">
-                    <div class="w-12 h-12 bg-cyan-100 dark:bg-cyan-900/30 rounded-[15px] flex items-center justify-center mx-auto text-cyan-600">
-                        <i data-lucide="file-text" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="font-bold text-lg heading-text"><span class="lang-es">Inscripción y registro (ERIR)</span><span class="lang-en">Registration and inscription (ERIR)</span></h3>
-                    <p class="text-sm muted-text"><span class="lang-es">Cumple con la normativa vigente gracias a nuestro agente de registro de activos tokenizados líder en Europa.</span><span class="lang-en">Comply with current regulations thanks to our leading tokenized asset registration agent in Europe.</span></p>
-                    <a href="#" class="text-azul-acero-500 dark:text-blue-400 font-bold text-xs bg-transparent px-3 py-1.5 rounded-[15px] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center gap-1 hover:gap-2 transition-all w-fit mx-auto">
-                        <span class="lang-es">Más info</span><span class="lang-en">More info</span> <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                    </a>
-                </div>
-                <!-- Card 4 -->
-                <!-- Card 4 -->
-                <div class="infra-card-style p-8 rounded-[30px] text-center space-y-4 hover:shadow-xl transition-all border-l-green-500 reveal-growth delay-400">
-                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-[15px] flex items-center justify-center mx-auto text-green-600">
-                        <i data-lucide="line-chart" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="font-bold text-lg heading-text"><span class="lang-es">Bolsa de Valores tokenizados regulada</span><span class="lang-en">Regulated Tokenized Exchange</span></h3>
-                    <p class="text-sm muted-text"><span class="lang-es">Accede a un mercado secundario donde comprar y vender activos digitales con total seguridad y liquidez.</span><span class="lang-en">Access a secondary market to buy and sell digital assets with complete security and liquidity.</span></p>
-                    <a href="#" class="text-azul-acero-500 dark:text-blue-400 font-bold text-xs bg-transparent px-3 py-1.5 rounded-[15px] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center gap-1 hover:gap-2 transition-all w-fit mx-auto">
-                        <span class="lang-es">Más info</span><span class="lang-en">More info</span> <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
+            <!-- Menu Button (SOLO MOVIL) -->
+            <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
 
-        <!-- Clients Section -->
-        <section class="py-24 px-4">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center space-y-4 mb-[30px] reveal-growth">
-                    <p class="section-label"><span class="lang-es">QUIÉNES SOMOS</span><span class="lang-en">ABOUT US</span></p>
-                    <h2 class="text-3xl md:text-4xl font-bold heading-text"><span class="lang-es">Nuestros clientes</span><span class="lang-en">Our clients</span></h2>
-                    <p class="body-text max-w-2xl mx-auto">
-                        <span class="lang-es">Conoce el valor añadido que te aportamos</span><span class="lang-en">Discover the added value we bring you</span>
-                    </p>
-                </div>
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu"
+        class="fixed inset-0 z-40 hidden flex-col transition-all duration-300 transform translate-x-full md:hidden">
+        <div class="flex flex-col p-6 gap-6 text-lg font-medium h-full overflow-y-auto">
+            <a href="#" class="hover:text-[#1855BA] py-3 transition-colors">Invertir</a>
+            <a href="#" class="hover:text-[#1855BA] py-3 transition-colors">Emitir</a>
+            <a href="#" class="hover:text-[#1855BA] py-3 transition-colors">Salir a bolsa</a>
+            <a href="#" class="hover:text-[#1855BA] py-3 transition-colors">Servicios</a>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-[30px]">
-                    <!-- Empresas -->
-                    <div class="group relative overflow-hidden rounded-[30px] p-8 border-r-4 border-r-azul-acero-500 shadow-lg hover:shadow-2xl transition-all duration-300 bg-white dark:bg-[#1a2235] text-gray-900 dark:text-white reveal-growth delay-100">
-                        <div class="absolute -right-6 -bottom-6 opacity-[0.03] group-hover:opacity-10 transition-opacity duration-500 transform group-hover:scale-110 text-azul-acero-500">
-                            <i data-lucide="target" class="w-40 h-40"></i>
-                        </div>
-                        <div class="relative z-10 flex flex-col h-full items-start">
-                            <span class="text-xs font-bold tracking-widest mb-4 text-gray-900 dark:text-white"><span class="lang-es">01. EMPRESAS</span><span class="lang-en">01. COMPANIES</span></span>
-                            <div class="w-14 h-14 rounded-[15px] bg-azul-acero-500/10 flex items-center justify-center text-azul-acero-500 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                <i data-lucide="target" class="w-7 h-7"></i>
-                            </div>
-                            <h4 class="text-xl font-bold mb-3 text-gray-900 dark:text-white"><span class="lang-es">Accede a un canal alternativo de financiación</span><span class="lang-en">Access an alternative financing channel</span></h4>
-                            <ul class="space-y-4 text-sm text-gray-600 dark:text-gray-300">
-                                <li class="flex gap-3">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-azul-acero-500 shrink-0 mt-1.5"></span>
-                                    <p><span class="lang-es">Capta fondos de forma más directa, flexible y global, con plenas garantías jurídicas para tus inversores.</span><span class="lang-en">Raise funds directly, flexibly and globally, with full legal guarantees for your investors.</span></p>
-                                </li>
-                                <li class="flex gap-3">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-azul-acero-500 shrink-0 mt-1.5"></span>
-                                    <p><span class="lang-es">Ofrece a tus inversores activos únicos y más líquidos, maximizando las oportunidades de retorno de su inversión.</span><span class="lang-en">Offer your investors unique and more liquid assets, maximizing their investment return opportunities.</span></p>
-                                </li>
-                                <li class="flex gap-3">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-azul-acero-500 shrink-0 mt-1.5"></span>
-                                    <p><span class="lang-es">Desarrolla tu comunidad de inversores, ofreciéndoles incentivos, transparencia y sencilla operativa.</span><span class="lang-en">Develop your investor community by offering them incentives, transparency, and simple operations.</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+            <button class="mt-auto mb-20 text-gray-400 text-sm flex items-center gap-2" onclick="toggleMobileMenu()">
+                <i data-lucide="x" class="w-4 h-4"></i> Cerrar Menú
+            </button>
+        </div>
+    </div>
 
-                    <!-- Instituciones -->
-                    <div class="group relative overflow-hidden rounded-[30px] p-8 border-r-4 border-r-green-500 shadow-lg hover:shadow-2xl transition-all duration-300 bg-white dark:bg-[#1a2235] text-gray-900 dark:text-white reveal-growth delay-200">
-                        <div class="absolute -right-6 -bottom-6 opacity-[0.03] group-hover:opacity-10 transition-opacity duration-500 transform group-hover:scale-110 text-green-500">
-                            <i data-lucide="briefcase" class="w-40 h-40"></i>
-                        </div>
-                        <div class="relative z-10 flex flex-col h-full items-start">
-                            <span class="text-xs font-bold tracking-widest mb-4 text-gray-900 dark:text-white"><span class="lang-es">02. INSTITUCIONES</span><span class="lang-en">02. INSTITUTIONS</span></span>
-                            <div class="w-14 h-14 rounded-[15px] bg-green-500/10 flex items-center justify-center text-green-500 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                <i data-lucide="briefcase" class="w-7 h-7"></i>
-                            </div>
-                            <h4 class="text-xl font-bold mb-3 text-gray-900 dark:text-white"><span class="lang-es">Ahorra costes y abre nuevos mercados</span><span class="lang-en">Save costs and open new markets</span></h4>
-                            <ul class="space-y-4 text-sm text-gray-600 dark:text-gray-300">
-                                <li class="flex gap-3">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0 mt-1.5"></span>
-                                    <p><span class="lang-es">Registra, administra y distribuye tus activos de manera más segura y rápida.</span><span class="lang-en">Register, manage, and distribute your assets more safely and quickly.</span></p>
-                                </li>
-                                <li class="flex gap-3">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0 mt-1.5"></span>
-                                    <p><span class="lang-es">Ofrece a tus clientes productos alternativos de inversión, únicos y más líquidos.</span><span class="lang-en">Offer your clients unique, more liquid, alternative investment products.</span></p>
-                                </li>
-                                <li class="flex gap-3">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0 mt-1.5"></span>
-                                    <p><span class="lang-es">Mejora la eficiencia en tu operativa de gestión, distribución, negociación de activos financieros.</span><span class="lang-en">Improve the operational efficiency of your financial asset management, distribution, and trading.</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+    <!-- Navegación Inferior Flotante (SOLO MÓVIL) -->
+    <nav class="fixed bottom-0 left-0 w-full z-[60] md:hidden bottom-nav pb-safe px-4 py-3 h-16 flex items-center">
+        <div class="flex justify-between items-center gap-4 w-full">
 
-                    <!-- Inversores -->
-                    <div class="group relative overflow-hidden rounded-[30px] p-8 border-r-4 border-r-cyan-500 shadow-lg hover:shadow-2xl transition-all duration-300 bg-white dark:bg-[#1a2235] text-gray-900 dark:text-white reveal-growth delay-300">
-                        <div class="absolute -right-6 -bottom-6 opacity-[0.03] group-hover:opacity-10 transition-opacity duration-500 transform group-hover:scale-110 text-cyan-500">
-                            <i data-lucide="lock" class="w-40 h-40"></i>
-                        </div>
-                        <div class="relative z-10 flex flex-col h-full items-start">
-                            <span class="text-xs font-bold tracking-widest mb-4 text-gray-900 dark:text-white"><span class="lang-es">03. INVERSORES</span><span class="lang-en">03. INVESTORS</span></span>
-                            <div class="w-14 h-14 rounded-[15px] bg-cyan-500/10 flex items-center justify-center text-cyan-500 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                <i data-lucide="lock" class="w-7 h-7"></i>
-                            </div>
-                            <h4 class="text-xl font-bold mb-3 text-gray-900 dark:text-white"><span class="lang-es">Accede a oportunidades únicas</span><span class="lang-en">Access unique opportunities</span></h4>
-                            <ul class="space-y-4 text-sm text-gray-600 dark:text-gray-300">
-                                <li class="flex gap-3">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0 mt-1.5"></span>
-                                    <p><span class="lang-es">Invierte en activos alternativos, de forma directa, ágil y con plenas garantías jurídicas.</span><span class="lang-en">Invest in alternative assets directly, quickly, and with full legal guarantees.</span></p>
-                                </li>
-                                <li class="flex gap-3">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0 mt-1.5"></span>
-                                    <p><span class="lang-es">Mejora la liquidez de tus inversiones en activos tradicionalmente líquidos.</span><span class="lang-en">Improve the liquidity of your investments in traditionally illiquid assets.</span></p>
-                                </li>
-                                <li class="flex gap-3">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0 mt-1.5"></span>
-                                    <p><span class="lang-es">Disfruta de mayor libertad y menores costes a la hora de comprar y vender tus activos financieros.</span><span class="lang-en">Enjoy greater freedom and lower costs when buying and selling your financial assets.</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Medios: marquee slider (identical pattern to INdex2) -->
-        <section class="py-16 border-y overflow-hidden reveal-growth" style="background: var(--glass-bg);">
-            <div class="mb-10 text-center reveal-growth">
-                <p class="section-label"><span class="lang-es">LOS MEDIOS ESTÁN A LA ESCUCHA</span><span class="lang-en">THE MEDIA IS LISTENING</span></p>
-                <h2 class="text-3xl md:text-4xl font-bold heading-text"><span class="lang-es">Hablan de nosotros</span><span class="lang-en">They talk about us</span></h2>
-                <p class="body-text max-w-2xl mx-auto mt-4">
-                    <span class="lang-es">Publicaciones de confianza</span><span class="lang-en">Trusted publications</span>
-                </p>
+            <!-- Botones en móvil -->
+            <div class="flex items-center gap-2">
+                <button
+                    class="flex-shrink-0 text-xs font-bold px-3 h-[36px] border border-white rounded-[15px] hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1.5"
+                    style="color: white; line-height: 1;">
+                    <i data-lucide="user" class="w-4 h-4"></i> Sesión
+                </button>
+                <button
+                    class="flex-shrink-0 text-xs font-bold px-3 h-[36px] bg-[#1855BA] text-white rounded-[15px] hover:bg-[#144a9e] transition-colors whitespace-nowrap flex items-center gap-1.5"
+                    style="line-height: 1;">
+                    Registro
+                </button>
             </div>
 
-            <div class="overflow-hidden relative w-full">
-                <!-- fade edges -->
-                <div class="absolute left-0 top-0 h-full w-16 md:w-32 z-10 pointer-events-none"
-                    style="background: linear-gradient(to right, var(--bg-color), transparent);"></div>
-                <div class="absolute right-0 top-0 h-full w-16 md:w-32 z-10 pointer-events-none"
-                    style="background: linear-gradient(to left, var(--bg-color), transparent);"></div>
+            <!-- Botón Llamada (Icono en móvil pequeño) -->
+            <button onclick="openModal()"
+                class="bg-white/10 hover:bg-white/20 text-white h-[36px] w-[36px] sm:w-auto sm:px-3 rounded-[15px] flex items-center justify-center gap-1.5 transition-all border border-white/20">
+                <i data-lucide="phone" class="w-4 h-4"></i>
+                <span class="hidden sm:inline text-xs font-bold">Llamada</span>
+            </button>
+        </div>
+    </nav>
 
-                <div class="flex gap-12 md:gap-20 animate-marquee whitespace-nowrap items-center w-max">
-                    <!-- Set 1 -->
-                    <div class="typo-logo">CincoDías</div>
-                    <img src="https://s1.eestatic.com/assets_css/img/elespanol-logo-lion.svg" alt="El Español" class="media-logo h-7">
-                    <div class="typo-logo">Expansión</div>
-                    <img src="https://forbes.es/wp-content/themes/tapasmagazine23/images/forbes-logo-negro.png" alt="Forbes" class="media-logo h-6">
-                    <div class="typo-logo">El Referente</div>
-                    <div class="typo-logo">RTVE</div>
-                    <div class="typo-logo">Emprendedores</div>
-                    <div class="typo-logo">El Economista</div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Bloomberg_logo.svg/960px-Bloomberg_logo.svg.png" alt="Bloomberg" class="media-logo h-6">
-                    
-                    <!-- Set 2 (Duplicate for loop) -->
-                    <div class="typo-logo">CincoDías</div>
-                    <img src="https://s1.eestatic.com/assets_css/img/elespanol-logo-lion.svg" alt="El Español" class="media-logo h-7">
-                    <div class="typo-logo">Expansión</div>
-                    <img src="https://forbes.es/wp-content/themes/tapasmagazine23/images/forbes-logo-negro.png" alt="Forbes" class="media-logo h-6">
-                    <div class="typo-logo">El Referente</div>
-                    <div class="typo-logo">RTVE</div>
-                    <div class="typo-logo">Emprendedores</div>
-                    <div class="typo-logo">El Economista</div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Bloomberg_logo.svg/960px-Bloomberg_logo.svg.png" alt="Bloomberg" class="media-logo h-6">
-                </div>
-            </div>
-        </section>
-
-        <!-- Blog Section -->
-        <section class="py-20 px-4">
-            <div class="max-w-7xl mx-auto text-center space-y-4 mb-[30px] reveal-growth">
-                <p class="section-label">BLOG</p>
-                <h2 class="text-3xl md:text-4xl font-bold heading-text"><span class="lang-es">Escribimos sobre lo que te hace falta saber</span><span class="lang-en">We write about what you need to know</span></h2>
-                <p class="body-text max-w-2xl mx-auto"><span class="lang-es">Desde los conceptos básicos hasta las últimas innovaciones en activos digitales.</span><span class="lang-en">From basic concepts to the latest innovations in digital assets.</span></p>
+    <main class="pt-0">
+        <!-- Hero Section -->
+        <div class="relative w-full overflow-hidden mb-16 md:mb-32 pt-28 pb-12 md:pt-40 md:pb-20">
+            <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
+                <source src="https://cdn.pixabay.com/video/2024/03/15/204306-923909642_large.mp4" type="video/mp4">
+            </video>
+            <div class="absolute top-0 left-0 w-full h-full z-0 transition-colors duration-500"
+                style="background: linear-gradient(to bottom, var(--hero-overlay-start), var(--hero-overlay-mid), var(--hero-overlay-end));">
             </div>
 
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-[30px] h-auto">
-                <!-- Blog 1 -->
-                <div class="blog-card-flip group reveal-growth delay-100">
-                    <div class="blog-card-inner">
-                        <!-- Front -->
-                        <div class="blog-card-front bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
-                            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80"
-                                class="w-full h-full object-cover" alt="Qivalis">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end text-left">
-                                <div class="flex flex-col gap-2 mb-3">
-                                    <span class="text-[9px] font-bold text-white bg-purple-600 w-fit px-2.5 py-1 rounded-full uppercase tracking-wider"><span class="lang-es">Pagos</span><span class="lang-en">Payments</span></span>
-                                    <div class="flex items-center gap-1 text-[11px] text-white font-medium tracking-wide">
-                                        <i data-lucide="clock" class="w-3 h-3"></i>
-                                        <span><span class="lang-es">4 mar 2026</span><span class="lang-en">Mar 4, 2026</span></span>
-                                    </div>
-                                </div>
-                                <h3 class="font-bold text-xl text-white leading-tight"><span class="lang-es">Qivalis: ¿El método de pago tokenizado que le falta a Europa?</span><span class="lang-en">Qivalis: The tokenized payment method Europe is missing?</span></h3>
-                            </div>
-                        </div>
-                        <!-- Back -->
-                        <div class="blog-card-back flex flex-col items-start text-left space-y-4"
-                            style="background: var(--glass-bg); border-color: var(--glass-border);">
-                            <h3 class="font-bold text-xl text-azul-acero-500 dark:text-gray-100"><span class="lang-es">Innovación Financiera</span><span class="lang-en">Financial Innovation</span></h3>
-                            <p class="text-sm text-gray-400 leading-relaxed"><span class="lang-es">Descubre cómo Qivalis está revolucionando los pagos transfronterizos mediante el uso de activos digitales en la eurozona.</span><span class="lang-en">Discover how Qivalis is revolutionizing cross-border payments through the use of digital assets in the eurozone.</span></p>
-                            <a href="#" class="text-azul-acero-500 dark:text-blue-400 font-bold text-xs bg-transparent px-3 py-1.5 rounded-[15px] hover:bg-black/5 dark:hover:bg-white/10 flex items-center gap-1 hover:gap-2 transition-all w-fit -ml-3">
-                                <span class="lang-es">Leer más</span><span class="lang-en">Read more</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Blog 2 -->
-                <div class="blog-card-flip group reveal-growth delay-200">
-                    <div class="blog-card-inner">
-                        <!-- Front -->
-                        <div class="blog-card-front bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
-                            <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80"
-                                class="w-full h-full object-cover" alt="Mercados 24/7">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end text-left">
-                                <div class="flex flex-col gap-2 mb-3">
-                                    <span class="text-[9px] font-bold text-white bg-green-600 w-fit px-2.5 py-1 rounded-full uppercase tracking-wider"><span class="lang-es">Mercados</span><span class="lang-en">Markets</span></span>
-                                    <div class="flex items-center gap-1 text-[11px] text-white font-medium tracking-wide">
-                                        <i data-lucide="clock" class="w-3 h-3"></i>
-                                        <span><span class="lang-es">2 mar 2026</span><span class="lang-en">Mar 2, 2026</span></span>
-                                    </div>
-                                </div>
-                                <h3 class="font-bold text-xl text-white leading-tight"><span class="lang-es">El amanecer de los mercados tokenizados 24/7</span><span class="lang-en">The dawn of 24/7 tokenized markets</span></h3>
-                            </div>
-                        </div>
-                        <!-- Back -->
-                        <div class="blog-card-back flex flex-col items-start text-left space-y-4"
-                            style="background: var(--glass-bg); border-color: var(--glass-border);">
-                            <h3 class="font-bold text-xl text-azul-acero-500 dark:text-gray-100"><span class="lang-es">Futuro del Capital</span><span class="lang-en">Future of Capital</span></h3>
-                            <p class="text-sm text-gray-400 leading-relaxed"><span class="lang-es">La tecnología blockchain elimina las barreras temporales de la bolsa tradicional, permitiendo operar en cualquier momento y lugar.</span><span class="lang-en">Blockchain technology eliminates the temporal barriers of the traditional stock exchange, allowing trading anytime, anywhere.</span></p>
-                            <a href="#" class="text-azul-acero-500 dark:text-blue-400 font-bold text-xs bg-transparent px-3 py-1.5 rounded-[15px] hover:bg-black/5 dark:hover:bg-white/10 flex items-center gap-1 hover:gap-2 transition-all w-fit -ml-3">
-                                <span class="lang-es">Leer más</span><span class="lang-en">Read more</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Blog 3 -->
-                <div class="blog-card-flip group reveal-growth delay-300">
-                    <div class="blog-card-inner">
-                        <!-- Front -->
-                        <div class="blog-card-front bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
-                            <img src="blog3.webp"
-                                class="w-full h-full object-cover" alt="UE Capital">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end text-left">
-                                <div class="flex flex-col gap-2 mb-3">
-                                    <span class="text-[9px] font-bold text-white bg-amber-600 w-fit px-2.5 py-1 rounded-full uppercase tracking-wider"><span class="lang-es">Unión Europea</span><span class="lang-en">European Union</span></span>
-                                    <div class="flex items-center gap-1 text-[11px] text-white font-medium tracking-wide">
-                                        <i data-lucide="clock" class="w-3 h-3"></i>
-                                        <span><span class="lang-es">6 feb 2026</span><span class="lang-en">Feb 6, 2026</span></span>
-                                    </div>
-                                </div>
-                                <h3 class="font-bold text-xl text-white leading-tight"><span class="lang-es">El tiempo apremia: La UE debe salvar sus mercados de capitales</span><span class="lang-en">Time is running out: The EU must save its capital markets</span></h3>
-                            </div>
-                        </div>
-                        <!-- Back -->
-                        <div class="blog-card-back flex flex-col items-start text-left space-y-4"
-                            style="background: var(--glass-bg); border-color: var(--glass-border);">
-                            <h3 class="font-bold text-xl text-azul-acero-500 dark:text-gray-100"><span class="lang-es">Política y Economía</span><span class="lang-en">Politics and Economy</span></h3>
-                            <p class="text-sm text-gray-400 leading-relaxed"><span class="lang-es">Analizamos la urgencia de integrar soluciones digitales para mantener la competitividad europea frente a EE.UU. y Asia.</span><span class="lang-en">We analyze the urgency of integrating digital solutions to maintain European competitiveness against the US and Asia.</span></p>
-                            <a href="#" class="text-azul-acero-500 dark:text-blue-400 font-bold text-xs bg-transparent hover:bg-black/5 dark:hover:bg-white/10 px-3 py-1.5 rounded-[15px] flex items-center gap-1 hover:gap-2 transition-all w-fit -ml-3">
-                                <span class="lang-es">Leer más</span><span class="lang-en">Read more</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials -->
-        <section class="py-20 px-4">
-            <div class="max-w-7xl mx-auto text-center space-y-4 mb-[30px] reveal-growth">
-                <p class="section-label"><span class="lang-es">HITOS</span><span class="lang-en">MILESTONES</span></p>
-                <h2 class="text-3xl md:text-4xl font-bold heading-text"><span class="lang-es">Establecemos relaciones de confianza</span><span class="lang-en">We establish trusting relationships</span></h2>
-            </div>
-
-            <div class="max-w-7xl mx-auto rounded-3xl relative reveal-growth delay-100 px-2 md:px-0">
-                <div class="testimonial-carousel-wrapper">
-                    <div class="testimonial-track" id="testimonialTrack">
-                        <!-- Testimonial 1 -->
-                        <div class="testimonial-slide deal-cards" style="animation-delay: 0ms;">
-                            <div
-                                class="testimonial-card-style p-8 rounded-[30px] flex flex-col justify-between h-full">
-                                <p class="italic text-sm text-gray-600 dark:text-gray-400 mb-6">
-                                    <span class="lang-es">"Para nosotros, una plataforma de inversión personalizada suponía un recurso clave. Ahora contamos con él sin haber tenido que montarlo desde cero."</span><span class="lang-en">"For us, a custom investment platform was a key resource. Now we have it without having to build it from scratch."</span>
-                                </p>
-                                <div class="mt-auto flex items-center gap-3">
-                                    <img src="user1.svg" alt="Jorge Labarta" class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-bold text-sm">Jorge Labarta</p>
-                                        <p class="text-[10px] text-gray-500 uppercase"><span class="lang-es">Socio-Consejero</span><span class="lang-en">Partner-Advisor</span>, Equalice</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Testimonial 2 -->
-                        <div class="testimonial-slide deal-cards" style="animation-delay: 150ms;">
-                            <div
-                                class="testimonial-card-style p-8 rounded-[30px] flex flex-col justify-between h-full">
-                                <p class="italic text-sm text-gray-600 dark:text-gray-400 mb-6">
-                                    <span class="lang-es">"La infraestructura de Token City nos permite ofrecer rentabilidades que de otra manera no estarían al alcance de nuestros clientes."</span><span class="lang-en">"Token City's infrastructure allows us to offer returns that would otherwise be out of reach for our clients."</span>
-                                </p>
-                                <div class="mt-auto flex items-center gap-3">
-                                    <img src="user2.svg" alt="Matías Silva" class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-bold text-sm">Matías Silva</p>
-                                        <p class="text-[10px] text-gray-500 uppercase"><span class="lang-es">Fundador</span><span class="lang-en">Founder</span>, TokenGO</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Testimonial 3 -->
-                        <div class="testimonial-slide deal-cards" style="animation-delay: 300ms;">
-                            <div
-                                class="testimonial-card-style p-8 rounded-[30px] flex flex-col justify-between h-full">
-                                <p class="italic text-sm text-gray-600 dark:text-gray-400 mb-6">
-                                    <span class="lang-es">"La capacidad, profesionalidad y persistencia de Token City han resultado fundamentales para derribar obstáculos y construir un proyecto prometedor."</span><span class="lang-en">"Token City's capability, professionalism, and persistence have been fundamental in overcoming obstacles and building a promising project."</span>
-                                </p>
-                                <div class="mt-auto flex items-center gap-3">
-                                    <img src="user4.avif" alt="Jonathan Gonzalez" class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-bold text-sm">Jonathan Gonzalez</p>
-                                        <p class="text-[10px] text-gray-500 uppercase">CEO, Dianelum</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Testimonial 4 -->
-                        <div class="testimonial-slide deal-cards" style="animation-delay: 450ms;">
-                            <div
-                                class="testimonial-card-style p-8 rounded-[30px] flex flex-col justify-between h-full">
-                                <p class="italic text-sm text-gray-600 dark:text-gray-400 mb-6">
-                                    <span class="lang-es">"Gracias al SaaS de Token City puedo ofrecer distintos tipos de ofertas financieras, gestionar proyectos y automatizar transacciones."</span><span class="lang-en">"Thanks to Token City's SaaS, I can offer different types of financial products, manage projects, and automate transactions."</span>
-                                </p>
-                                <div class="mt-auto flex items-center gap-3">
-                                    <img src="user5.avif" alt="Piero Polato" class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-bold text-sm">Piero Polato</p>
-                                        <p class="text-[10px] text-gray-500 uppercase"><span class="lang-es">Adm.</span><span class="lang-en">Admin</span>, Marv Projects</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Controls -->
-                <div class="carousel-dots" id="testimonialDots"></div>
-            </div>
-        </section>
-
-        <!-- Ponte en contacto / Neural CTA -->
-        <section class="max-w-7xl mx-auto mb-[120px] px-4">
-            <div class="rounded-[30px] overflow-hidden border shadow-2xl transition-all duration-500 reveal-growth delay-100 relative grid"
-                style="background-color: var(--card-highlight-bg); border-color: var(--glass-border);">
-                <!-- Left: Interactive Animated Background -->
-                <div class="col-start-1 row-start-1 overflow-hidden group bg-[#020617] relative">
-                    <canvas id="neuralCanvasForm"
-                        class="absolute inset-0 w-full h-full opacity-90 pointer-events-none"></canvas>
+            <section
+                class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10 px-4 md:px-6">
+                <!-- Contenido Hero -->
+                <div class="space-y-6 md:space-y-8">
                     <div
-                        class="absolute inset-0 bg-gradient-to-br from-black/40 via-transparent to-black/40 pointer-events-none">
+                        class="reveal-growth delay-100 inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-[#1855BA]/10 border border-[#1855BA]/20 text-[#1855BA] text-[10px] md:text-xs font-bold uppercase tracking-widest backdrop-blur-md animate-pulse">
+                        <div class="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#1855BA] rounded-full"></div>
+                        Market Status: Live
                     </div>
-                    <div class="relative min-h-[680px] md:min-h-[500px] flex flex-col justify-center items-center p-[30px] md:p-[60px] z-10 text-center contact-content transition-all duration-500 items-center" id="contactContentArea">
-                        <div class="w-full max-w-md transition-all duration-700 ease-out opacity-100" id="contactTextWrapper">
-                            <h4
-                                class="text-2xl md:text-3xl font-bold text-white leading-none uppercase tracking-tighter"
-                                id="contactTitle">
-                                <span id="contactTitleMain"><span class="lang-es">Ponte en contacto</span><span class="lang-en">Get in touch</span></span> <br> 
-                                <span class="text-blue-500 dark:text-blue-400" id="contactSubtitle"><span class="lang-es">para saber más</span><span class="lang-en">to learn more</span></span>
-                            </h4>
-                            <p id="contactDesc"
-                                class="text-white text-xs md:text-sm mt-[30px] max-w-sm font-medium leading-relaxed opacity-80 mx-auto">
-                                <span class="lang-es">Nuestro equipo está disponible para resolver todas tus dudas sobre tokenización y mercados digitales.</span><span class="lang-en">Our team is available to answer all your questions about tokenization and digital markets.</span>
-                            </p>
+
+                    <h1 class="reveal-growth delay-200 text-3xl md:text-5xl lg:text-7xl font-bold leading-tight drop-shadow-sm tracking-tight hero-title-text"
+                        style="color: var(--text-main);">
+                        El futuro financiero <br>
+                        <span class="hero-text-glow">tokenizado</span>
+                    </h1>
+
+                    <p class="reveal-growth delay-300 text-base md:text-xl font-light leading-relaxed max-w-lg hero-desc-text"
+                        style="color: var(--text-muted);">
+                        Plataforma institucional para la emisión e inversión en activos digitales. Operativa regulada
+                        por CNMV y tecnología DLT propia.
+                    </p>
+
+                    <div class="reveal-growth delay-400 flex flex-col sm:flex-row gap-4">
+                        <button
+                            class="bg-[#1855BA] text-white px-8 py-4 rounded-[15px] font-bold flex items-center justify-center gap-2 hover:bg-[#144a9e] transition-all shadow-xl shadow-blue-900/20 w-full sm:w-auto">
+                            Empezar a Invertir <i data-lucide="trending-up" class="w-5 h-5"></i>
+                        </button>
+                        <button
+                            class="px-8 py-4 rounded-[15px] font-bold flex items-center justify-center gap-2 border border-current hover:bg-white/10 transition-all w-full sm:w-auto"
+                            style="color: var(--text-main); border-color: var(--glass-border);">
+                            Para Emisores
+                        </button>
+                    </div>
+
+                    <div class="reveal-growth delay-500 grid grid-cols-3 gap-4 pt-6 md:pt-8 border-t"
+                        style="border-color: var(--glass-border);">
+                        <div>
+                            <div class="text-xl md:text-2xl font-bold font-mono counter"
+                                style="color: var(--text-main);" data-target="311">0</div>
+                            <div class="text-[10px] md:text-xs uppercase font-semibold tracking-wider"
+                                style="color: var(--text-muted);">Registro CNMV</div>
                         </div>
-                        <div class="transition-all duration-700 ease-out opacity-100 mt-[60px]" id="contactBtnWrapper">
-                            <button onclick="toggleContactForm()"
-                                class="bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold py-2 px-4 md:py-3 md:px-6 rounded-[15px] transition-all flex items-center gap-2">
-                                <span class="lang-es">Contactar</span><span class="lang-en">Contact us</span> <i data-lucide="message-circle" class="w-5 h-5"></i>
-                            </button>
+                        <div>
+                            <div class="text-xl md:text-2xl font-bold font-mono text-green-500">0.0s</div>
+                            <div class="text-[10px] md:text-xs uppercase font-semibold tracking-wider"
+                                style="color: var(--text-muted);">Latencia</div>
+                        </div>
+                        <div>
+                            <div class="text-xl md:text-2xl font-bold font-mono" style="color: var(--text-main);">24/7
+                            </div>
+                            <div class="text-[10px] md:text-xs uppercase font-semibold tracking-wider"
+                                style="color: var(--text-muted);">Mercado</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right: Form (Slide-in Panel) -->
-                <div id="contactFormPanel" class="absolute top-0 left-0 w-full h-full bg-white dark:bg-[#1a2235] p-[15px] md:p-[30px] text-left transform translate-y-full md:translate-y-0 md:translate-x-full transition-transform duration-500 z-20 overflow-hidden"
-                    style="border-color: var(--glass-border);">
-                    <button onclick="toggleContactForm()" class="absolute top-3 right-3 md:top-[30px] md:right-[30px] p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-azul-acero-500 hover:text-white transition-all z-10">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-                    
-                    <!-- Success UI (Hidden by default) -->
-                    <div id="contactSuccess" class="hidden flex-col items-center justify-center h-full animate-in fade-in zoom-in duration-700">
-                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-green-500/10 flex items-center justify-center text-green-500 mb-4 md:mb-6 shadow-[0_0_60px_rgba(34,197,94,0.25)]">
-                            <svg class="w-16 h-16 md:w-20 md:h-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10" class="svg-draw-circle"></circle>
-                                <path class="svg-draw-check" d="M9 12l2 2 4-4"></path>
-                            </svg>
+                <!-- Formulario Hero -->
+                <div class="glass p-1 rounded-3xl relative reveal-growth delay-300 shadow-2xl">
+                    <div class="rounded-[1.3rem] p-5 md:p-8 overflow-hidden relative"
+                        style="background-color: var(--glass-bg);">
+                        <div class="flex items-center justify-between mb-6 md:mb-8 relative z-10">
+                            <h3 class="font-bold text-lg md:text-xl flex items-center gap-2"
+                                style="color: var(--text-main);">
+                                <span class="bg-[#1855BA]/10 p-2 rounded-lg"><i data-lucide="user-plus"
+                                        class="text-[#1855BA] w-5 h-5"></i></span>
+                                Contacto Directo
+                            </h3>
+                            <div
+                                class="flex items-center gap-2 px-3 py-1 bg-green-500/10 rounded-full border border-green-500/20">
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                <span class="text-xs font-mono text-green-600 font-bold">ONLINE</span>
+                            </div>
                         </div>
-                        <h4 class="text-xl md:text-2xl font-bold uppercase tracking-tight text-center" style="color: var(--text-main);">
-                            <span id="contactNameDisplay" class="text-blue-500 dark:text-blue-400 normal-case"></span>, <span class="lang-es">Gracias.</span><span class="lang-en">Thank you.</span> <br>
-                            <span class="lang-es">¡Mensaje Enviado!</span><span class="lang-en">Message Sent!</span>
-                        </h4>
-                        <p class="text-sm mt-3 opacity-60 font-medium text-center" style="color: var(--text-main);">
-                            <span class="lang-es">Te responderemos lo antes posible.<br>Revisa tu email regularmente.</span><span class="lang-en">We will reply as soon as possible.<br>Check your email regularly.</span></p>
-                        <button onclick="resetContactForm()" class="mt-6 text-blue-500 dark:text-blue-400 font-bold text-sm hover:underline">
-                            <span class="lang-es">Enviar otro mensaje</span><span class="lang-en">Send another message</span></button>
-                    </div>
 
-                    <div class="h-full flex flex-col" id="contactFormContainer">
-                        <h3 class="text-lg md:text-2xl font-bold mb-[15px] md:mb-[30px] uppercase tracking-tighter"
-                            style="color: var(--text-main);"><span class="lang-es">¿Hablamos?</span><span class="lang-en">Shall we talk?</span></h3>
-                        <form id="contactForm" class="space-y-[15px]" onsubmit="handleContactSubmit(event)">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-[15px]">
-                                <div class="space-y-[2.5px]">
-                                    <label class="text-[10px] font-bold uppercase tracking-wider opacity-60"><span class="lang-es">Nombre y apellido</span><span class="lang-en">Full Name</span></label>
-                                    <input type="text" id="contactName" required placeholder="Nombre y apellido"
-                                        class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium error:border-red-500 error:focus:ring-red-500/10"
-                                        style="border-color: var(--input-border); color: var(--text-main);">
-                                    <span class="text-red-500 text-xs hidden error-message">Nombre y apellido es requerido</span>
-                                </div>
-                                <div class="space-y-[2.5px]">
-                                    <label class="text-[10px] font-bold uppercase tracking-wider opacity-60">Email</label>
-                                    <input type="email" id="contactEmail" required placeholder="ejemplo@correo.com"
-                                        class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium error:border-red-500 error:focus:ring-red-500/10"
-                                        style="border-color: var(--input-border); color: var(--text-main);">
-                                    <span class="text-red-500 text-xs hidden error-message">Email válido es requerido</span>
-                                </div>
+                        <form class="space-y-4 md:space-y-5 relative z-10" onsubmit="event.preventDefault()">
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--text-muted);">Nombre Completo</label>
+                                <input type="text" placeholder="Ej. Juan Pérez"
+                                    class="w-full rounded-[15px] px-4 py-3 focus:outline-none focus:border-[#1855BA] transition-all text-sm font-medium"
+                                    style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-main);">
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-[15px]">
-                                <div class="space-y-[2.5px]">
-                                    <label class="text-[10px] font-bold uppercase tracking-wider opacity-60">Teléfono</label>
-                                    <input type="tel" id="contactPhone" placeholder="+34 600 000 000"
-                                        class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
-                                        style="border-color: var(--input-border); color: var(--text-main);">
-                                </div>
-                                <div class="space-y-[2.5px]">
-                                    <label class="text-[10px] font-bold uppercase tracking-wider opacity-60">Empresa</label>
-                                    <input type="text" id="contactCompany" placeholder="Nombre de tu empresa"
-                                        class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
-                                        style="border-color: var(--input-border); color: var(--text-main);">
-                                </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--text-muted);">Email Corporativo</label>
+                                <input type="email" placeholder="nombre@empresa.com"
+                                    class="w-full rounded-[15px] px-4 py-3 focus:outline-none focus:border-[#1855BA] transition-all text-sm font-medium"
+                                    style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-main);">
                             </div>
-                            <div class="space-y-[2.5px]">
-                                <label class="text-[10px] font-bold uppercase tracking-wider opacity-60">Mensaje</label>
-                                <textarea id="contactMessage" rows="3" placeholder="¿Cómo podemos ayudarte?"
-                                    class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
-                                    style="border-color: var(--input-border); color: var(--text-main);"></textarea>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-wider"
+                                    style="color: var(--text-muted);">Mensaje</label>
+                                <textarea rows="3" placeholder="Describe tu interés..."
+                                    class="w-full rounded-[15px] px-4 py-3 focus:outline-none focus:border-[#1855BA] transition-all text-sm resize-none font-medium"
+                                    style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-main);"></textarea>
                             </div>
-                            <div class="flex items-center justify-between gap-[30px]">
-                                <div class="flex items-center gap-[15px]">
-                                    <input type="checkbox" id="privacyCheck" required class="w-4 h-4 rounded border-gray-300 text-blue-500 dark:text-blue-400 focus:ring-blue-400">
-                                    <label for="privacyCheck" class="text-xs text-gray-600 dark:text-gray-400 leading-tight">
-                                        <span class="lang-es">Acepto la <a href="/politica-privacidad.html" class="text-blue-500 dark:text-blue-400 hover:underline">política de privacidad</a> y el tratamiento de mis datos.</span>
-                                        <span class="lang-en">I accept the <a href="/politica-privacidad.html" class="text-blue-500 dark:text-blue-400 hover:underline">privacy policy</a> and the processing of my data.</span>
-                                    </label>
-                                </div>
-                                <button type="submit"
-                                    class="bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold py-[15px] px-[30px] rounded-[15px] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <span class="btn-text"><span class="lang-es">Solicitar</span><span class="lang-en">Submit</span></span>
-                                    <i data-lucide="send" class="w-5 h-5"></i>
-                                </button>
+
+                            <!-- CHECKBOX LEGAL HERO -->
+                            <div class="flex items-start gap-3 mt-4">
+                                <input type="checkbox" id="legalHero" class="mt-1 flex-shrink-0">
+                                <label for="legalHero" class="text-xs font-medium cursor-pointer leading-tight"
+                                    style="color: var(--text-muted);">
+                                    He leído y acepto la <a href="#" class="underline hover:text-[#1855BA]">Política de
+                                        Privacidad</a> y el tratamiento de mis datos personales.
+                                </label>
                             </div>
+
+                            <button
+                                class="w-full py-4 bg-[#1855BA] hover:bg-[#144a9e] text-white font-bold rounded-[15px] transition-all shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 group mt-2">
+                                Enviar Solicitud
+                                <i data-lucide="arrow-right"
+                                    class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                            </button>
                         </form>
                     </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Secciones Restantes (Sin cambios visuales) -->
+        <section class="max-w-7xl mx-auto mb-16 md:mb-32 px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl font-bold mb-8 md:mb-12 flex items-center gap-3 reveal-growth"
+                style="color: var(--text-main);">
+                <span class="w-1 h-6 md:h-8 bg-[#1855BA] rounded-full"></span>
+                Ecosistema de Activos
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+                <!-- Card 1 -->
+                <div
+                    class="glass p-6 rounded-[30px] trading-card group cursor-pointer relative overflow-hidden reveal-growth delay-100">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#1855BA] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-[#1855BA]/10 rounded-[15px] flex items-center justify-center mb-4 text-[#1855BA] group-hover:text-white group-hover:bg-[#1855BA] transition-all">
+                        <i data-lucide="filter" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-2 group-hover:text-[#1855BA] transition-colors"
+                        style="color: var(--text-main);">Filtrados</h4>
+                    <p class="text-sm font-medium" style="color: var(--text-muted);">Selección algorítmica y manual de
+                        activos High-Yield.</p>
+                </div>
+                <!-- Card 2 -->
+                <div
+                    class="glass p-6 rounded-[30px] trading-card group cursor-pointer relative overflow-hidden reveal-growth delay-200">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-purple-500/10 rounded-[15px] flex items-center justify-center mb-4 text-purple-500 group-hover:text-white group-hover:bg-purple-500 transition-all">
+                        <i data-lucide="scale" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-2 group-hover:text-purple-500 transition-colors"
+                        style="color: var(--text-main);">Marco Legal</h4>
+                    <p class="text-sm font-medium" style="color: var(--text-muted);">Reconocimiento jurídico pleno en
+                        entorno europeo.</p>
+                </div>
+                <!-- Card 3 -->
+                <div
+                    class="glass p-6 rounded-[30px] trading-card group cursor-pointer relative overflow-hidden reveal-growth delay-300">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#1855BA] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-[#1855BA]/10 rounded-[15px] flex items-center justify-center mb-4 text-[#1855BA] group-hover:text-white group-hover:bg-[#1855BA] transition-all">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-2 group-hover:text-[#1855BA] transition-colors"
+                        style="color: var(--text-main);">Custodia (ERIR)</h4>
+                    <p class="text-sm font-medium" style="color: var(--text-muted);">Infraestructura regulada para
+                        máxima seguridad.</p>
+                </div>
+                <!-- Card 4 -->
+                <div
+                    class="glass p-6 rounded-[30px] trading-card group cursor-pointer relative overflow-hidden reveal-growth delay-400">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-green-500/10 rounded-[15px] flex items-center justify-center mb-4 text-green-500 group-hover:text-white group-hover:bg-green-500 transition-all">
+                        <i data-lucide="activity" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-2 group-hover:text-green-500 transition-colors"
+                        style="color: var(--text-main);">Liquidez</h4>
+                    <p class="text-sm font-medium" style="color: var(--text-muted);">Trading secundario fluido y
+                        transparente.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Oportunidades con Gráfico Vivo -->
+        <section class="max-w-7xl mx-auto mb-16 md:mb-32 reveal-growth px-4 md:px-6">
+            <div class="glass rounded-3xl p-1 relative overflow-hidden group shadow-2xl">
+                <div class="rounded-[1.3rem] p-6 md:p-12 relative overflow-hidden h-full"
+                    style="background-color: var(--glass-bg);">
+                    <div class="absolute inset-0 pointer-events-none">
+                        <svg id="liveChart" class="w-full h-full" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                                    <stop offset="0%" stop-color="var(--chart-stroke)"
+                                        style="stop-opacity: var(--chart-opacity-top);" />
+                                    <stop offset="100%" stop-color="var(--chart-stroke)"
+                                        style="stop-opacity: var(--chart-opacity-bottom);" />
+                                </linearGradient>
+                            </defs>
+                            <path id="chartFill" d="" fill="url(#chartGradient)" stroke="none"
+                                vector-effect="non-scaling-stroke" />
+                            <path id="chartLine" d="" fill="none" stroke="var(--chart-stroke)" stroke-width="2"
+                                vector-effect="non-scaling-stroke" />
+                        </svg>
+                    </div>
+
+                    <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+                        <div class="md:w-1/2 text-left">
+                            <h2 class="text-3xl md:text-4xl font-bold mb-4 md:mb-6" style="color: var(--text-main);">
+                                Marketplace de Inversión</h2>
+                            <p class="mb-6 md:mb-8 leading-relaxed font-light text-sm md:text-base"
+                                style="color: var(--text-muted);">
+                                Accede a una cartera diversificada de activos del mundo real (RWA) tokenizados.
+                                Inmuebles, energías renovables y capital riesgo, ahora líquidos y accesibles.
+                            </p>
+                            <button
+                                class="bg-[#1855BA] hover:bg-[#144a9e] text-white px-8 py-4 rounded-[15px] font-bold transition-all shadow-lg shadow-blue-900/20 hover:scale-105 w-full md:w-auto">
+                                Explorar Mercado
+                            </button>
+                        </div>
+
+                        <div class="md:w-1/2 w-full">
+                            <div class="border rounded-[15px] p-4 shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
+                                style="background-color: var(--bg-color); border-color: var(--glass-border);">
+                                <div class="flex justify-between items-center mb-4 border-b pb-2"
+                                    style="border-color: var(--glass-border);">
+                                    <span class="font-mono text-sm font-bold"
+                                        style="color: var(--text-muted);">BTC/EUR</span>
+                                    <span class="font-mono text-sm text-green-500">▲ +1.2%</span>
+                                </div>
+                                <!-- Barras con transición lenta (duration-[2000ms]) -->
+                                <div class="h-32 flex items-end gap-1 mb-4" id="tradingBars">
+                                    <div class="w-1/6 bg-[#1855BA]/20 rounded-t transition-all duration-[2000ms] ease-in-out"
+                                        style="height: 30%"></div>
+                                    <div class="w-1/6 bg-[#1855BA]/30 rounded-t transition-all duration-[2000ms] ease-in-out"
+                                        style="height: 50%"></div>
+                                    <div class="w-1/6 bg-[#1855BA]/40 rounded-t transition-all duration-[2000ms] ease-in-out"
+                                        style="height: 70%"></div>
+                                    <div class="w-1/6 bg-red-500/20 rounded-t transition-all duration-[2000ms] ease-in-out"
+                                        style="height: 40%"></div>
+                                    <div class="w-1/6 bg-[#1855BA]/60 rounded-t transition-all duration-[2000ms] ease-in-out"
+                                        style="height: 80%"></div>
+                                    <div class="w-1/6 bg-[#1855BA]/80 rounded-t transition-all duration-[2000ms] ease-in-out"
+                                        style="height: 60%"></div>
+                                </div>
+                                <!-- Etiquetas de tiempo con ID para JS -->
+                                <div class="flex justify-between text-xs font-mono" style="color: var(--text-muted);"
+                                    id="timeLabels">
+                                    <span>09:00</span>
+                                    <span>10:00</span>
+                                    <span>11:00</span>
+                                    <span>12:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="max-w-7xl mx-auto mb-16 md:mb-32 reveal-growth px-4 md:px-6">
+            <div
+                class="grid md:grid-cols-2 gap-8 md:gap-12 items-center glass p-6 md:p-12 rounded-[2rem] md:rounded-[3rem]">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 md:mb-8 leading-tight"
+                        style="color: var(--text-main);">
+                        Infraestructura de <br>Clase Institucional
+                    </h2>
+                    <ul class="space-y-4 md:space-y-6">
+                        <li class="flex items-start gap-4">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-[#1855BA]/20 flex items-center justify-center shrink-0 mt-1">
+                                <i data-lucide="check" class="w-5 h-5 text-[#1855BA]"></i>
+                            </div>
+                            <div>
+                                <strong class="block mb-1" style="color: var(--text-main);">Agencia de Valores
+                                    Regulada</strong>
+                                <span class="text-sm font-light" style="color: var(--text-muted);">Inscrita en CNMV y
+                                    cumpliendo normativas europeas.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center shrink-0 mt-1">
+                                <i data-lucide="cpu" class="w-5 h-5 text-purple-500"></i>
+                            </div>
+                            <div>
+                                <strong class="block mb-1" style="color: var(--text-main);">DLT Pilot Regime</strong>
+                                <span class="text-sm font-light" style="color: var(--text-muted);">Pioneros en
+                                    infraestructura blockchain autorizada.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center shrink-0 mt-1">
+                                <i data-lucide="zap" class="w-5 h-5 text-green-500"></i>
+                            </div>
+                            <div>
+                                <strong class="block mb-1" style="color: var(--text-main);">Liquidación Instantánea
+                                    (T+0)</strong>
+                                <span class="text-sm font-light" style="color: var(--text-muted);">Menos fricción, más
+                                    velocidad operativa.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="relative mt-8 md:mt-0">
+                    <div
+                        class="w-full aspect-square bg-gradient-to-br from-[#1855BA]/20 to-purple-600/20 rounded-full blur-3xl absolute top-0 left-0">
+                    </div>
+                    <div class="relative z-10 grid grid-cols-2 gap-4">
+                        <div class="glass p-4 md:p-8 rounded-3xl text-center flex flex-col justify-center items-center aspect-square"
+                            style="border-color: rgba(24, 85, 186, 0.3);">
+                            <div class="flex flex-row items-baseline gap-1">
+                                <span class="text-2xl md:text-4xl font-mono font-bold text-[#1855BA] counter"
+                                    data-target="100">0</span>
+                                <span class="text-2xl md:text-4xl font-bold text-[#1855BA]">%</span>
+                            </div>
+                            <p class="text-[10px] md:text-xs uppercase mt-2 font-mono tracking-widest"
+                                style="color: var(--text-muted);">Seguridad</p>
+                        </div>
+                        <div class="glass p-4 md:p-8 rounded-3xl text-center flex flex-col justify-center items-center aspect-square"
+                            style="border-color: rgba(168, 85, 247, 0.3);">
+                            <div class="flex flex-row items-baseline gap-1">
+                                <span class="text-2xl md:text-4xl font-mono font-bold text-purple-500 counter"
+                                    data-target="0.5">0</span>
+                                <span class="text-2xl md:text-4xl font-bold text-purple-500">%</span>
+                            </div>
+                            <p class="text-[10px] md:text-xs uppercase mt-2 font-mono tracking-widest"
+                                style="color: var(--text-muted);">Tarifa Base</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Medios (Carousel Arreglado con animate-marquee) -->
+        <section class="max-w-7xl mx-auto mb-16 md:mb-32 reveal-growth px-4 md:px-6">
+            <h2 class="text-center text-sm font-bold uppercase tracking-widest mb-8" style="color: var(--text-muted);">
+                Reconocimiento de los Medios</h2>
+            <div class="overflow-hidden relative w-full">
+                <!-- Duplicate logos for seamless carousel -->
+                <div
+                    class="flex gap-12 md:gap-20 animate-marquee whitespace-nowrap items-center justify-center w-max mx-auto">
+                    <!-- Original Set -->
+                    <div class="typo-logo">EXPANSIÓN</div>
+                    <div class="typo-logo">CincoDías</div>
+                    <img src="https://s1.eestatic.com/assets_css/img/elespanol-logo-lion.svg" alt="El Español"
+                        class="h-6 md:h-8 media-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Bloomberg_logo.svg/960px-Bloomberg_logo.svg.png"
+                        alt="Bloomberg" class="h-5 md:h-6 media-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/TechCrunch_logo.svg" alt="TechCrunch"
+                        class="h-5 md:h-6 media-logo">
+                    <img src="https://forbes.es/wp-content/themes/tapasmagazine23/images/forbes-logo-negro.png"
+                        alt="Forbes" class="h-5 md:h-6 media-logo">
+
+                    <!-- Duplicated Set -->
+                    <div class="typo-logo">EXPANSIÓN</div>
+                    <div class="typo-logo">CincoDías</div>
+                    <img src="https://s1.eestatic.com/assets_css/img/elespanol-logo-lion.svg" alt="El Español"
+                        class="h-6 md:h-8 media-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Bloomberg_logo.svg/960px-Bloomberg_logo.svg.png"
+                        alt="Bloomberg" class="h-5 md:h-6 media-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/TechCrunch_logo.svg" alt="TechCrunch"
+                        class="h-5 md:h-6 media-logo">
+                    <img src="https://forbes.es/wp-content/themes/tapasmagazine23/images/forbes-logo-negro.png"
+                        alt="Forbes" class="h-5 md:h-6 media-logo">
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer Enhanced Always Dark -->
-    <footer class="border-t py-16 px-6 dark-footer" style="background-color: #111827;">
-        <div class="max-w-7xl mx-auto">
-            <!-- Main Footer Content -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-[30px] mb-[30px]">
-                <!-- Company Info -->
-                <div class="lg:col-span-1 space-y-4">
-                    <div class="flex items-center gap-2 select-none">
-                        <div class="flex items-baseline tracking-tighter leading-none">
-                            <span class="text-xl font-black tracking-tight uppercase text-white">TOKEN CITY</span>
-                        </div>
-                    </div>
-                    <p class="text-sm leading-relaxed text-gray-300 max-w-md">
-                        <span class="lang-es">Infraestructura tecnológica blockchain para la digitalización y gestión de activos digitales. Tokenización de activos reales (RWA) con cumplimiento normativo.</span>
-                        <span class="lang-en">Blockchain technology infrastructure for the digitization and management of digital assets. Real World Asset (RWA) tokenization with regulatory compliance.</span>
-                    </p>
-                    <div class="space-y-3 text-sm">
-                        <p class="flex items-center gap-3 text-gray-300">
-                            <i data-lucide="map-pin" class="w-4 h-4 text-azul-acero-500 dark:text-blue-500 dark:text-blue-400"></i>
-                            <span class="lang-es">Calle de Henri Dunant, 17, 28036 Madrid, España</span><span class="lang-en">17 Henri Dunant Street, 28036 Madrid, Spain</span>
-                        </p>
-                        <p class="flex items-center gap-3 text-gray-300">
-                            <i data-lucide="phone" class="w-4 h-4 text-azul-acero-500 dark:text-blue-500 dark:text-blue-400"></i>
-                            +34 919 890 429
-                        </p>
-                        <p class="flex items-center gap-3 text-gray-300">
-                            <i data-lucide="mail" class="w-4 h-4 text-azul-acero-500 dark:text-blue-500 dark:text-blue-400"></i>
-                            info@token-city.com
-                        </p>
-                        <p class="flex items-center gap-3 text-gray-300">
-                            <i data-lucide="briefcase" class="w-4 h-4 text-azul-acero-500 dark:text-blue-500 dark:text-blue-400"></i>
-                            sales@token-city.com
-                        </p>
-                    </div>
-                    <div class="flex gap-4 pt-2">
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-azul-acero-500 transition-colors">
-                            <i data-lucide="linkedin" class="w-5 h-5 text-white"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-azul-acero-500 transition-colors">
-                            <i data-lucide="twitter" class="w-5 h-5 text-white"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-azul-acero-500 transition-colors">
-                            <i data-lucide="instagram" class="w-5 h-5 text-white"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-azul-acero-500 transition-colors">
-                            <i data-lucide="youtube" class="w-5 h-5 text-white"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Markets -->
-                <div>
-                    <h4 class="font-bold mb-5 text-white uppercase text-xs tracking-widest"><span class="lang-es">Mercados</span><span class="lang-en">Markets</span></h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><a href="https://exchange.token-city.com" class="text-gray-300 hover:text-blue-400 transition-colors">Token City Exchange</a></li>
-                        <li><a href="https://www.aliuscap.com/" class="text-gray-300 hover:text-blue-400 transition-colors">Alius Capital</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors">Marketplace</a></li>
-                    </ul>
-                </div>
-
-                <!-- Products -->
-                <div>
-                    <h4 class="font-bold mb-5 text-white uppercase text-xs tracking-widest"><span class="lang-es">Productos</span><span class="lang-en">Products</span></h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Plataforma Marca Blanca</span><span class="lang-en">White Label Platform</span></a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">API Blockchain</span><span class="lang-en">Blockchain API</span></a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Infraestructura ERIR</span><span class="lang-en">ERIR Infrastructure</span></a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Casos de éxito</span><span class="lang-en">Success stories</span></a></li>
-                    </ul>
-                </div>
-
-                <!-- Empresa -->
-                <div>
-                    <h4 class="font-bold mb-5 text-white uppercase text-xs tracking-widest"><span class="lang-es">Empresa</span><span class="lang-en">Company</span></h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Sobre Nosotros</span><span class="lang-en">About Us</span></a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Equipo</span><span class="lang-en">Team</span></a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Prensa</span><span class="lang-en">Press</span></a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Aviso Legal</span><span class="lang-en">Legal Notice</span></a></li>
-                        <li><a href="policy-template.html" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Privacidad</span><span class="lang-en">Privacy policy</span></a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Cookies</span><span class="lang-en">Cookies policy</span></a></li>
-                    </ul>
-                </div>
-
-                <!-- Newsletter -->
-                <div>
-                    <h4 class="font-bold mb-5 text-white uppercase text-xs tracking-widest">Newsletter</h4>
-                    <p class="text-sm text-gray-300 mb-4"><span class="lang-es">Recibe las últimas oportunidades de inversión y noticias.</span><span class="lang-en">Receive the latest investment opportunities and news.</span></p>
-                    <form id="newsletterForm" class="space-y-3" onsubmit="handleNewsletterSubmit(event)">
-                        <input type="email" id="newsletterEmail" required placeholder="Tu email / Your email" 
-                            class="w-full bg-white/10 border border-white/20 rounded-[15px] px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all">
-                        <div class="flex items-start gap-2">
-                            <input type="checkbox" id="privacyConsent" required class="mt-1 w-4 h-4 rounded border-gray-600 bg-white/10 text-blue-500 dark:text-blue-400 focus:ring-blue-400">
-                            <label for="privacyConsent" class="text-xs text-gray-400 leading-tight">
-                                <span class="lang-es">Acepto la <a href="policy-template.html" class="text-blue-500 dark:text-blue-400 hover:underline">Política de Privacidad</a> y recibir comunicaciones</span>
-                                <span class="lang-en">I accept the <a href="policy-template.html" class="text-blue-500 dark:text-blue-400 hover:underline">Privacy Policy</a> and receiving communications</span>
-                            </label>
-                        </div>
-                        <button type="submit" class="w-full bg-azul-acero-500 hover:bg-azul-acero-600 text-white py-2.5 rounded-[15px] text-sm font-bold transition-colors flex items-center justify-center">
-                            <span class="btn-text"><span class="lang-es">Suscribirse</span><span class="lang-en">Subscribe</span></span>
-                            <i data-lucide="loader-2" class="w-4 h-4 animate-spin hidden btn-loader"></i>
-                        </button>
-                    </form>
+    <footer class="border-t py-8 md:py-12 px-6"
+        style="border-color: var(--glass-border); background-color: var(--bg-color);">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
+            <div class="flex items-center gap-2 select-none" style="color: var(--text-main);">
+                <div class="flex items-baseline tracking-tighter leading-none">
+                    <span class="text-lg font-bold tracking-tight">TOKEN CITY</span>
+                    <span class="text-lg font-thin ml-2">EXCHANGE</span>
                 </div>
             </div>
-
-            <!-- Bottom Bar -->
-            <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex items-center gap-6 text-xs text-gray-400">
-                    <p><span class="lang-es">© 2026 Token City S.L. Todos los derechos reservados.</span><span class="lang-en">© 2026 Token City S.L. All rights reserved.</span></p>
-                    <p><span class="lang-es">Inscrita en CNMV Nº 311</span><span class="lang-en">Registered with CNMV No. 311</span></p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <span class="text-xs font-bold text-gray-500">CNMV</span>
-                    <span class="text-xs font-bold text-gray-500">FOGAIN</span>
-                    <span class="text-xs font-bold text-gray-500">B-01729144</span>
-                </div>
+            <div class="text-xs md:text-sm font-medium text-center md:text-left" style="color: var(--text-muted);">
+                © 2024 Token City European Exchange AV. Inscrita en CNMV Nº 311.
             </div>
-        </div>
-
-        <!-- Footer Images -->
-        <div class="mt-12 pt-8 border-t border-gray-800">
-            <div class="flex flex-wrap justify-center items-center gap-[30px] md:gap-[30px]">
-                <img src="1.png" alt="Partner 1" class="h-12 md:h-16 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
-                <img src="2.png" alt="Partner 2" class="h-12 md:h-16 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
-                <img src="3.png" alt="Partner 3" class="h-12 md:h-16 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
-                <img src="4.png" alt="Partner 4" class="h-12 md:h-16 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
-                <img src="madrid.png" alt="Madrid" class="h-12 md:h-16 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
-                <img src="MINISTERIO.png" alt="Ministerio" class="h-12 md:h-16 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+            <div class="flex flex-col gap-6 md:flex-row items-center">
+                <div class="flex gap-6" style="color: var(--text-muted);">
+                    <a href="#" class="hover:text-[#1855BA] transition-colors"><i data-lucide="linkedin"></i></a>
+                    <a href="#" class="hover:text-[#1855BA] transition-colors"><i data-lucide="twitter"></i></a>
+                </div>
+                <div class="lang-toggle" onclick="toggleLanguage()">
+                    <span class="lang-label lang-label-es">ES</span>
+                    <div class="lang-switch-track">
+                        <div class="lang-switch-thumb"></div>
+                    </div>
+                    <span class="lang-label lang-label-en">EN</span>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Floating Controls Bar (Figma Style) -->
-    <div class="controls-bar">
-        <!-- Theme Toggle -->
-        <div class="theme-toggle" onclick="toggleTheme()">
-            <div class="w-3"></div>
-            <i data-lucide="sun" class="toggle-track-icon"></i>
-            <div class="theme-toggle-thumb" id="themeThumbFloating">
-                <i data-lucide="moon" class="thumb-icon" id="thumbIconFloating"></i>
-            </div>
-        </div>
+    <!-- MODAL AGENDAR LLAMADA -->
+    <div id="agendaModal"
+        class="fixed inset-0 z-[100] hidden items-center justify-center modal-overlay opacity-0 transition-opacity duration-300 p-4">
+        <div
+            class="modal-content p-6 md:p-8 rounded-[30px] w-full max-w-lg transform scale-95 transition-transform duration-300 relative mx-auto">
+            <!-- ... existing modal content ... -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 modal-close-btn">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
 
-        <!-- Language Toggle -->
-        <div class="lang-toggle" onclick="toggleLanguage()">
-            <span class="lang-label lang-label-es" id="esLabelFloating">ES</span>
-            <div class="lang-switch-track">
-                <div class="lang-switch-thumb"></div>
-            </div>
-            <span class="lang-label lang-label-en" id="enLabelFloating">EN</span>
+            <h3 class="text-xl md:text-2xl font-bold mb-6" style="color: var(--text-main);">Agendar una Llamada</h3>
+
+            <form onsubmit="event.preventDefault(); closeModal();" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold uppercase tracking-wider"
+                            style="color: var(--text-muted);">Nombre y Apellidos</label>
+                        <input type="text" required placeholder="Tu nombre"
+                            class="w-full rounded-[15px] px-4 py-3 focus:outline-none focus:border-[#1855BA] text-sm font-medium"
+                            style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-main);">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold uppercase tracking-wider"
+                            style="color: var(--text-muted);">Teléfono</label>
+                        <input type="tel" placeholder="+34 000 000 000"
+                            class="w-full rounded-[15px] px-4 py-3 focus:outline-none focus:border-[#1855BA] text-sm font-medium"
+                            style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-main);">
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-muted);">Email
+                        Corporativo</label>
+                    <input type="email" required placeholder="nombre@empresa.com"
+                        class="w-full rounded-[15px] px-4 py-3 focus:outline-none focus:border-[#1855BA] text-sm font-medium"
+                        style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-main);">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold uppercase tracking-wider"
+                        style="color: var(--text-muted);">Empresa</label>
+                    <input type="text" placeholder="Nombre de la empresa"
+                        class="w-full rounded-[15px] px-4 py-3 focus:outline-none focus:border-[#1855BA] text-sm font-medium"
+                        style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-main);">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-muted);">Fecha y
+                        Hora Preferente</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="date" required
+                            class="w-full rounded-[15px] px-4 py-3 focus:outline-none focus:border-[#1855BA] text-sm font-medium"
+                            style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-main);">
+                        <input type="time" required
+                            class="w-full rounded-[15px] px-4 py-3 focus:outline-none focus:border-[#1855BA] text-sm font-medium"
+                            style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-main);">
+                    </div>
+                </div>
+
+                <!-- CHECKBOX LEGAL MODAL -->
+                <div class="flex items-start gap-3 mt-4">
+                    <input type="checkbox" id="legalModal" class="mt-1 flex-shrink-0" required>
+                    <label for="legalModal" class="text-xs font-medium cursor-pointer leading-tight"
+                        style="color: var(--text-muted);">
+                        He leído y acepto la <a href="#" class="underline hover:text-[#1855BA]">Política de
+                            Privacidad</a> y el tratamiento de mis datos personales.
+                    </label>
+                </div>
+
+                <button
+                    class="w-full py-4 bg-[#1855BA] hover:bg-[#144a9e] text-white font-bold rounded-[15px] transition-all shadow-lg flex items-center justify-center gap-2 mt-4">
+                    Confirmar Agenda
+                    <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                </button>
+            </form>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Lucide icons
+        // Inicializar iconos y tema
+
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const activeIconName = isLight ? 'sun' : 'moon';
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
+                </div>
+            `;
+
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.innerHTML = trackHTML;
+            });
             if (window.lucide) window.lucide.createIcons();
+        }
 
-            // 6. NEURAL NETWORK ANIMATION ENGINE (POLISHED & MAGNETIC)
-            function setupNeuralNetwork(canvasId, options = {}) {
-                const canvas = document.getElementById(canvasId);
-                if (!canvas) return;
-                const ctx = canvas.getContext('2d');
-                let particles = [];
-                const particleCount = options.count || 80;
-                const maxDistance = options.distance || 200;
-                let mouse = { x: -1000, y: -1000 };
+        updateToggleVisuals();
 
-                const isDarkTheme = () => document.documentElement.classList.contains('dark') || !document.body.classList.contains('light-mode');
+        // --- LANGUAGE LOGIC ---
+        window.toggleLanguage = function () {
+            const body = document.body;
+            const isEn = body.classList.toggle('lang-en');
+            localStorage.setItem('tcav-lang', isEn ? 'en' : 'es');
+        };
 
-                function resize() {
-                    canvas.width = canvas.offsetWidth || window.innerWidth;
-                    canvas.height = canvas.offsetHeight || window.innerHeight;
-                }
+        if (localStorage.getItem('tcav-lang') === 'en') {
+            document.body.classList.add('lang-en');
+        }
 
-                class Particle {
-                    constructor() {
-                        this.x = Math.random() * canvas.width;
-                        this.y = Math.random() * canvas.height;
-                        this.vx = (Math.random() - 0.5) * 0.4;
-                        this.vy = (Math.random() - 0.5) * 0.4;
-                        this.radius = Math.random() * 1.5 + 1;
-                    }
-                    update() {
-                        if (options.interactive) {
-                            const dx = mouse.x - this.x;
-                            const dy = mouse.y - this.y;
-                            const dist = Math.sqrt(dx * dx + dy * dy);
-                            if (dist < 200) {
-                                this.x += dx * 0.02;
-                                this.y += dy * 0.02;
-                            }
-                        }
-                        this.x += this.vx;
-                        this.y += this.vy;
-                        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-                    }
-                    draw() {
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                        let opacity = options.particleOpacity || 0.4;
-                        const useDark = options.forceDark || isDarkTheme();
-                        ctx.fillStyle = useDark ? `rgba(255, 255, 255, ${opacity})` : `rgba(24, 85, 186, ${opacity})`;
-                        ctx.fill();
-                    }
-                }
-
-                function createParticles() {
-                    particles = [];
-                    for (let i = 0; i < particleCount; i++) {
-                        particles.push(new Particle());
-                    }
-                }
-
-                function animate() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    const useDark = options.forceDark || isDarkTheme();
-                    let lineColor = useDark ? '255, 255, 255' : '24, 85, 186';
-                    particles.forEach((p, i) => {
-                        p.update();
-                        p.draw();
-                        if (options.interactive) {
-                            const mdx = p.x - mouse.x;
-                            const mdy = p.y - mouse.y;
-                            const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-                            if (mdist < 200) {
-                                ctx.beginPath();
-                                ctx.lineWidth = (1 - mdist / 200) * 2.5;
-                                ctx.strokeStyle = `rgba(${lineColor}, ${0.7 * (1 - mdist / 200)})`;
-                                ctx.moveTo(p.x, p.y);
-                                ctx.lineTo(mouse.x, mouse.y);
-                                ctx.stroke();
-                            }
-                        }
-                        for (let j = i + 1; j < particles.length; j++) {
-                            const p2 = particles[j];
-                            const dx = p.x - p2.x;
-                            const dy = p.y - p2.y;
-                            const dist = Math.sqrt(dx * dx + dy * dy);
-                            if (dist < maxDistance) {
-                                ctx.beginPath();
-                                ctx.lineWidth = (1 - dist / maxDistance) * (options.lineWidth || 1.0);
-                                ctx.strokeStyle = `rgba(${lineColor}, ${(options.lineOpacity || 0.3) * (1 - dist / maxDistance)})`;
-                                ctx.moveTo(p.x, p.y);
-                                ctx.lineTo(p2.x, p2.y);
-                                ctx.stroke();
-                            }
-                        }
-                    });
-                    requestAnimationFrame(animate);
-                }
-
-                if (options.interactive) {
-                    const listenerTarget = options.isGlobal ? window : canvas.parentElement;
-                    listenerTarget.addEventListener('mousemove', (e) => {
-                        const rect = canvas.getBoundingClientRect();
-                        mouse.x = e.clientX - rect.left;
-                        mouse.y = e.clientY - rect.top;
-                    });
-                    listenerTarget.addEventListener('mouseleave', () => {
-                        mouse.x = -1000;
-                        mouse.y = -1000;
-                    });
-                }
-                window.addEventListener('resize', resize);
-                resize();
-                createParticles();
-                animate();
-            }
-
-            // Init Neural CTA
-            setupNeuralNetwork('neuralCanvasForm', {
-                count: 80,
-                distance: 120,
-                interactive: true,
-                particleOpacity: 0.3,
-                lineOpacity: 0.2,
-                forceDark: true
-            });
-
-            // Theme Logic
-            window.toggleTheme = function () {
-                const body = document.body;
-                const html = document.documentElement;
-                const isLight = body.classList.toggle('light-mode');
-                
-                if (isLight) {
-                    html.classList.remove('dark');
-                    localStorage.setItem('themePreference', 'light');
-                } else {
-                    html.classList.add('dark');
-                    localStorage.setItem('themePreference', 'dark');
-                }
-                
-                updateToggleVisuals();
-            };
-
-            function updateToggleVisuals() {
-                const isLight = document.body.classList.contains('light-mode');
-                const isEn = document.body.classList.contains('lang-en');
-                const activeIconName = isLight ? 'sun' : 'moon';
-
-                // Update Theme Toggles
-                const trackHTML = `
-                    <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
-                        <i data-lucide="moon" class="toggle-track-icon"></i>
-                    </div>
-                    <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
-                        <i data-lucide="sun" class="toggle-track-icon"></i>
-                    </div>
-                    <div class="theme-toggle-thumb">
-                        <i data-lucide="${activeIconName}" class="thumb-icon"></i>
-                    </div>
-                `;
-
-                document.querySelectorAll('.theme-toggle').forEach(toggle => {
-                    toggle.innerHTML = trackHTML;
-                });
-
-                // Update Language Labels
-                document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
-                document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
-
-                if (window.lucide) window.lucide.createIcons();
-            }
-
-            // Mobile Menu Logic
-            window.toggleMobileMenu = function () {
-                const drawer = document.getElementById('mobileDrawer');
-                const isOpen = drawer.classList.toggle('open');
-                const overlay = document.getElementById('navOverlay');
-                const controlsBar = document.querySelector('.controls-bar');
-                overlay.style.visibility = isOpen ? 'visible' : (document.querySelector('.nav-item:hover') ? 'visible' : 'hidden');
-                overlay.style.opacity = isOpen ? '1' : (document.querySelector('.nav-item:hover') ? '1' : '0');
-                controlsBar.style.display = isOpen ? 'none' : 'flex';
-            };
-
-            window.toggleSubmenu = function (id) {
-                document.getElementById(id).classList.toggle('open');
-            };
-
-            window.toggleLanguage = function () {
-                document.body.classList.toggle('lang-en');
-            };
-
-window.toggleContactForm = function () {
-                const panel = document.getElementById('contactFormPanel');
-                const container = document.querySelector('.contact-content');
-                const contentArea = document.getElementById('contactContentArea');
-                const textWrapper = document.getElementById('contactTextWrapper');
-                const btnWrapper = document.getElementById('contactBtnWrapper');
-                const contactDesc = document.getElementById('contactDesc');
-                const contactSubtitle = document.getElementById('contactSubtitle');
-                const contactTitleMain = document.getElementById('contactTitleMain');
-                
-                const isMobile = window.innerWidth < 768;
-                
-                // Check state - if ANY translation is active
-                const isClosed = panel.classList.contains('translate-y-full') || 
-                                 panel.classList.contains('md:translate-x-full');
-                
-                if (isClosed) {
-                    // Open: remove BOTH translation classes (mobile/desk)
-                    panel.classList.remove('translate-y-full', 'md:translate-x-full');
-                    
-                    // Form is shown - fade out button, then animate text
-                    btnWrapper.style.transition = 'all 500ms ease-out';
-                    btnWrapper.style.opacity = '0';
-                    btnWrapper.style.transform = 'translateX(-20px) translateY(10px)';
-                    
-                    // Set initial positions for text elements
-                    contactSubtitle.style.transition = 'none';
-                    contactDesc.style.transition = 'none';
-                    contactTitleMain.style.transition = 'none';
-                    
-                    contactSubtitle.style.opacity = '0';
-                    contactSubtitle.style.transform = 'translateX(40px)';
-                    contactDesc.style.opacity = '0';
-                    contactDesc.style.transform = 'translateX(40px)';
-                    contactTitleMain.style.opacity = '0';
-                    contactTitleMain.style.transform = 'translateX(40px)';
-                    
-                    void contactSubtitle.offsetWidth;
-                    
-                    // "para saber más"
-                    setTimeout(() => {
-                        contactSubtitle.style.transition = 'all 500ms cubic-bezier(0.34, 1.56, 0.64, 1)';
-                        contactSubtitle.style.opacity = '1';
-                        contactSubtitle.style.transform = 'translateX(0)';
-                    }, 200);
-                    
-                    // "Nuestro equipo..."
-                    setTimeout(() => {
-                        contactDesc.style.transition = 'all 500ms cubic-bezier(0.34, 1.56, 0.64, 1)';
-                        contactDesc.style.opacity = '0.8';
-                        contactDesc.style.transform = 'translateX(0)';
-                    }, 400);
-                    
-                    // "Ponte en contacto"
-                    setTimeout(() => {
-                        contactTitleMain.style.transition = 'all 500ms cubic-bezier(0.34, 1.56, 0.64, 1)';
-                        contactTitleMain.style.opacity = '1';
-                        contactTitleMain.style.transform = 'translateX(0)';
-                    }, 600);
-                    
-                    setTimeout(() => {
-                        btnWrapper.classList.add('hidden');
-                    }, 600);
-                    
-                } else {
-                    // Close panel: Restore both classes
-                    panel.classList.add('translate-y-full', 'md:translate-x-full');
-                    
-                    // Reset all styles
-                    textWrapper.style.transition = 'none';
-                    btnWrapper.style.transition = 'none';
-                    contactSubtitle.style.transition = 'none';
-                    contactDesc.style.transition = 'none';
-                    contactTitleMain.style.transition = 'none';
-                    
-                    textWrapper.style.opacity = '1';
-                    textWrapper.style.transform = 'translateX(0)';
-                    btnWrapper.style.opacity = '1';
-                    btnWrapper.style.transform = 'translateX(0) translateY(0)';
-                    contactSubtitle.style.opacity = '1';
-                    contactSubtitle.style.transform = 'translateX(0)';
-                    contactDesc.style.opacity = '0.8';
-                    contactDesc.style.transform = 'translateX(0)';
-                    contactTitleMain.style.opacity = '1';
-                    contactTitleMain.style.transform = 'translateX(0)';
-                    
-                    void textWrapper.offsetWidth;
-                    
-                    btnWrapper.classList.remove('hidden');
-                    btnWrapper.classList.add('flex', 'justify-center');
-                    
-                    btnWrapper.style.transition = 'all 600ms ease-out';
-                    btnWrapper.style.opacity = '1';
-                    btnWrapper.style.transform = 'translateX(0) translateY(0)';
-                }
-                if (window.lucide) window.lucide.createIcons();
-            };
-
-            window.handleContactSubmit = function (e) {
-                e.preventDefault();
-                const form = document.getElementById('contactForm');
-                const btn = form.querySelector('button[type="submit"]');
-                const btnText = btn.querySelector('.btn-text');
-                
-                // Clear previous errors
-                form.querySelectorAll('.error-message').forEach(el => el.classList.add('hidden'));
-                form.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
-                
-                // Validate required fields
-                let isValid = true;
-                const nameInput = document.getElementById('contactName');
-                const emailInput = document.getElementById('contactEmail');
-                
-                if (!nameInput.value.trim()) {
-                    showFieldError(nameInput, 'Nombre y apellido es requerido');
-                    isValid = false;
-                }
-                
-                if (!emailInput.value.trim() || !isValidEmail(emailInput.value)) {
-                    showFieldError(emailInput, 'Email válido es requerido');
-                    isValid = false;
-                }
-                
-                if (!isValid) {
-                    window.showToast('Por favor, completa los campos requeridos', 'error');
-                    return;
-                }
-                
-                // Loading state
-                btn.disabled = true;
-                btnText.textContent = "Enviando...";
-                
-                // Simulate form submission
-                setTimeout(() => {
-                    // Show success
-                    const formContainer = document.getElementById('contactFormContainer');
-                    const successDiv = document.getElementById('contactSuccess');
-                    const nameDisplay = document.getElementById('contactNameDisplay');
-                    
-                    if (nameDisplay) {
-                        nameDisplay.textContent = nameInput.value;
-                    }
-                    
-                    formContainer.classList.add('hidden');
-                    successDiv.classList.remove('hidden');
-                    successDiv.classList.add('flex');
-                    
-                    // Reset button
-                    btn.disabled = false;
-                    btnText.textContent = "Solicitar";
-                    
-                    // Show toast
-                    window.showToast('¡Mensaje enviado con éxito!', 'success');
-                    
-                    if (window.lucide) window.lucide.createIcons();
-                }, 1500);
-            };
-
-            window.resetContactForm = function () {
-                const form = document.getElementById('contactForm');
-                const formContainer = document.getElementById('contactFormContainer');
-                const successDiv = document.getElementById('contactSuccess');
-                
-                form.reset();
-                form.querySelectorAll('.error-message').forEach(el => el.classList.add('hidden'));
-                form.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
-                
-                successDiv.classList.add('hidden');
-                successDiv.classList.remove('flex');
-                formContainer.classList.remove('hidden');
-            };
-
-            function showFieldError(input, message) {
-                input.classList.add('error');
-                const errorSpan = input.parentElement.querySelector('.error-message');
-                if (errorSpan) {
-                    errorSpan.textContent = message;
-                    errorSpan.classList.remove('hidden');
-                }
-            }
-
-            function isValidEmail(email) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            }
-
-            // Helper to create and show a toast
-            window.showToast = function (message, type = 'success') {
-                let container = document.getElementById('toastContainer');
-                if (!container) {
-                    container = document.createElement('div');
-                    container.id = 'toastContainer';
-                    container.className = 'fixed top-4 right-4 z-50 flex flex-col gap-2';
-                    document.body.appendChild(container);
-                }
-
-                const toast = document.createElement('div');
-                toast.className = 'toast p-4 rounded-[15px] shadow-2xl backdrop-blur-md border border-white/10 flex items-center gap-3 transform translate-x-full transition-transform duration-300';
-
-                if (type === 'success') {
-                    toast.style.backgroundColor = 'rgba(22, 163, 74, 0.95)';
-                    toast.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 text-white"></i><span class="text-sm font-bold text-white">${message}</span>`;
-                } else {
-                    toast.style.backgroundColor = 'rgba(220, 38, 38, 0.95)';
-                    toast.innerHTML = `<i data-lucide="alert-octagon" class="w-5 h-5 text-white"></i><span class="text-sm font-bold text-white">${message}</span>`;
-                }
-
-                container.appendChild(toast);
-
-                if (window.lucide) window.lucide.createIcons();
-
-                requestAnimationFrame(() => {
-                    toast.classList.remove('translate-x-full');
-                });
-
-                setTimeout(() => {
-                    toast.classList.add('translate-x-full');
-                    setTimeout(() => {
-                        toast.remove();
-                    }, 300);
-                }, 4000);
-            };
-
-            window.handleNewsletterSubmit = function (e) {
-                e.preventDefault();
-                const btn = e.target.querySelector('button');
-                const btnText = btn.querySelector('.btn-text');
-                const btnLoader = btn.querySelector('.btn-loader');
-                const originalText = btnText.textContent;
-
-                btnText.textContent = "";
-                btnLoader.classList.remove('hidden');
-                btn.disabled = true;
-
-                setTimeout(() => {
-                    btnText.textContent = originalText;
-                    btnLoader.classList.add('hidden');
-                    btn.disabled = false;
-                    e.target.reset();
-                    window.showToast('¡Suscrito a la newsletter!', 'success');
-                }, 1500);
-            };
-
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
             updateToggleVisuals();
+        }
 
-            // ── Scroll Reveal ──
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) {
-                        e.target.classList.remove('reverse');
-                        e.target.classList.add('active');
-                        
-                        // Handle deal-cards animation
-                        if (e.target.classList.contains('deal-cards')) {
-                            e.target.style.animationPlayState = 'running';
-                        }
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            const observerReverse = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (!e.isIntersecting && e.boundingClientRect.top > 0) {
-                        e.target.classList.remove('active');
-                        e.target.classList.add('reverse');
-                        setTimeout(() => {
-                            e.target.classList.remove('reverse');
-                        }, 1500);
-                    }
-                });
-            }, { threshold: 0 });
-
-            document.querySelectorAll('.reveal-growth').forEach(el => {
-                observer.observe(el);
-                observerReverse.observe(el);
-            });
-
-            // Deal cards animation observer
-            const dealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) {
-                        e.target.classList.add('active');
-                    } else {
-                        e.target.classList.remove('active');
-                    }
-                });
-            }, { threshold: 0.2 });
-
-            document.querySelectorAll('.deal-cards').forEach(el => {
-                dealObserver.observe(el);
-            });
-
-            // ── Testimonial Carousel Logic ──
-            const carouselTrack = document.getElementById('testimonialTrack');
-            const dotsContainer = document.getElementById('testimonialDots');
-            const slides = document.querySelectorAll('.testimonial-slide');
-            const totalSlides = slides.length;
-            let currentSlide = 0;
-            let itemsPerView = window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1);
-            let maxSlide = Math.max(0, totalSlides - itemsPerView);
-            let carouselTimer;
-
-            function initCarousel() {
-                itemsPerView = window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1);
-                maxSlide = Math.max(0, totalSlides - itemsPerView);
-                if (currentSlide > maxSlide) currentSlide = maxSlide;
-
-                // Clear dots
-                dotsContainer.innerHTML = '';
-                for (let i = 0; i <= maxSlide; i++) {
-                    const dot = document.createElement('div');
-                    dot.classList.add('carousel-dot');
-                    if (i === currentSlide) dot.classList.add('active');
-                    dot.addEventListener('click', () => {
-                        currentSlide = i;
-                        updateCarousel();
-                        resetTimer();
-                    });
-                    dotsContainer.appendChild(dot);
-                }
-                updateCarousel();
-            }
-
-            function updateCarousel() {
-                if (!carouselTrack.firstElementChild) return;
-                const itemWidth = carouselTrack.firstElementChild.offsetWidth;
-                carouselTrack.style.transform = `translateX(-${currentSlide * itemWidth}px)`;
-
-                const dots = dotsContainer.querySelectorAll('.carousel-dot');
-                dots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === currentSlide);
-                });
-            }
-
-            function autoPlay() {
-                currentSlide++;
-                if (currentSlide > maxSlide) currentSlide = 0;
-                updateCarousel();
-            }
-
-            function startTimer() {
-                carouselTimer = setInterval(autoPlay, 5000); // 5 seconds
-            }
-
-            function resetTimer() {
-                clearInterval(carouselTimer);
-                startTimer();
-            }
-
-            window.addEventListener('resize', () => {
-                initCarousel();
-            });
-
-            // Make sure DOM styles are applied before calculating widths
-            setTimeout(() => {
-                initCarousel();
-                startTimer();
-            }, 100);
-        });
-
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg');
+        // --- MOBILE MENU LOGIC ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu.classList.contains('translate-x-full')) {
+                menu.classList.remove('hidden');
+                setTimeout(() => {
+                    menu.classList.remove('translate-x-full');
+                    menu.classList.add('translate-x-0');
+                }, 10);
             } else {
-                nav.classList.remove('shadow-lg');
+                menu.classList.remove('translate-x-0');
+                menu.classList.add('translate-x-full');
+                setTimeout(() => {
+                    menu.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        // --- MODAL LOGIC ---
+        function openModal() {
+            const modal = document.getElementById('agendaModal');
+            const content = modal.querySelector('.modal-content');
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.classList.add('flex');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('agendaModal');
+            const content = modal.querySelector('.modal-content');
+
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        document.getElementById('agendaModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeModal();
             }
         });
+
+        // Live Chart Animation (Original Logic)
+        // Bar Animation Logic (Slower & Smoother)
+        function initBarAnimation() {
+            const bars = document.querySelectorAll('#tradingBars > div');
+            bars.forEach(bar => {
+                const updateHeight = () => {
+                    // Random height between 15% and 95%
+                    const height = Math.floor(Math.random() * 80) + 15;
+                    bar.style.height = `${height}%`;
+
+                    // Re-schedule next update randomly between 2s and 4.5s for slow movement
+                    setTimeout(updateHeight, 2000 + Math.random() * 2500);
+                };
+                // Initial random delay
+                setTimeout(updateHeight, Math.random() * 1000);
+            });
+        }
+        initBarAnimation();
+
+        // Dynamic Time Labels Logic
+        function initTimeLabels() {
+            const labels = document.querySelectorAll('#timeLabels > span');
+            if (labels.length === 0) return;
+
+            let baseTime = new Date();
+            baseTime.setHours(12, 0, 0, 0); // Start at 12:00
+
+            // Helper to format HH:MM
+            const formatTime = (date) => {
+                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            };
+
+            setInterval(() => {
+                // Advance time by 15 minutes every 3 seconds
+                baseTime.setMinutes(baseTime.getMinutes() + 15);
+
+                // Calculate previous hours relative to new base time
+                const t4 = new Date(baseTime);
+                const t3 = new Date(baseTime); t3.setHours(t3.getHours() - 1);
+                const t2 = new Date(baseTime); t2.setHours(t2.getHours() - 2);
+                const t1 = new Date(baseTime); t1.setHours(t1.getHours() - 3);
+
+                // Update DOM
+                labels[0].innerText = formatTime(t1);
+                labels[1].innerText = formatTime(t2);
+                labels[2].innerText = formatTime(t3);
+                labels[3].innerText = formatTime(t4);
+            }, 3000); // Update loop speed
+        }
+        initTimeLabels();
+
+        // Canvas Network Animation
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                const isLight = document.body.classList.contains('light-mode');
+                ctx.fillStyle = isLight ? 'rgba(24, 85, 186, 0.4)' : 'rgba(24, 85, 186, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        function animateNetwork() {
+            ctx.clearRect(0, 0, width, height);
+            const isLight = document.body.classList.contains('light-mode');
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.strokeStyle = isLight
+                            ? `rgba(24, 85, 186, ${0.15 - dist / 1000})`
+                            : `rgba(24, 85, 186, ${0.1 - dist / 1500})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateNetwork);
+        }
+        animateNetwork();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                        const target = parseFloat(counter.getAttribute('data-target'));
+                        const duration = 2000;
+                        const start = 0;
+                        const startTime = performance.now();
+                        function update(currentTime) {
+                            const elapsed = currentTime - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            const ease = 1 - Math.pow(1 - progress, 4);
+                            const current = start + (target - start) * ease;
+                            if (target % 1 !== 0) { counter.innerText = current.toFixed(1); }
+                            else { counter.innerText = Math.floor(current); }
+                            if (progress < 1) { requestAnimationFrame(update); }
+                            else { counter.innerText = target; }
+                        }
+                        requestAnimationFrame(update);
+                        counter.classList.remove('counter');
+                    });
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-growth').forEach(section => { observer.observe(section); });
     </script>
+
+    <!-- Floating Controls Bar -->
+    <div class="controls-bar">
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <i data-lucide="sun" class="toggle-track-icon"></i>
+            <div class="theme-toggle-thumb">
+                <i data-lucide="moon" class="thumb-icon"></i>
+            </div>
+        </div>
+        <div class="lang-toggle" onclick="toggleLanguage()">
+            <span class="lang-label lang-label-es">ES</span>
+            <div class="lang-switch-track">
+                <div class="lang-switch-thumb"></div>
+            </div>
+            <span class="lang-label lang-label-en">EN</span>
+        </div>
+    </div>
 </body>
 
 </html>

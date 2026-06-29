@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+        <!-- Material Symbols Outlined -->
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Marketplace</title>
+    <meta name="description" content="Explora el marketplace de activos tokenizados de Token City. Invierte en Real Estate, Arte, Energía, Agroindustria y más.">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                darkMode: 'class',
+                theme: {
+                    extend: {}
+                }
+            }
+        </script>
+        <script>
+            // Script para modo oscuro automático (opcional)
+            (function() {
+                const hour = new Date().getHours();
+                const nightTime = (hour >= 19 || hour < 7);
+                const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const isLight = !systemDark && !nightTime;
+                if (isLight) {
+                    document.documentElement.classList.remove('dark');
+                } else {
+                    document.documentElement.classList.add('dark');
+                }
+                window.__isThemeLight = isLight;
+            })();
+        </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <style>
+                    /* Filtros: color de sector en borde/texto (inactivo) y fondo/borde (activo) */
+                    .category-pill[data-category] {
+                        border: 2px solid var(--sector-color, #1855BA);
+                        color: var(--sector-color, #1855BA);
+                        background: #fff;
+                        font-weight: 700;
+                        backdrop-filter: none;
+                    }
+                    body:not(.light-mode) .category-pill[data-category] {
+                        background: rgba(24, 34, 54, 0.35);
+                        color: var(--sector-color, #93c5fd);
+                        border-color: var(--sector-color, #93c5fd);
+                        backdrop-filter: blur(8px);
+                    }
+                    .category-pill.active[data-category] {
+                        background: var(--sector-color, #1855BA);
+                        color: #fff;
+                        border-color: var(--sector-color, #1855BA);
+                    }
+                    body:not(.light-mode) .category-pill.active[data-category] {
+                        background: color-mix(in srgb, var(--sector-color, #93c5fd) 80%, #1e293b 20%);
+                        color: #fff;
+                        border-color: var(--sector-color, #93c5fd);
+                    }
+                    .category-pill[data-category="all"] {
+                        border-color: #111;
+                        color: #fff;
+                        background: #111;
+                    }
+                    .category-pill.active[data-category="all"] {
+                        background: #111;
+                        color: #fff;
+                        border-color: #111;
+                    }
+            /* Unificación de colores de filtros y tarjetas usando --sector-color */
+            .category-pill[data-category="real-estate"] { --sector-color: #22c55e; }
+            .category-pill[data-category="art"] { --sector-color: #ec4899; }
+            .category-pill[data-category="commodities"] { --sector-color: #f97316; }
+            .category-pill[data-category="agro"] { --sector-color: #eab308; }
+            .category-pill[data-category="music"] { --sector-color: #a855f7; }
+            .category-pill[data-category="tourism"] { --sector-color: #06b6d4; }
+            .category-pill[data-category="finance"] { --sector-color: #1855BA; }
+            .category-pill[data-category="energy"] { --sector-color: #ef4444; }
+            .category-pill[data-category="all"] { --sector-color: #111; }
+
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(5, 7, 10, 0.95);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+        }
+
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5, 7, 10, 0.95);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .heading-text { color: var(--text-main); }
+        .body-text { color: var(--text-muted); }
+
+        .section-label {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        body:not(.light-mode) .section-label {
+            color: #60a5fa;
+        }
+
+        .text-primary-blue { color: #1855BA; }
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(6px);
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(24, 85, 186, 0.45);
+        }
+
+        body:not(.light-mode) .glass-card:hover {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ───── Hero Marketplace ───── */
+        .hero-marketplace {
+            position: relative;
+            overflow: hidden;
+            background: #05070a;
+        }
+
+        .hero-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+        }
+
+        body.light-mode .hero-grid {
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+        }
+
+        .hero-marketplace-title {
+            color: #ffffff;
+        }
+
+        .hero-subtitle {
+            color: #e2e8f0;
+        }
+
+        body.light-mode .hero-subtitle {
+            color: #ffffff;
+        }
+
+        /* ───── Category Pills ───── */
+        .category-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            user-select: none;
+            /* El color y fondo se definen por sector-color más abajo */
+        }
+
+        .category-pill:hover {
+            border-color: rgba(24, 85, 186, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .category-pill.active {
+            color: #fff;
+            background: var(--sector-color, #1855BA) !important;
+            border-color: var(--sector-color, #1855BA) !important;
+        }
+        body:not(.light-mode) .category-pill.active {
+            color: #fff;
+        }
+
+        .category-pill .mat-icon {
+            font-size: 1.2rem;
+        }
+
+        /* ───── Participant Flip Cards ───── */
+        .participant-card {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+            transition: transform 0.25s ease;
+        }
+
+        .participant-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .participant-card.is-flipped .participant-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.875rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        body.light-mode .card-face {
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        body:not(.light-mode) .card-face {
+            background: #1a2235;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .card-face.face-front {
+            border-left: 4px solid var(--sector-color, var(--primary-blue));
+        }
+        body.light-mode .card-face.face-front {
+            background: #fff !important;
+        }
+
+        .card-face.face-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #1855BA, #0d3a8a);
+            color: white;
+        }
+
+        body.light-mode .card-face.face-back {
+            color: #1a2235;
+        }
+        }
+
+        body.light-mode .card-face.face-back {
+            border-right-color: #1855BA;
+            border-top-color: #e5e7eb;
+            border-bottom-color: #e5e7eb;
+        }
+
+        .card-toggle-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--sector-color, var(--primary-blue));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-toggle-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .card-face.face-front .sector-icon-flip {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            background: color-mix(in srgb, var(--sector-color, #1855BA) 20%, transparent);
+            color: var(--sector-color, var(--primary-blue));
+        }
+
+        body:not(.light-mode) .card-face.face-front .sector-icon-flip {
+            background: rgba(255, 255, 255, 0.1);
+            color: #93c5fd;
+        }
+
+        .card-face.face-front h4 {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .card-face.face-front p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ───── Market Card ───── */
+        .market-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .market-card .p-5 {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .market-card .p-5 .body-text {
+            flex: 1;
+        }
+
+        .market-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(24, 85, 186, 0.45);
+            box-shadow: 0 20px 50px rgba(24, 85, 186, 0.12);
+        }
+
+        body:not(.light-mode) .market-card:hover {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .market-card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: #0A224A;
+        }
+
+
+        .market-card-logo {
+            width: 100%;
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+            background: #0A224A;
+            border-radius: 1.5rem;
+        }
+        .market-card-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            transition: transform 0.6s ease;
+        }
+        .market-card:hover .market-card-bg {
+            transform: scale(1.05);
+        }
+        .market-card-overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 20, 40, 0.6);
+            z-index: 2;
+        }
+        .market-card-logo .logo-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            z-index: 3;
+        }
+        .market-card-logo .logo-overlay img {
+            max-width: 70%;
+            max-height: 60%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            transition: transform 0.4s ease;
+        }
+        body.light-mode .market-card-logo .logo-overlay img {
+            filter: none;
+        }
+
+        .market-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        /* Sector tag: color por sector */
+        .market-tag.sector-tag {
+            background: color-mix(in srgb, var(--sector-color, #1855BA) 28%, transparent);
+            color: var(--sector-color, #1855BA);
+        }
+        body:not(.light-mode) .market-tag.sector-tag {
+            background: var(--sector-color, #1855BA);
+            color: #fff;
+        }
+        /* Mercado tag: fondo negro, texto gris */
+        .market-tag.market-tag-mercado {
+            background: #111;
+            color: #d1d5db;
+            border: 1.5px solid #111;
+        }
+        .market-tag.market-tag-mercado i {
+            color: #6b7280;
+        }
+        body:not(.light-mode) .market-tag.market-tag-mercado {
+            background: #222;
+            color: #e5e7eb;
+            border-color: #222;
+        }
+        /* Token tag: solo borde negro, sin fondo, texto e icono negro */
+        .market-tag.market-tag-token {
+            background: transparent;
+            color: #111;
+            border: 1.5px solid #111;
+        }
+        .market-tag.market-tag-token i {
+            color: #111;
+        }
+        body:not(.light-mode) .market-tag.market-tag-token {
+            background: transparent;
+            color: #fff;
+            border-color: #fff;
+        }
+        body:not(.light-mode) .market-tag.market-tag-token i {
+            color: #fff;
+        }
+
+                /* Crowdfunding: fondo gris, texto negro */
+        .market-tag.market-tag-crowdfunding {
+            background: #e5e7eb;
+            color: #111;
+            border-color: #e5e7eb;
+        }
+        .market-tag.market-tag-crowdfunding i {
+            color: #111;
+        }
+        body:not(.light-mode) .market-tag.market-tag-crowdfunding {
+            background: #374151;
+            color: #f3f4f6;
+            border-color: #374151;
+        }
+        body:not(.light-mode) .market-tag.market-tag-crowdfunding i {
+            color: #f3f4f6;
+        }
+        /* Security: borde gris, texto gris */
+        .market-tag.market-tag-security {
+            border-color: #9ca3af;
+            color: #6b7280;
+        }
+        .market-tag.market-tag-security i {
+            color: #6b7280;
+        }
+        body:not(.light-mode) .market-tag.market-tag-security {
+            border-color: #6b7280;
+            color: #9ca3af;
+        }
+        body:not(.light-mode) .market-tag.market-tag-security i {
+            color: #9ca3af;
+        }
+
+        .market-tag .mat-icon {
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        /* ───── Textual Button ───── */
+        .btn-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            padding: 0.375rem 0.75rem;
+            border-radius: 15px;
+            background: transparent;
+            color: var(--primary-blue);
+            transition: background 0.2s ease, transform 0.15s ease;
+            margin-top: auto;
+        }
+
+        .btn-text:hover {
+            background: rgba(24, 85, 186, 0.08);
+        }
+
+        .btn-text:active {
+            transform: translateY(1px);
+        }
+
+        body:not(.light-mode) .btn-text {
+            color: #ffffff;
+        }
+
+        body:not(.light-mode) .btn-text:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ───── Sector Accent Colors ───── */
+        .participant-card[data-category="finance"] { --sector-color: #1855BA; }
+        .participant-card[data-category="real-estate"] { --sector-color: #22c55e; }
+        .participant-card[data-category="agro"] { --sector-color: #eab308; }
+        .participant-card[data-category="commodities"] { --sector-color: #f97316; }
+        .participant-card[data-category="music"] { --sector-color: #a855f7; }
+        .participant-card[data-category="tourism"] { --sector-color: #06b6d4; }
+        .participant-card[data-category="art"] { --sector-color: #ec4899; }
+        .participant-card[data-category="energy"] { --sector-color: #ef4444; }
+
+        .participant-card:hover {
+            transform: scale(1.02);
+        }
+
+        /* ───── Sector Accent Colors ───── */
+        .market-card[data-categories*="finance"] { --sector-color: #1855BA; }
+        .market-card[data-categories*="real-estate"] { --sector-color: #22c55e; }
+        .market-card[data-categories*="agro"] { --sector-color: #eab308; }
+        .market-card[data-categories*="commodities"] { --sector-color: #f97316; }
+        .market-card[data-categories*="music"] { --sector-color: #a855f7; }
+        .market-card[data-categories*="tourism"] { --sector-color: #06b6d4; }
+        .market-card[data-categories*="art"] { --sector-color: #ec4899; }
+        .market-card[data-categories*="energy"] { --sector-color: #ef4444; }
+
+        /* ───── Reveal ───── */
+        .reveal-growth {
+            opacity: 0;
+            transform: scale(0.92) translateY(40px);
+            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .reveal-growth.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .reveal-growth.reverse {
+            opacity: 0;
+            transform: scale(0.92) translateY(-40px);
+        }
+
+        .reveal-growth.reverse.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .delay-100 { transition-delay: 180ms; }
+        .delay-200 { transition-delay: 360ms; }
+        .delay-300 { transition-delay: 540ms; }
+
+        /* ───── Nav ───── */
+        .nav-item {
+            position: relative;
+            padding: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .nav-item:hover .nav-link i {
+            opacity: 1;
+            transform: rotate(180deg);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .nav-link i { transition: transform 0.3s ease, opacity 0.3s ease; }
+
+        .mega-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 90vw;
+            max-width: 1000px;
+            background: var(--nav-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .nav-item:hover .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .mega-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .mega-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #60a5fa; margin-bottom: 1rem; display: block; }
+        .mega-link { display: block; padding: 0.5rem 0; font-size: 0.875rem; color: var(--nav-text-muted); transition: all 0.2s ease; }
+        .mega-link:hover { color: var(--nav-text); padding-left: 0.5rem; }
+        .mega-link.active { color: #ffffff; font-weight: 700; }
+        .mega-link-feat { display: flex; gap: 0.75rem; align-items: center; padding: 0.5rem; border-radius: 0.5rem; transition: background 0.2s ease; }
+        .mega-link-feat:hover { background: rgba(255,255,255,0.04); }
+
+        #navOverlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px);
+            z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease;
+        }
+
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+
+        #mobileDrawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+            background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; border-left: 1px solid var(--glass-border);
+        }
+
+        #mobileDrawer.open { transform: translateX(0); }
+        .mobile-link { padding: 1rem 1.5rem; border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; color: var(--nav-text); font-weight: 600; }
+        .mobile-submenu { background: rgba(255, 255, 255, 0.03); display: none; padding-left: 1rem; }
+        .mobile-submenu.open { display: block; }
+
+        .theme-toggle { position: relative; width: 52px; height: 28px; background-color: rgba(255, 255, 255, 0.1); border-radius: 999px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
+        .theme-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background-color: #ffffff; border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); z-index: 2; }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+
+        .controls-bar { position: fixed; bottom: 24px; right: 24px; z-index: 100; display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: rgba(5, 7, 10, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 999px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
+
+        /* ───── Video Modal ───── */
+        .video-modal {
+            position: fixed; inset: 0; z-index: 200;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .video-modal.open {
+            opacity: 1; visibility: visible;
+        }
+
+        .video-modal-content {
+            position: relative;
+            width: min(90vw, 900px);
+            aspect-ratio: 16 / 9;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .video-modal.open .video-modal-content {
+            transform: scale(1);
+        }
+
+        .video-modal-iframe-wrapper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-modal-iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: 12px; right: 12px; z-index: 10;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .video-modal-close:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+        .controls-bar .theme-toggle { background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); }
+        .controls-bar .toggle-track-icon { color: #ffffff; }
+        .controls-bar .thumb-icon { color: var(--primary-blue); }
+        .controls-bar .lang-switch-track { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.15); }
+
+        .lang-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+        .lang-label { font-size: 10px; font-weight: 800; color: #a1a1aa; transition: color 0.3s ease; }
+        .lang-label.active { color: #ffffff; }
+        .lang-switch-track { position: relative; width: 32px; height: 16px; background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px; }
+        .lang-switch-thumb { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; background-color: #ffffff; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        body.lang-en .lang-switch-thumb { transform: translateX(16px); }
+
+        .lang-en { display: none; }
+        body.lang-en .lang-es { display: none; }
+        body.lang-en .lang-en { display: inline; }
+
+        @media (max-width: 640px) {
+            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+            .market-card-img { height: 140px; }
+            .market-card-logo { height: 140px; }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        if (window.__isThemeLight) document.body.classList.add('light-mode');
+
+        // Ensure flip works on card-toggle-btn
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.participant-card .card-toggle-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    let card = btn.closest('.participant-card');
+                    card.classList.toggle('is-flipped');
+                });
+            });
+        });
+    </script>
+
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+        <!-- ═══════ HERO ═══════ -->
+        <section class="hero-marketplace min-h-[70vh] md:min-h-[75vh] pt-28 md:pt-36 pb-0 px-6 overflow-hidden flex items-center">
+            <video class="hero-video" autoplay muted loop playsinline poster="">
+                <source src="video%20TC.webm" type="video/webm">
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid"></div>
+            <div class="relative max-w-7xl mx-auto text-center w-full">
+                <div class="max-w-4xl mx-auto reveal-growth delay-100" style="margin-top:-120px;">
+                    <p class="section-label mb-4" style="color: #93c5fd;">
+                        <span class="lang-es">Marketplace de activos tokenizados</span>
+                        <span class="lang-en">Tokenized Asset Marketplace</span>
+                    </p>
+                    <h1 class="hero-marketplace-title text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-5">
+                        <span class="lang-es">Bienvenido a <span style="color:#1855BA">Token City</span> Marketplace</span>
+                        <span class="lang-en">Welcome to <span style="color:#1855BA">Token City</span> Marketplace</span>
+                    </h1>
+                    <p class="hero-subtitle text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                        <!-- Texto eliminado por solicitud -->
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════ SECTOR INTRO (Flip Cards) ═══════ -->
+        <section class="max-w-7xl mx-auto px-6 pb-16 -mt-24 md:-mt-32 relative z-0" style="background:transparent;">
+            <!-- Títulos de sección eliminados por solicitud -->
+            <div style="margin-bottom:0;"></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                <!-- Real Estate -->
+                <div class="participant-card reveal-growth delay-100" data-category="real-estate" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: var(--sector-color);">
+                            <div class="sector-icon-flip">
+                                <span class="mat-icon material-symbols-outlined" style="font-size:2rem; color: var(--sector-color);">real_estate_agent</span>
+                            </div>
+                            <h4 class="font-bold heading-text text-center"><span class="lang-es">Real Estate</span><span class="lang-en">Real Estate</span></h4>
+                            <p class="text-xs body-text text-center mt-1"><span class="lang-es">El principal activo físico tokenizado</span><span class="lang-en">The leading tokenized physical asset</span></p>
+                            <button class="card-toggle-btn"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: var(--sector-color);">
+                            <h4 class="font-bold text-center mb-2"><span class="lang-es">Inmobiliario</span><span class="lang-en">Real Estate</span></h4>
+                                <p class="text-xs text-center"><span class="lang-es">Descubre el poder de invertir en el principal activo físico.</span><span class="lang-en">Discover the power of investing in the leading physical asset.</span></p>
+                            <button class="card-toggle-btn mt-3"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Art -->
+                <div class="participant-card reveal-growth delay-100" data-category="art" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: var(--sector-color);">
+                            <div class="sector-icon-flip">
+                                <span class="mat-icon material-symbols-outlined" style="font-size:2rem; color: var(--sector-color);">theater_comedy</span>
+                            </div>
+                            <h4 class="font-bold heading-text text-center"><span class="lang-es">Arte</span><span class="lang-en">Art</span></h4>
+                            <p class="text-xs body-text text-center mt-1"><span class="lang-es">Diversifica con obras de arte tokenizadas</span><span class="lang-en">Diversify with tokenized artwork</span></p>
+                            <button class="card-toggle-btn"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: var(--sector-color);">
+                            <h4 class="font-bold text-center mb-2"><span class="lang-es">Arte</span><span class="lang-en">Art</span></h4>
+                                <p class="text-xs text-center"><span class="lang-es">Disfruta la belleza de diversificar tu patrimonio a través del activo único y atemporal que es el arte.</span><span class="lang-en">Enjoy the beauty of diversifying your wealth through the unique and timeless asset that is art.</span></p>
+                            <button class="card-toggle-btn mt-3"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Commodities -->
+                <div class="participant-card reveal-growth delay-200" data-category="commodities" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: var(--sector-color);">
+                            <div class="sector-icon-flip">
+                                <span class="mat-icon material-symbols-outlined" style="font-size:2rem; color: var(--sector-color);">diamond</span>
+                            </div>
+                            <h4 class="font-bold heading-text text-center"><span class="lang-es">Commodities</span><span class="lang-en">Commodities</span></h4>
+                            <p class="text-xs body-text text-center mt-1"><span class="lang-es">Materias primas que construyen el mundo</span><span class="lang-en">Raw materials that build the world</span></p>
+                            <button class="card-toggle-btn"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: var(--sector-color);">
+                            <h4 class="font-bold text-center mb-2"><span class="lang-es">Materias Primas</span><span class="lang-en">Commodities</span></h4>
+                                <p class="text-xs text-center"><span class="lang-es">Protege tu patrimonio con los recursos básicos que construyen y mueven el mundo moderno.</span><span class="lang-en">Protect your wealth with the basic resources that build and move the modern world.</span></p>
+                            <button class="card-toggle-btn mt-3"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Agro -->
+                <div class="participant-card reveal-growth delay-200" data-category="agro" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: var(--sector-color);">
+                            <div class="sector-icon-flip">
+                                <span class="mat-icon material-symbols-outlined" style="font-size:2rem; color: var(--sector-color);">valve</span>
+                            </div>
+                            <h4 class="font-bold heading-text text-center"><span class="lang-es">Agroindustria</span><span class="lang-en">Agroindustry</span></h4>
+                            <p class="text-xs body-text text-center mt-1"><span class="lang-es">Sistemas alimentarios sostenibles tokenizados</span><span class="lang-en">Tokenized sustainable food systems</span></p>
+                            <button class="card-toggle-btn"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: var(--sector-color);">
+                            <h4 class="font-bold text-center mb-2"><span class="lang-es">Agroindustria</span><span class="lang-en">Agroindustry</span></h4>
+                                <p class="text-xs text-center"><span class="lang-es">Apoya sistemas alimentarios sostenibles y rentabiliza la alta demanda de la agricultura global.</span><span class="lang-en">Support sustainable food systems and profit from the high demand of global agriculture.</span></p>
+                            <button class="card-toggle-btn mt-3"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Music -->
+                <div class="participant-card reveal-growth delay-100" data-category="music" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: var(--sector-color);">
+                            <div class="sector-icon-flip">
+                                <span class="mat-icon material-symbols-outlined" style="font-size:2rem; color: var(--sector-color);">music_cast</span>
+                            </div>
+                            <h4 class="font-bold heading-text text-center"><span class="lang-es">Música</span><span class="lang-en">Music</span></h4>
+                            <p class="text-xs body-text text-center mt-1"><span class="lang-es">Gana regalías con música tokenizada</span><span class="lang-en">Earn royalties with tokenized music</span></p>
+                            <button class="card-toggle-btn"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: var(--sector-color);">
+                            <h4 class="font-bold text-center mb-2"><span class="lang-es">Música</span><span class="lang-en">Music</span></h4>
+                                <p class="text-xs text-center"><span class="lang-es">Haz tuyo el ritmo y genera royalties con la banda sonora de nuestras vidas.</span><span class="lang-en">Make the rhythm yours and generate royalties with the soundtrack of our lives.</span></p>
+                            <button class="card-toggle-btn mt-3"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tourism -->
+                <div class="participant-card reveal-growth delay-100" data-category="tourism" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: var(--sector-color);">
+                            <div class="sector-icon-flip">
+                                <span class="mat-icon material-symbols-outlined" style="font-size:2rem; color: var(--sector-color);">hotel_class</span>
+                            </div>
+                            <h4 class="font-bold heading-text text-center"><span class="lang-es">Turismo</span><span class="lang-en">Tourism</span></h4>
+                            <p class="text-xs body-text text-center mt-1"><span class="lang-es">Infraestructura turística tokenizada</span><span class="lang-en">Tokenized tourism infrastructure</span></p>
+                            <button class="card-toggle-btn"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: var(--sector-color);">
+                            <h4 class="font-bold text-center mb-2"><span class="lang-es">Turismo</span><span class="lang-en">Tourism</span></h4>
+                                <p class="text-xs text-center"><span class="lang-es">Invierte en las experiencias que definen nuestras vacaciones y en la infraestructura que las hace posibles.</span><span class="lang-en">Invest in the experiences that define our holidays and in the infrastructure that makes them possible.</span></p>
+                            <button class="card-toggle-btn mt-3"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Finance -->
+                <div class="participant-card reveal-growth delay-200" data-category="finance" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: var(--sector-color);">
+                            <div class="sector-icon-flip">
+                                <span class="mat-icon material-symbols-outlined" style="font-size:2rem; color: var(--sector-color);">account_balance</span>
+                            </div>
+                            <h4 class="font-bold heading-text text-center"><span class="lang-es">Finanzas</span><span class="lang-en">Finance</span></h4>
+                            <p class="text-xs body-text text-center mt-1"><span class="lang-es">Servicios financieros tokenizados</span><span class="lang-en">Tokenized financial services</span></p>
+                            <button class="card-toggle-btn"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: var(--sector-color);">
+                            <h4 class="font-bold text-center mb-2"><span class="lang-es">Financiero</span><span class="lang-en">Finance</span></h4>
+                                <p class="text-xs text-center"><span class="lang-es">Tu oportunidad de invertir en empresas especializadas en servicios financieros alternativos.</span><span class="lang-en">Your opportunity to invest in companies specialized in alternative financial services.</span></p>
+                            <button class="card-toggle-btn mt-3"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Energy -->
+                <div class="participant-card reveal-growth delay-200" data-category="energy" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: var(--sector-color);">
+                            <div class="sector-icon-flip">
+                                <span class="mat-icon material-symbols-outlined" style="font-size:2rem; color: var(--sector-color);">energy_program_saving</span>
+                            </div>
+                            <h4 class="font-bold heading-text text-center"><span class="lang-es">Energía</span><span class="lang-en">Energy</span></h4>
+                            <p class="text-xs body-text text-center mt-1"><span class="lang-es">Proyectos energéticos globales tokenizados</span><span class="lang-en">Tokenized global energy projects</span></p>
+                            <button class="card-toggle-btn"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: var(--sector-color);">
+                            <h4 class="font-bold text-center mb-2"><span class="lang-es">Energía</span><span class="lang-en">Energy</span></h4>
+                                <p class="text-xs text-center"><span class="lang-es">Proyectos energéticos líderes y de relevancia global, accesibles a inversores por primera vez.</span><span class="lang-en">Leading and globally relevant energy projects, accessible to investors for the first time.</span></p>
+                            <button class="card-toggle-btn mt-3"><i data-lucide="rotate-3d" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CARDS MOVED ABOVE, SECTION REMOVED -->
+
+        <!-- ═══════ WATCH VIDEO ═══════ -->
+        <div class="text-center pb-8 reveal-growth">
+            <button onclick="openVideoModal()" class="inline-flex items-center gap-2 px-6 py-3 bg-[#1855BA] border border-[#1855BA] text-white font-bold rounded-[15px] hover:bg-[#133e87] transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1855BA]">
+                <span class="mat-icon material-symbols-outlined" style="font-size:1.25rem;">play_circle</span>
+                <span class="lang-es">Ver video</span><span class="lang-en">Watch video</span>
+            </button>
+        </div>
+
+        <!-- ═══════ VIDEO MODAL ═══════ -->
+        <div id="videoModal" class="video-modal" onclick="closeVideoModal()">
+            <div class="video-modal-content" onclick="event.stopPropagation()">
+                <button class="video-modal-close" onclick="closeVideoModal()">&times;</button>
+                <div class="video-modal-iframe-wrapper">
+                    <iframe id="youtubeIframe" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ CATEGORIES / FILTERS ═══════ -->
+                <section class="max-w-7xl mx-auto px-6 pt-16 pb-8" style="position:relative;z-index:1;">
+                        <div class="flex flex-wrap gap-3 justify-center mb-8 reveal-growth delay-100">
+                            <!-- Filtro Sector -->
+                            <div class="custom-select-wrap" id="sectorWrap" style="width:200px;">
+                                <button type="button" class="custom-select-trigger" id="sectorTrigger" onclick="toggleCustomSelect('sector')" aria-haspopup="listbox" aria-expanded="false">
+                                    <span class="mat-icon material-symbols-outlined">category</span>
+                                    <span id="sectorLabel" style="color:var(--text-muted);opacity:0.7;">Sector</span>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 custom-select-chevron" id="sectorChevron" style="color:var(--text-muted);flex-shrink:0;transition:transform 0.25s ease;"></i>
+                                </button>
+                                <div class="custom-select-panel" id="sectorPanel" role="listbox" aria-hidden="true">
+                                    <button type="button" class="custom-select-option selected" data-val="all" onclick="selectSector('all','Todos','category')"><span class="mat-icon material-symbols-outlined">category</span>Todos</button>
+                                    <button type="button" class="custom-select-option" data-val="real-estate" onclick="selectSector('real-estate','Real Estate','real_estate_agent')"><span class="mat-icon material-symbols-outlined">real_estate_agent</span>Real Estate</button>
+                                    <button type="button" class="custom-select-option" data-val="art" onclick="selectSector('art','Arte','theater_comedy')"><span class="mat-icon material-symbols-outlined">theater_comedy</span>Arte</button>
+                                    <button type="button" class="custom-select-option" data-val="commodities" onclick="selectSector('commodities','Commodities','diamond')"><span class="mat-icon material-symbols-outlined">diamond</span>Commodities</button>
+                                    <button type="button" class="custom-select-option" data-val="agro" onclick="selectSector('agro','Agroindustria','valve')"><span class="mat-icon material-symbols-outlined">valve</span>Agroindustria</button>
+                                    <button type="button" class="custom-select-option" data-val="music" onclick="selectSector('music','Música','music_cast')"><span class="mat-icon material-symbols-outlined">music_cast</span>Música</button>
+                                    <button type="button" class="custom-select-option" data-val="tourism" onclick="selectSector('tourism','Turismo','hotel_class')"><span class="mat-icon material-symbols-outlined">hotel_class</span>Turismo</button>
+                                    <button type="button" class="custom-select-option" data-val="finance" onclick="selectSector('finance','Finanzas','account_balance')"><span class="mat-icon material-symbols-outlined">account_balance</span>Finanzas</button>
+                                    <button type="button" class="custom-select-option" data-val="energy" onclick="selectSector('energy','Energía','energy_program_saving')"><span class="mat-icon material-symbols-outlined">energy_program_saving</span>Energía</button>
+                                </div>
+                            </div>
+                            <!-- Filtro Mercados -->
+                            <div class="custom-select-wrap" id="marketWrap" style="width:200px;">
+                                <button type="button" class="custom-select-trigger" id="marketTrigger" onclick="toggleCustomSelect('market')" aria-haspopup="listbox" aria-expanded="false">
+                                    <span class="mat-icon material-symbols-outlined">storefront</span>
+                                    <span id="marketLabel" style="color:var(--text-muted);opacity:0.7;">Mercados</span>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 custom-select-chevron" id="marketChevron" style="color:var(--text-muted);flex-shrink:0;transition:transform 0.25s ease;"></i>
+                                </button>
+                                <div class="custom-select-panel" id="marketPanel" role="listbox" aria-hidden="true">
+                                    <button type="button" class="custom-select-option selected" data-val="all" onclick="selectMarket('all','Todos','storefront')"><span class="mat-icon material-symbols-outlined">storefront</span>Todos</button>
+                                    <button type="button" class="custom-select-option" data-val="exchange" onclick="selectMarket('exchange','Exchange','swap_horiz')"><span class="mat-icon material-symbols-outlined">swap_horiz</span>Exchange</button>
+                                    <button type="button" class="custom-select-option" data-val="crowdfunding" onclick="selectMarket('crowdfunding','Crowdfunding','groups')"><span class="mat-icon material-symbols-outlined">groups</span>Crowdfunding</button>
+                                    <!-- Agrega más mercados según tu catálogo -->
+                                </div>
+                            </div>
+                            <!-- Filtro Tokens -->
+                            <div class="custom-select-wrap" id="tokenWrap" style="width:200px;">
+                                <button type="button" class="custom-select-trigger" id="tokenTrigger" onclick="toggleCustomSelect('token')" aria-haspopup="listbox" aria-expanded="false">
+                                    <span class="mat-icon material-symbols-outlined">token</span>
+                                    <span id="tokenLabel" style="color:var(--text-muted);opacity:0.7;">Tokens</span>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 custom-select-chevron" id="tokenChevron" style="color:var(--text-muted);flex-shrink:0;transition:transform 0.25s ease;"></i>
+                                </button>
+                                <div class="custom-select-panel" id="tokenPanel" role="listbox" aria-hidden="true">
+                                    <button type="button" class="custom-select-option selected" data-val="all" onclick="selectToken('all','Todos','token')"><span class="mat-icon material-symbols-outlined">token</span>Todos</button>
+                                    <button type="button" class="custom-select-option" data-val="security" onclick="selectToken('security','Security','verified_user')"><span class="mat-icon material-symbols-outlined">verified_user</span>Security</button>
+                                    <button type="button" class="custom-select-option" data-val="utility" onclick="selectToken('utility','Utility','bolt')"><span class="mat-icon material-symbols-outlined">bolt</span>Utility</button>
+                                    <!-- Agrega más tipos de token según tu catálogo -->
+                                </div>
+                            </div>
+                        </div>
+                </section>
+        <style>
+        .custom-select-wrap { position: relative; width: 200px; }
+        .custom-select-trigger {
+            width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+            background: var(--input-bg,#fff); border: 1px solid var(--input-border,#e5e7eb); border-radius: 0.75rem;
+            padding: 0.75rem 1rem; font-size: 0.95rem; font-family: 'Montserrat', sans-serif; color: var(--text-main); cursor: pointer; outline: none; text-align: left;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .custom-select-trigger:focus, .custom-select-trigger.open {
+            border-color: #1855BA; box-shadow: 0 0 0 3px rgba(24,85,186,0.15);
+        }
+        .custom-select-panel {
+            position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 10010;
+            background: #fff; border: 1px solid var(--glass-border,#e5e7eb); border-radius: 0.875rem;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); overflow: hidden; display: none; flex-direction: column;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        }
+        body:not(.light-mode) .custom-select-panel {
+            background: #1a2235;
+            border-color: #334155;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+        }
+        .custom-select-panel.open { display: flex; animation: csDropIn 0.18s ease; }
+        @keyframes csDropIn { from { opacity: 0; transform: translateY(-6px);} to { opacity: 1; transform: translateY(0);} }
+        .custom-select-option { width: 100%; text-align: left; padding: 0.7rem 1rem; font-size: 0.95rem; font-family: 'Montserrat', sans-serif; font-weight: 500; color: var(--text-main); background: transparent; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: background 0.18s, color 0.18s; }
+        .custom-select-option:hover { background: rgba(24,85,186,0.08); }
+        .custom-select-option.selected {
+            background: transparent;
+            color: #1855BA !important;
+            font-weight: 700;
+        }
+        .custom-select-option.selected .mat-icon.material-symbols-outlined {
+            color: #1855BA !important;
+        }
+        body:not(.light-mode) .custom-select-option.selected {
+            color: #1855BA !important;
+        }
+        body:not(.light-mode) .custom-select-option.selected .mat-icon.material-symbols-outlined {
+            color: #1855BA !important;
+        }
+        body:not(.light-mode) .custom-select-option {
+            color: #e0e7ef;
+        }
+        body:not(.light-mode) .custom-select-option:hover {
+            background: rgba(24,85,186,0.18);
+        }
+        body:not(.light-mode) .custom-select-option.selected {
+            color: #60a5fa;
+        }
+        body:not(.light-mode) .custom-select-trigger {
+            background: #1a2235;
+            border-color: #334155;
+            color: #e0e7ef;
+        }
+        body:not(.light-mode) .custom-select-trigger:focus, body:not(.light-mode) .custom-select-trigger.open {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96,165,250,0.15);
+        }
+        </style>
+        <script>
+        // --- Custom Select Dropdowns para filtros ---
+        let currentSector = 'all', currentMarket = 'all', currentToken = 'all';
+        function closeAllCustomSelects() {
+            document.querySelectorAll('.custom-select-panel').forEach(panel => panel.classList.remove('open'));
+            document.querySelectorAll('.custom-select-trigger').forEach(btn => btn.classList.remove('open'));
+            document.querySelectorAll('.custom-select-chevron').forEach(chev => chev.style.transform = '');
+        }
+        function toggleCustomSelect(id) {
+            const panel = document.getElementById(id + 'Panel');
+            const trigger = document.getElementById(id + 'Trigger');
+            const chevron = document.getElementById(id + 'Chevron');
+            if (!panel || !trigger) return;
+            const isOpen = panel.classList.contains('open');
+            closeAllCustomSelects();
+            if (!isOpen) {
+                panel.classList.add('open');
+                panel.setAttribute('aria-hidden', 'false');
+                trigger.classList.add('open');
+                trigger.setAttribute('aria-expanded', 'true');
+                if (chevron) chevron.style.transform = 'rotate(180deg)';
+            }
+        }
+        function selectSector(val, label, icon) {
+            currentSector = val;
+            document.getElementById('sectorLabel').textContent = label;
+            document.getElementById('sectorLabel').style.opacity = '1';
+            document.getElementById('sectorLabel').style.color = 'var(--text-main)';
+            document.getElementById('sectorTrigger').querySelector('.mat-icon').textContent = icon;
+            document.querySelectorAll('#sectorPanel .custom-select-option').forEach(btn => btn.classList.toggle('selected', btn.dataset.val === val));
+            closeAllCustomSelects();
+            filterCards();
+        }
+        function selectMarket(val, label, icon) {
+            currentMarket = val;
+            document.getElementById('marketLabel').textContent = label;
+            document.getElementById('marketLabel').style.opacity = '1';
+            document.getElementById('marketLabel').style.color = 'var(--text-main)';
+            document.getElementById('marketTrigger').querySelector('.mat-icon').textContent = icon;
+            document.querySelectorAll('#marketPanel .custom-select-option').forEach(btn => btn.classList.toggle('selected', btn.dataset.val === val));
+            closeAllCustomSelects();
+            filterCards();
+        }
+        function selectToken(val, label, icon) {
+            currentToken = val;
+            document.getElementById('tokenLabel').textContent = label;
+            document.getElementById('tokenLabel').style.opacity = '1';
+            document.getElementById('tokenLabel').style.color = 'var(--text-main)';
+            document.getElementById('tokenTrigger').querySelector('.mat-icon').textContent = icon;
+            document.querySelectorAll('#tokenPanel .custom-select-option').forEach(btn => btn.classList.toggle('selected', btn.dataset.val === val));
+            closeAllCustomSelects();
+            filterCards();
+        }
+        function filterCards() {
+            const cards = document.querySelectorAll('.market-card');
+            cards.forEach(card => {
+                let show = true;
+                if (currentSector !== 'all') show = show && card.getAttribute('data-categories')?.includes(currentSector);
+                if (currentMarket !== 'all') show = show && card.getAttribute('data-market') === currentMarket;
+                if (currentToken !== 'all') show = show && card.getAttribute('data-token') === currentToken;
+                card.style.display = show ? '' : 'none';
+            });
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.custom-select-wrap')) closeAllCustomSelects();
+        });
+        </script>
+
+        <!-- ═══════ MARKET CARDS ═══════ -->
+        <section class="max-w-7xl mx-auto px-6 pb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="marketGrid" style="z-index:auto;">
+
+                <!-- Token City Exchange -->
+                <div class="market-card reveal-growth delay-100" data-categories="finance" data-market="exchange" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/token%20city.png" alt="Token City Exchange" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
+                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Token City Exchange</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">El futuro del capital privado. Agencia de Valores autorizada por la CNMV para operar un Sistema de Negociación y Liquidación bajo el Régimen Piloto de la UE para...</span>
+                            <span class="lang-en">The future of private capital. Securities Agency authorized by the CNMV to operate a Trading and Settlement System under the EU Pilot Regime for...</span>
+                        </p>
+                        <a href="https://exchange.token-city.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Adventurees -->
+                <div class="market-card reveal-growth delay-100" data-categories="finance" data-market="crowdfunding" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/alius%20capital.png" alt="Adventurees" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Adventurees</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Primera plataforma tokenizada de crowdfunding en España para empresas.</span>
+                            <span class="lang-en">Spain's first tokenized crowdfunding platform for businesses.</span>
+                        </p>
+                        <a href="https://www.adventurees.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Ökohaus -->
+                <div class="market-card reveal-growth delay-200" data-categories="real-estate" data-market="crowdfunding" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/okohause.png" alt="Ökohaus" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Ökohaus</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Tu Passivhaus llave en mano en Galicia. Ökohaus diseña y construye viviendas eficientes, sostenibles y saludables adaptadas a tu estilo de vida, combinando los...</span>
+                            <span class="lang-en">Your turnkey Passivhaus in Galicia. Ökohaus designs and builds efficient, sustainable, and healthy homes adapted to your lifestyle, combining the...</span>
+                        </p>
+                        <a href="https://okohaus.es" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Groinversia -->
+                <div class="market-card reveal-growth delay-200" data-categories="real-estate" data-market="crowdfunding" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/groinversia.png" alt="Groinversia" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Groinversia</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Grupo corporativo especializado en servicios integrales inmobiliarios.</span>
+                            <span class="lang-en">360° Real Estate Services.</span>
+                        </p>
+                        <a href="https://groinversia.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Padel Renting -->
+                <div class="market-card reveal-growth delay-100" data-categories="real-estate" data-market="crowdfunding" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/padelrenting.png" alt="Padel Renting" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Padel Renting</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Invierte en pistas de pádel con rentabilidad desde el 8%.</span>
+                            <span class="lang-en">Invest in padel courts with profitability starting from 8%.</span>
+                        </p>
+                        <a href="https://padelrenting.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Finka -->
+                <div class="market-card reveal-growth delay-200" data-categories="agro" data-market="crowdfunding" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1465101178521-c1a9136a3fdc?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/finka.png" alt="Finka" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="tractor" class="w-3 h-3"></i> Agroindustria</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Finka</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Riqueza cultivada con maestría. Invierta en el futuro de la producción alimentaria con el respaldo de un equipo multidisciplinar que gestiona operativa agrícola...</span>
+                            <span class="lang-en">Wealth cultivated with mastery. Invest in the future of food production backed by a multidisciplinary team managing agricultural operations...</span>
+                        </p>
+                        <a href="https://finka.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HDS -->
+                <div class="market-card reveal-growth delay-100" data-categories="finance" data-market="crowdfunding" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/hds.png" alt="HDS" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">HDS</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Acceso global a la industria de defensa mediante tecnología blockchain.</span>
+                            <span class="lang-en">Invest in the Safety of the Global Future.</span>
+                        </p>
+                        <a href="https://hds.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Global Gold -->
+                <div class="market-card reveal-growth delay-200" data-categories="commodities" data-market="exchange" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1508385082359-f48b1cbe8b53?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/globalgold.png" alt="Global Gold" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="diamond" class="w-3 h-3"></i> Commodities</span>
+                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Global Gold</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Oro fraccionado en tokens, el valor del oro sin limitaciones físicas.</span>
+                            <span class="lang-en">Tokenized gold without physical limitations.</span>
+                        </p>
+                        <a href="https://globalgold.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Armahabitatum -->
+                <div class="market-card reveal-growth delay-100" data-categories="real-estate" data-market="crowdfunding" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/arcahabitatum.png" alt="Armahabitatum" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Armahabitatum</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Vehiculo de inversión inmobiliaria con rentabilidad objetivo superior al 12%.</span>
+                            <span class="lang-en">Professionally managed vehicle targeting net returns above 12%.</span>
+                        </p>
+                        <a href="https://armahabitatum.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tokenix -->
+                <div class="market-card reveal-growth delay-200" data-categories="real-estate" data-market="crowdfunding" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/tokenix.png" alt="Tokenix" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Tokenix</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Nueva era de inversión inmobiliaria fraccionada y seleccionada.</span>
+                            <span class="lang-en">Connect with the Future of Business and Real Estate Investment.</span>
+                        </p>
+                        <a href="https://tokenix.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Equito -->
+                <div class="market-card reveal-growth delay-100" data-categories="real-estate" data-market="crowdfunding" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/equito.png" alt="Equito" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Equito</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Primera app móvil que permite invertir en inmuebles desde 100€.</span>
+                            <span class="lang-en">Investing in Real Estate in Less Than Two Minutes.</span>
+                        </p>
+                        <a href="https://equito.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- The Muxic -->
+                <div class="market-card reveal-growth delay-200" data-categories="music" data-market="crowdfunding" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1465101178521-c1a9136a3fdc?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/muxic.png" alt="The Muxic" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="music" class="w-3 h-3"></i> Música</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">The Muxic</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Comunidad única de fans que invierte en música y apoya a sus artistas.</span>
+                            <span class="lang-en">You love music. Now you can own it.</span>
+                        </p>
+                        <a href="https://themuxic.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Dianelum -->
+                <div class="market-card reveal-growth delay-100" data-categories="commodities" data-market="exchange" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/dianelum.png" alt="Dianelum" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="diamond" class="w-3 h-3"></i> Commodities</span>
+                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Dianelum</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Diamantes sostenibles y éticos creados en laboratorio.</span>
+                            <span class="lang-en">Sustainable and ethical diamonds.</span>
+                        </p>
+                        <a href="https://dianelum.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- WAYS -->
+                <div class="market-card reveal-growth delay-200" data-categories="tourism" data-market="crowdfunding" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/ways.png" alt="WAYS" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="map" class="w-3 h-3"></i> Turismo</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">WAYS</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Primera plataforma blockchain para turismo regenerativo en el Camino de Santiago.</span>
+                            <span class="lang-en">First Blockchain Platform for Regenerative Travel.</span>
+                        </p>
+                        <a href="https://ways.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Codigoo -->
+                <div class="market-card reveal-growth delay-100" data-categories="art" data-market="crowdfunding" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/codigoo.png" alt="Codigoo" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="palette" class="w-3 h-3"></i> Arte</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Codigoo</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Tokenización de contenido audiovisual: registro, trazabilidad y protección.</span>
+                            <span class="lang-en">Tokenization of Media Content.</span>
+                        </p>
+                        <a href="https://codigoo.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Medulio Capital -->
+                <div class="market-card reveal-growth delay-200" data-categories="finance" data-market="exchange" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1508385082359-f48b1cbe8b53?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/medulio.png" alt="Medulio Capital" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
+                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Medulio Capital</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Solución de inversión blockchain que permite carteras dinámicas y diversificadas.</span>
+                            <span class="lang-en">Blockchain-powered investment solution for dynamic portfolios.</span>
+                        </p>
+                        <a href="https://meduliocapital.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Block4e -->
+                <div class="market-card reveal-growth delay-100" data-categories="finance" data-market="exchange" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/block4e.png" alt="Block4e" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
+                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Block4e</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Especialistas en activos financieros y mercados de capitales en emisión privada en Perú.</span>
+                            <span class="lang-en">Real world Asset Tokenization specialists.</span>
+                        </p>
+                        <a href="https://block4e.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Realbites -->
+                <div class="market-card reveal-growth delay-200" data-categories="real-estate" data-market="exchange" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/realbites.png" alt="Realbites" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Realbites</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Solución para invertir en activos inmobiliarios de forma cómoda, fiable y ágil.</span>
+                            <span class="lang-en">Bite by Bite Tokenizing the world.</span>
+                        </p>
+                        <a href="https://realbites.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Valorix -->
+                <div class="market-card reveal-growth delay-100" data-categories="finance" data-market="exchange" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/valorix.png" alt="Valorix" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
+                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Valorix</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">La revolución de los Real World Assets en Web 3.0.</span>
+                            <span class="lang-en">The revolution of Real World Assets in Web 3.0.</span>
+                        </p>
+                        <a href="https://valorix.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Beself Brands -->
+                <div class="market-card reveal-growth delay-200" data-categories="art" data-market="crowdfunding" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/beself.png" alt="Beself Brands" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="palette" class="w-3 h-3"></i> Arte</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Beself Brands</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Diseño y creación de productos para desarrollar pasiones dentro y fuera del hogar.</span>
+                            <span class="lang-en">Specialists in Lifestyle and Home Brands.</span>
+                        </p>
+                        <a href="https://beselfbrands.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Elevio Rent -->
+                <div class="market-card reveal-growth delay-100" data-categories="real-estate" data-market="exchange" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/elevio.png" alt="Elevio Rent" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Elevio Rent</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Inversiones inmobiliarias tokenizadas con las mejores propiedades en alquiler.</span>
+                            <span class="lang-en">Tokenized Real Estate Investments.</span>
+                        </p>
+                        <a href="https://eleviorent.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- TokenGO -->
+                <div class="market-card reveal-growth delay-200" data-categories="real-estate" data-market="exchange" data-token="utility">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/tokengo.png" alt="TokenGO" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">TokenGO</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Selección de inversiones inmobiliarias en Chile con acceso fraccionado.</span>
+                            <span class="lang-en">Select Real Estate Investments in Chile.</span>
+                        </p>
+                        <a href="https://tokengo.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Equalice -->
+                <div class="market-card reveal-growth delay-100" data-categories="real-estate" data-market="crowdfunding" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/equalice.png" alt="Equalice" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Equalice</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Plataforma de inversión para proyectos inmobiliarios diversificados.</span>
+                            <span class="lang-en">Diversify your Investments, Maximize your Profits.</span>
+                        </p>
+                        <a href="https://equalice.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Marv -->
+                <div class="market-card reveal-growth delay-200" data-categories="real-estate" data-market="crowdfunding" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1465101178521-c1a9136a3fdc?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/marv.png" alt="Marv" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
+                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Marv</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Compramos, reformamos y alquilamos propiedades seleccionadas para generar ingresos.</span>
+                            <span class="lang-en">Real Estate Transactions with Optimal Return.</span>
+                        </p>
+                        <a href="https://marv.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tokenbit -->
+                <div class="market-card reveal-growth delay-100" data-categories="finance" data-market="exchange" data-token="security">
+                    <div class="market-card-logo">
+                        <div class="market-card-bg" style="background-image:url('https://images.unsplash.com/photo-1508385082359-f48b1cbe8b53?auto=format&fit=crop&w=400&q=80');"></div>
+                        <div class="market-card-overlay"></div>
+                        <div class="logo-overlay"><img src="Logos/tokenbit.png" alt="Tokenbit" loading="lazy"></div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
+                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                        </div>
+                        <h3 class="font-extrabold text-lg heading-text mb-2">Tokenbit</h3>
+                        <p class="text-sm body-text leading-relaxed mb-4">
+                            <span class="lang-es">Inversión alternativa en franquicias y bienes inmuebles mediante préstamos participativos.</span>
+                            <span class="lang-en">Alternative investing in franchise businesses and Real Estate.</span>
+                        </p>
+                        <a href="https://tokenbit.com" target="_blank" class="btn-text">
+                            <span class="lang-es">Saber más</span><span class="lang-en">Learn more</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ═══════ CTA ═══════ -->
+        <section class="px-6 pb-24">
+            <div class="max-w-5xl mx-auto reveal-growth delay-100" style="background: linear-gradient(135deg, #0E3370 0%, #1855BA 55%, #15803d 130%); border-radius: 2rem; padding: 3rem 2rem; text-align: center; color: #ffffff; position: relative; overflow: hidden;">
+                <div style="position: absolute; inset: 0; background: radial-gradient(circle at 0% 100%, rgba(34, 197, 94, 0.25), transparent 50%), radial-gradient(circle at 100% 0%, rgba(96, 165, 250, 0.25), transparent 50%); pointer-events: none;"></div>
+                <div class="relative">
+                    <p class="section-label mb-3" style="color: #86efac;">
+                        <span class="lang-es">¿Tienes un activo para tokenizar?</span>
+                        <span class="lang-en">Have an asset to tokenize?</span>
+                    </p>
+                    <h3 class="text-3xl md:text-4xl font-extrabold mb-4" style="color: #ffffff;">
+                        <span class="lang-es">Tokeniza tu activo en nuestro marketplace</span>
+                        <span class="lang-en">Tokenize your asset on our marketplace</span>
+                    </h3>
+                    <p class="text-white/80 max-w-xl mx-auto mb-8 leading-relaxed">
+                        <span class="lang-es">Únete a las empresas que ya están transformando sus activos en oportunidades de inversión globales.</span>
+                        <span class="lang-en">Join the companies already transforming their assets into global investment opportunities.</span>
+                    </p>
+                    <a href="/energy.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#0E3370] font-extrabold rounded-[15px] hover:bg-gray-100 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                        <span class="lang-es">Solicita información</span>
+                        <span class="lang-en">Request information</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script>
+        let __marketplaceInited = false;
+
+        function initMarketplacePage() {
+            if (__marketplaceInited) return;
+            __marketplaceInited = true;
+            if (window.lucide) window.lucide.createIcons();
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.remove('reverse');
+                        e.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            const observerReverse = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting && e.boundingClientRect.top > 0) {
+                        e.target.classList.remove('active');
+                        e.target.classList.add('reverse');
+                        setTimeout(() => e.target.classList.remove('reverse'), 1200);
+                    }
+                });
+            }, { threshold: 0 });
+
+            document.querySelectorAll('.reveal-growth').forEach(el => {
+                observer.observe(el);
+                observerReverse.observe(el);
+            });
+
+            document.querySelectorAll('.participant-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    this.classList.toggle('is-flipped');
+                    if (e.target.closest('.card-toggle-btn')) return;
+                    const cat = this.dataset.category;
+                    const pill = document.querySelector(`.category-pill[data-category="${cat}"]`);
+                    if (pill) toggleCategory(cat, pill);
+                });
+            });
+
+            updateToggleVisuals();
+        }
+
+        window.addEventListener('tcav:components-loaded', initMarketplacePage);
+
+        if (document.readyState !== 'loading') {
+            setTimeout(() => {
+                if (!document.querySelector('#navbar')) return;
+                initMarketplacePage();
+            }, 50);
+        }
+
+        function openVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('youtubeIframe');
+            iframe.src = 'https://www.youtube.com/embed/btdmI2R2BXU?autoplay=1';
+            modal.classList.add('open');
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('youtubeIframe');
+            iframe.src = '';
+            modal.classList.remove('open');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeVideoModal();
+        });
+
+        function toggleCategory(category, btn) {
+            const allBtn = document.querySelector('.category-pill[data-category="all"]');
+
+            if (category === 'all') {
+                document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+                allBtn.classList.add('active');
+                document.querySelectorAll('.market-card').forEach(card => card.style.display = '');
+                return;
+            }
+
+            allBtn.classList.remove('active');
+            btn.classList.toggle('active');
+
+            const activeCats = [];
+            document.querySelectorAll('.category-pill.active').forEach(p => {
+                const c = p.dataset.category;
+                if (c !== 'all') activeCats.push(c);
+            });
+
+            if (activeCats.length === 0) {
+                allBtn.classList.add('active');
+                document.querySelectorAll('.market-card').forEach(card => card.style.display = '');
+                return;
+            }
+
+            document.querySelectorAll('.market-card').forEach(card => {
+                const cats = (card.getAttribute('data-categories') || '').split(' ');
+                const match = activeCats.some(c => cats.includes(c));
+                card.style.display = match ? '' : 'none';
+            });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const html = document.documentElement;
+            const isLight = body.classList.toggle('light-mode');
+            if (isLight) { html.classList.remove('dark'); localStorage.setItem('themePreference', 'light'); }
+            else { html.classList.add('dark'); localStorage.setItem('themePreference', 'dark'); }
+            updateToggleVisuals();
+        }
+
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const isEn = document.body.classList.contains('lang-en');
+            document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
+            document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
+            const activeIconName = isLight ? 'sun' : 'moon';
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
+                </div>`;
+            document.querySelectorAll('.theme-toggle').forEach(t => t.innerHTML = trackHTML);
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function toggleLanguage() {
+            document.body.classList.toggle('lang-en');
+            updateToggleVisuals();
+        }
+
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobileDrawer');
+            if (!drawer) return;
+            const isOpen = drawer.classList.toggle('open');
+            const overlay = document.getElementById('navOverlay');
+            const controlsBar = document.querySelector('.controls-bar');
+            overlay.style.visibility = isOpen ? 'visible' : (document.querySelector('.nav-item:hover') ? 'visible' : 'hidden');
+            overlay.style.opacity = isOpen ? '1' : (document.querySelector('.nav-item:hover') ? '1' : '0');
+            controlsBar.style.display = isOpen ? 'none' : 'flex';
+        }
+
+        function toggleSubmenu(id) {
+            const node = document.getElementById(id);
+            if (node) node.classList.toggle('open');
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) nav.classList.add('shadow-lg');
+            else nav.classList.remove('shadow-lg');
+        });
+    </script>
+</body>
+</html>

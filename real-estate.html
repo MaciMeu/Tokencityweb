@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Tokenización de activos inmobiliarios (Real Estate)</title>
+    <meta name="description"
+        content="Financia tus proyectos inmobiliarios y dales liquidez mediante la tokenización. Acceso a inversión global, democratización de la propiedad y mercados secundarios.">
+
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                const nightTime = (hour >= 19 || hour < 7);
+                isLight = !systemDark && !nightTime;
+            }
+            if (isLight) {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5, 7, 10, 0.95);
+        }
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5, 7, 10, 0.95);
+        }
+        .heading-text { color: var(--text-main); }
+        .body-text { color: var(--text-muted); }
+        .section-label { color: var(--primary-blue); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        body:not(.light-mode) .section-label { color: #60a5fa; }
+        .hero-team .section-label { color: #60a5fa; }
+
+        .hero-team { position: relative; overflow: hidden; background: #05070a; }
+        .hero-media {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+            transform: scale(1.03); opacity: 0.4;
+        }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color)); }
+        .hero-grid {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px; mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+        }
+
+        /* Navigation Specifics */
+        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .mega-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem; opacity: 0; visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); z-index: 100;
+        }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+        #navOverlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+
+        #mobileDrawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+            background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; border-left: 1px solid var(--glass-border);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+
+        /* Floating Controls */
+        .controls-bar {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            background: rgba(5, 7, 10, 0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+        /* Override styles-tcav.css vertical toggle → horizontal */
+        .theme-toggle {
+            position: relative; width: 52px; height: 28px; background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 999px; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+        }
+        .theme-toggle-thumb {
+            position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background-color: #ffffff;
+            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); z-index: 2;
+        }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+        .controls-bar .theme-toggle { background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); }
+        .controls-bar .toggle-track-icon { color: #ffffff; }
+        .controls-bar .thumb-icon { color: var(--primary-blue); }
+        .controls-bar .lang-switch-track { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.15); }
+
+        .lead-form-realestate {
+            background: var(--glass-bg); padding: 3rem; border-radius: 2rem;
+            border: 1px solid var(--glass-border); backdrop-filter: blur(12px);
+        }
+
+        input, select, textarea {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            outline: none;
+        }
+        body.light-mode input, body.light-mode select, body.light-mode textarea {
+            background: rgba(0, 0, 0, 0.03) !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            color: #0f172a !important;
+        }
+
+        @media (max-width: 640px) {
+            .lead-form-realestate { padding: 1.5rem; }
+            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        if (window.__isThemeLight) document.body.classList.add('light-mode');
+    </script>
+
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero-team min-h-[85vh] flex flex-col items-center justify-center text-center pt-28 pb-48 px-6">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid absolute inset-0"></div>
+            <div class="relative z-10 max-w-5xl reveal-growth">
+                <p class="section-label mb-6 !text-green-500">Tokenización de activos inmobiliarios</p>
+                <h1 class="text-5xl font-black text-white mb-6 uppercase tracking-tighter leading-tight">
+                    Financia tus proyectos, <br><span class="text-green-500">hazlos más accesibles y líquidos</span>
+                </h1>
+                <p class="body-text text-lg text-gray-300 max-w-3xl mx-auto font-medium">
+                    Descubre una nueva forma de hacer crecer tu patrimonio y tus negocios en el sector inmobiliario con la tokenización en blockchain.
+                </p>
+            </div>
+        </section>
+
+        <!-- Formulario -->
+        <section class="px-6 -mt-40 md:-mt-56 relative z-30 pb-20">
+            <div class="max-w-5xl mx-auto">
+                <div class="lead-form-realestate shadow-2xl reveal-growth delay-200">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl md:text-4xl font-extrabold heading-text mb-2 uppercase tracking-tight">¿Listo para dar el siguiente paso?</h2>
+                        <p class="body-text text-base">Cuéntanos sobre tu activo y te ayudaremos a estructurar la mejor solución.</p>
+                    </div>
+
+                    <form class="grid grid-cols-1 md:grid-cols-2 gap-[15px]" onsubmit="event.preventDefault();">
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Nombre</label>
+                            <input type="text" required placeholder="Nombre completo" class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Apellidos</label>
+                            <input type="text" required placeholder="Apellidos" class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Email corporativo</label>
+                            <input type="email" required placeholder="ejemplo@empresa.com" class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Teléfono</label>
+                            <input type="tel" required placeholder="+34 600 000 000" class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Empresa</label>
+                            <input type="text" placeholder="Nombre de tu empresa" class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">País</label>
+                            <select class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                                <option value="">Selecciona país</option>
+                                <option>España</option>
+                                <option>México</option>
+                                <option>Argentina</option>
+                                <option>Colombia</option>
+                                <option>Otros</option>
+                            </select>
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">¿Tienes comunidad inversora propia?</label>
+                            <select class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                                <option value="">Selecciona</option>
+                                <option>Sí</option>
+                                <option>No</option>
+                                <option>Parcialmente</option>
+                            </select>
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Perfil empresarial</label>
+                            <select class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                                <option value="">Selecciona perfil</option>
+                                <option>Agente inmobiliario</option>
+                                <option>Promotor</option>
+                                <option>Gestor</option>
+                                <option>Entidad financiera</option>
+                                <option>Organismo público</option>
+                                <option>Otros</option>
+                            </select>
+                        </div>
+                        <div class="space-y-[2.5px] md:col-span-2">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Descripción de tus necesidades</label>
+                            <textarea rows="4" placeholder="Cuéntanos cómo podemos ayudar" class="w-full px-[15px] py-[15px] rounded-[15px] border"></textarea>
+                        </div>
+
+                        <div class="md:col-span-2 space-y-3 pt-3 border-t" style="border-color: var(--glass-border);">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-green-500 focus:ring-green-400">
+                                <span class="text-[10px] opacity-60 font-medium group-hover:opacity-90 transition-opacity" style="color: var(--text-main);">Estoy de acuerdo en recibir comunicaciones sobre novedades y oportunidades.</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" required class="w-4 h-4 rounded border-gray-300 text-green-500 focus:ring-green-400">
+                                <span class="text-[10px] opacity-60 font-medium group-hover:opacity-90 transition-opacity" style="color: var(--text-main);">Estoy de acuerdo con los <a href="policy-template.html" class="text-green-500 hover:underline">términos y la política de privacidad</a>.</span>
+                            </label>
+                        </div>
+
+                        <div class="md:col-span-2 mt-2">
+                            <button type="submit" class="w-full py-[15px] bg-green-600 hover:bg-green-700 text-white font-bold rounded-[15px] transition-all active:scale-[0.98] flex items-center justify-center gap-2 group">
+                                <span>Consulta sin compromiso</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ¿Qué es la tokenización? -->
+        <section class="px-6 py-24">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row gap-16 items-center reveal-growth">
+                    <div class="flex-1">
+                        <p class="section-label mb-4">Real Estate tokenizado</p>
+                        <h2 class="text-4xl font-extrabold heading-text uppercase tracking-tight mb-6">¿Qué es la tokenización de activos inmobiliarios?</h2>
+                        <p class="body-text text-base leading-relaxed mb-4">
+                            La tokenización de activos inmobiliarios es el proceso por el cual activos tradicionales se convierten en activos digitales denominados <strong class="heading-text">'tokens'</strong>, los cuales están registrados en tecnología blockchain y tienen pleno reconocimiento jurídico.
+                        </p>
+                        <p class="body-text text-base leading-relaxed">
+                            Cada token representa una fracción de derechos económicos vinculados a propiedad empresarial o deuda emitida, permitiendo la venta de forma ágil, segura y global.
+                        </p>
+                    </div>
+                    <div class="flex-1 grid grid-cols-2 gap-4">
+                        <div class="highlight-card p-6 rounded-[1.5rem]">
+                            <div class="w-10 h-10 rounded-[12px] bg-green-500/10 flex items-center justify-center text-green-500 mb-4">
+                                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold heading-text mb-2">Reconocimiento jurídico</h4>
+                            <p class="body-text text-xs">Tokens con plena validez legal en jurisdicciones reguladas.</p>
+                        </div>
+                        <div class="highlight-card p-6 rounded-[1.5rem]">
+                            <div class="w-10 h-10 rounded-[12px] bg-blue-500/10 flex items-center justify-center text-blue-500 mb-4">
+                                <i data-lucide="link" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold heading-text mb-2">Blockchain</h4>
+                            <p class="body-text text-xs">Registro inmutable y transparente de la propiedad y sus transacciones.</p>
+                        </div>
+                        <div class="highlight-card p-6 rounded-[1.5rem]">
+                            <div class="w-10 h-10 rounded-[12px] bg-purple-500/10 flex items-center justify-center text-purple-500 mb-4">
+                                <i data-lucide="split" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold heading-text mb-2">Fraccionamiento</h4>
+                            <p class="body-text text-xs">Democratiza la inversión dividiendo el activo en fracciones accesibles.</p>
+                        </div>
+                        <div class="highlight-card p-6 rounded-[1.5rem]">
+                            <div class="w-10 h-10 rounded-[12px] bg-green-500/10 flex items-center justify-center text-green-500 mb-4">
+                                <i data-lucide="globe" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold heading-text mb-2">Distribución global</h4>
+                            <p class="body-text text-xs">Acceso a inversores de todo el mundo de forma regulada.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proceso 3 pasos -->
+        <section class="px-6 py-24">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-20 reveal-growth">
+                    <p class="section-label mb-2">Líderes en activos reales</p>
+                    <h2 class="text-4xl font-extrabold heading-text uppercase tracking-tight">¿Cómo tokenizamos tu inmueble?</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <div class="infra-card-style p-10 rounded-[30px] text-center reveal-growth delay-100" style="border-left-color: #22c55e;">
+                        <div class="w-12 h-12 mx-auto mb-8 rounded-[15px] bg-green-500/10 flex items-center justify-center text-green-500">
+                            <i data-lucide="building-2" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-2xl font-semibold heading-text mb-4 uppercase tracking-tight">1. Activo Real</h4>
+                        <p class="body-text text-base">Evaluamos tu activo y te ayudamos a estructurar la tokenización, ya sea equity o deuda.</p>
+                    </div>
+                    <div class="infra-card-style p-10 rounded-[30px] text-center reveal-growth delay-200" style="border-left-color: #3b82f6;">
+                        <div class="w-12 h-12 mx-auto mb-8 rounded-[15px] bg-blue-500/10 flex items-center justify-center text-blue-500">
+                            <i data-lucide="coins" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-2xl font-semibold heading-text mb-4 uppercase tracking-tight">2. Financiación</h4>
+                        <p class="body-text text-base">Proporcionamos la infraestructura y cobertura regulatoria para la venta de tokens, tanto en comunidades privadas como en canales regulados.</p>
+                    </div>
+                    <div class="infra-card-style p-10 rounded-[30px] text-center reveal-growth delay-300" style="border-left-color: #8b5cf6;">
+                        <div class="w-12 h-12 mx-auto mb-8 rounded-[15px] bg-purple-500/10 flex items-center justify-center text-purple-500">
+                            <i data-lucide="arrow-left-right" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-2xl font-semibold heading-text mb-4 uppercase tracking-tight">3. Negociación</h4>
+                        <p class="body-text text-base">Facilitamos el acceso a los mercados privados y públicos regulados donde los tokens se pueden comprar y vender, dotando al activo de mayor liquidez.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bento: ¿Por qué tokenizar con Token City? -->
+        <section class="max-w-7xl mx-auto mb-16 md:mb-32 reveal-growth px-4 md:px-6">
+            <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-3 md:gap-6">
+                    <!-- Fila superior: Título + Imagen -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+                        <div class="col-span-2 p-6 md:p-10 rounded-[1.5rem] glass flex flex-col justify-center relative overflow-hidden"
+                            style="background-color: var(--card-highlight-bg);">
+                            <div class="relative z-10">
+                                <p class="section-label mb-4">¿Por qué Token City?</p>
+                                <h2 class="text-2xl md:text-4xl font-extrabold heading-text leading-tight mb-3 md:mb-4 bento-title">
+                                    ¿Por qué tokenizar tus<br>
+                                    <span class="text-green-500">activos con Token City?</span>
+                                </h2>
+                                <p class="body-text text-xs md:text-base leading-relaxed">
+                                    Empresa que acompaña todas las fases del proceso: infraestructura tecnológica, cumplimiento regulatorio y acceso a inversores.
+                                </p>
+                            </div>
+                            <div class="absolute top-0 right-0 w-64 h-64 bg-green-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                        </div>
+                        <div class="col-span-2 rounded-[1.5rem] relative overflow-hidden group shadow-2xl min-h-[220px]">
+                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80"
+                                alt="Arquitectura moderna"
+                                class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-700">
+                            <div class="absolute inset-0 bg-green-600/10 group-hover:bg-transparent transition-all"></div>
+                        </div>
+                    </div>
+
+                    <!-- Fila inferior: 3 beneficios -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
+                        <div class="col-span-1 p-6 rounded-[1.5rem] relative overflow-hidden group hover:-translate-y-1 min-h-[140px] flex flex-col justify-center infra-card-style" style="border-left-color: #22c55e;">
+                            <div class="relative z-10 flex flex-col items-start gap-3">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[15px] flex items-center justify-center shrink-0" style="background-color: var(--card-hover-bg); color: #22c55e;">
+                                    <i data-lucide="zap" class="w-4 h-4 md:w-5 md:h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm md:text-lg heading-text leading-tight mb-1 bento-title">Acceso a capital inmediato</h4>
+                                    <p class="text-[10px] md:text-xs leading-snug body-text">Amplía tu red de inversores facilitando el acceso a minoristas e institucionales de forma ágil y segura.</p>
+                                </div>
+                            </div>
+                            <i data-lucide="zap" class="absolute -right-2 -bottom-4 w-16 h-16 md:w-20 md:h-20 text-green-500 transform rotate-12" style="opacity: 0.08;"></i>
+                        </div>
+                        <div class="col-span-1 p-6 rounded-[1.5rem] relative overflow-hidden group hover:-translate-y-1 min-h-[140px] flex flex-col justify-center infra-card-style" style="border-left-color: #3b82f6;">
+                            <div class="relative z-10 flex flex-col items-start gap-3">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[15px] flex items-center justify-center shrink-0" style="background-color: var(--card-hover-bg); color: #3b82f6;">
+                                    <i data-lucide="globe" class="w-4 h-4 md:w-5 md:h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm md:text-lg heading-text leading-tight mb-1 bento-title">Mercado global, mayor demanda</h4>
+                                    <p class="text-[10px] md:text-xs leading-snug body-text">Tu activo adquiere grado institucional con la obtención de un ISIN, ganando acceso a nuevos canales de distribución global.</p>
+                                </div>
+                            </div>
+                            <i data-lucide="globe" class="absolute -right-2 -bottom-4 w-16 h-16 md:w-20 md:h-20 text-blue-500 transform rotate-12" style="opacity: 0.08;"></i>
+                        </div>
+                        <div class="col-span-1 p-6 rounded-[1.5rem] relative overflow-hidden group hover:-translate-y-1 min-h-[140px] flex flex-col justify-center infra-card-style" style="border-left-color: #22c55e;">
+                            <div class="relative z-10 flex flex-col items-start gap-3">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[15px] flex items-center justify-center shrink-0" style="background-color: var(--card-hover-bg); color: #22c55e;">
+                                    <i data-lucide="settings" class="w-4 h-4 md:w-5 md:h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm md:text-lg heading-text leading-tight mb-1 bento-title">Flexibilidad y control</h4>
+                                    <p class="text-[10px] md:text-xs leading-snug body-text">Tú decides las condiciones de la inversión. Mantén el control de tu activo y benefíciate de su gestión y revalorización futura.</p>
+                                </div>
+                            </div>
+                            <i data-lucide="settings" class="absolute -right-2 -bottom-4 w-16 h-16 md:w-20 md:h-20 text-green-500 transform rotate-12" style="opacity: 0.08;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Partners -->
+        <section class="px-6 py-24">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 reveal-growth">
+                    <p class="section-label mb-2">Ecosistema</p>
+                    <h2 class="text-4xl font-extrabold heading-text uppercase tracking-tight">Aliados con visión, trayectoria y compromiso</h2>
+                    <p class="body-text text-base mt-4 max-w-2xl mx-auto">Para transformar el sector inmobiliario.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                    <div class="infra-card-style p-8 rounded-[30px] reveal-growth delay-100 flex flex-col gap-4" style="border-left-color: #22c55e;">
+                        <div class="w-12 h-12 rounded-[15px] bg-green-500/10 flex items-center justify-center text-green-500">
+                            <i data-lucide="handshake" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-semibold heading-text mb-2">JV20 Investment & Advisory</h4>
+                            <p class="body-text text-sm">Asesoramiento especializado en inversión y estructuración de activos inmobiliarios tokenizados.</p>
+                        </div>
+                    </div>
+                    <div class="infra-card-style p-8 rounded-[30px] reveal-growth delay-200 flex flex-col gap-4" style="border-left-color: #3b82f6;">
+                        <div class="w-12 h-12 rounded-[15px] bg-blue-500/10 flex items-center justify-center text-blue-500">
+                            <i data-lucide="users" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-semibold heading-text mb-2">Somosenlace</h4>
+                            <p class="body-text text-sm">Red de distribución y acceso a comunidades inversoras para la colocación de activos tokenizados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script src="global-scripts.js"></script>
+</body>
+
+</html>

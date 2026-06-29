@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token City - Sistema de Diseño</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC',
+                            100: '#DCE6F5',
+                            200: '#A3BBE3',
+                            300: '#7499D6',
+                            400: '#4677C8',
+                            500: '#1855BA',
+                            600: '#134495',
+                            700: '#0E3370',
+                            800: '#0A224A',
+                            900: '#051125',
+                            950: '#020813',
+                        },
+                        'azul-acero-dark': {
+                            50: '#010409',
+                            100: '#040D1C',
+                            200: '#0A224A',
+                            300: '#0E3370',
+                            400: '#134495',
+                            500: '#1855ba',
+                            600: '#4677C8',
+                            700: '#7499D6',
+                            800: '#A3BBE3',
+                            900: '#D1DDF1',
+                            950: '#E8EEF8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --card-highlight-bg: #1855BA;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+        }
+
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body.light-mode {
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .section-label {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        body:not(.light-mode) .section-label {
+            color: #60a5fa;
+        }
+
+        .body-text {
+            color: var(--text-muted);
+        }
+
+        .heading-text {
+            color: var(--text-main);
+        }
+
+        .component-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: var(--glass-bg);
+            border-radius: 1.875rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .component-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* ===== CARD TYPES ===== */
+
+        /* Client Card */
+        .client-card {
+            border-top: 4px solid var(--primary-blue);
+            border-radius: 1.875rem !important;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        body:not(.light-mode) .client-card {
+            background: #1a2235;
+        }
+
+        body.light-mode .client-card {
+            background: white;
+            border-top: 4px solid var(--primary-blue);
+        }
+
+        /* Infra Card Style */
+        .infra-card-style {
+            position: relative;
+            overflow: hidden;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--primary-blue);
+            transition: all 0.3s ease;
+        }
+
+        .infra-card-style:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        body.light-mode .infra-card-style {
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body:not(.light-mode) .infra-card-style {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Highlight Card (Glass) */
+        .highlight-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        body.light-mode .highlight-card {
+            background: white;
+        }
+
+        body:not(.light-mode) .highlight-card {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Blog Flip Card */
+        .blog-card-flip {
+            perspective: 1000px;
+            height: 280px;
+        }
+
+        .blog-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .blog-card-flip:hover .blog-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .blog-card-front,
+        .blog-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.875rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        body.light-mode .blog-card-front {
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        body:not(.light-mode) .blog-card-front {
+            background: #1a2235;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .blog-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #1855BA, #0d3a8a);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Testimonial Card Style */
+        .testimonial-card-style {
+            position: relative;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card-style:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        body.light-mode .testimonial-card-style {
+            background: white;
+        }
+
+        body:not(.light-mode) .testimonial-card-style {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Participant Card (Flip) */
+        .participant-card {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .participant-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .participant-card.is-flipped .participant-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.875rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        body.light-mode .card-face {
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        body:not(.light-mode) .card-face {
+            background: #1a2235;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .card-face.face-front {
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .card-face.face-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #1855BA, #0d3a8a);
+            color: white;
+        }
+
+        .card-toggle-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-toggle-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Floating Controls Bar */
+        .controls-bar {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: rgba(5, 7, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+            cursor: pointer;
+        }
+
+        .theme-toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .toggle-track-icon {
+            color: #94a3b8;
+            width: 12px;
+            height: 12px;
+            z-index: 1;
+        }
+
+        .thumb-icon {
+            width: 12px;
+            height: 12px;
+            color: #1855BA;
+        }
+
+        body.light-mode .theme-toggle-thumb {
+            transform: translateX(24px);
+        }
+
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .lang-label {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .lang-label-es {
+            color: #ffffff;
+        }
+
+        .lang-label-en {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .lang-label-es {
+            color: #a1a1aa;
+        }
+
+        body.lang-en .lang-label-en {
+            color: #ffffff;
+        }
+
+        .lang-switch-track {
+            width: 36px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: background-color 0.3s;
+        }
+
+        .lang-switch-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
+            background-color: #1855BA;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        body.lang-en .lang-switch-thumb {
+            transform: translateX(18px);
+        }
+
+        @media (max-width: 768px) {
+            .controls-bar {
+                display: none;
+            }
+        }
+
+        /* ===== LIGHT MODE OVERRIDES ===== */
+        
+        body.light-mode {
+            background-color: #f8fafc;
+        }
+
+        body.light-mode .component-section {
+            background: white;
+            border-color: #e5e7eb;
+        }
+
+        body.light-mode .component-title {
+            color: #1855BA;
+        }
+
+        body.light-mode .heading-text {
+            color: #0f172a;
+        }
+
+        body.light-mode .body-text {
+            color: #475569;
+        }
+
+        /* Client Card Light Mode */
+        body.light-mode .client-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .client-card h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .client-card p {
+            color: #475569;
+        }
+
+        /* Infra Card Light Mode */
+        body.light-mode .infra-card-style {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .infra-card-style:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        body.light-mode .infra-card-style h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .infra-card-style p {
+            color: #64748b;
+        }
+
+        /* Highlight Card Light Mode */
+        body.light-mode .highlight-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .highlight-card:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        body.light-mode .highlight-card h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .highlight-card p {
+            color: #64748b;
+        }
+
+        /* Blog Card Light Mode */
+        body.light-mode .blog-card-front {
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        body.light-mode .blog-card-front h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .blog-card-front p {
+            color: #64748b;
+        }
+
+        body.light-mode .blog-card-front .section-label {
+            color: #1855BA;
+        }
+
+        /* Testimonial Card Light Mode */
+        body.light-mode .testimonial-card-style {
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        body.light-mode .testimonial-card-style h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .testimonial-card-style p {
+            color: #64748b;
+        }
+
+        /* Participant Card Light Mode */
+        body.light-mode .card-face.face-front {
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        body.light-mode .card-face.face-front h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .card-face.face-front p {
+            color: #64748b;
+        }
+
+        body.light-mode .participant-card h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .participant-card p {
+            color: #64748b;
+        }
+
+        /* Pricing Card Light Mode */
+        body.light-mode [class*="pricing"] h4,
+        body.light-mode [class*="Precio"] h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .pricing-card h4,
+        body.light-mode .pricing-card p {
+            color: #0f172a;
+        }
+
+        body.light-mode .pricing-card ul li {
+            color: #64748b;
+        }
+
+        /* Stats Card Light Mode */
+        body.light-mode .stat-card h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .stat-card p {
+            color: #64748b;
+        }
+
+        /* Inputs Light Mode */
+        body.light-mode input[type="text"],
+        body.light-mode input[type="email"],
+        body.light-mode input[type="password"],
+        body.light-mode input[type="tel"],
+        body.light-mode textarea,
+        body.light-mode select {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
+        }
+
+        body.light-mode input::placeholder {
+            color: #94a3b8;
+        }
+
+        body.light-mode input:focus,
+        body.light-mode textarea:focus,
+        body.light-mode select:focus {
+            border-color: #1855BA;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(24, 85, 186, 0.1);
+        }
+
+        /* Labels Light Mode */
+        body.light-mode label {
+            color: #374151;
+        }
+
+        /* Section Label Light Mode */
+        body.light-mode .section-label {
+            color: #1855BA;
+        }
+
+        /* Card Style 5 & 6 - Icon Cards & Lateral Border */
+        body.light-mode .card-with-icon {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .card-with-icon h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .card-with-icon p {
+            color: #64748b;
+        }
+
+        body.light-mode .card-with-icon .card-label {
+            color: #64748b;
+        }
+
+        /* Client Card Light Mode */
+        body.light-mode .client-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .client-card h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .client-card p {
+            color: #64748b;
+        }
+
+        /* Card Icon Item Light Mode */
+        body.light-mode .card-icon-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .card-icon-item h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .card-icon-item p {
+            color: #64748b;
+        }
+
+        /* Card Lateral Light Mode */
+        body.light-mode .card-lateral {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .card-lateral h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .card-lateral p {
+            color: #64748b;
+        }
+
+        /* Blog Card Light Mode */
+        body.light-mode .blog-card-front {
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        body.light-mode .blog-card-front h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .blog-card-front p {
+            color: #64748b;
+        }
+
+        body.light-mode .blog-card-front .section-label {
+            color: #1855BA;
+        }
+
+        /* Stat Card Item Light Mode */
+        body.light-mode .stat-card-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .stat-card-item p {
+            color: #64748b;
+        }
+
+        /* Testimonial Card Item Light Mode */
+        body.light-mode .testimonial-card-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .testimonial-card-item h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .testimonial-card-item p {
+            color: #64748b;
+        }
+
+        /* Testimonial Icon */
+        .testimonial-icon-bg {
+            background: #f1f5f9;
+        }
+
+        body:not(.light-mode) .testimonial-icon-bg {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .testimonial-icon {
+            color: #64748b;
+        }
+
+        body:not(.light-mode) .testimonial-icon {
+            color: #9ca3af;
+        }
+
+        /* CTA Box Item Light Mode */
+        body.light-mode .cta-box-item {
+            background: linear-gradient(135deg, #1855BA, #0d3a8a);
+        }
+
+        body.light-mode .cta-box-item h3,
+        body.light-mode .cta-box-item p {
+            color: white;
+        }
+
+        /* Pricing Card Item Light Mode */
+        body.light-mode .pricing-card-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .pricing-card-item p {
+            color: #64748b;
+        }
+
+        body.light-mode .pricing-card-item ul li {
+            color: #64748b;
+        }
+
+        /* Pricing Card Popular - Always gradient in dark, white in light */
+        .pricing-card-popular {
+            background: linear-gradient(135deg, #1855BA, #0d3a8a);
+        }
+
+        body.light-mode .pricing-card-popular {
+            background: white;
+            border: 2px solid #1855BA;
+            box-shadow: 0 8px 30px rgba(24, 85, 186, 0.25);
+        }
+
+        body.light-mode .pricing-card-popular p {
+            color: #0f172a;
+        }
+
+        body.light-mode .pricing-card-popular .text-white\/70,
+        body.light-mode .pricing-card-popular .text-white\/80 {
+            color: #475569;
+        }
+
+        body.light-mode .pricing-card-popular ul li {
+            color: #475569;
+        }
+
+        body.light-mode .pricing-card-popular ul li i {
+            color: #1855BA;
+        }
+
+        body.light-mode .pricing-card-popular button {
+            background: #1855BA;
+            color: white;
+            border: none;
+        }
+
+        body.light-mode .pricing-card-popular button:hover {
+            background: #144a9e;
+        }
+
+        /* Participant Card Light Mode */
+        body.light-mode .card-face.face-front {
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        body.light-mode .card-face.face-front h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .card-face.face-front p {
+            color: #64748b;
+        }
+
+        body.light-mode .participant-card h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .participant-card p {
+            color: #64748b;
+        }
+
+        /* Input Select Dropdown */
+        body.light-mode select {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
+        }
+
+        body.light-mode select option {
+            background: white;
+            color: #0f172a;
+        }
+
+        /* Custom Dropdown - Same as Index2 */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-trigger {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 0.75rem;
+            color: var(--text-main);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 0.5rem;
+        }
+
+        body.light-mode .dropdown-trigger {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #0f172a;
+        }
+
+        body:not(.light-mode) .dropdown-trigger {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .dropdown-trigger:hover {
+            border-color: var(--primary-blue);
+        }
+
+        .custom-dropdown.active .dropdown-trigger {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(24, 85, 186, 0.15);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            width: 100%;
+            background-color: #1a2235;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            padding: 0.5rem;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        body.light-mode .dropdown-menu {
+            background-color: white;
+            border-color: #e5e7eb;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .custom-dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        body.light-mode .dropdown-item {
+            color: #475569;
+        }
+
+        body:not(.light-mode) .dropdown-item {
+            color: #9ca3af;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(24, 85, 186, 0.1);
+            color: #1855BA;
+        }
+
+        .dropdown-item.selected {
+            color: #1855BA;
+            font-weight: 600;
+        }
+
+        /* Disable button style */
+        .btn-disabled,
+        button:disabled,
+        .btn-disabled:hover {
+            background-color: #e5e7eb;
+            color: #9ca3af;
+            border-color: #e5e7eb;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        body:not(.light-mode) .btn-disabled,
+        body:not(.light-mode) button:disabled {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #6b7280;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Outline Button - Light Mode */
+        body.light-mode .border-\[\#1855BA\] {
+            border-color: #1855BA !important;
+        }
+
+        body.light-mode .text-\[\#1855BA\] {
+            color: #1855BA !important;
+        }
+
+        /* Blog Card Back - Fixed contrast */
+        .blog-card-back {
+            background: linear-gradient(135deg, #1855BA, #0d3a8a);
+        }
+
+        .blog-card-back h4,
+        .blog-card-back p,
+        .blog-card-back button {
+            color: white;
+        }
+
+        body.light-mode .blog-card-back {
+            background: white;
+            border: 2px solid #1855BA;
+        }
+
+        body.light-mode .blog-card-back h4 {
+            color: #0f172a;
+        }
+
+        body.light-mode .blog-card-back p {
+            color: #475569;
+        }
+
+        body.light-mode .blog-card-back button {
+            background: #1855BA;
+            color: white;
+        }
+
+        /* Participant Card - Fixed borders */
+        .card-face.face-front {
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        body.light-mode .card-face.face-front {
+            border-left-color: #1855BA;
+        }
+
+        body:not(.light-mode) .card-face.face-front {
+            border-left-color: #1855BA;
+        }
+
+        /* Client Card - First one border */
+        .client-card {
+            border-top: 4px solid #1855BA;
+        }
+
+        body.light-mode .client-card {
+            border-top-color: #1855BA;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-top-width: 4px;
+        }
+
+        body:not(.light-mode) .client-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Icon color fix */
+        body.light-mode .client-card .icon-bg {
+            background: #f1f5f9;
+        }
+
+        body:not(.light-mode) .client-card .icon-bg {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-mode .client-card .icon-bg i {
+            color: #1855BA;
+        }
+
+        body:not(.light-mode) .client-card .icon-bg i {
+            color: #60a5fa;
+        }
+
+        /* Client card first item border */
+        .client-card-first {
+            border-top: 4px solid #1855BA;
+        }
+
+        body.light-mode .client-card-first {
+            border-top-color: #1855BA;
+        }
+
+        /* Button Light Mode Hover */
+        body.light-mode button.border-\[\#1855BA\]:hover {
+            background-color: #1855BA !important;
+            color: white !important;
+        }
+
+        body.light-mode button.text-\[\#1855BA\]:hover {
+            background-color: rgba(24, 85, 186, 0.1) !important;
+        }
+
+        /* Button Dark Mode Styles */
+        body:not(.light-mode) .btn-secondary-dark {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        body:not(.light-mode) .btn-secondary-dark:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        body:not(.light-mode) .btn-tertiary-dark {
+            background: transparent;
+            color: white;
+        }
+        body:not(.light-mode) .btn-tertiary-dark:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body:not(.light-mode) .btn-outline-dark {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        body:not(.light-mode) .btn-outline-dark:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        body:not(.light-mode) .btn-disabled-dark {
+            background: transparent;
+            border-color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Face back borders */
+        .card-face.face-back {
+            border-right: 4px solid var(--primary-blue);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: none;
+        }
+
+        body.light-mode .card-face.face-back {
+            border-right-color: #1855BA;
+            border-top-color: #e5e7eb;
+            border-bottom-color: #e5e7eb;
+        }
+
+    </style>
+</head>
+
+<body class="pb-24 md:pb-0 light-mode">
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
+                const hour = new Date().getHours();
+                isLight = hour >= 7 && hour < 19;
+            }
+            if (isLight) document.body.classList.add('light-mode');
+            window.__isThemeLight = isLight;
+        })();
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('themePreference', isLight ? 'light' : 'dark');
+            window.__isThemeLight = isLight;
+            updateToggleVisuals();
+        }
+
+        function toggleLanguage() {
+            document.body.classList.toggle('lang-en');
+            const isEn = document.body.classList.contains('lang-en');
+            localStorage.setItem('langPreference', isEn ? 'en' : 'es');
+            updateLangVisuals();
+        }
+
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            document.querySelectorAll('.theme-toggle-thumb').forEach(thumb => {
+                if (isLight) {
+                    thumb.style.transform = 'translateX(24px)';
+                } else {
+                    thumb.style.transform = 'translateX(0)';
+                }
+            });
+        }
+
+        function updateLangVisuals() {
+            const isEn = document.body.classList.contains('lang-en');
+            document.querySelectorAll('.lang-switch-thumb').forEach(thumb => {
+                if (isEn) {
+                    thumb.style.transform = 'translateX(18px)';
+                } else {
+                    thumb.style.transform = 'translateX(0)';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) window.lucide.createIcons();
+            updateToggleVisuals();
+            updateLangVisuals();
+
+            // Dropdown functionality
+            window.toggleDropdown = function(id) {
+                const dropdown = document.getElementById(id);
+                document.querySelectorAll('.custom-dropdown').forEach(d => {
+                    if (d !== dropdown) d.classList.remove('active');
+                });
+                dropdown.classList.toggle('active');
+            }
+
+            window.selectOption = function(el, dropdownId) {
+                const dropdown = document.getElementById(dropdownId);
+                const label = dropdown.querySelector('.dropdown-label');
+                label.textContent = el.textContent;
+                dropdown.querySelectorAll('.dropdown-item').forEach(item => item.classList.remove('selected'));
+                el.classList.add('selected');
+                dropdown.classList.remove('active');
+            }
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.custom-dropdown')) {
+                    document.querySelectorAll('.custom-dropdown').forEach(d => d.classList.remove('active'));
+                }
+            });
+        });
+    </script>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-4 py-4 bg-[#05070a] dark:bg-[#05070a] border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <span class="text-xl font-black text-white">TOKEN CITY</span>
+            <div class="flex items-center gap-4">
+                <a href="home.html" class="text-sm text-white/70 hover:text-white">Volver al inicio</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16 px-4 max-w-7xl mx-auto">
+        <h1 class="text-4xl font-black heading-text mb-4">Sistema de Diseño</h1>
+        <p class="text-lg body-text mb-12">Componentes atómicos organizados del más pequeño al más grande</p>
+
+        <!-- ATOMS: Colores -->
+        <section class="component-section">
+            <h2 class="component-title">1. Átomos - Colores</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div>
+                    <div class="h-20 rounded-[15px] bg-[#1855BA] mb-2"></div>
+                    <p class="text-sm font-bold">Primary Blue</p>
+                    <p class="text-xs text-gray-500">#1855BA</p>
+                </div>
+                <div>
+                    <div class="h-20 rounded-[15px] bg-[#0f172a] mb-2"></div>
+                    <p class="text-sm font-bold">Dark Text</p>
+                    <p class="text-xs text-gray-500">#0f172a</p>
+                </div>
+                <div>
+                    <div class="h-20 rounded-[15px] bg-[#475569] mb-2"></div>
+                    <p class="text-sm font-bold">Muted Text</p>
+                    <p class="text-xs text-gray-500">#475569</p>
+                </div>
+                <div>
+                    <div class="h-20 rounded-[15px] bg-green-500 mb-2"></div>
+                    <p class="text-sm font-bold">Success</p>
+                    <p class="text-xs text-gray-500">#22c55e</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ATOMS: Tipografía -->
+        <section class="component-section">
+            <h2 class="component-title">2. Átomos - Tipografía</h2>
+            <div class="space-y-6">
+                <div>
+                    <p class="text-4xl font-black heading-text">Heading 1 - Black</p>
+                    <p class="text-sm text-gray-500 mt-1">font-black, text-4xl</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold heading-text">Heading 2 - Bold</p>
+                    <p class="text-sm text-gray-500 mt-1">font-bold, text-3xl</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-semibold heading-text">Heading 3 - SemiBold</p>
+                    <p class="text-sm text-gray-500 mt-1">font-semibold, text-2xl</p>
+                </div>
+                <div>
+                    <p class="text-xl font-medium heading-text">Heading 4 - Medium</p>
+                    <p class="text-sm text-gray-500 mt-1">font-medium, text-xl</p>
+                </div>
+                <div>
+                    <p class="body-text">Body Text - Párrafo normal con color muted para mejor lectura y contraste AA</p>
+                    <p class="text-sm text-gray-500 mt-1">body-text, text-base</p>
+                </div>
+                <div>
+                    <p class="section-label">Section Label</p>
+                    <p class="text-sm text-gray-500 mt-1">section-label - Mayúsculas, tracking-widest</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ATOMS: Botones Pequeños -->
+        <section class="component-section">
+            <h2 class="component-title">3. Átomos - Botones</h2>
+            <div class="component-grid">
+                <div class="text-center">
+                    <button class="px-3 py-1.5 bg-[#1855BA] text-white text-xs font-bold rounded-[15px] hover:bg-[#144a9e]">Small</button>
+                    <button class="px-4 py-2 bg-[#1855BA] text-white text-sm font-bold rounded-[15px] hover:bg-[#144a9e]">Medium</button>
+                    <button class="px-6 py-3 bg-[#1855BA] text-white font-bold rounded-[15px] hover:bg-[#144a9e]">Large</button>
+                    <button class="px-8 py-4 bg-[#1855BA] text-white font-bold rounded-[15px] hover:bg-[#144a9e]">XL</button>
+                    <p class="text-xs text-gray-500 mt-2">px-8 py-4</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ATOMS: Inputs -->
+        <section class="component-section">
+            <h2 class="component-title">4. Átomos - Inputs</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Input Normal</label>
+                    <input type="text" placeholder="Escribe aquí..." class="w-full px-4 py-3 rounded-[15px] border bg-white dark:bg-[#1a2235]">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Input con Focus</label>
+                    <input type="text" placeholder="Con borde azul..." class="w-full px-4 py-3 rounded-[15px] border-2 border-[#1855BA] bg-white dark:bg-[#1a2235] focus:outline-none">
+                </div>
+            </div>
+        </section>
+
+        <!-- ATOMS: Dropdown / Select -->
+        <section class="component-section">
+            <h2 class="component-title">5. Átomos - Dropdown / Select</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Selecciona una opción</label>
+                    <div class="custom-dropdown" id="dropdown1">
+                        <div class="dropdown-trigger" onclick="toggleDropdown('dropdown1')">
+                            <span class="dropdown-label">Selecciona...</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 opacity-50"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item" onclick="selectOption(this, 'dropdown1')">Opción 1</div>
+                            <div class="dropdown-item" onclick="selectOption(this, 'dropdown1')">Opción 2</div>
+                            <div class="dropdown-item" onclick="selectOption(this, 'dropdown1')">Opción 3</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Con valor seleccionado</label>
+                    <div class="custom-dropdown" id="dropdown2">
+                        <div class="dropdown-trigger" onclick="toggleDropdown('dropdown2')" style="border-color: #1855BA; box-shadow: 0 0 0 3px rgba(24, 85, 186, 0.15);">
+                            <span class="dropdown-label">Opción seleccionada</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 opacity-50"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item selected" onclick="selectOption(this, 'dropdown2')">Opción seleccionada</div>
+                            <div class="dropdown-item" onclick="selectOption(this, 'dropdown2')">Opción 2</div>
+                            <div class="dropdown-item" onclick="selectOption(this, 'dropdown2')">Opción 3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ATOMS: Buttons -->
+        <section class="component-section">
+            <h2 class="component-title">6. Átomos - Botones</h2>
+            <div class="space-y-8">
+                <!-- Primary -->
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botón Primary</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors text-xs">XS</button>
+                        <button class="px-4 py-2 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors text-sm">Small</button>
+                        <button class="px-6 py-3 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors text-base">Medium</button>
+                        <button class="px-8 py-4 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors text-lg">Large</button>
+                        <button class="px-10 py-5 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors text-xl">XL</button>
+                    </div>
+                </div>
+                <!-- Secondary -->
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botón Secondary</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 border-2 border-azul-acero-500 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:bg-azul-acero-500 hover:text-white transition-colors text-xs">XS</button>
+                        <button class="px-4 py-2 border-2 border-azul-acero-500 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:bg-azul-acero-500 hover:text-white transition-colors text-sm">Small</button>
+                        <button class="px-6 py-3 border-2 border-azul-acero-500 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:bg-azul-acero-500 hover:text-white transition-colors text-base">Medium</button>
+                        <button class="px-8 py-4 border-2 border-azul-acero-500 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:bg-azul-acero-500 hover:text-white transition-colors text-lg">Large</button>
+                        <button class="px-10 py-5 border-2 border-azul-acero-500 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:bg-azul-acero-500 hover:text-white transition-colors text-xl">XL</button>
+                    </div>
+                </div>
+                <!-- Tertiary -->
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botón Tertiary</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:bg-azul-acero-100 active:translate-y-px transition-colors text-xs">XS</button>
+                        <button class="px-4 py-2 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:bg-azul-acero-100 active:translate-y-px transition-colors text-sm">Small</button>
+                        <button class="px-6 py-3 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:bg-azul-acero-100 active:translate-y-px transition-colors text-base">Medium</button>
+                        <button class="px-8 py-4 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:bg-azul-acero-100 active:translate-y-px transition-colors text-lg">Large</button>
+                        <button class="px-10 py-5 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:bg-azul-acero-100 active:translate-y-px transition-colors text-xl">XL</button>
+                    </div>
+                </div>
+                </div>
+                <!-- Tertiary -->
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botón Tertiary</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 text-[#1855BA] bg-transparent font-semibold rounded-[15px] hover:bg-[#1855BA]/10 active:translate-y-px transition-colors text-xs">XS</button>
+                        <button class="px-4 py-2 text-[#1855BA] bg-transparent font-semibold rounded-[15px] hover:bg-[#1855BA]/10 active:translate-y-px transition-colors text-sm">Small</button>
+                        <button class="px-6 py-3 text-[#1855BA] bg-transparent font-semibold rounded-[15px] hover:bg-[#1855BA]/10 active:translate-y-px transition-colors text-base">Medium</button>
+                        <button class="px-8 py-4 text-[#1855BA] bg-transparent font-semibold rounded-[15px] hover:bg-[#1855BA]/10 active:translate-y-px transition-colors text-lg">Large</button>
+                        <button class="px-10 py-5 text-[#1855BA] bg-transparent font-semibold rounded-[15px] hover:bg-[#1855BA]/10 active:translate-y-px transition-colors text-xl">XL</button>
+                    </div>
+                </div>
+                </div>
+                <!-- Tertiary -->
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botón Tertiary</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-xs">XS</button>
+                        <button class="px-4 py-2 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-sm">Small</button>
+                        <button class="px-6 py-3 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-base">Medium</button>
+                        <button class="px-8 py-4 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-lg">Large</button>
+                        <button class="px-10 py-5 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-xl">XL</button>
+                    </div>
+                </div>
+                </div>
+                <!-- Tertiary -->
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botón Tertiary</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 text-[#1855BA] font-semibold hover:bg-[#1855BA]/10 transition-colors rounded-[15px] text-xs">XS</button>
+                        <button class="px-4 py-2 text-[#1855BA] font-semibold hover:bg-[#1855BA]/10 transition-colors rounded-[15px] text-sm">Small</button>
+                        <button class="px-6 py-3 text-[#1855BA] font-semibold hover:bg-[#1855BA]/10 transition-colors rounded-[15px] text-base">Medium</button>
+                        <button class="px-8 py-4 text-[#1855BA] font-semibold hover:bg-[#1855BA]/10 transition-colors rounded-[15px] text-lg">Large</button>
+                        <button class="px-10 py-5 text-[#1855BA] font-semibold hover:bg-[#1855BA]/10 transition-colors rounded-[15px] text-xl">XL</button>
+                    </div>
+                </div>
+                <!-- Text -->
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botón Text</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 bg-transparent text-[#1855BA] font-semibold rounded-[15px] hover:bg-[#1855BA]/10 active:translate-y-px text-xs">XS</button>
+                        <button class="px-4 py-2 bg-transparent text-[#1855BA] font-semibold rounded-[15px] hover:bg-[#1855BA]/10 active:translate-y-px text-sm">Small</button>
+                        <button class="px-6 py-3 bg-transparent text-[#1855BA] font-semibold rounded-[15px] hover:bg-[#1855BA]/10 active:translate-y-px text-base">Medium</button>
+                        <button class="px-8 py-4 bg-transparent text-[#1855BA] font-semibold rounded-[15px] hover:bg-[#1855BA]/10 active:translate-y-px text-lg">Large</button>
+                        <button class="px-10 py-5 bg-transparent text-[#1855BA] font-semibold rounded-[15px] hover:bg-[#1855BA]/10 active:translate-y-px text-xl">XL</button>
+                    </div>
+                </div>
+                <!-- Outline / Lineal -->
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botón Outline / Lineal</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 border-2 border-azul-acero-500 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:border-azul-acero-600 hover:text-azul-acero-600 hover:bg-gray-50 active:translate-y-px transition-colors text-xs">XS</button>
+                        <button class="px-4 py-2 border-2 border-azul-acero-500 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:border-azul-acero-600 hover:text-azul-acero-600 hover:bg-gray-50 active:translate-y-px transition-colors text-sm">Small</button>
+                        <button class="px-6 py-3 border-2 border-azul-acero-500 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:border-azul-acero-600 hover:text-azul-acero-600 hover:bg-gray-50 active:translate-y-px transition-colors text-base">Medium</button>
+                        <button class="px-8 py-4 border-2 border-azul-acero-500 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:border-azul-acero-600 hover:text-azul-acero-600 hover:bg-gray-50 active:translate-y-px transition-colors text-lg">Large</button>
+                        <button class="px-10 py-5 border-2 border-azul-acero-500 text-azul-acero-500 bg-transparent font-semibold rounded-[15px] hover:border-azul-acero-600 hover:text-azul-acero-600 hover:bg-gray-50 active:translate-y-px transition-colors text-xl">XL</button>
+                    </div>
+                </div>
+                <!-- Disabled -->
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botón Disabled</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 border-2 border-gray-200 text-gray-400 bg-transparent font-semibold rounded-[15px] cursor-not-allowed opacity-50 text-xs" disabled>Disabled</button>
+                        <button class="px-4 py-2 border-2 border-gray-200 text-gray-400 bg-transparent font-semibold rounded-[15px] cursor-not-allowed opacity-50 text-sm" disabled>Disabled</button>
+                        <button class="px-6 py-3 border-2 border-gray-200 text-gray-400 bg-transparent font-semibold rounded-[15px] cursor-not-allowed opacity-50 text-base" disabled>Disabled</button>
+                        <button class="px-8 py-4 border-2 border-gray-200 text-gray-400 bg-transparent font-semibold rounded-[15px] cursor-not-allowed opacity-50 text-lg" disabled>Disabled</button>
+                        <button class="px-10 py-5 border-2 border-gray-200 text-gray-400 bg-transparent font-semibold rounded-[15px] cursor-not-allowed opacity-50 text-xl" disabled>Disabled</button>
+                    </div>
+                </div>
+                <!-- Botones con Iconos -->
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botones con Iconos (Izquierda)</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-4 py-2 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">arrow_forward</span>Small</button>
+                        <button class="px-6 py-3 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors flex items-center gap-2"><span class="material-symbols-outlined">arrow_forward</span>Medium</button>
+                        <button class="px-8 py-4 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors text-lg flex items-center gap-2"><span class="material-symbols-outlined text-lg">arrow_forward</span>Large</button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botones con Iconos (Derecha)</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-4 py-2 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors text-sm flex items-center gap-2">Small<span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+                        <button class="px-6 py-3 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors flex items-center gap-2">Medium<span class="material-symbols-outlined">arrow_forward</span></button>
+                        <button class="px-8 py-4 bg-[#1855BA] text-white font-semibold rounded-[15px] hover:bg-[#134495] active:bg-[#0E3370] transition-colors text-lg flex items-center gap-2">Large<span class="material-symbols-outlined text-lg">arrow_forward</span></button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botones Outline con Iconos</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-4 py-2 border-2 border-[#1855BA] text-[#1855BA] dark:text-white dark:border-white bg-transparent dark:bg-white/10 font-semibold rounded-[15px] hover:border-[#134495] hover:text-[#134495] dark:hover:border-[#60a5fa] dark:hover:text-[#60a5fa] hover:bg-black/[0.02] dark:hover:bg-white/10 active:translate-y-px transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">add</span>Small</button>
+                        <button class="px-6 py-3 border-2 border-[#1855BA] text-[#1855BA] dark:text-white dark:border-white bg-transparent dark:bg-white/10 font-semibold rounded-[15px] hover:border-[#134495] hover:text-[#134495] dark:hover:border-[#60a5fa] dark:hover:text-[#60a5fa] hover:bg-black/[0.02] dark:hover:bg-white/10 active:translate-y-px transition-colors flex items-center gap-2"><span class="material-symbols-outlined">add</span>Medium</button>
+                        <button class="px-8 py-4 border-2 border-[#1855BA] text-[#1855BA] dark:text-white dark:border-white bg-transparent dark:bg-white/10 font-semibold rounded-[15px] hover:border-[#134495] hover:text-[#134495] dark:hover:border-[#60a5fa] dark:hover:text-[#60a5fa] hover:bg-black/[0.02] dark:hover:bg-white/10 active:translate-y-px transition-colors text-lg flex items-center gap-2"><span class="material-symbols-outlined text-lg">add</span>Large</button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botones Textual con Iconos (Izquierda)</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-xs flex items-center gap-1"><span class="material-symbols-outlined text-xs">arrow_forward</span>XS</button>
+                        <button class="px-4 py-2 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">arrow_forward</span>Small</button>
+                        <button class="px-6 py-3 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors flex items-center gap-2"><span class="material-symbols-outlined">arrow_forward</span>Medium</button>
+                        <button class="px-8 py-4 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-lg flex items-center gap-2"><span class="material-symbols-outlined text-lg">arrow_forward</span>Large</button>
+                        <button class="px-10 py-5 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-xl flex items-center gap-2"><span class="material-symbols-outlined text-xl">arrow_forward</span>XL</button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 heading-text">Botones Textual con Iconos (Derecha)</h4>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button class="px-2 py-1 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-xs flex items-center gap-1">XS<span class="material-symbols-outlined text-xs">arrow_forward</span></button>
+                        <button class="px-4 py-2 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-sm flex items-center gap-2">Small<span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+                        <button class="px-6 py-3 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors flex items-center gap-2">Medium<span class="material-symbols-outlined">arrow_forward</span></button>
+                        <button class="px-8 py-4 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-lg flex items-center gap-2">Large<span class="material-symbols-outlined text-lg">arrow_forward</span></button>
+                        <button class="px-10 py-5 bg-transparent text-[#1855BA] dark:text-white font-semibold rounded-[15px] hover:bg-[#1855BA]/10 dark:hover:bg-white/10 active:translate-y-px transition-colors text-xl flex items-center gap-2">XL<span class="material-symbols-outlined text-xl">arrow_forward</span></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOLECULES: Tarjetas Pequeñas -->
+        <section class="component-section">
+            <h2 class="component-title">7. Moléculas - Tarjetas con Icono</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card-icon-item p-6 rounded-[30px]">
+                    <div class="w-12 h-12 rounded-[15px] bg-[#1855BA]/10 flex items-center justify-center text-[#1855BA] mb-4">
+                        <i data-lucide="layout" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-lg heading-text mb-2">Card Title</h4>
+                    <p class="text-sm body-text">Descripción breve de la tarjeta con icono.</p>
+                </div>
+                <div class="card-icon-item p-6 rounded-[30px]">
+                    <div class="w-12 h-12 rounded-[15px] bg-green-500/10 flex items-center justify-center text-green-500 mb-4">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-lg heading-text mb-2">Card Title</h4>
+                    <p class="text-sm body-text">Descripción breve de la tarjeta con icono.</p>
+                </div>
+                <div class="card-icon-item p-6 rounded-[30px]">
+                    <div class="w-12 h-12 rounded-[15px] bg-purple-500/10 flex items-center justify-center text-purple-500 mb-4">
+                        <i data-lucide="cpu" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-lg heading-text mb-2">Card Title</h4>
+                    <p class="text-sm body-text">Descripción breve de la tarjeta con icono.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOLECULES: Tarjetas con Borde Lateral -->
+        <section class="component-section">
+            <h2 class="component-title">8. Moléculas - Tarjetas con Borde Lateral</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card-lateral p-6 rounded-[30px]" style="border-left-color: #1855BA;">
+                    <span class="text-xs font-bold tracking-widest body-text">01. EMPRESAS</span>
+                    <h4 class="font-bold text-lg heading-text mt-3 mb-2">Título de la tarjeta</h4>
+                    <p class="text-sm body-text">Descripción con borde lateral azul.</p>
+                </div>
+                <div class="card-lateral p-6 rounded-[30px]" style="border-left-color: #22c55e;">
+                    <span class="text-xs font-bold tracking-widest body-text">02. INSTITUCIONES</span>
+                    <h4 class="font-bold text-lg heading-text mt-3 mb-2">Título de la tarjeta</h4>
+                    <p class="text-sm body-text">Descripción con borde lateral verde.</p>
+                </div>
+                <div class="card-lateral p-6 rounded-[30px]" style="border-left-color: #06b6d4;">
+                    <span class="text-xs font-bold tracking-widest body-text">03. INVERSORES</span>
+                    <h4 class="font-bold text-lg heading-text mt-3 mb-2">Título de la tarjeta</h4>
+                    <p class="text-sm body-text">Descripción con borde lateral cian.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ORGANISMS: Secciones -->
+        <section class="component-section">
+            <h2 class="component-title">7. Organismos - Sección de Título</h2>
+            <div class="text-center mb-8">
+                <p class="section-label">NUESTROS SERVICIOS</p>
+                <h2 class="text-3xl md:text-4xl font-bold heading-text mt-2">Título de la Sección</h2>
+                <p class="body-text max-w-2xl mx-auto mt-4">Subtítulo descriptivo que explica el contenido de la sección.</p>
+            </div>
+        </section>
+
+        <!-- ORGANISMS: Footer Simple -->
+        <section class="component-section">
+            <h2 class="component-title">8. Organismos - Footer</h2>
+            <div class="grid md:grid-cols-4 gap-8 p-8 bg-[#111827] rounded-[30px]">
+                <div>
+                    <h4 class="font-bold mb-4 heading-text uppercase text-xs tracking-widest">Columna 1</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#" class="hover:text-[#1855BA]">Enlace 1</a></li>
+                        <li><a href="#" class="hover:text-[#1855BA]">Enlace 2</a></li>
+                        <li><a href="#" class="hover:text-[#1855BA]">Enlace 3</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 heading-text uppercase text-xs tracking-widest">Columna 2</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#" class="hover:text-[#1855BA]">Enlace 1</a></li>
+                        <li><a href="#" class="hover:text-[#1855BA]">Enlace 2</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 heading-text uppercase text-xs tracking-widest">Newsletter</h4>
+                    <input type="email" placeholder="Tu email" class="w-full px-4 py-2 rounded-[15px] bg-white dark:bg-white/10 border border-gray-300 dark:border-white/20 text-sm mb-2">
+                    <button class="w-full bg-[#1855BA] text-white py-2 rounded-[15px] text-sm font-bold">Suscribirse</button>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 heading-text uppercase text-xs tracking-widest">Contacto</h4>
+                    <p class="text-sm text-gray-300">info@token-city.com</p>
+                    <p class="text-sm text-gray-300">+34 919 890 429</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ATOMS: Badges / Tags -->
+        <section class="component-section">
+            <h2 class="component-title">9. Átomos - Badges / Tags</h2>
+            <div class="flex flex-wrap gap-3">
+                    <span class="px-3 py-1 bg-[#1855BA] text-white text-xs font-bold rounded-full">Primary</span>
+                <span class="px-3 py-1 bg-green-500/20 text-green-400 text-xs font-bold rounded-full">Success</span>
+                <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 text-xs font-bold rounded-full">Warning</span>
+                <span class="px-3 py-1 bg-red-500/20 text-red-400 text-xs font-bold rounded-full">Error</span>
+                <span class="px-3 py-1 bg-gray-500/20 body-text text-xs font-bold rounded-full">Neutral</span>
+                <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-xs font-bold rounded-full">Info</span>
+            </div>
+        </section>
+
+        <!-- ATOMS: Pills / Labels -->
+        <section class="component-section">
+            <h2 class="component-title">10. Átomos - Pills / Labels</h2>
+            <div class="flex flex-wrap gap-3">
+                <span class="px-4 py-2 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/20 text-xs font-bold uppercase tracking-wider rounded-[15px]">Etiqueta 1</span>
+                <span class="px-4 py-2 bg-[#1855BA]/10 border border-[#1855BA]/30 text-[#1855BA] text-xs font-bold uppercase tracking-wider rounded-[15px]">Etiqueta 2</span>
+                <span class="px-4 py-2 bg-green-500/10 border border-green-500/30 text-green-500 text-xs font-bold uppercase tracking-wider rounded-[15px]">Etiqueta 3</span>
+            </div>
+        </section>
+
+        <!-- MOLECULES: Alerts / Notices -->
+        <section class="component-section">
+            <h2 class="component-title">11. Moléculas - Alerts / Notices</h2>
+            <div class="space-y-4">
+                <div class="p-4 rounded-[15px] bg-azul-acero-500/10 border border-azul-acero-500/30 text-azul-acero-400 flex items-start gap-3">
+                    <i data-lucide="info" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                    <p class="text-sm">Información importante para el usuario.</p>
+                </div>
+                <div class="p-4 rounded-[15px] bg-green-500/10 border border-green-500/30 text-green-400 flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                    <p class="text-sm">Operación completada con éxito.</p>
+                </div>
+                <div class="p-4 rounded-[15px] bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 flex items-start gap-3">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                    <p class="text-sm">Advertencia: revise los datos proporcionados.</p>
+                </div>
+                <div class="p-4 rounded-[15px] bg-red-500/10 border border-red-500/30 text-red-400 flex items-start gap-3">
+                    <i data-lucide="x-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                    <p class="text-sm">Error: no se pudo completar la operación.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOLECULES: Stat Cards -->
+        <section class="component-section">
+            <h2 class="component-title">12. Moléculas - Tarjetas de Estadísticas</h2>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="stat-card-item p-6 rounded-[30px] text-center">
+                    <p class="text-4xl font-black text-[#1855BA]">€50M+</p>
+                    <p class="text-sm body-text mt-2">Volumen tokenizado</p>
+                </div>
+                <div class="stat-card-item p-6 rounded-[30px] text-center">
+                    <p class="text-4xl font-black text-green-500">200+</p>
+                    <p class="text-sm body-text mt-2">Activos digitales</p>
+                </div>
+                <div class="stat-card-item p-6 rounded-[30px] text-center">
+                    <p class="text-4xl font-black text-cyan-500">50+</p>
+                    <p class="text-sm body-text mt-2">Empresas partners</p>
+                </div>
+                <div class="stat-card-item p-6 rounded-[30px] text-center">
+                    <p class="text-4xl font-black text-purple-500">99.9%</p>
+                    <p class="text-sm body-text mt-2">Uptime</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOLECULES: Testimonial Card -->
+        <section class="component-section">
+            <h2 class="component-title">13. Moléculas - Testimonios</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="testimonial-card-item p-6 rounded-[30px] border-l-4 border-l-[#1855BA]">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full testimonial-icon-bg flex items-center justify-center">
+                            <i data-lucide="user" class="w-6 h-6 testimonial-icon"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold heading-text">Juan Pérez</p>
+                            <p class="text-xs body-text">CEO, Empresa Ejemplo</p>
+                        </div>
+                    </div>
+                    <p class="text-sm body-text italic">"Token City ha revolucionado nuestra forma de gestionar activos digitales. La plataforma es intuitiva y el soporte es excelente."</p>
+                </div>
+                <div class="testimonial-card-item p-6 rounded-[30px] border-l-4 border-l-green-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full testimonial-icon-bg flex items-center justify-center">
+                            <i data-lucide="user" class="w-6 h-6 testimonial-icon"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold heading-text">María García</p>
+                            <p class="text-xs body-text">CFO, Inmobiliaria Plus</p>
+                        </div>
+                    </div>
+                    <p class="text-sm body-text italic">"La tokenización de nuestros propiedades ha sido un éxito rotundo. Recomendamos Token City sin dudarlo."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOLECULES: CTA Box -->
+        <section class="component-section">
+            <h2 class="component-title">14. Moléculas - Box de Llamada a la Acción</h2>
+            <div class="cta-box-item p-8 rounded-[30px] text-center">
+                <h3 class="text-2xl font-bold mb-3 text-white">¿Listo para tokenizar tus activos?</h3>
+                <p class="text-white/80 mb-6 max-w-xl mx-auto">Únete a las empresas que ya están transformando su negocio con tecnología blockchain.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button class="px-6 py-3 bg-white text-[#1855BA] font-bold rounded-[15px] hover:bg-gray-100 transition-colors">Contactar</button>
+                    <button class="px-6 py-3 border border-white/30 text-white font-bold rounded-[15px] hover:bg-white/10 transition-colors">Ver demo</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ORGANISMS: Pricing Card -->
+        <section class="component-section">
+            <h2 class="component-title">15. Organismos - Tarjetas de Precios</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="pricing-card-item p-6 rounded-[30px]">
+                    <p class="text-xs font-bold uppercase tracking-widest body-text mb-2">Básico</p>
+                    <p class="text-4xl font-black heading-text">€0<span class="text-lg font-normal body-text">/mes</span></p>
+                    <p class="text-sm body-text mt-4 mb-6">Perfecto para comenzar</p>
+                    <ul class="space-y-3 text-sm body-text mb-6">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Acceso básico</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Soporte email</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> 5 activos</li>
+                    </ul>
+                    <button class="w-full py-3 border-2 border-[#1855BA] text-[#1855BA] font-bold rounded-[15px] hover:bg-[#1855BA] hover:text-white transition-colors">Empezar</button>
+                </div>
+                <div class="pricing-card-item p-6 rounded-[30px] pricing-card-popular">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-green-500 text-white text-xs font-bold rounded-full">Popular</div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-white/70 mb-2">Profesional</p>
+                    <p class="text-4xl font-black text-white">€99<span class="text-lg font-normal text-white/70">/mes</span></p>
+                    <p class="text-white/80 mt-4 mb-6">Para empresas en crecimiento</p>
+                    <ul class="space-y-3 text-sm text-white/80 mb-6">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Acceso completo</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Soporte prioritario</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Activos ilimitados</li>
+                    </ul>
+                    <button class="w-full py-3 bg-white text-[#1855BA] font-bold rounded-[15px] hover:bg-gray-100 transition-colors">Empezar</button>
+                </div>
+                <div class="pricing-card-item p-6 rounded-[30px]">
+                    <p class="text-xs font-bold uppercase tracking-widest body-text mb-2">Enterprise</p>
+                    <p class="text-4xl font-black heading-text">Custom</p>
+                    <p class="text-sm body-text mt-4 mb-6">Para grandes organizaciones</p>
+                    <ul class="space-y-3 text-sm body-text mb-6">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Solución personalizada</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Account manager</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> SLA garantizado</li>
+                    </ul>
+                    <button class="w-full py-3 border-2 border-[#1855BA] text-[#1855BA] font-bold rounded-[15px] hover:bg-[#1855BA] hover:text-white transition-colors">Contactar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOLECULES: Client Cards -->
+        <section class="component-section">
+            <h2 class="component-title">16. Moléculas - Tarjetas de Cliente (Client Card)</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="client-card p-6" style="border-top-color: #1855BA;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full icon-bg flex items-center justify-center">
+                            <i data-lucide="building-2" class="w-6 h-6 text-[#1855BA]"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg heading-text">Empresa ABC</h4>
+                            <p class="text-xs body-text">Sector: Inmobiliario</p>
+                        </div>
+                    </div>
+                    <p class="text-sm body-text">Descripción del cliente y su experiencia con Token City.</p>
+                </div>
+                <div class="client-card p-6" style="border-top-color: #22c55e;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                            <i data-lucide="zap" class="w-6 h-6 text-green-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg heading-text">Energía Solar</h4>
+                            <p class="text-xs body-text">Sector: Energía</p>
+                        </div>
+                    </div>
+                    <p class="text-sm body-text">Tokenización de activos energéticos con gran éxito.</p>
+                </div>
+                <div class="client-card p-6" style="border-top-color: #8b5cf6;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                            <i data-lucide="trending-up" class="w-6 h-6 text-purple-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg heading-text">Scaleup Tech</h4>
+                            <p class="text-xs body-text">Sector: Tecnología</p>
+                        </div>
+                    </div>
+                    <p class="text-sm body-text">Empresa en crecimiento que tokeniza su siguiente ronda.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOLECULES: Infra Cards -->
+        <section class="component-section">
+            <h2 class="component-title">17. Moléculas - Tarjetas de Infraestructura</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="infra-card-style p-6 rounded-[30px] text-center border-l-[#1855BA]">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-[15px] bg-[#1855BA]/10 flex items-center justify-center text-[#1855BA]">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold heading-text mb-2">Seguridad</h4>
+                    <p class="text-sm body-text">Cumplimiento normativo total</p>
+                </div>
+                <div class="infra-card-style p-6 rounded-[30px] text-center border-l-purple-500">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-[15px] bg-purple-500/10 flex items-center justify-center text-purple-500">
+                        <i data-lucide="cpu" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold heading-text mb-2">Blockchain</h4>
+                    <p class="text-sm body-text">Tecnología de última generación</p>
+                </div>
+                <div class="infra-card-style p-6 rounded-[30px] text-center border-l-cyan-500">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-[15px] bg-cyan-500/10 flex items-center justify-center text-cyan-500">
+                        <i data-lucide="zap" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold heading-text mb-2">Velocidad</h4>
+                    <p class="text-sm body-text">Transacciones en segundos</p>
+                </div>
+                <div class="infra-card-style p-6 rounded-[30px] text-center border-l-green-500">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-[15px] bg-green-500/10 flex items-center justify-center text-green-500">
+                        <i data-lucide="globe" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold heading-text mb-2">Escala Global</h4>
+                    <p class="text-sm body-text">Operaciones internacionales</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOLECULES: Highlight Cards (Glass) -->
+        <section class="component-section">
+            <h2 class="component-title">18. Moléculas - Tarjetas Glass (Highlight Card)</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="highlight-card p-6 rounded-[15px] border-l-4 border-l-[#1855BA]">
+                    <span class="section-label mb-2 block">SERVICIO</span>
+                    <h4 class="font-bold text-lg heading-text mb-3">Tokenización RWA</h4>
+                    <p class="text-sm body-text">Convierte activos reales en tokens digitales con plena seguridad jurídica.</p>
+                </div>
+                <div class="highlight-card p-6 rounded-[15px] border-l-4 border-l-green-500">
+                    <span class="section-label mb-2 block">SERVICIO</span>
+                    <h4 class="font-bold text-lg heading-text mb-3">Exchange Privado</h4>
+                    <p class="text-sm body-text">Mercado secundario para la negociación de activos tokenizados.</p>
+                </div>
+                <div class="highlight-card p-6 rounded-[15px] border-l-4 border-l-blue-400">
+                    <span class="section-label mb-2 block">SERVICIO</span>
+                    <h4 class="font-bold text-lg heading-text mb-3">Custodia Segura</h4>
+                    <p class="text-sm body-text">Almacenamiento seguro de activos digitales con auditoría.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOLECULES: Blog Flip Cards -->
+        <section class="component-section">
+            <h2 class="component-title">19. Moléculas - Tarjetas Blog (Flip Card)</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="blog-card-flip">
+                    <div class="blog-card-inner">
+                        <div class="blog-card-front p-6">
+                            <div class="h-40 bg-gradient-to-br from-[#1855BA]/20 to-[#1855BA]/5 rounded-[15px] mb-4 flex items-center justify-center">
+                                <i data-lucide="file-text" class="w-12 h-12 text-[#1855BA]"></i>
+                            </div>
+                            <span class="section-label">BLOG</span>
+                            <h4 class="font-bold text-lg heading-text mt-2 mb-2">Guía de Tokenización</h4>
+                            <p class="text-sm body-text">Aprende los fundamentos de la tokenización de activos.</p>
+                        </div>
+                        <div class="blog-card-back">
+                            <div class="text-center">
+                                <h4 class="font-bold text-xl mb-3">Continuar leyendo</h4>
+                                <p class="heading-text/80 text-sm mb-4">Descubre todo sobre RWA</p>
+                                <button class="px-4 py-2 bg-white text-[#1855BA] rounded-[15px] font-bold text-sm">Leer más</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog-card-flip">
+                    <div class="blog-card-inner">
+                        <div class="blog-card-front p-6">
+                            <div class="h-40 bg-gradient-to-br from-green-500/20 to-green-500/5 rounded-[15px] mb-4 flex items-center justify-center">
+                                <i data-lucide="trending-up" class="w-12 h-12 text-green-500"></i>
+                            </div>
+                            <span class="section-label">BLOG</span>
+                            <h4 class="font-bold text-lg heading-text mt-2 mb-2">Caso de Éxito</h4>
+                            <p class="text-sm body-text">Cómo una empresa tokenizó €50M en bienes raíces.</p>
+                        </div>
+                        <div class="blog-card-back">
+                            <div class="text-center">
+                                <h4 class="font-bold text-xl mb-3">Ver caso completo</h4>
+                                <p class="heading-text/80 text-sm mb-4">LEE EL CASO DE ÉXITO COMPLETO</p>
+                                <button class="px-4 py-2 bg-white text-[#1855BA] rounded-[15px] font-bold text-sm">Ver más</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog-card-flip">
+                    <div class="blog-card-inner">
+                        <div class="blog-card-front p-6">
+                            <div class="h-40 bg-gradient-to-br from-purple-500/20 to-purple-500/5 rounded-[15px] mb-4 flex items-center justify-center">
+                                <i data-lucide="shield-check" class="w-12 h-12 text-purple-500"></i>
+                            </div>
+                            <span class="section-label">BLOG</span>
+                            <h4 class="font-bold text-lg heading-text mt-2 mb-2">Cumplimiento Legal</h4>
+                            <p class="text-sm body-text">Normativa vigente para activos digitales en España.</p>
+                        </div>
+                        <div class="blog-card-back">
+                            <div class="text-center">
+                                <h4 class="font-bold text-xl mb-3">Más información</h4>
+                                <p class="heading-text/80 text-sm mb-4">CONOCE EL MARCO LEGAL</p>
+                                <button class="px-4 py-2 bg-white text-[#1855BA] rounded-[15px] font-bold text-sm">Leer más</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ORGANISMS: Participant Cards (Flip) -->
+        <section class="component-section">
+            <h2 class="component-title">20. Organismos - Tarjetas de Participante (Flip Card)</h2>
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="participant-card" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: #1855BA;">
+                            <div class="w-16 h-16 rounded-full bg-[#1855BA]/20 flex items-center justify-center mb-3">
+                                <i data-lucide="building-2" class="w-8 h-8 text-[#1855BA]"></i>
+                            </div>
+                            <h4 class="font-bold heading-text text-center">Banco Nacional</h4>
+                            <p class="text-xs body-text text-center mt-1">Institución Financiera</p>
+                            <button class="card-toggle-btn">
+                                <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: #1855BA;">
+                            <h4 class="font-bold text-center mb-2 text-white">Detalles</h4>
+                            <p class="text-xs text-white/80 text-center">Entidad regulada por el Banco de España</p>
+                            <button class="card-toggle-btn mt-3">
+                                <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: #22c55e;">
+                            <div class="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-3">
+                                <i data-lucide="sun" class="w-8 h-8 text-green-500"></i>
+                            </div>
+                            <h4 class="font-bold heading-text text-center">Energía Verde</h4>
+                            <p class="text-xs body-text text-center mt-1">Energía Renovable</p>
+                            <button class="card-toggle-btn" style="background: #22c55e;">
+                                <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: #22c55e;">
+                            <h4 class="font-bold text-center mb-2 text-white">Detalles</h4>
+                            <p class="text-xs text-white/80 text-center">Productor de energía solar tokenizada</p>
+                            <button class="card-toggle-btn mt-3">
+                                <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: #8b5cf6;">
+                            <div class="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center mb-3">
+                                <i data-lucide="home" class="w-8 h-8 text-purple-500"></i>
+                            </div>
+                            <h4 class="font-bold heading-text text-center">InmoCorp</h4>
+                            <p class="text-xs body-text text-center mt-1">Inmobiliario</p>
+                            <button class="card-toggle-btn" style="background: #8b5cf6;">
+                                <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: #8b5cf6;">
+                            <h4 class="font-bold text-center mb-2 text-white">Detalles</h4>
+                            <p class="text-xs text-white/80 text-center">Gestión de propiedades tokenizadas</p>
+                            <button class="card-toggle-btn mt-3">
+                                <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="participant-card" onclick="this.classList.toggle('is-flipped')">
+                    <div class="participant-card-inner">
+                        <div class="card-face face-front" style="border-left-color: #f59e0b;">
+                            <div class="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mb-3">
+                                <i data-lucide="line-chart" class="w-8 h-8 text-yellow-500"></i>
+                            </div>
+                            <h4 class="font-bold heading-text text-center">Venture Capital</h4>
+                            <p class="text-xs body-text text-center mt-1">Inversor</p>
+                            <button class="card-toggle-btn" style="background: #f59e0b;">
+                                <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                        <div class="card-face face-back" style="border-right-color: #f59e0b;">
+                            <h4 class="font-bold text-center mb-2 text-white">Detalles</h4>
+                            <p class="text-xs text-white/80 text-center">Fondo de inversión en RWA</p>
+                            <button class="card-toggle-btn mt-3">
+                                <i data-lucide="rotate-3d" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating Controls Bar -->
+    <div class="controls-bar">
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <i data-lucide="sun" class="toggle-track-icon"></i>
+            <div class="theme-toggle-thumb">
+                <i data-lucide="moon" class="thumb-icon"></i>
+            </div>
+        </div>
+        <div class="lang-toggle" onclick="toggleLanguage()">
+            <span class="lang-label lang-label-es">ES</span>
+            <div class="lang-switch-track">
+                <div class="lang-switch-thumb"></div>
+            </div>
+            <span class="lang-label lang-label-en">EN</span>
+        </div>
+    </div>
+</body>
+
+</html>

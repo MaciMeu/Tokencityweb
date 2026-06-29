@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Aviso Legal</title>
+    <meta name="description" content="Aviso legal de Token City S.L. Información sobre la titularidad del sitio web, condiciones de uso, propiedad intelectual e industrial y responsabilidades.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                const nightTime = (hour >= 19 || hour < 7);
+                isLight = !systemDark && !nightTime;
+            }
+            if (isLight) document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255,255,255,0.85);
+            --glass-border: rgba(0,0,0,0.1);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5,7,10,0.95);
+        }
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255,255,255,0.03);
+            --glass-border: rgba(255,255,255,0.08);
+        }
+        .heading-text { color: var(--text-main); }
+        .body-text    { color: var(--text-muted); }
+        .section-label {
+            color: var(--primary-blue); font-weight: 700; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        body:not(.light-mode) .section-label { color: #60a5fa; }
+
+        /* ── Hero ── */
+        .hero-legal {
+            position: relative; overflow: hidden; background: #05070a;
+            min-height: 58vh; display: flex; align-items: center;
+        }
+        .hero-media {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+            opacity: 0.18; transform: scale(1.03);
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+        }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 85%);
+        }
+
+        /* ── Nav ── */
+        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link  { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .mega-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem;
+            opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100;
+        }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        #navOverlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+            z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease;
+        }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+        #mobileDrawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+            background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; flex-direction: column; border-left: 1px solid var(--glass-border);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+
+        /* ── Floating Controls ── */
+        .controls-bar {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            background: rgba(5,7,10,0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .theme-toggle {
+            position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1);
+            border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+        }
+        .theme-toggle-thumb {
+            position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: #fff;
+            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2;
+        }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+
+        /* ── Legal page layout ── */
+        .legal-layout {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 3.5rem;
+            align-items: start;
+        }
+        @media (max-width: 900px) {
+            .legal-layout { grid-template-columns: 1fr; }
+        }
+
+        /* Sidebar TOC */
+        .legal-toc { position: sticky; top: 100px; }
+        .legal-toc-group { font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.12em; color: #4b5563; margin-bottom: 0.5rem; padding: 0 0.5rem; }
+        .legal-toc-link {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.45rem 0.75rem; border-radius: 0.625rem;
+            font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+            text-decoration: none; transition: all 0.2s ease;
+            border-left: 2px solid transparent; margin-bottom: 0.15rem;
+        }
+        .legal-toc-link:hover { color: var(--text-main); background: var(--glass-bg); }
+        .legal-toc-link.active {
+            color: #1855BA; border-left-color: #1855BA;
+            background: rgba(24,85,186,0.07);
+        }
+        body:not(.light-mode) .legal-toc-link.active {
+            color: #60a5fa; border-left-color: #60a5fa;
+            background: rgba(96,165,250,0.08);
+        }
+        .toc-num {
+            width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.6rem; font-weight: 900;
+            background: rgba(24,85,186,0.1); color: #1855BA;
+        }
+        body:not(.light-mode) .toc-num { background: rgba(96,165,250,0.1); color: #93c5fd; }
+        .legal-toc-link.active .toc-num { background: #1855BA; color: #fff; }
+        body:not(.light-mode) .legal-toc-link.active .toc-num { background: #60a5fa; color: #05070a; }
+
+        /* Section cards */
+        .legal-section { scroll-margin-top: 110px; margin-bottom: 1.75rem; }
+        .legal-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid #1855BA;
+            border-radius: 1.75rem;
+            padding: 2.25rem 2.5rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: border-left-color 0.35s ease, box-shadow 0.35s ease;
+        }
+        .legal-card:hover {
+            border-left-color: #60a5fa;
+            box-shadow: 0 12px 40px rgba(24,85,186,0.12);
+        }
+        body.light-mode .legal-card { background: rgba(255,255,255,0.92); }
+
+        /* Section heading */
+        .legal-card-header {
+            display: flex; align-items: center; gap: 0.875rem; margin-bottom: 1.5rem;
+            padding-bottom: 1.25rem; border-bottom: 1px solid var(--glass-border);
+        }
+        .legal-card-num {
+            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; font-weight: 900;
+            background: rgba(24,85,186,0.12); color: #1855BA;
+        }
+        body:not(.light-mode) .legal-card-num { background: rgba(96,165,250,0.12); color: #60a5fa; }
+        .legal-card-title {
+            font-size: 1.1rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: -0.01em; color: var(--text-main);
+        }
+
+        /* Body text */
+        .legal-body { font-size: 0.875rem; line-height: 1.85; color: var(--text-muted); }
+        .legal-body p { margin-bottom: 1rem; }
+        .legal-body p:last-child { margin-bottom: 0; }
+        .legal-body strong { font-weight: 700; color: var(--text-main); }
+
+        /* List */
+        .legal-list { list-style: none; padding: 0; margin: 1rem 0 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .legal-list li {
+            display: flex; align-items: flex-start; gap: 0.75rem;
+            font-size: 0.85rem; color: var(--text-muted); line-height: 1.65;
+        }
+        .legal-list-dot {
+            width: 6px; height: 6px; border-radius: 50%; background: #1855BA;
+            margin-top: 0.45rem; flex-shrink: 0;
+        }
+        body:not(.light-mode) .legal-list-dot { background: #60a5fa; }
+
+        /* Info highlight box */
+        .legal-infobox {
+            background: rgba(24,85,186,0.06);
+            border: 1px solid rgba(24,85,186,0.18);
+            border-radius: 1rem; padding: 1.25rem 1.5rem; margin: 1.25rem 0;
+        }
+        body:not(.light-mode) .legal-infobox {
+            background: rgba(96,165,250,0.06);
+            border-color: rgba(96,165,250,0.15);
+        }
+        .legal-infobox-label {
+            font-size: 0.62rem; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 0.1em; color: #1855BA; margin-bottom: 0.25rem;
+        }
+        body:not(.light-mode) .legal-infobox-label { color: #60a5fa; }
+        .legal-infobox-value {
+            font-size: 0.875rem; font-weight: 600; color: var(--text-main);
+        }
+
+        /* Contact card in sidebar */
+        .toc-contact {
+            margin-top: 1.75rem; padding: 1rem 1.25rem; border-radius: 1.25rem;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Quick nav pills (mobile) */
+        .legal-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
+        .legal-pill {
+            font-size: 0.72rem; font-weight: 700; padding: 0.4rem 0.875rem;
+            border-radius: 999px; border: 1px solid var(--glass-border);
+            color: var(--text-muted); text-decoration: none; transition: all 0.2s ease;
+        }
+        .legal-pill:hover { border-color: #1855BA; color: #1855BA; background: rgba(24,85,186,0.06); }
+        body:not(.light-mode) .legal-pill:hover { color: #60a5fa; border-color: #60a5fa; background: rgba(96,165,250,0.06); }
+
+        @media (max-width: 640px) {
+            .legal-card { padding: 1.5rem 1.25rem; }
+            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+        }
+    </style>
+</head>
+
+<body>
+    <script>if (window.__isThemeLight) document.body.classList.add('light-mode');</script>
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+
+        <!-- ══════════════════════════ HERO ══════════════════════════ -->
+        <section class="hero-legal px-6 pt-28 pb-20">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid"></div>
+
+            <div class="relative z-10 max-w-5xl mx-auto reveal-growth">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-[12px] bg-blue-500/15 flex items-center justify-center text-blue-400 shrink-0">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                    </div>
+                    <p class="section-label !text-blue-400">Token City S.L. · NIF B-01729144</p>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl font-black text-white mb-5 uppercase tracking-tighter leading-tight">
+                    Aviso <br><span class="text-blue-400">Legal</span>
+                </h1>
+                <p class="text-gray-300 text-base md:text-lg max-w-2xl font-medium leading-relaxed mb-8">
+                    Información sobre la titularidad del sitio web, condiciones de uso, propiedad intelectual e industrial y las garantías y responsabilidades de Token City S.L.
+                </p>
+
+                <!-- Meta chips -->
+                <div class="flex flex-wrap gap-3">
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/55 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
+                        <i data-lucide="building-2" class="w-3 h-3"></i>
+                        Token City S.L. · Madrid, España
+                    </span>
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/55 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
+                        <i data-lucide="shield-check" class="w-3 h-3"></i>
+                        Ley 34/2002 LSSI-CE
+                    </span>
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/55 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
+                        <i data-lucide="calendar" class="w-3 h-3"></i>
+                        Vigencia indefinida · 2025
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════ MAIN CONTENT ══════════════════════════ -->
+        <section class="max-w-7xl mx-auto px-6 py-16 pb-24">
+
+            <!-- Quick nav pills – visible only on mobile -->
+            <div class="legal-pills md:hidden">
+                <a href="#info" class="legal-pill">1. Información</a>
+                <a href="#uso" class="legal-pill">2. Uso</a>
+                <a href="#propiedad" class="legal-pill">3. Propiedad Intelectual</a>
+                <a href="#responsabilidad" class="legal-pill">4. Responsabilidad</a>
+                <a href="#duracion" class="legal-pill">5. Duración</a>
+            </div>
+
+            <div class="legal-layout">
+
+                <!-- ── Sidebar TOC ── -->
+                <aside class="legal-toc hidden md:block">
+                    <p class="legal-toc-group">Contenido</p>
+                    <nav class="flex flex-col">
+                        <a href="#info" class="legal-toc-link active">
+                            <span class="toc-num">1</span> Derecho de la Información
+                        </a>
+                        <a href="#uso" class="legal-toc-link">
+                            <span class="toc-num">2</span> Uso de la Plataforma
+                        </a>
+                        <a href="#propiedad" class="legal-toc-link">
+                            <span class="toc-num">3</span> Propiedad Intelectual
+                        </a>
+                        <a href="#responsabilidad" class="legal-toc-link">
+                            <span class="toc-num">4</span> Responsabilidad y Garantías
+                        </a>
+                        <a href="#duracion" class="legal-toc-link">
+                            <span class="toc-num">5</span> Duración y Modificación
+                        </a>
+                    </nav>
+
+                    <!-- Contact card -->
+                    <div class="toc-contact">
+                        <p class="text-xs font-bold heading-text mb-1 flex items-center gap-1.5">
+                            <i data-lucide="help-circle" class="w-3.5 h-3.5 text-blue-400"></i>
+                            ¿Tienes dudas?
+                        </p>
+                        <p class="text-[11px] body-text mb-3 leading-relaxed">
+                            Contacta con nuestro equipo para cualquier consulta legal.
+                        </p>
+                        <a href="mailto:info@token-city.com" class="flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:underline transition-all">
+                            <i data-lucide="mail" class="w-3 h-3"></i> info@token-city.com
+                        </a>
+                    </div>
+                </aside>
+
+                <!-- ── Legal sections ── -->
+                <div>
+
+                    <!-- ──────── 1. Derecho de la Información ──────── -->
+                    <article id="info" class="legal-section">
+                        <div class="legal-card reveal-growth">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">1</span>
+                                <h2 class="legal-card-title">Derecho de la Información</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>En cumplimiento del deber de información recogido en el artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico, a continuación se reflejan los datos identificativos del titular del sitio web:</p>
+
+                                <div class="legal-infobox">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                        <div>
+                                            <p class="legal-infobox-label">Razón social</p>
+                                            <p class="legal-infobox-value">Token City S.L.</p>
+                                        </div>
+                                        <div>
+                                            <p class="legal-infobox-label">NIF</p>
+                                            <p class="legal-infobox-value font-mono">B-01729144</p>
+                                        </div>
+                                        <div>
+                                            <p class="legal-infobox-label">Domicilio social</p>
+                                            <p class="legal-infobox-value">Madrid, España</p>
+                                        </div>
+                                        <div>
+                                            <p class="legal-infobox-label">Correo electrónico</p>
+                                            <a href="mailto:info@token-city.com" class="legal-infobox-value text-blue-400 hover:underline">info@token-city.com</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p>El acceso y uso del sitio web <strong>www.token-city.com</strong> implica la aceptación sin reservas de las presentes condiciones legales. Token City S.L. se reserva el derecho de modificar el sitio web, sus contenidos y los servicios ofrecidos en cualquier momento y sin previo aviso.</p>
+                                <p>El usuario declara ser mayor de edad y tener capacidad legal suficiente para contratar, y que ha leído, entiende y acepta sin reservas este aviso legal en su totalidad.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ──────── 2. Uso de la Plataforma ──────── -->
+                    <article id="uso" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">2</span>
+                                <h2 class="legal-card-title">Uso de la Plataforma</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>El usuario asume la responsabilidad del uso correcto del sitio web. La plataforma pone a disposición de sus usuarios textos, gráficos, contenidos multimedia e información que son propiedad de Token City o de terceros que han autorizado expresamente su uso.</p>
+                                <p>Token City no se responsabiliza de las consecuencias que puedan derivarse de un uso inadecuado de los contenidos publicados. Con carácter enunciativo, pero no limitativo, <strong>queda expresamente prohibido:</strong></p>
+
+                                <ul class="legal-list">
+                                    <li><span class="legal-list-dot"></span>Llevar a cabo actividades ilícitas o contrarias a la buena fe y al orden público.</li>
+                                    <li><span class="legal-list-dot"></span>Difundir contenidos o propaganda de carácter racista, xenófobo, pornográfico o que atenten contra los derechos humanos.</li>
+                                    <li><span class="legal-list-dot"></span>Dañar los sistemas físicos y lógicos de Token City, sus proveedores o de terceros, introduciendo o difundiendo virus informáticos o cualquier otro sistema que sea susceptible de provocar daños.</li>
+                                    <li><span class="legal-list-dot"></span>Intentar acceder, utilizar o manipular datos de Token City, terceros proveedores o de otros usuarios sin la correspondiente autorización.</li>
+                                    <li><span class="legal-list-dot"></span>Reproducir, copiar, distribuir o permitir el acceso público a los contenidos del sitio web sin haber obtenido la autorización previa y expresa del titular.</li>
+                                    <li><span class="legal-list-dot"></span>Suprimir, alterar o manipular cualquier dispositivo de protección o sistema de seguridad instalado en las páginas de Token City.</li>
+                                    <li><span class="legal-list-dot"></span>Suprimir o manipular los mecanismos identificadores de los derechos de propiedad intelectual o industrial de Token City.</li>
+                                </ul>
+
+                                <p>Los materiales publicados tienen finalidad estrictamente informativa y pueden no reflejar la legislación vigente más reciente. Token City se reserva el derecho de suspender el acceso al sitio web, total o parcialmente, sin previo aviso, por razones técnicas o de mantenimiento.</p>
+                                <p>La compañía investigará los incumplimientos de estas condiciones y colaborará con las autoridades competentes en caso de que se detecte cualquier actividad delictiva o contraria a la ley.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ──────── 3. Propiedad Intelectual e Industrial ──────── -->
+                    <article id="propiedad" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">3</span>
+                                <h2 class="legal-card-title">Propiedad Intelectual e Industrial</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>Token City S.L. es titular en exclusiva de todos los derechos de propiedad intelectual e industrial del sitio web, así como de los elementos contenidos en el mismo —incluyendo, a título enunciativo y no limitativo: imágenes, sonido, audio, vídeo, software o textos; marcas o logotipos, combinaciones de colores, estructura y diseño, selección de materiales usados, programas de ordenador necesarios para su funcionamiento, acceso y uso, etc.</p>
+                                <p>Token City no concede ninguna licencia o autorización de uso de ninguna clase sobre sus derechos de propiedad intelectual e industrial o sobre cualquier otra propiedad o derecho relacionado con el sitio web, los servicios o los contenidos del mismo.</p>
+
+                                <ul class="legal-list">
+                                    <li><span class="legal-list-dot"></span>El usuario únicamente podrá almacenar provisionalmente los contenidos en su equipo para la visualización personal y sin finalidad comercial alguna.</li>
+                                    <li><span class="legal-list-dot"></span>Cualquier otro uso que implique la reproducción, distribución, comunicación pública o transformación de dichos contenidos requerirá autorización expresa y por escrito de Token City.</li>
+                                    <li><span class="legal-list-dot"></span>Los nombres comerciales, marcas o signos distintivos que aparezcan en el sitio web son titularidad de Token City o de terceros que han autorizado su uso.</li>
+                                </ul>
+
+                                <p>El usuario responderá frente a Token City S.L. de los daños y perjuicios que esta sufra como consecuencia del incumplimiento de las obligaciones establecidas en el presente apartado, incluyendo las posibles reclamaciones de terceros.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ──────── 4. Responsabilidad y Garantías ──────── -->
+                    <article id="responsabilidad" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">4</span>
+                                <h2 class="legal-card-title">Responsabilidad y Garantías</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>Token City ha adoptado todas las medidas técnicas y organizativas necesarias para garantizar la seguridad e integridad de los datos que procesa, así como para evitar su pérdida, alteración o acceso no autorizado. No obstante, el usuario reconoce y acepta que las medidas de seguridad en Internet no son inexpugnables.</p>
+
+                                <ul class="legal-list">
+                                    <li><span class="legal-list-dot"></span>La información proporcionada en el sitio web tiene carácter orientativo y no constituye asesoramiento jurídico, financiero ni de inversión de ninguna clase.</li>
+                                    <li><span class="legal-list-dot"></span>Token City no puede garantizar la disponibilidad y continuidad del funcionamiento del sitio web ni la ausencia de errores en los contenidos publicados.</li>
+                                    <li><span class="legal-list-dot"></span>Token City no será responsable de los daños o pérdidas que puedan derivarse de fallos de seguridad en los sistemas de transmisión de datos por Internet.</li>
+                                    <li><span class="legal-list-dot"></span>Los enlaces a sitios web de terceros son responsabilidad exclusiva del usuario. Token City no controla ni se responsabiliza de los contenidos, productos o servicios accesibles a través de dichos enlaces.</li>
+                                    <li><span class="legal-list-dot"></span>El usuario es responsable de mantener la confidencialidad de sus credenciales de acceso a la plataforma y de todas las actividades realizadas bajo su cuenta.</li>
+                                </ul>
+
+                                <p>En ningún caso Token City S.L. será responsable de daños indirectos, pérdidas de beneficios, pérdidas de datos, daños a la reputación o cualquier otro daño especial que se derive del uso o de la imposibilidad de uso del sitio web, incluso si se hubiera advertido de la posibilidad de tales daños.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ──────── 5. Duración y Modificación ──────── -->
+                    <article id="duracion" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">5</span>
+                                <h2 class="legal-card-title">Duración y Modificación</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>El presente aviso legal tiene duración indefinida y permanecerá vigente mientras esté publicado en el sitio web. Token City S.L. se reserva el derecho a modificar sus términos en cualquier momento y sin previo aviso, de acuerdo con la normativa vigente o por cambios en la actividad empresarial.</p>
+                                <p>Las modificaciones entrarán en vigor desde el momento de su publicación en el sitio web. El uso continuado del sitio tras la publicación de dichas modificaciones implicará la aceptación tácita de las mismas por parte del usuario.</p>
+                                <p>Se recomienda al usuario revisar periódicamente el presente aviso legal para estar informado de posibles actualizaciones.</p>
+
+                                <div class="legal-infobox">
+                                    <p class="legal-infobox-label">Legislación aplicable y jurisdicción</p>
+                                    <p class="text-sm mt-1.5 leading-relaxed" style="color:var(--text-muted)">Las presentes condiciones legales se rigen e interpretan de conformidad con la legislación española vigente. Para la resolución de cualquier litigio o controversia que pudiera surgir en relación con la interpretación o cumplimiento del presente aviso legal, ambas partes se someten, con renuncia expresa a cualquier otro fuero que pudiera corresponderles, a la jurisdicción y competencia de los juzgados y tribunales de <strong style="color:var(--text-main)">Madrid, España.</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div><!-- end legal content -->
+            </div><!-- end legal-layout -->
+        </section>
+
+        <!-- ══════════════════════════ CTA ══════════════════════════ -->
+        <section class="max-w-7xl mx-auto px-6 pb-28 reveal-growth">
+            <div class="cta-plus-pattern rounded-[2rem] overflow-hidden">
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 px-8 md:px-14 py-12">
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-blue-300 mb-2">¿Tienes preguntas?</p>
+                        <h3 class="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter leading-tight mb-2">
+                            Contacta con el equipo<br>de Token City
+                        </h3>
+                        <p class="text-white/55 text-sm max-w-md leading-relaxed">Estamos disponibles para resolver cualquier consulta sobre cumplimiento normativo, protección de datos o cualquier asunto relacionado con nuestra actividad.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                        <a href="mailto:info@token-city.com"
+                           class="bg-white text-[#0f3c8e] font-bold px-7 py-3.5 rounded-[15px] hover:scale-105 transition-all text-sm flex items-center gap-2 justify-center">
+                            <i data-lucide="mail" class="w-4 h-4"></i> info@token-city.com
+                        </a>
+                        <a href="politica-privacidad.html"
+                           class="border-2 border-white/35 text-white font-semibold px-6 py-3.5 rounded-[15px] hover:border-white/65 transition-all text-sm flex items-center gap-2 justify-center">
+                            <i data-lucide="lock" class="w-4 h-4"></i> Política de privacidad
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script src="global-scripts.js"></script>
+    <script>
+        /* ── Sidebar TOC active state on scroll ── */
+        (function () {
+            const sectionIds = ['info', 'uso', 'propiedad', 'responsabilidad', 'duracion'];
+            const links = document.querySelectorAll('.legal-toc-link');
+            function updateToc() {
+                let current = sectionIds[0];
+                sectionIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && window.scrollY >= el.offsetTop - 130) current = id;
+                });
+                links.forEach(link => {
+                    const target = link.getAttribute('href')?.replace('#', '');
+                    link.classList.toggle('active', target === current);
+                });
+            }
+            window.addEventListener('scroll', updateToc, { passive: true });
+            updateToc();
+        })();
+    </script>
+</body>
+
+</html>

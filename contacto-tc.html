@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Contacto</title>
+    <meta name="description" content="Contacta con el equipo de Token City. Llámanos, escríbenos o abre un ticket de soporte.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const saved = localStorage.getItem('themePreference');
+            let isLight;
+            if (saved) { isLight = saved === 'light'; }
+            else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                isLight = !systemDark && !(hour >= 19 || hour < 7);
+            }
+            if (isLight) document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a; --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255,255,255,0.85); --glass-border: rgba(0,0,0,0.1);
+            --nav-bg: rgba(5,7,10,0.95); --nav-text: #ffffff; --nav-text-muted: #9ca3af;
+        }
+        body:not(.light-mode) {
+            --text-main: #ffffff; --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255,255,255,0.03); --glass-border: rgba(255,255,255,0.08);
+        }
+        .heading-text { color: var(--text-main); }
+        .body-text    { color: var(--text-muted); }
+        .section-label { color: var(--primary-blue); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        body:not(.light-mode) .section-label { color: #60a5fa; }
+
+        /* ── Hero ── */
+        .hero-contact {
+            position: relative; overflow: hidden; background: #05070a;
+            min-height: 62vh; display: flex; align-items: center;
+        }
+        .hero-media {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center 30%;
+            opacity: 0.18; transform: scale(1.04);
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+        }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 82%);
+        }
+
+        /* ── Nav ── */
+        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link  { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .mega-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem;
+            opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100;
+        }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        #navOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s; }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+        #mobileDrawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+            background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; flex-direction: column; border-left: 1px solid var(--glass-border);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+
+        /* ── Controls ── */
+        .controls-bar {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            background: rgba(5,7,10,0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .theme-toggle {
+            position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1);
+            border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+        }
+        .theme-toggle-thumb {
+            position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: #fff;
+            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2;
+        }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+
+        /* ── Contact method cards ── */
+        .contact-method {
+            display: flex; flex-direction: column; gap: 1rem;
+            padding: 2rem; border-radius: 1.875rem;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .contact-method:hover { transform: translateY(-4px); box-shadow: 0 28px 56px rgba(0,0,0,0.2); }
+        body.light-mode .contact-method { background: rgba(255,255,255,0.92); }
+        .contact-icon {
+            width: 48px; height: 48px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .contact-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            font-size: 0.8rem; font-weight: 700; padding: 0.6rem 1.25rem;
+            border-radius: 999px; transition: all 0.2s ease; border: none; cursor: pointer;
+        }
+
+        /* ── Form card ── */
+        .contact-form-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 2rem; padding: 3rem;
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 24px 64px rgba(0,0,0,0.15);
+        }
+        body.light-mode .contact-form-card { background: rgba(255,255,255,0.95); }
+
+        input, select, textarea {
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            color: white !important; outline: none;
+        }
+        body.light-mode input, body.light-mode select, body.light-mode textarea {
+            background: rgba(0,0,0,0.03) !important;
+            border: 1px solid rgba(0,0,0,0.1) !important;
+            color: #0f172a !important;
+        }
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3) !important; }
+        body.light-mode input::placeholder, body.light-mode textarea::placeholder { color: rgba(0,0,0,0.28) !important; }
+        input:focus, select:focus, textarea:focus {
+            border-color: rgba(96,165,250,0.5) !important;
+            box-shadow: 0 0 0 3px rgba(24,85,186,0.1);
+        }
+
+        /* ── Success state ── */
+        .form-success { display: none; text-align: center; padding: 3rem 1rem; flex-direction: column; align-items: center; }
+        .form-success.visible { display: flex; }
+        .svg-draw-circle { stroke-dasharray: 66; stroke-dashoffset: 66; animation: draw-circle 0.8s ease forwards 0.2s; }
+        .svg-draw-check  { stroke-dasharray: 24; stroke-dashoffset: 24; animation: draw-check 0.5s ease forwards 0.9s; }
+        @keyframes draw-circle { to { stroke-dashoffset: 0; } }
+        @keyframes draw-check  { to { stroke-dashoffset: 0; } }
+
+        @media (max-width: 640px) {
+            .contact-form-card { padding: 1.5rem 1.25rem; }
+            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+        }
+    </style>
+</head>
+
+<body>
+    <script>if (window.__isThemeLight) document.body.classList.add('light-mode');</script>
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+
+        <!-- ══════════════════════════ HERO ══════════════════════════ -->
+        <section class="hero-contact px-6 pt-28 pb-36">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid"></div>
+
+            <div class="relative z-10 max-w-5xl mx-auto reveal-growth">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-[12px] bg-blue-500/15 flex items-center justify-center text-blue-400 shrink-0">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    </div>
+                    <p class="section-label !text-blue-400">Token City · Madrid, España</p>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-tight">
+                    Contacto
+                </h1>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════ CONTACT CARDS ══════════════════════════ -->
+        <section class="max-w-5xl mx-auto px-6 -mt-20 relative z-20 pb-14">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal-growth">
+
+                <!-- Teléfono -->
+                <div class="contact-method" style="border-left: 4px solid #1855BA;">
+                    <div class="contact-icon" style="background:rgba(24,85,186,0.12); color:#1855BA;">
+                        <i data-lucide="phone" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-wider text-blue-400 mb-1">Teléfono</p>
+                        <p class="font-black heading-text text-xl font-mono mb-1">+34 919 890 429</p>
+                        <p class="body-text text-xs mb-4">Lun–Vie · 9:00–18:00 CET</p>
+                        <a href="tel:+34919890429"
+                           class="contact-btn" style="background:rgba(24,85,186,0.12); color:#1855BA;">
+                            <i data-lucide="phone-call" class="w-3.5 h-3.5"></i> Llámanos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="contact-method" style="border-left: 4px solid #8b5cf6;">
+                    <div class="contact-icon" style="background:rgba(139,92,246,0.12); color:#8b5cf6;">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-wider text-purple-400 mb-1">Email</p>
+                        <p class="font-black heading-text text-base mb-1 break-all">sales@token-city.com</p>
+                        <p class="body-text text-xs mb-4">Ventas y proyectos de tokenización</p>
+                        <a href="mailto:sales@token-city.com"
+                           class="contact-btn" style="background:rgba(139,92,246,0.12); color:#8b5cf6;">
+                            <i data-lucide="send" class="w-3.5 h-3.5"></i> Enviar un mensaje
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Soporte -->
+                <div class="contact-method" style="border-left: 4px solid #22c55e;">
+                    <div class="contact-icon" style="background:rgba(34,197,94,0.12); color:#22c55e;">
+                        <i data-lucide="headphones" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-wider text-green-400 mb-1">Soporte</p>
+                        <p class="font-black heading-text text-base mb-1 break-all">support@token-city.com</p>
+                        <p class="body-text text-xs mb-4">Plataforma, wallets y operaciones</p>
+                        <a href="mailto:support@token-city.com"
+                           class="contact-btn" style="background:rgba(34,197,94,0.12); color:#22c55e;">
+                            <i data-lucide="life-buoy" class="w-3.5 h-3.5"></i> Abrir un ticket
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ══════════════════════════ FORM ══════════════════════════ -->
+        <section class="max-w-5xl mx-auto px-6 pb-28">
+            <div class="contact-form-card reveal-growth delay-100">
+
+                <!-- Success state -->
+                <div class="form-success" id="contactSuccess">
+                    <div class="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center text-green-500 mb-5 shadow-[0_0_50px_rgba(34,197,94,0.2)]">
+                        <svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" class="svg-draw-circle"></circle>
+                            <path d="M9 12l2 2 4-4" class="svg-draw-check"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-black heading-text uppercase tracking-tight mb-2">¡Mensaje enviado!</h3>
+                    <p class="body-text text-sm mb-6 max-w-xs leading-relaxed">Gracias por contactar con nosotros. Te responderemos lo antes posible.</p>
+                    <button onclick="resetForm()" class="text-blue-400 font-bold text-sm hover:underline flex items-center gap-1.5 mx-auto">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Enviar otro mensaje
+                    </button>
+                </div>
+
+                <!-- Form -->
+                <form id="contactForm" onsubmit="handleSubmit(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-[15px]">
+
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color:var(--text-main);">Nombre</label>
+                            <input type="text" required placeholder="Tu nombre"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border text-sm">
+                        </div>
+
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color:var(--text-main);">Apellidos</label>
+                            <input type="text" required placeholder="Tus apellidos"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border text-sm">
+                        </div>
+
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color:var(--text-main);">Nombre de la empresa</label>
+                            <input type="text" placeholder="Nombre de la empresa"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border text-sm">
+                        </div>
+
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color:var(--text-main);">Correo electrónico</label>
+                            <input type="email" required placeholder="email@empresa.com"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border text-sm">
+                        </div>
+
+                        <div class="space-y-[2.5px] md:col-span-2">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color:var(--text-main);">Número de teléfono</label>
+                            <input type="tel" placeholder="+34 600 000 000"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border text-sm">
+                        </div>
+
+                        <div class="space-y-[2.5px] md:col-span-2">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color:var(--text-main);">¿Cómo podemos ayudarte?</label>
+                            <textarea rows="5" required placeholder="Cuéntanos sobre tu proyecto o consulta..."
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border text-sm resize-none"></textarea>
+                        </div>
+
+                        <div class="space-y-[2.5px] md:col-span-2">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color:var(--text-main);">Por favor dinos cómo nos conociste</label>
+                            <select class="w-full px-[15px] py-[15px] rounded-[15px] border text-sm">
+                                <option value="">Selecciona una opción</option>
+                                <option>Twitter</option>
+                                <option>LinkedIn</option>
+                                <option>Instagram</option>
+                                <option>YouTube</option>
+                                <option>Google</option>
+                                <option>TikTok</option>
+                                <option>Blog</option>
+                                <option>TV</option>
+                                <option>Spotify</option>
+                                <option>Prensa</option>
+                                <option>Webinar</option>
+                                <option>Evento</option>
+                                <option>Referido</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+
+                        <!-- Checkbox -->
+                        <div class="md:col-span-2 pt-2">
+                            <label class="flex items-start gap-3 cursor-pointer">
+                                <input type="checkbox" required class="mt-0.5 w-4 h-4 rounded shrink-0 accent-blue-500">
+                                <span class="text-xs leading-relaxed" style="color:var(--text-muted);">
+                                    Estoy de acuerdo con los
+                                    <a href="aviso-legal.html" class="text-blue-400 hover:underline font-semibold">términos y condiciones</a>
+                                    y la
+                                    <a href="politica-privacidad.html" class="text-blue-400 hover:underline font-semibold">política de privacidad</a>
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="md:col-span-2 pt-2">
+                            <button type="submit" id="submitBtn"
+                                class="w-full py-4 bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold rounded-[15px] transition-all hover:scale-[1.01] flex items-center justify-center gap-2 group text-sm">
+                                <span id="submitText">Enviar mensaje</span>
+                                <i data-lucide="send" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" id="submitIcon"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </section>
+
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script src="global-scripts.js"></script>
+    <script>
+        function handleSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.classList.add('opacity-75');
+            document.getElementById('submitText').textContent = 'Enviando...';
+            document.getElementById('submitIcon').setAttribute('data-lucide', 'loader');
+            if (window.lucide) lucide.createIcons();
+            setTimeout(() => {
+                document.getElementById('contactForm').style.display = 'none';
+                document.getElementById('contactSuccess').classList.add('visible');
+                if (window.lucide) lucide.createIcons();
+            }, 1200);
+        }
+
+        function resetForm() {
+            const form = document.getElementById('contactForm');
+            form.reset();
+            form.style.display = '';
+            document.getElementById('contactSuccess').classList.remove('visible');
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = false;
+            btn.classList.remove('opacity-75');
+            document.getElementById('submitText').textContent = 'Enviar mensaje';
+            document.getElementById('submitIcon').setAttribute('data-lucide', 'send');
+            if (window.lucide) lucide.createIcons();
+        }
+    </script>
+</body>
+
+</html>

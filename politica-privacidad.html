@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Política de Privacidad</title>
+    <meta name="description" content="Política de privacidad de Token City S.L. Información sobre el tratamiento de datos personales, derechos de los usuarios y medidas de seguridad.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) { isLight = savedTheme === 'light'; }
+            else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                isLight = !systemDark && !(hour >= 19 || hour < 7);
+            }
+            if (isLight) document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a; --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255,255,255,0.85); --glass-border: rgba(0,0,0,0.1);
+            --nav-bg: rgba(5,7,10,0.95); --nav-text: #ffffff; --nav-text-muted: #9ca3af;
+        }
+        body:not(.light-mode) {
+            --text-main: #ffffff; --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255,255,255,0.03); --glass-border: rgba(255,255,255,0.08);
+        }
+        .heading-text { color: var(--text-main); }
+        .body-text    { color: var(--text-muted); }
+        .section-label { color: var(--primary-blue); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        body:not(.light-mode) .section-label { color: #60a5fa; }
+
+        /* ── Hero ── */
+        .hero-legal {
+            position: relative; overflow: hidden; background: #05070a;
+            min-height: 58vh; display: flex; align-items: center;
+        }
+        .hero-media {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+            opacity: 0.16; transform: scale(1.03);
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+        }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 85%);
+        }
+
+        /* ── Nav ── */
+        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link  { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .mega-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem;
+            opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100;
+        }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        #navOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+        #mobileDrawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+            background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; flex-direction: column; border-left: 1px solid var(--glass-border);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+
+        /* ── Floating Controls ── */
+        .controls-bar {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            background: rgba(5,7,10,0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .theme-toggle {
+            position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1);
+            border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+        }
+        .theme-toggle-thumb {
+            position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: #fff;
+            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2;
+        }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+
+        /* ── Legal layout (identical to aviso-legal.html) ── */
+        .legal-layout { display: grid; grid-template-columns: 220px 1fr; gap: 3.5rem; align-items: start; }
+        @media (max-width: 900px) { .legal-layout { grid-template-columns: 1fr; } }
+
+        .legal-toc { position: sticky; top: 100px; }
+        .legal-toc-group { font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.12em; color: #4b5563; margin-bottom: 0.5rem; padding: 0 0.5rem; }
+        .legal-toc-link {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.4rem 0.75rem; border-radius: 0.625rem;
+            font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
+            text-decoration: none; transition: all 0.2s ease;
+            border-left: 2px solid transparent; margin-bottom: 0.15rem;
+        }
+        .legal-toc-link:hover { color: var(--text-main); background: var(--glass-bg); }
+        .legal-toc-link.active { color: #1855BA; border-left-color: #1855BA; background: rgba(24,85,186,0.07); }
+        body:not(.light-mode) .legal-toc-link.active { color: #60a5fa; border-left-color: #60a5fa; background: rgba(96,165,250,0.08); }
+        .toc-num {
+            width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.58rem; font-weight: 900;
+            background: rgba(24,85,186,0.1); color: #1855BA;
+        }
+        body:not(.light-mode) .toc-num { background: rgba(96,165,250,0.1); color: #93c5fd; }
+        .legal-toc-link.active .toc-num { background: #1855BA; color: #fff; }
+        body:not(.light-mode) .legal-toc-link.active .toc-num { background: #60a5fa; color: #05070a; }
+
+        .legal-section { scroll-margin-top: 110px; margin-bottom: 1.75rem; }
+        .legal-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-left: 4px solid #1855BA; border-radius: 1.75rem; padding: 2.25rem 2.5rem;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            transition: border-left-color 0.35s ease, box-shadow 0.35s ease;
+        }
+        .legal-card:hover { border-left-color: #60a5fa; box-shadow: 0 12px 40px rgba(24,85,186,0.12); }
+        body.light-mode .legal-card { background: rgba(255,255,255,0.92); }
+
+        .legal-card-header {
+            display: flex; align-items: center; gap: 0.875rem; margin-bottom: 1.5rem;
+            padding-bottom: 1.25rem; border-bottom: 1px solid var(--glass-border);
+        }
+        .legal-card-num {
+            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; font-weight: 900;
+            background: rgba(24,85,186,0.12); color: #1855BA;
+        }
+        body:not(.light-mode) .legal-card-num { background: rgba(96,165,250,0.12); color: #60a5fa; }
+        .legal-card-title { font-size: 1.05rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: var(--text-main); }
+
+        .legal-body { font-size: 0.875rem; line-height: 1.85; color: var(--text-muted); }
+        .legal-body p { margin-bottom: 1rem; }
+        .legal-body p:last-child { margin-bottom: 0; }
+        .legal-body strong { font-weight: 700; color: var(--text-main); }
+
+        .legal-list { list-style: none; padding: 0; margin: 0.875rem 0 1.125rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .legal-list li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
+        .legal-list-dot { width: 6px; height: 6px; border-radius: 50%; background: #1855BA; margin-top: 0.45rem; flex-shrink: 0; }
+        body:not(.light-mode) .legal-list-dot { background: #60a5fa; }
+
+        .legal-infobox {
+            background: rgba(24,85,186,0.06); border: 1px solid rgba(24,85,186,0.18);
+            border-radius: 1rem; padding: 1.25rem 1.5rem; margin: 1.25rem 0;
+        }
+        body:not(.light-mode) .legal-infobox { background: rgba(96,165,250,0.06); border-color: rgba(96,165,250,0.15); }
+        .legal-infobox-label { font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #1855BA; margin-bottom: 0.25rem; }
+        body:not(.light-mode) .legal-infobox-label { color: #60a5fa; }
+        .legal-infobox-value { font-size: 0.875rem; font-weight: 600; color: var(--text-main); }
+
+        .toc-contact {
+            margin-top: 1.5rem; padding: 1rem 1.25rem; border-radius: 1.25rem;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .legal-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
+        .legal-pill {
+            font-size: 0.72rem; font-weight: 700; padding: 0.4rem 0.875rem;
+            border-radius: 999px; border: 1px solid var(--glass-border);
+            color: var(--text-muted); text-decoration: none; transition: all 0.2s ease;
+        }
+        .legal-pill:hover { border-color: #1855BA; color: #1855BA; background: rgba(24,85,186,0.06); }
+        body:not(.light-mode) .legal-pill:hover { color: #60a5fa; border-color: #60a5fa; background: rgba(96,165,250,0.06); }
+
+        @media (max-width: 640px) {
+            .legal-card { padding: 1.5rem 1.25rem; }
+            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+        }
+    </style>
+</head>
+
+<body>
+    <script>if (window.__isThemeLight) document.body.classList.add('light-mode');</script>
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+
+        <!-- ══════════════════════════ HERO ══════════════════════════ -->
+        <section class="hero-legal px-6 pt-28 pb-20">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid"></div>
+
+            <div class="relative z-10 max-w-5xl mx-auto reveal-growth">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-[12px] bg-blue-500/15 flex items-center justify-center text-blue-400 shrink-0">
+                        <i data-lucide="lock" class="w-5 h-5"></i>
+                    </div>
+                    <p class="section-label !text-blue-400">Token City S.L. · NIF B-01729144</p>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl font-black text-white mb-5 uppercase tracking-tighter leading-tight">
+                    Política de<br><span class="text-blue-400">Privacidad</span>
+                </h1>
+                <p class="text-gray-300 text-base md:text-lg max-w-2xl font-medium leading-relaxed mb-8">
+                    Información sobre el tratamiento de sus datos personales, las bases de legitimación, sus derechos como usuario y las medidas de seguridad adoptadas por Token City S.L.
+                </p>
+
+                <div class="flex flex-wrap gap-3">
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/55 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
+                        <i data-lucide="shield-check" class="w-3 h-3"></i> RGPD · Reglamento (UE) 2016/679
+                    </span>
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/55 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
+                        <i data-lucide="building-2" class="w-3 h-3"></i> Token City S.L. · Madrid, España
+                    </span>
+                    <span class="flex items-center gap-2 text-xs font-semibold text-white/55 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
+                        <i data-lucide="calendar" class="w-3 h-3"></i> Vigencia indefinida · 2025
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════ MAIN CONTENT ══════════════════════════ -->
+        <section class="max-w-7xl mx-auto px-6 py-16 pb-24">
+
+            <!-- Quick nav pills – mobile only -->
+            <div class="legal-pills md:hidden">
+                <a href="#responsable" class="legal-pill">1. Responsable</a>
+                <a href="#legitimacion" class="legal-pill">2. Legitimación</a>
+                <a href="#finalidades" class="legal-pill">3. Finalidades</a>
+                <a href="#veracidad" class="legal-pill">4. Veracidad</a>
+                <a href="#conservacion" class="legal-pill">5. Conservación</a>
+                <a href="#derechos" class="legal-pill">6. Derechos</a>
+                <a href="#seguridad" class="legal-pill">7. Seguridad</a>
+                <a href="#cambios" class="legal-pill">8. Cambios</a>
+                <a href="#links" class="legal-pill">9. Links</a>
+                <a href="#preguntas" class="legal-pill">10. Preguntas</a>
+                <a href="#aceptacion" class="legal-pill">11. Aceptación</a>
+            </div>
+
+            <div class="legal-layout">
+
+                <!-- ── Sidebar TOC ── -->
+                <aside class="legal-toc hidden md:block">
+                    <p class="legal-toc-group">Contenido</p>
+                    <nav class="flex flex-col">
+                        <a href="#responsable"  class="legal-toc-link active"><span class="toc-num">1</span> Responsable del tratamiento</a>
+                        <a href="#legitimacion" class="legal-toc-link"><span class="toc-num">2</span> Legitimación</a>
+                        <a href="#finalidades"  class="legal-toc-link"><span class="toc-num">3</span> Finalidades</a>
+                        <a href="#veracidad"    class="legal-toc-link"><span class="toc-num">4</span> Veracidad de los datos</a>
+                        <a href="#conservacion" class="legal-toc-link"><span class="toc-num">5</span> Conservación</a>
+                        <a href="#derechos"     class="legal-toc-link"><span class="toc-num">6</span> Derechos del Usuario</a>
+                        <a href="#seguridad"    class="legal-toc-link"><span class="toc-num">7</span> Seguridad</a>
+                        <a href="#cambios"      class="legal-toc-link"><span class="toc-num">8</span> Cambios</a>
+                        <a href="#links"        class="legal-toc-link"><span class="toc-num">9</span> Links externos</a>
+                        <a href="#preguntas"    class="legal-toc-link"><span class="toc-num">10</span> Preguntas</a>
+                        <a href="#aceptacion"   class="legal-toc-link"><span class="toc-num">11</span> Aceptación y Consentimiento</a>
+                    </nav>
+
+                    <div class="toc-contact">
+                        <p class="text-xs font-bold heading-text mb-1 flex items-center gap-1.5">
+                            <i data-lucide="help-circle" class="w-3.5 h-3.5 text-blue-400"></i>
+                            ¿Tienes dudas?
+                        </p>
+                        <p class="text-[11px] body-text mb-3 leading-relaxed">Contacta con nosotros para cualquier consulta sobre privacidad.</p>
+                        <a href="mailto:info@token-city.com" class="flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:underline">
+                            <i data-lucide="mail" class="w-3 h-3"></i> info@token-city.com
+                        </a>
+                    </div>
+                </aside>
+
+                <!-- ── Legal content ── -->
+                <div>
+
+                    <!-- 1 -->
+                    <article id="responsable" class="legal-section">
+                        <div class="legal-card reveal-growth">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">1</span>
+                                <h2 class="legal-card-title">¿Quién es el responsable del tratamiento de sus datos?</h2>
+                            </div>
+                            <div class="legal-body">
+                                <div class="legal-infobox">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                        <div>
+                                            <p class="legal-infobox-label">Responsable</p>
+                                            <p class="legal-infobox-value">Token City S.L.</p>
+                                        </div>
+                                        <div>
+                                            <p class="legal-infobox-label">NIF</p>
+                                            <p class="legal-infobox-value font-mono">B-01729144</p>
+                                        </div>
+                                        <div>
+                                            <p class="legal-infobox-label">Domicilio</p>
+                                            <p class="legal-infobox-value">Calle de Henri Dunant, 17, 28036 Madrid, España</p>
+                                        </div>
+                                        <div>
+                                            <p class="legal-infobox-label">Dominio web</p>
+                                            <p class="legal-infobox-value">https://token-city.com/</p>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <p class="legal-infobox-label">Contacto</p>
+                                            <a href="mailto:info@token-city.com" class="legal-infobox-value text-blue-400 hover:underline">info@token-city.com</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>El acceso y/o uso al Sitio Web le atribuye la condición de Usuario (en adelante, el <strong>"Usuario"</strong>), e implica la aceptación, desde dicho acceso y/o uso, de la presente Política de Privacidad.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 2 -->
+                    <article id="legitimacion" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">2</span>
+                                <h2 class="legal-card-title">¿Por qué Token City S.L. está legitimado para llevar a cabo el tratamiento de datos?</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>Token City S.L. está legitimado para tratar sus datos para poder llevar a cabo la prestación de sus servicios. Las bases de legitimación son las siguientes:</p>
+                                <ul class="legal-list">
+                                    <li><span class="legal-list-dot"></span><strong>Ejecución contractual:</strong> el tratamiento es necesario para la ejecución de un contrato en el que el Usuario es parte.</li>
+                                    <li><span class="legal-list-dot"></span><strong>Consentimiento de los usuarios:</strong> en los casos en que el usuario haya prestado su consentimiento para uno o varios fines específicos.</li>
+                                    <li><span class="legal-list-dot"></span><strong>Interés legítimo:</strong> cuando el tratamiento es necesario para la satisfacción de intereses legítimos perseguidos por Token City S.L. o por un tercero.</li>
+                                </ul>
+                                <p>El Usuario podrá retirar el consentimiento en cualquier momento mandando un mensaje a la siguiente dirección de correo electrónico: <a href="mailto:info@token-city.com" class="text-blue-400 hover:underline font-semibold">info@token-city.com</a>, sin que ello afecte a la licitud del tratamiento basado en el consentimiento previo a su retirada.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 3 -->
+                    <article id="finalidades" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">3</span>
+                                <h2 class="legal-card-title">¿Cuáles son las finalidades del tratamiento de sus datos de carácter personal?</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>Token City S.L. trata los datos personales de los Usuarios para las siguientes finalidades:</p>
+                                <ul class="legal-list">
+                                    <li><span class="legal-list-dot"></span>Prestación de los servicios ofrecidos por Token City S.L.</li>
+                                    <li><span class="legal-list-dot"></span>El envío de comunicaciones comerciales y/o Newsletter de Token City S.L. sobre sus servicios mediante carta, teléfono, correo electrónico, SMS/MMS, o por otros medios de comunicación electrónica equivalentes.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 4 -->
+                    <article id="veracidad" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">4</span>
+                                <h2 class="legal-card-title">Veracidad de los datos facilitados por los Usuarios y datos de menores</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>El Usuario garantiza que los datos personales facilitados son veraces y se hace responsable de comunicar a Token City S.L. cualquier modificación de los mismos.</p>
+                                <p>El Usuario responderá, en cualquier caso, de la veracidad de los datos facilitados, reservándose Token City S.L. el derecho a excluir de los Servicios registrados a todo Usuario que haya facilitado datos falsos, sin perjuicio de las demás acciones que procedan en Derecho.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 5 -->
+                    <article id="conservacion" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">5</span>
+                                <h2 class="legal-card-title">Conservación de los datos</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>Token City S.L. conservará los datos personales de los usuarios únicamente durante el tiempo necesario para la realización de las finalidades para las que fueron recogidos, mientras el Usuario no revoque los consentimientos otorgados.</p>
+                                <p>Posteriormente, en caso de ser necesario, Token City S.L. mantendrá la información bloqueada los plazos legalmente establecidos.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 6 -->
+                    <article id="derechos" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">6</span>
+                                <h2 class="legal-card-title">Derechos del Usuario en relación con sus datos</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>El Usuario puede ejercitar los siguientes derechos en relación con sus datos personales:</p>
+                                <ul class="legal-list">
+                                    <li><span class="legal-list-dot"></span>Acceder a sus datos personales.</li>
+                                    <li><span class="legal-list-dot"></span>Solicitar la rectificación de los datos inexactos.</li>
+                                    <li><span class="legal-list-dot"></span>Solicitar su supresión cuando, entre otros motivos, los datos ya no sean necesarios para los fines que fueron recogidos.</li>
+                                    <li><span class="legal-list-dot"></span>Solicitar la limitación del tratamiento de sus datos.</li>
+                                    <li><span class="legal-list-dot"></span>Oponerse al tratamiento de sus datos.</li>
+                                    <li><span class="legal-list-dot"></span>Solicitar su portabilidad.</li>
+                                    <li><span class="legal-list-dot"></span>No ser objeto de decisiones individuales automatizadas.</li>
+                                </ul>
+                                <p>Puede ejercer sus derechos enviando un correo electrónico a <a href="mailto:info@token-city.com" class="text-blue-400 hover:underline font-semibold">info@token-city.com</a> indicando el motivo de su petición y adjuntando copia de su D.N.I., o mediante correo ordinario a:</p>
+                                <div class="legal-infobox">
+                                    <p class="legal-infobox-label">Dirección postal</p>
+                                    <p class="legal-infobox-value">Token City S.L. · Calle San Miguel, 5, 1ª PTA<br>38001, S/C de Tenerife, España</p>
+                                </div>
+                                <p>Sin perjuicio de cualquier otro recurso administrativo o acción judicial, el Usuario tendrá derecho a presentar una reclamación ante una <strong>Autoridad de Control</strong>, en particular en el Estado miembro en el que tenga su residencia habitual, lugar de trabajo o lugar de la supuesta infracción.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 7 -->
+                    <article id="seguridad" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">7</span>
+                                <h2 class="legal-card-title">Seguridad de los datos</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>Token City S.L. hace todo lo que está en su mano para impedir que sus datos se utilicen de forma inadecuada, permitiendo el acceso a los mismos únicamente a personal autorizado.</p>
+                                <p>Token City S.L. mantiene los niveles de seguridad de protección de datos personales conforme a la normativa aplicable y ha establecido todos los medios técnicos a su alcance para evitar la pérdida, mal uso, alteración, acceso no autorizado y robo de los datos que el Usuario facilite a través del Sitio Web, sin perjuicio de informarle de que las medidas de seguridad en Internet no son inexpugnables.</p>
+                                <p>El Usuario es el responsable de mantener la confidencialidad de su contraseña, así como de todas las actividades que ocurran en la sesión iniciada con su nombre y contraseña. El Usuario se compromete a notificar a Token City S.L. a la mayor brevedad el uso no autorizado de su nombre de Usuario y/o contraseña o cualquier otro fallo en la seguridad.</p>
+                                <p>Token City S.L. no será responsable por los daños o pérdidas que se pudieran originar debido al incumplimiento de esta obligación por parte del Usuario.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 8 -->
+                    <article id="cambios" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">8</span>
+                                <h2 class="legal-card-title">Cambios</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>Token City S.L. se reserva el derecho de revisar su Política de Privacidad en el momento que considere oportuno.</p>
+                                <p>No obstante, cualquier cambio que se produzca en la presente Política de Privacidad se comunicará al Usuario.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 9 -->
+                    <article id="links" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">9</span>
+                                <h2 class="legal-card-title">Links a páginas web</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>La Plataforma de TOKEN CITY podría contener links a páginas web de compañías y entidades de terceros. Token City S.L. no puede hacerse responsable de la forma en la que estas compañías tratan la protección de la privacidad y de los datos personales.</p>
+                                <p>Le aconsejamos que lea detenidamente las declaraciones de Política de Privacidad de estas páginas web que no son titularidad de Token City S.L. con relación al uso, procesamiento y protección de datos personales.</p>
+                                <p>Las condiciones que ofrecen estas páginas web pueden no ser las mismas que las que ofrece Token City S.L.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 10 -->
+                    <article id="preguntas" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">10</span>
+                                <h2 class="legal-card-title">Preguntas</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>Si tienen alguna pregunta sobre esta Política de Privacidad o el tratamiento de sus datos rogamos que se ponga en contacto con Token City S.L. mediante correo electrónico dirigido a la siguiente dirección:</p>
+                                <div class="legal-infobox">
+                                    <p class="legal-infobox-label">Correo electrónico de contacto</p>
+                                    <a href="mailto:info@token-city.com" class="legal-infobox-value text-blue-400 hover:underline">info@token-city.com</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 11 -->
+                    <article id="aceptacion" class="legal-section">
+                        <div class="legal-card reveal-growth delay-100">
+                            <div class="legal-card-header">
+                                <span class="legal-card-num">11</span>
+                                <h2 class="legal-card-title">Aceptación y Consentimiento</h2>
+                            </div>
+                            <div class="legal-body">
+                                <p>El Usuario declara haber sido informado de las condiciones sobre protección de datos personales, aceptando y consintiendo el tratamiento de estos por parte de Token City S.L., en la forma y para las finalidades indicadas en la presente Política de Privacidad.</p>
+                                <div class="legal-infobox">
+                                    <p class="legal-infobox-label">Legislación aplicable</p>
+                                    <p class="text-sm mt-1 leading-relaxed" style="color:var(--text-muted);">La presente Política de Privacidad se rige por el <strong style="color:var(--text-main);">Reglamento (UE) 2016/679</strong> del Parlamento Europeo y del Consejo (RGPD) y por la legislación española de protección de datos vigente.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════ CTA ══════════════════════════ -->
+        <section class="max-w-7xl mx-auto px-6 pb-28 reveal-growth">
+            <div class="cta-plus-pattern rounded-[2rem] overflow-hidden">
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 px-8 md:px-14 py-12">
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-blue-300 mb-2">¿Tienes preguntas?</p>
+                        <h3 class="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter leading-tight mb-2">
+                            Contacta con el equipo<br>de Token City
+                        </h3>
+                        <p class="text-white/55 text-sm max-w-md leading-relaxed">Para cualquier consulta sobre privacidad, tratamiento de datos o ejercicio de derechos, estamos a tu disposición.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                        <a href="mailto:info@token-city.com"
+                           class="bg-white text-[#0f3c8e] font-bold px-7 py-3.5 rounded-[15px] hover:scale-105 transition-all text-sm flex items-center gap-2 justify-center">
+                            <i data-lucide="mail" class="w-4 h-4"></i> info@token-city.com
+                        </a>
+                        <a href="aviso-legal.html"
+                           class="border-2 border-white/35 text-white font-semibold px-6 py-3.5 rounded-[15px] hover:border-white/65 transition-all text-sm flex items-center gap-2 justify-center">
+                            <i data-lucide="file-text" class="w-4 h-4"></i> Aviso legal
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script src="global-scripts.js"></script>
+    <script>
+        (function () {
+            const sectionIds = ['responsable','legitimacion','finalidades','veracidad','conservacion','derechos','seguridad','cambios','links','preguntas','aceptacion'];
+            const links = document.querySelectorAll('.legal-toc-link');
+            function updateToc() {
+                let current = sectionIds[0];
+                sectionIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && window.scrollY >= el.offsetTop - 130) current = id;
+                });
+                links.forEach(link => {
+                    const target = link.getAttribute('href')?.replace('#', '');
+                    link.classList.toggle('active', target === current);
+                });
+            }
+            window.addEventListener('scroll', updateToc, { passive: true });
+            updateToc();
+        })();
+    </script>
+</body>
+
+</html>

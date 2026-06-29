@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Tokenización de activos energéticos</title>
+    <meta name="description" content="Acelera la financiación de tus proyectos energéticos (solar, eólica, hidrógeno verde) mediante la tokenización. Acceso a mercados globales y liquidez inmediata.">
+    
+    <!-- Dependencies (Exact same as plantilla.html) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <!-- Theme Logic (Exact same as plantilla.html) -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                const nightTime = (hour >= 19 || hour < 7);
+                isLight = !systemDark && !nightTime;
+            }
+            if (isLight) {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        /* CSS from plantilla.html / equipo.html */
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5, 7, 10, 0.95);
+        }
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5, 7, 10, 0.95);
+        }
+        .heading-text { color: var(--text-main); }
+        .body-text { color: var(--text-muted); }
+        .section-label { color: var(--primary-blue); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        body:not(.light-mode) .section-label { color: #60a5fa; }
+        .hero-team .section-label { color: #f87171; }
+        
+        .hero-team { position: relative; overflow: hidden; background: #05070a; }
+        .hero-media { 
+            position: absolute; inset: 0; 
+            background-image: url('energy-hero.png'); 
+            background-size: cover; background-position: center; 
+            transform: scale(1.03); opacity: 0.45;
+        }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color)); }
+        .hero-grid {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px; mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+        }
+
+        .team-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 1.75rem; transition: all 0.35s ease; backdrop-filter: blur(6px);
+        }
+        .team-card:hover { transform: translateY(-8px); border-color: rgba(24, 85, 186, 0.6); box-shadow: 0 20px 50px rgba(24, 85, 186, 0.2); }
+
+        /* Navigation Specifics */
+        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .mega-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem; opacity: 0; visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); z-index: 100;
+        }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+        #navOverlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+
+        #mobileDrawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+            background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; border-left: 1px solid var(--glass-border);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+
+        /* Floating Controls Styles (from equipo.html) */
+        .theme-toggle {
+            position: relative; width: 52px; height: 28px; background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 999px; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+        }
+        .theme-toggle-thumb {
+            position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background-color: #ffffff;
+            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); z-index: 2;
+        }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+
+        .lang-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+        .lang-label { font-size: 10px; font-weight: 800; color: #a1a1aa; transition: color 0.3s ease; }
+        .lang-label.active { color: #ffffff; }
+        .lang-switch-track { position: relative; width: 32px; height: 16px; background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px; }
+        .lang-switch-thumb { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; background-color: #ffffff; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        body.lang-en .lang-switch-thumb { transform: translateX(16px); }
+
+        .controls-bar {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            background: rgba(5, 7, 10, 0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+        .controls-bar .theme-toggle { background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); }
+        .controls-bar .toggle-track-icon { color: #ffffff; }
+        .controls-bar .thumb-icon { color: var(--primary-blue); }
+        .controls-bar .lang-switch-track { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.15); }
+
+        .reveal-growth { opacity: 0; transform: scale(0.92) translateY(40px); transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .reveal-growth.active { opacity: 1; transform: scale(1) translateY(0); }
+        
+        .delay-100 { transition-delay: 180ms; }
+        .delay-200 { transition-delay: 360ms; }
+        .delay-300 { transition-delay: 540ms; }
+
+        /* Energy Specific Redesign */
+        .lead-form-energy {
+            background: var(--glass-bg); padding: 3rem; border-radius: 2rem;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+        }
+        .energy-benefit-ico {
+            width: 44px; height: 44px; background: rgba(239, 68, 68, 0.1);
+            color: #ef4444; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+        }
+        
+        input, select, textarea {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            outline: none;
+        }
+        body.light-mode input, body.light-mode select, body.light-mode textarea {
+            background: rgba(0, 0, 0, 0.03) !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            color: #0f172a !important;
+        }
+
+        @media (max-width: 640px) {
+            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        if (window.__isThemeLight) document.body.classList.add('light-mode');
+    </script>
+
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+        <!-- Centered Hero -->
+        <section class="hero-team min-h-[80vh] flex flex-col items-center justify-center text-center pt-28 pb-48 px-6">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid absolute inset-0"></div>
+            <div class="relative z-10 max-w-4xl reveal-growth">
+                <p class="section-label mb-6 !text-red-400">Tokenización de activos energéticos</p>
+                <h1 class="text-5xl font-black text-white mb-6 uppercase tracking-tighter leading-tight">
+                    Financia tus proyectos, <br><span class="text-red-500">hazlos más accesibles y líquidos</span>
+                </h1>
+                <p class="body-text text-base text-gray-300 max-w-3xl mx-auto">
+                    Acelera la financiación de tus proyectos renovables mediante blockchain. Accede a mercados globales y modelos de inversión eficientes.
+                </p>
+            </div>
+        </section>
+
+        <!-- Full Width Form - Aligned like equipo.html (-mt) -->
+        <section class="px-6 -mt-40 md:-mt-56 relative z-30 pb-20">
+            <div class="max-w-5xl mx-auto">
+                <div class="lead-form-energy shadow-2xl reveal-growth delay-200">
+                    <div class="text-center mb-10">
+                        <h2 class="text-4xl font-extrabold heading-text mb-2 uppercase tracking-tight">¿Listo para dar el siguiente paso?</h2>
+                        <p class="body-text text-base">Cuéntanos sobre tu activo y te ayudaremos a estructurar la mejor solución.</p>
+                    </div>
+
+                    <form class="grid grid-cols-1 md:grid-cols-2 gap-[15px]">
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Nombre</label>
+                            <input type="text" required placeholder="Nombre completo"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
+                                style="border-color: var(--input-border); color: var(--text-main);">
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Apellidos</label>
+                            <input type="text" required placeholder="Apellidos"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
+                                style="border-color: var(--input-border); color: var(--text-main);">
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Email corporativo</label>
+                            <input type="email" required placeholder="ejemplo@correo.com"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
+                                style="border-color: var(--input-border); color: var(--text-main);">
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Teléfono</label>
+                            <input type="tel" required placeholder="+34 600 000 000"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
+                                style="border-color: var(--input-border); color: var(--text-main);">
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Empresa</label>
+                            <input type="text" placeholder="Nombre de tu empresa"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
+                                style="border-color: var(--input-border); color: var(--text-main);">
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">País</label>
+                            <select class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
+                                style="border-color: var(--input-border); color: var(--text-main);">
+                                <option value="">Selecciona país</option>
+                                <option>España</option>
+                                <option>México</option>
+                                <option>Otros</option>
+                            </select>
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">¿Tienes comunidad inversora propia?</label>
+                            <select class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
+                                style="border-color: var(--input-border); color: var(--text-main);">
+                                <option value="">Selecciona</option>
+                                <option>Sí</option>
+                                <option>No</option>
+                            </select>
+                        </div>
+                        <div class="space-y-[2.5px]">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Perfil empresarial</label>
+                            <select class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
+                                style="border-color: var(--input-border); color: var(--text-main);">
+                                <option value="">Selecciona perfil</option>
+                                <option>Promotor / Emisor</option>
+                                <option>Inversor</option>
+                                <option>Asesor</option>
+                            </select>
+                        </div>
+                        <div class="space-y-[2.5px] md:col-span-2">
+                            <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Mensaje</label>
+                            <textarea rows="4" placeholder="Cuéntanos cómo podemos ayudar"
+                                class="w-full px-[15px] py-[15px] rounded-[15px] border bg-white dark:bg-[#1a2235] focus:border-azul-acero-500 focus:ring-4 focus:ring-azul-acero-500/10 focus:outline-none transition-all text-sm font-medium"
+                                style="border-color: var(--input-border); color: var(--text-main);"></textarea>
+                        </div>
+
+                        <div class="md:col-span-2 space-y-3 pt-3 border-t" style="border-color: var(--glass-border);">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-red-500 dark:text-red-400 focus:ring-red-400">
+                                <span class="text-[10px] opacity-60 font-medium group-hover:opacity-90 transition-opacity" style="color: var(--text-main);">Estoy de acuerdo en recibir comunicaciones sobre novedades y oportunidades.</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" required class="w-4 h-4 rounded border-gray-300 text-red-500 dark:text-red-400 focus:ring-red-400">
+                                <span class="text-[10px] opacity-60 font-medium group-hover:opacity-90 transition-opacity" style="color: var(--text-main);">Estoy de acuerdo con los <a href="policy-template.html" class="text-red-500 hover:underline">términos y la política de privacidad</a>.</span>
+                            </label>
+                        </div>
+
+                        <div class="md:col-span-2 mt-2">
+                            <button type="submit"
+                                class="w-full py-[15px] bg-[#ef4444] hover:bg-[#dc2626] text-white font-bold rounded-[15px] transition-all active:scale-[0.98] flex items-center justify-center gap-2 group">
+                                <span>Consulta sin compromiso</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section class="px-6 py-24">
+            <div class="max-w-7xl mx-auto">
+                 <div class="text-center mb-20 reveal-growth">
+                    <p class="section-label mb-2">Líderes en activos reales</p>
+                    <h2 class="text-4xl font-extrabold heading-text uppercase tracking-tight">¿Cómo tokenizamos energía?</h2>
+                 </div>
+                 
+                 <div class="grid md:grid-cols-3 gap-10">
+                    <div class="infra-card-style p-10 rounded-[30px] text-center reveal-growth delay-100" style="border-left-color: #ef4444;">
+                        <div class="w-12 h-12 mx-auto mb-8 rounded-[15px] bg-red-500/10 flex items-center justify-center text-red-500">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-2xl font-semibold heading-text mb-4 uppercase tracking-tight">1. Activo Real</h4>
+                        <p class="body-text text-base">Analizamos tu activo y te ayudamos a estructurar la tokenización (equity o deuda).</p>
+                    </div>
+
+                    <div class="infra-card-style p-10 rounded-[30px] text-center reveal-growth delay-200" style="border-left-color: #3b82f6;">
+                        <div class="w-12 h-12 mx-auto mb-8 rounded-[15px] bg-blue-500/10 flex items-center justify-center text-blue-500">
+                            <i data-lucide="coins" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-2xl font-semibold heading-text mb-4 uppercase tracking-tight">2. Financiación</h4>
+                        <p class="body-text text-base">Proporcionamos la infraestructura y cumplimiento legal para la venta de tokens.</p>
+                    </div>
+
+                    <div class="infra-card-style p-10 rounded-[30px] text-center reveal-growth delay-300" style="border-left-color: #8b5cf6;">
+                        <div class="w-12 h-12 mx-auto mb-8 rounded-[15px] bg-purple-500/10 flex items-center justify-center text-purple-500">
+                            <i data-lucide="refresh-cw" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-2xl font-semibold heading-text mb-4 uppercase tracking-tight">3. Liquidez</h4>
+                        <p class="body-text text-base">Facilitamos el acceso a mercados secundarios para la compraventa de tokens.</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="max-w-7xl mx-auto mb-16 md:mb-32 reveal-growth px-4 md:px-6">
+            <div class="flex flex-col gap-6">
+                <!-- CONTENEDOR PRINCIPAL DEL BENTO BOX CON GAP UNIFORME -->
+                <div class="flex flex-col gap-3 md:gap-6">
+                    <!-- GRID BENTO SUPERIOR (Título + Imagen) -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+                        <!-- 1. Título Principal (Span 2 cols) -->
+                        <div class="col-span-2 p-6 md:p-10 rounded-[1.5rem] glass flex flex-col justify-center relative overflow-hidden"
+                            style="background-color: var(--card-highlight-bg);">
+                            <div class="relative z-10">
+                                <p class="section-label mb-4">¿Por qué Token City?</p>
+                                <h2 class="text-2xl md:text-4xl font-extrabold heading-text leading-tight mb-3 md:mb-4 bento-title">
+                                    Valor diferencial en <br>
+                                    <span class="text-red-500">energía</span>
+                                </h2>
+                                <p class="text-xs md:text-base leading-relaxed" style="color: var(--text-muted);">
+                                    Aceleramos la transición energética y facilitamos el acceso a capital mediante infraestructuras financieras tokenizadas de primer nivel.
+                                </p>
+                            </div>
+                            <div class="absolute top-0 right-0 w-64 h-64 bg-red-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                        </div>
+
+                        <!-- 2. Imagen de Molino (Span 2 cols) -->
+                        <div class="col-span-2 rounded-[1.5rem] relative overflow-hidden group shadow-2xl min-h-[220px]">
+                            <img src="molino.png" alt="Molinos" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700">
+                            <div class="absolute inset-0 bg-blue-600/10 group-hover:bg-transparent transition-all"></div>
+                        </div>
+                    </div>
+
+                    <!-- GRID BENTO INFERIOR (3 cards de beneficios) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
+                        <!-- Beneficio 1: Acceso a capital inmediato -->
+                        <div class="col-span-1 p-6 md:p-6 rounded-[1.5rem] relative overflow-hidden group hover:-translate-y-1 min-h-[140px] flex flex-col justify-center infra-card-style"
+                            style="border-left-color: #ef4444;">
+                            <div class="relative z-10 flex flex-col items-start gap-3">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[15px] flex items-center justify-center shrink-0"
+                                    style="background-color: var(--card-hover-bg); color: #ef4444;">
+                                    <i data-lucide="zap" class="w-4 h-4 md:w-5 md:h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm md:text-lg heading-text leading-tight mb-1 bento-title">Acceso a capital</h4>
+                                    <p class="text-[10px] md:text-xs leading-snug" style="color: var(--text-muted);">
+                                        Amplía tu red de inversores facilitando el acceso a minoristas e institucionales.</p>
+                                </div>
+                            </div>
+                            <i data-lucide="zap" class="absolute -right-2 -bottom-4 w-16 h-16 md:w-20 md:h-20 text-red-500 transform rotate-12" style="opacity: 0.08;"></i>
+                        </div>
+
+                        <!-- Beneficio 2: Mercado Global -->
+                        <div class="col-span-1 p-6 md:p-6 rounded-[1.5rem] relative overflow-hidden group hover:-translate-y-1 min-h-[140px] flex flex-col justify-center infra-card-style"
+                            style="border-left-color: #3b82f6;">
+                            <div class="relative z-10 flex flex-col items-start gap-3">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[15px] flex items-center justify-center shrink-0"
+                                    style="background-color: var(--card-hover-bg); color: #3b82f6;">
+                                    <i data-lucide="globe" class="w-4 h-4 md:w-5 md:h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm md:text-lg heading-text leading-tight mb-1 bento-title">Mercado global</h4>
+                                    <p class="text-[10px] md:text-xs leading-snug" style="color: var(--text-muted);">
+                                        Tu activo adquiere grado institucional con obtención de ISIN y distribución global.</p>
+                                </div>
+                            </div>
+                            <i data-lucide="globe" class="absolute -right-2 -bottom-4 w-16 h-16 md:w-20 md:h-20 text-blue-500 transform rotate-12" style="opacity: 0.08;"></i>
+                        </div>
+
+                        <!-- Beneficio 3: Flexibilidad y control -->
+                        <div class="col-span-1 p-6 md:p-6 rounded-[1.5rem] relative overflow-hidden group hover:-translate-y-1 min-h-[140px] flex flex-col justify-center infra-card-style"
+                            style="border-left-color: #8b5cf6;">
+                            <div class="relative z-10 flex flex-col items-start gap-3">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[15px] flex items-center justify-center shrink-0"
+                                    style="background-color: var(--card-hover-bg); color: #8b5cf6;">
+                                    <i data-lucide="settings" class="w-4 h-4 md:w-5 md:h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm md:text-lg heading-text leading-tight mb-1 bento-title">Flexibilidad y control</h4>
+                                    <p class="text-[10px] md:text-xs leading-snug" style="color: var(--text-muted);">
+                                        Tú decides las condiciones de inversión y mantienes la gestión del activo.</p>
+                                </div>
+                            </div>
+                            <i data-lucide="settings" class="absolute -right-2 -bottom-4 w-16 h-16 md:w-20 md:h-20 text-purple-500 transform rotate-12" style="opacity: 0.08;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script>
+        let __templateInited = false;
+        function initTemplatePage() {
+            if (__templateInited) return;
+            __templateInited = true;
+            if (window.lucide) window.lucide.createIcons();
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal-growth').forEach(el => observer.observe(el));
+            
+            updateToggleVisuals();
+        }
+
+        window.addEventListener('tcav:components-loaded', initTemplatePage);
+        if (document.readyState !== 'loading') {
+            setTimeout(() => { if (!__templateInited && document.querySelector('#navbar')) initTemplatePage(); }, 150);
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const html = document.documentElement;
+            const isLight = body.classList.toggle('light-mode');
+
+            if (isLight) {
+                html.classList.remove('dark');
+                localStorage.setItem('themePreference', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('themePreference', 'dark');
+            }
+            updateToggleVisuals();
+        }
+
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const isEn = document.body.classList.contains('lang-en');
+
+            document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
+            document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
+
+            const activeIconName = isLight ? 'sun' : 'moon';
+
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
+                </div>
+            `;
+
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.innerHTML = trackHTML;
+            });
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function toggleLanguage() {
+            document.body.classList.toggle('lang-en');
+            updateToggleVisuals();
+        }
+
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobileDrawer');
+            if (!drawer) return;
+            const isOpen = drawer.classList.toggle('open');
+            const overlay = document.getElementById('navOverlay');
+            const controlsBar = document.querySelector('.controls-bar');
+            overlay.style.visibility = isOpen ? 'visible' : (document.querySelector('.nav-item:hover') ? 'visible' : 'hidden');
+            overlay.style.opacity = isOpen ? '1' : (document.querySelector('.nav-item:hover') ? '1' : '0');
+            if (controlsBar) controlsBar.style.display = isOpen ? 'none' : 'flex';
+        }
+    </script>
+</body>
+
+</html>

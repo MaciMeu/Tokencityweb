@@ -105,7 +105,7 @@
             --nav-text-muted: #9ca3af;
         }
 
-        /* ===== HERO ===== */
+        /* ===== HERO SLIDER ===== */
         .hero-section {
             background: #05070a;
             overflow: hidden;
@@ -758,6 +758,78 @@
             animation: drawCheck 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             animation-delay: 0.6s;
         }
+
+        /* ══════════════════════════════════════════════
+           HERO SLIDER — Particle Dissolve Transition
+        ══════════════════════════════════════════════ */
+        .hero-slider-wrap {
+            position: relative;
+            height: 600px;
+            overflow: hidden;
+            background: #05070a;
+        }
+        @media (min-width: 768px) { .hero-slider-wrap { height: 700px; } }
+
+        /* Each slide stacks absolutely; only .is-active shows */
+        .hs-slide {
+            position: absolute; inset: 0;
+            opacity: 0; transition: opacity 0s;
+            pointer-events: none; z-index: 0;
+        }
+        .hs-slide.is-active {
+            opacity: 1; pointer-events: all; z-index: 1;
+        }
+        /* Slide anterior permanece visible durante el efecto */
+        .hs-slide.is-prev { opacity: 1; z-index: 1; pointer-events: none; }
+
+        /* (red ambient eliminada — sustituida por sistema de arena) */
+
+        /* Canvas de transición — encima de todo excepto navegación */
+        #heroParticleCanvas {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            z-index: 15; pointer-events: none;
+        }
+
+        /* Navigation dots — per-slide accent */
+        .hs-dots {
+            position: absolute; bottom: 2rem; left: 50%;
+            transform: translateX(-50%);
+            display: flex; justify-content: center; align-items: center;
+            gap: 10px; z-index: 30;
+        }
+        .hs-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(96,165,250,0.35); border: 1px solid rgba(96,165,250,0.4);
+            cursor: pointer; transition: all .4s cubic-bezier(.4,0,.2,1); padding: 0;
+        }
+        .hs-dot.active {
+            background: #60a5fa; border-color: #60a5fa;
+            width: 32px; border-radius: 4px;
+            box-shadow: 0 0 8px rgba(96,165,250,0.7);
+        }
+
+        /* Prev/next arrows */
+        .hs-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 48px; height: 48px; border-radius: 50%;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+            color: #fff; cursor: pointer; z-index: 30;
+            display: flex; align-items: center; justify-content: center;
+            transition: background .2s, transform .2s, border-color .2s;
+            backdrop-filter: blur(6px);
+        }
+        .hs-arrow:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.35); transform: translateY(-50%) scale(1.1); }
+        .hs-arrow.prev { left: 1.5rem; }
+        .hs-arrow.next { right: 1.5rem; }
+        @media (max-width: 640px) { .hs-arrow { display: none; } }
+
+        /* Exchange slide — mismo degradado que el hero principal */
+        .exchange-overlay {
+            background: linear-gradient(rgba(5,7,10,0.92) 0%, rgba(14,51,112,0.38) 45%, rgba(5,7,10,0.55) 70%, var(--bg-color) 100%);
+        }
+
+        /* ── Panel de control de física del slider ── */
     </style>
 
 </head>
@@ -890,7 +962,7 @@
                     </span>
                     <div class="mega-menu">
                         <div class="mega-grid grid-cols-2">
-                            <a href="#" class="mega-link"><span class="lang-es">Equipo Directivo</span><span class="lang-en">Management Team</span></a>
+                            <a href="equipo.html" class="mega-link"><span class="lang-es">Equipo Directivo</span><span class="lang-en">Management Team</span></a>
                             <a href="#" class="mega-link"><span class="lang-es">Sala de Prensa</span><span class="lang-en">Press Room</span></a>
                             <a href="#" class="mega-link"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a>
                         </div>
@@ -956,7 +1028,7 @@
                 </div>
             </div>
             <a href="#" class="mobile-link"><span class="lang-es">Ecosistema</span><span class="lang-en">Ecosystem</span></a>
-            <a href="#" class="mobile-link"><span class="lang-es">Nosotros</span><span class="lang-en">About Us</span></a>
+            <a href="equipo.html" class="mobile-link"><span class="lang-es">Nosotros</span><span class="lang-en">About Us</span></a>
         </div>
         <div class="p-6 border-t border-white/10 space-y-4">
             <div class="flex gap-3">
@@ -973,26 +1045,94 @@
     </div>
 
     <main>
-        <!-- Hero Section -->
-        <section class="hero-section relative h-[600px] md:h-[700px] flex items-center justify-center text-center px-4 pt-20 overflow-hidden">
-            <!-- Video Background -->
-            <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
-                <source src="BANNERHOME.mp4" type="video/mp4">
-            </video>
-            <div class="absolute inset-0 hero-overlay z-0"></div>
-            <div class="relative z-10 max-w-4xl mx-auto space-y-6 reveal-growth delay-100">
-                <p class="text-azul-acero-400 font-bold tracking-widest uppercase text-sm"><span class="lang-es">Tokeniza, invierte, infórmate</span><span class="lang-en">Tokenize, invest, get informed</span></p>
-                <h1 class="text-4xl md:text-7xl font-extrabold text-white leading-tight">
-                    <span class="lang-es">Líder en Tokenización de Activos</span><span class="lang-en">Asset Tokenization Leader</span>
-                </h1>
-                <div class="pt-4">
-                    <button
-                        class="bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold px-10 py-5 rounded-[15px] transition-all flex items-center gap-2 mx-auto tracking-wider text-sm">
-                        <span class="lang-es">Solicita información</span><span class="lang-en">Request info</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+        <!-- ══ HERO SLIDER ══ -->
+        <div class="hero-slider-wrap" id="heroSlider">
+            <!-- ── Slide 1: Token City (actual) ── -->
+            <div class="hs-slide is-active" id="hs-slide-0">
+                <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+                    <source src="BANNERHOME.mp4" type="video/mp4">
+                </video>
+                <div class="absolute inset-0 hero-overlay z-0"></div>
+                <div class="relative z-10 h-full flex items-center justify-center text-center px-4 pt-20">
+                    <div class="max-w-4xl mx-auto space-y-6 reveal-growth delay-100">
+                        <p class="text-azul-acero-400 font-bold tracking-widest uppercase text-sm">
+                            <span class="lang-es">Tokeniza, invierte, infórmate</span>
+                            <span class="lang-en">Tokenize, invest, get informed</span>
+                        </p>
+                        <h1 class="text-4xl md:text-7xl font-extrabold text-white leading-tight">
+                            <span class="lang-es">Líder en Tokenización de Activos</span>
+                            <span class="lang-en">Asset Tokenization Leader</span>
+                        </h1>
+                        <div class="pt-4">
+                            <button onclick="toggleContactForm ? toggleContactForm() : null"
+                                class="bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold px-10 py-5 rounded-[15px] transition-all flex items-center gap-2 mx-auto tracking-wider text-sm">
+                                <span class="lang-es">Solicita información</span>
+                                <span class="lang-en">Request info</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
+
+            <!-- ── Slide 2: Token City Exchange ── -->
+            <div class="hs-slide" id="hs-slide-1">
+                <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+                    <source src="https://cdn.pixabay.com/video/2024/03/15/204306-923909642_large.mp4" type="video/mp4">
+                </video>
+                <div class="absolute inset-0 exchange-overlay z-0"></div>
+                <div class="relative z-10 h-full flex items-center justify-center text-center px-4 pt-20">
+                    <div class="max-w-4xl mx-auto space-y-6">
+
+                        <!-- Live badge -->
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 border border-green-500/25 text-green-400 text-xs font-bold uppercase tracking-widest">
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            Token City Exchange · Plataforma regulada CNMV
+                        </div>
+
+                        <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight">
+                            Opera en los mercados<br>
+                            <span class="hero-text-glow">de activos digitales</span>
+                        </h1>
+
+                        <p class="text-white/70 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+                            Compra y vende Security Tokens con pleno reconocimiento jurídico.<br>
+                            La primera plataforma regulada por la CNMV para instrumentos financieros tokenizados.
+                        </p>
+
+                        <div class="pt-4 flex flex-wrap gap-4 justify-center">
+                            <a href="https://exchange.token-city.com" target="_blank" rel="noopener"
+                               class="bg-azul-acero-500 hover:bg-azul-acero-600 text-white font-bold px-10 py-5 rounded-[15px] transition-all hover:scale-105 flex items-center gap-2 text-sm tracking-wider">
+                                Ir al Exchange <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </a>
+                            <a href="https://exchange.token-city.com/register" target="_blank" rel="noopener"
+                               class="border-2 border-white/25 text-white font-semibold px-8 py-5 rounded-[15px] hover:border-white/50 transition-all text-sm">
+                                Crear cuenta gratis
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Particle Canvas (z-index: 20) ── -->
+            <canvas id="heroParticleCanvas"></canvas>
+
+            <!-- ── Arrows ── -->
+            <button class="hs-arrow prev" onclick="heroSliderPrev()" aria-label="Anterior">
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button class="hs-arrow next" onclick="heroSliderNext()" aria-label="Siguiente">
+                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+
+            <!-- ── Dots ── -->
+            <div class="hs-dots" id="hs-dots">
+                <button class="hs-dot hs-dot-0 active" data-idx="0" aria-label="Slide 1"></button>
+                <button class="hs-dot hs-dot-1"        data-idx="1" aria-label="Slide 2"></button>
+            </div>
+
+        </div><!-- /hero-slider-wrap -->
 
         <!-- Solutions Section -->
         <section class="py-20 px-4 bg-gray-50 dark:bg-transparent">
@@ -1572,7 +1712,7 @@
                     <h4 class="font-bold mb-5 text-white uppercase text-xs tracking-widest"><span class="lang-es">Empresa</span><span class="lang-en">Company</span></h4>
                     <ul class="space-y-3 text-sm">
                         <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Sobre Nosotros</span><span class="lang-en">About Us</span></a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Equipo</span><span class="lang-en">Team</span></a></li>
+                        <li><a href="equipo.html" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Equipo</span><span class="lang-en">Team</span></a></li>
                         <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Prensa</span><span class="lang-en">Press</span></a></li>
                         <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a></li>
                         <li><a href="#" class="text-gray-300 hover:text-blue-400 transition-colors"><span class="lang-es">Aviso Legal</span><span class="lang-en">Legal Notice</span></a></li>
@@ -2211,6 +2351,355 @@ window.toggleContactForm = function () {
                 nav.classList.remove('shadow-lg');
             }
         });
+    </script>
+
+    <!-- ══════════════════════════════════════════════════════════
+         HERO SLIDER — Blockchain Transition Engine
+         Tres efectos en rotación: GLITCH_RGB · HEX_DISSOLVE · CIRCUIT_TRACE
+         + Red blockchain ambiente animada (nodos + aristas)
+    ══════════════════════════════════════════════════════════ -->
+    <script>
+    /* ── Blockchain Transition Engine ────────────────────── */
+    (function () {
+  'use strict';
+
+  /* ═══ CONFIG ═══════════════════════════════════════════════ */
+  var config = {
+    particleSize:       4,
+    windForce:          4.2,
+    gravity:           -0.20,
+    sampleStep:         5,
+    transitionType:     'gravity',
+    transitionDuration: 120,
+  };
+
+  /* Paletas de color por slide (fallback si getImageData falla por CORS) */
+  var PALETTES = [
+    /* Slide 0 — Token City blues */
+    [{r:24,g:85,b:186},{r:70,g:119,b:200},{r:96,g:165,b:250},{r:147,g:197,b:253}],
+    /* Slide 1 — Exchange blues */
+    [{r:24,g:85,b:186},{r:70,g:119,b:200},{r:96,g:165,b:250},{r:255,g:255,b:255}],
+  ];
+
+  /* ═══ STATE ═════════════════════════════════════════════════ */
+  var W, H;
+  var state                = 'idle';
+  var current              = 0;
+  var total                = 0;
+  var targetIdx            = 0;
+  var transitionParticles  = [];
+  var idleParticles        = [];
+  var transitionFrameCount = 0;
+  var autoTimer            = null;
+  var SLIDE_DURATION       = 7000;
+
+  var mouse     = { x: -1000, y: -1000, px: -1000, py: -1000, force: 0 };
+  var isHover   = false;
+
+  /* DOM */
+  var canvas = document.getElementById('heroParticleCanvas');
+  var ctx    = canvas ? canvas.getContext('2d', { willReadFrequently: false }) : null;
+  var slides, dots;
+
+  /* ═══ CANVAS ════════════════════════════════════════════════ */
+  function resize() {
+    if (!canvas) return;
+    W = canvas.width  = canvas.parentElement.clientWidth  || 1280;
+    H = canvas.height = canvas.parentElement.clientHeight || 700;
+  }
+
+  /* ═══ CLASE IdleParticle (rastro del ratón) ═════════════════ */
+  function IdleParticle(x, y, color) {
+    this.x     = x;  this.y = y;
+    this.vx    = (Math.random() - 0.5) * 3;
+    this.vy    = (Math.random() - 0.5) * 2 + 1;
+    this.life  = 1.0;
+    this.decay = 0.015 + Math.random() * 0.02;
+    this.size  = 1.5 + Math.random() * 2.5;
+    this.color = color;
+  }
+  IdleParticle.prototype.update = function() {
+    this.x += this.vx;  this.y += this.vy;
+    this.life -= this.decay;
+  };
+  IdleParticle.prototype.draw = function() {
+    if (this.life <= 0) return;
+    ctx.fillStyle = 'rgba('+this.color.r+','+this.color.g+','+this.color.b+','+Math.max(0,this.life)+')';
+    ctx.fillRect(this.x, this.y, this.size, this.size);
+  };
+
+  /* ═══ CLASE Particle (transición) ══════════════════════════ */
+  function Particle(x, y, color) {
+    this.x     = x;  this.y = y;
+    this.color = color;
+    this.vx    = (Math.random() - 0.5) * 2;
+    this.vy    = (Math.random() - 0.5) * 2;
+    this.life  = 1.0;
+    this.decay = 0.006 + Math.random() * 0.012;
+    this.size  = config.particleSize + (Math.random() - 0.5) * 1.8;
+    this.mass  = this.size * 0.55;
+    this.delay = Math.random() * 25;
+  }
+  Particle.prototype.update = function(f) {
+    if (f < this.delay) return;
+    var t = config.transitionType;
+    if (t === 'sandstorm') {
+      this.vx += config.windForce * 0.16 + Math.random() * 0.05;
+      this.vy += config.gravity   * 0.30 + (Math.random() - 0.5) * 0.08;
+    } else if (t === 'gravity') {
+      this.vy += config.gravity * 0.80 + Math.random() * 0.07;
+      this.vx += (Math.random() - 0.5) * 0.14;
+    } else { /* vortex */
+      var cx = W/2, cy = H/2;
+      var dx = this.x - cx, dy = this.y - cy;
+      var d  = Math.sqrt(dx*dx + dy*dy) || 1;
+      this.vx += (-dy/d) * 0.09 * config.windForce;
+      this.vy += ( dx/d) * 0.09 * config.windForce;
+      this.vx += (dx/d)  * config.gravity * 0.12;
+      this.vy += (dy/d)  * config.gravity * 0.12;
+    }
+    /* Interacción ratón */
+    var mdx = this.x - mouse.x, mdy = this.y - mouse.y;
+    var md  = Math.sqrt(mdx*mdx + mdy*mdy);
+    if (md < 140 && isHover) {
+      var pf = (1 - md/140) * mouse.force * 0.9;
+      this.vx += (mdx/md) * pf / this.mass;
+      this.vy += (mdy/md) * pf / this.mass;
+    }
+    this.x += this.vx;  this.y += this.vy;
+    this.life -= this.decay;
+  };
+  Particle.prototype.draw = function() {
+    if (this.life <= 0) return;
+    ctx.fillStyle = 'rgba('+this.color.r+','+this.color.g+','+this.color.b+','+this.life+')';
+    ctx.fillRect(this.x, this.y, this.size, this.size);
+  };
+
+  /* ═══ CAPTURA DE PÍXELES DEL VÍDEO ══════════════════════════ */
+  function capturePixels(slideEl) {
+    var vid = slideEl.querySelector('video');
+    if (!vid || vid.readyState < 2 || !vid.videoWidth) return null;
+    var buf  = document.createElement('canvas');
+    buf.width = W;  buf.height = H;
+    var bCtx = buf.getContext('2d', { willReadFrequently: true });
+    try {
+      var vr = vid.videoWidth / vid.videoHeight;
+      var cr = W / H;
+      var dx, dy, dw, dh;
+      if (cr > vr) { dw=W; dh=W/vr; dx=0; dy=(H-dh)/2; }
+      else          { dh=H; dw=H*vr; dy=0; dx=(W-dw)/2; }
+      bCtx.drawImage(vid, dx, dy, dw, dh);
+      /* Mismo overlay oscuro del slide */
+      bCtx.fillStyle = 'rgba(3,6,13,0.50)';
+      bCtx.fillRect(0, 0, W, H);
+      return bCtx.getImageData(0, 0, W, H).data;
+    } catch(e) { return null; }
+  }
+
+  /* ═══ ACTIVAR SLIDE ═════════════════════════════════════════ */
+  function activateSlide(idx) {
+    slides.forEach(function(s, i) {
+      s.classList.remove('is-active', 'is-prev');
+      if (i === idx) s.classList.add('is-active');
+    });
+    dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+  }
+
+  /* ═══ CAMBIO DE SLIDE ════════════════════════════════════════ */
+  function changeSlide(nextIdx) {
+    if (state !== 'idle') return;
+    clearTimeout(autoTimer);
+
+    /* 1. Capturar píxeles del slide actual */
+    var pixels    = capturePixels(slides[current]);
+    var step      = config.sampleStep;
+    transitionParticles = [];
+
+    if (pixels) {
+      /* Modo óptimo: colores reales del vídeo */
+      for (var y = 0; y < H; y += step) {
+        for (var x = 0; x < W; x += step) {
+          var i = (y * W + x) * 4;
+          var r = pixels[i], g = pixels[i+1], b = pixels[i+2], a = pixels[i+3];
+          if (a > 50 && (r+g+b) > 20)
+            transitionParticles.push(new Particle(x, y, {r:r, g:g, b:b}));
+        }
+      }
+    } else {
+      /* Fallback: paleta del slide */
+      var pal = PALETTES[current] || PALETTES[0];
+      for (var y = 0; y < H; y += step * 1.3) {
+        for (var x = 0; x < W; x += step * 1.3) {
+          var c = pal[Math.floor(Math.random() * pal.length)];
+          transitionParticles.push(new Particle(x, y, c));
+        }
+      }
+    }
+
+    /* 2. Activar nuevo slide (se ve debajo de las partículas) */
+    activateSlide(nextIdx);
+    targetIdx            = nextIdx;
+    transitionFrameCount = 0;
+    state                = 'transitioning';
+  }
+
+  /* ═══ MAIN LOOP ══════════════════════════════════════════════ */
+  function mainLoop() {
+    requestAnimationFrame(mainLoop);
+    if (!ctx) return;
+    ctx.clearRect(0, 0, W, H);
+
+    if (state === 'idle') {
+      /* Rastro de arena desde el ratón */
+      if (isHover && mouse.force > 0.1) {
+        var pal = PALETTES[current] || PALETTES[0];
+        var n   = Math.min(Math.floor(mouse.force * 1.5), 10);
+        for (var k = 0; k < n; k++) {
+          var col = pal[Math.floor(Math.random() * pal.length)];
+          idleParticles.push(new IdleParticle(
+            mouse.x + (Math.random()-0.5)*15,
+            mouse.y + (Math.random()-0.5)*15,
+            col
+          ));
+        }
+        mouse.force *= 0.85;
+      }
+      for (var i = idleParticles.length - 1; i >= 0; i--) {
+        idleParticles[i].update();
+        if (idleParticles[i].life <= 0) idleParticles.splice(i, 1);
+        else idleParticles[i].draw();
+      }
+
+    } else { /* transitioning */
+      transitionFrameCount++;
+      var alive = 0;
+      for (var i = 0; i < transitionParticles.length; i++) {
+        var p = transitionParticles[i];
+        if (p.life > 0) { p.update(transitionFrameCount); p.draw(); alive++; }
+      }
+      if (alive === 0 || transitionFrameCount >= config.transitionDuration) {
+        transitionParticles = [];
+        current = targetIdx;
+        state   = 'idle';
+        startAuto();
+      }
+    }
+
+    ctx.globalAlpha = 1;
+  }
+
+  /* ═══ AUTO-AVANCE ════════════════════════════════════════════ */
+  function startAuto() {
+    clearTimeout(autoTimer);
+    autoTimer = setTimeout(function() {
+      changeSlide((current + 1) % total);
+    }, SLIDE_DURATION);
+  }
+
+  /* ═══ API PÚBLICA ════════════════════════════════════════════ */
+  window.heroSliderGoTo  = changeSlide;
+  window.heroSliderNext  = function() { changeSlide((current+1) % total); };
+  window.heroSliderPrev  = function() { changeSlide((current-1+total) % total); };
+
+  /* ═══ EVENTOS ════════════════════════════════════════════════ */
+  function bindEvents() {
+    var wrapper = document.getElementById('heroSlider');
+    if (wrapper) {
+      wrapper.addEventListener('mousemove', function(e) {
+        mouse.px = mouse.x; mouse.py = mouse.y;
+        mouse.x  = e.clientX; mouse.y = e.clientY;
+        var dx = mouse.x - mouse.px, dy = mouse.y - mouse.py;
+        mouse.force = Math.min(Math.sqrt(dx*dx+dy*dy)*0.4, 12);
+        isHover = true;
+      });
+      wrapper.addEventListener('mouseleave', function() { isHover = false; });
+      /* Swipe táctil */
+      var sx = 0;
+      wrapper.addEventListener('touchstart', function(e){ sx=e.touches[0].clientX; isHover=true; mouse.x=sx; mouse.y=e.touches[0].clientY; mouse.force=7; },{passive:true});
+      wrapper.addEventListener('touchmove',  function(e){ mouse.x=e.touches[0].clientX; mouse.y=e.touches[0].clientY; },{passive:true});
+      wrapper.addEventListener('touchend',   function(e){ isHover=false; var dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>60) changeSlide(current+(dx<0?1:-1)); },{passive:true});
+    }
+    var prev = document.querySelector('.hs-arrow.prev');
+    var next = document.querySelector('.hs-arrow.next');
+    if (prev) prev.addEventListener('click', function(){ changeSlide((current-1+total)%total); });
+    if (next) next.addEventListener('click', function(){ changeSlide((current+1)%total); });
+    document.querySelectorAll('.hs-dot').forEach(function(d){
+      d.addEventListener('click', function(){ changeSlide(parseInt(this.getAttribute('data-idx'))); });
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key==='ArrowLeft')  changeSlide((current-1+total)%total);
+      if(e.key==='ArrowRight') changeSlide((current+1)%total);
+    });
+  }
+
+  /* ═══ PANEL DE FÍSICA ═══════════════════════════════════════ */
+  function bindSettings() {
+    var panel      = document.getElementById('hsPhysicsPanel');
+    var openBtn    = document.getElementById('hsSettingsBtn');
+    var closeBtn   = document.getElementById('hsSettingsClose');
+    var resetBtn   = document.getElementById('hsSettingsReset');
+    if (!panel || !openBtn) return;
+
+    openBtn.addEventListener('click',  function(){ panel.classList.add('open'); if(window.lucide)lucide.createIcons(); });
+    closeBtn.addEventListener('click', function(){ panel.classList.remove('open'); });
+
+    function bind(id, key, label, fmt) {
+      var el = document.getElementById(id);
+      var lbl= document.getElementById(label);
+      if (!el) return;
+      el.addEventListener('input', function(){
+        var v = parseFloat(this.value);
+        config[key] = v;
+        if (lbl) lbl.textContent = fmt ? fmt(v) : v;
+      });
+    }
+
+    bind('hsSliderSize',     'particleSize',      'hsValSize',     function(v){ return v+'px'; });
+    bind('hsSliderWind',     'windForce',         'hsValWind',     function(v){ return v.toFixed(1); });
+    bind('hsSliderGravity',  'gravity',           'hsValGravity',  function(v){ return v.toFixed(2); });
+    bind('hsSliderDensity',  'sampleStep',        'hsValDensity',  null);
+    bind('hsSliderDuration', 'transitionDuration','hsValDuration', null);
+
+    var sel = document.getElementById('hsTransitionType');
+    if (sel) sel.addEventListener('change', function(){ config.transitionType = this.value; });
+
+    if (resetBtn) resetBtn.addEventListener('click', function(){
+      config.particleSize       = 3;
+      config.windForce          = 1.2;
+      config.gravity            = 0.15;
+      config.sampleStep         = 4;
+      config.transitionType     = 'sandstorm';
+      config.transitionDuration = 160;
+      /* Sync sliders */
+      var set = function(id,v){ var e=document.getElementById(id); if(e)e.value=v; };
+      set('hsSliderSize', 3);     document.getElementById('hsValSize').textContent    = '3px';
+      set('hsSliderWind', 1.2);   document.getElementById('hsValWind').textContent    = '1.2';
+      set('hsSliderGravity',0.15);document.getElementById('hsValGravity').textContent = '0.15';
+      set('hsSliderDensity',4);   document.getElementById('hsValDensity').textContent = '4';
+      set('hsSliderDuration',160);document.getElementById('hsValDuration').textContent= '160';
+      var s=document.getElementById('hsTransitionType'); if(s)s.value='sandstorm';
+    });
+  }
+
+  /* ═══ INIT ═══════════════════════════════════════════════════ */
+  function init() {
+    slides = Array.from(document.querySelectorAll('.hs-slide'));
+    dots   = Array.from(document.querySelectorAll('.hs-dot'));
+    total  = slides.length;
+    resize();
+    window.addEventListener('resize', resize);
+    activateSlide(0);
+    bindEvents();
+    bindSettings();
+    requestAnimationFrame(mainLoop);
+    startAuto();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else { init(); }
+
+    })();
     </script>
 </body>
 

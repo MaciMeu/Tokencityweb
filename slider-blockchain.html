@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token City — Hero Slider</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tc-blue': { 400: '#4677C8', 500: '#1855BA', 600: '#134495' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #030608;
+            user-select: none;
+        }
+        .font-mono-tc { font-family: 'JetBrains Mono', monospace; }
+        ::-webkit-scrollbar { display: none; }
+
+        .glassmorphism {
+            background: rgba(5, 10, 20, 0.60);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .glassmorphism-light {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOutDown {
+            from { opacity: 1; transform: translateY(0); }
+            to   { opacity: 0; transform: translateY(-40px); }
+        }
+        .animate-fade-in  { animation: fadeInUp  1.2s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .animate-fade-out { animation: fadeOutDown 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+        /* Dot activo que se expande */
+        .dot-active { width: 2rem !important; border-radius: 4px !important; }
+
+        /* Pulse del badge LIVE */
+        @keyframes pulse-live {
+            0%,100% { opacity:1; transform:scale(1); }
+            50%      { opacity:0.4; transform:scale(0.7); }
+        }
+        .live-dot { animation: pulse-live 1.6s ease-in-out infinite; }
+
+        /* Input range mínimo */
+        input[type=range] {
+            -webkit-appearance: none;
+            height: 4px;
+            background: rgba(255,255,255,0.10);
+            border-radius: 9999px;
+            cursor: pointer;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: #1855BA;
+            cursor: pointer;
+        }
+        select option { background: #0a0f1a; }
+    </style>
+</head>
+<body class="w-screen h-screen overflow-hidden text-white relative">
+
+    <!-- ══════════════════ PRELOADER ══════════════════ -->
+    <div id="preloader" class="fixed inset-0 bg-[#030608] z-50 flex flex-col items-center justify-center transition-all duration-700">
+        <div class="relative flex flex-col items-center max-w-xs w-full px-6">
+            <div class="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center mb-8 relative">
+                <div class="absolute inset-0 rounded-full border-t-2 border-tc-blue-500 animate-spin"></div>
+                <span class="font-mono-tc text-xs text-white/30 font-bold">TC</span>
+            </div>
+            <h2 class="font-mono-tc tracking-[0.4em] font-bold text-sm text-white/90 mb-2">TOKEN CITY</h2>
+            <p class="text-[9px] uppercase tracking-[0.25em] text-blue-400/80 mb-4 text-center">Inicializando motor de partículas</p>
+            <div class="w-full h-[2px] bg-white/10 rounded-full overflow-hidden">
+                <div id="preloadBar" class="h-full bg-gradient-to-r from-tc-blue-500 via-violet-500 to-blue-400 w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CANVAS PRINCIPAL -->
+    <canvas id="sliderCanvas" class="absolute inset-0 w-full h-full object-cover z-0"></canvas>
+
+    <!-- CAPA INTERACTIVIDAD -->
+    <div id="interactionOverlay" class="absolute inset-0 z-10 cursor-none"></div>
+
+    <!-- CURSOR PERSONALIZADO -->
+    <div id="customCursor" class="fixed w-8 h-8 rounded-full border border-blue-400/50 pointer-events-none -translate-x-1/2 -translate-y-1/2 z-50 transition-all duration-75 ease-out opacity-0 md:block hidden">
+        <div class="absolute inset-2 bg-blue-400/20 rounded-full animate-ping"></div>
+    </div>
+
+    <!-- ══════════════════ UI PRINCIPAL ══════════════════ -->
+    <div class="absolute inset-0 z-20 flex flex-col justify-between p-6 md:p-12 pointer-events-none">
+
+        <!-- HEADER -->
+        <header class="w-full flex justify-between items-center pointer-events-auto">
+            <div class="flex items-center gap-3">
+                <div class="flex items-baseline tracking-tighter leading-none text-white">
+                    <span class="text-sm md:text-xl font-black tracking-tight uppercase">TOKEN CITY</span>
+                </div>
+                <!-- Badge LIVE -->
+                <div class="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full border border-blue-500/25 bg-blue-500/08 text-blue-400 font-mono-tc text-[10px] font-bold tracking-widest uppercase">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-400 live-dot"></span>
+                    BLOCKCHAIN
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button id="toggleSettings" class="glassmorphism hover:bg-white/10 text-white/70 hover:text-white p-3 rounded-full transition-all duration-300 flex items-center justify-center">
+                    <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTENIDO DINÁMICO -->
+        <main class="max-w-2xl my-auto md:ml-4 pointer-events-auto select-none">
+            <div id="slideContent" class="opacity-0">
+                <span id="slideCategory" class="font-mono-tc text-[10px] uppercase tracking-[0.4em] font-bold text-blue-400 mb-4 block"></span>
+                <h1 id="slideTitle" class="text-4xl md:text-6xl lg:text-7xl font-black mb-5 leading-none tracking-tight"></h1>
+                <p id="slideDesc" class="text-white/60 text-sm md:text-base font-light mb-8 leading-relaxed max-w-lg"></p>
+                <div id="slideBtns" class="flex gap-4 items-center flex-wrap"></div>
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="w-full flex flex-col md:flex-row justify-between items-center gap-4 pointer-events-auto">
+
+            <!-- Contador + barra de progreso -->
+            <div class="flex items-center gap-5 w-full md:w-auto">
+                <div class="font-mono-tc text-white/40 text-xs tracking-wider">
+                    <span id="currentNum" class="text-white font-bold">01</span>
+                    <span class="mx-1">/</span>
+                    <span id="totalNum">03</span>
+                </div>
+                <div class="h-[2px] bg-white/10 flex-grow md:w-44 rounded-full overflow-hidden relative">
+                    <div id="progressBar" class="absolute left-0 top-0 h-full w-0 bg-gradient-to-r from-tc-blue-500 via-violet-500 to-blue-400 transition-none"></div>
+                </div>
+            </div>
+
+            <!-- Dots -->
+            <div id="slideDots" class="flex gap-2"></div>
+
+            <!-- Flechas -->
+            <div class="flex gap-3">
+                <button id="prevBtn" class="glassmorphism hover:bg-white/10 text-white p-3.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </button>
+                <button id="nextBtn" class="glassmorphism hover:bg-white/10 text-white p-3.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ══════════════════ PANEL DE FÍSICA ══════════════════ -->
+    <div id="settingsPanel" class="fixed right-0 top-0 h-full w-full max-w-sm glassmorphism z-40 transform translate-x-full transition-transform duration-500 ease-out p-8 flex flex-col justify-between shadow-2xl">
+        <div>
+            <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                <h3 class="font-mono-tc text-sm font-bold tracking-widest uppercase text-white/90">FÍSICA DE PARTÍCULAS</h3>
+                <button id="closeSettings" class="text-white/50 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <label class="block font-mono-tc text-[10px] font-bold tracking-wider text-white/40 uppercase mb-2">Modo de Dispersión</label>
+                    <select id="transitionStyle" class="w-full bg-[#080d18] border border-white/10 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
+                        <option value="sandstorm">Tormenta de Datos (Lateral)</option>
+                        <option value="gravity">Cascada Digital (Gravedad)</option>
+                        <option value="vortex">Vórtice Blockchain (Espiral)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <div class="flex justify-between font-mono-tc text-[10px] font-bold tracking-wider text-white/40 uppercase mb-2">
+                        <span>Tamaño del Grano</span><span id="valSize">4px</span>
+                    </div>
+                    <input id="sliderSize" type="range" min="2" max="8" step="1" value="4" class="w-full">
+                </div>
+
+                <div>
+                    <div class="flex justify-between font-mono-tc text-[10px] font-bold tracking-wider text-white/40 uppercase mb-2">
+                        <span>Fuerza del Viento</span><span id="valWind">1.5</span>
+                    </div>
+                    <input id="sliderWind" type="range" min="0" max="5" step="0.5" value="1.5" class="w-full">
+                </div>
+
+                <div>
+                    <div class="flex justify-between font-mono-tc text-[10px] font-bold tracking-wider text-white/40 uppercase mb-2">
+                        <span>Fuerza de Gravedad</span><span id="valGravity">0.2</span>
+                    </div>
+                    <input id="sliderGravity" type="range" min="-1" max="1" step="0.1" value="0.2" class="w-full">
+                </div>
+
+                <div>
+                    <div class="flex justify-between font-mono-tc text-[10px] font-bold tracking-wider text-white/40 uppercase mb-2">
+                        <span>Densidad de Partículas</span><span id="valDensity">Media</span>
+                    </div>
+                    <input id="sliderDensity" type="range" min="4" max="10" step="2" value="6" class="w-full">
+                </div>
+            </div>
+        </div>
+
+        <button id="resetSettings" class="w-full py-3 border border-white/10 rounded-xl hover:bg-white/5 hover:border-white/30 transition-all font-mono-tc text-xs font-bold tracking-widest uppercase">
+            Restablecer Valores
+        </button>
+    </div>
+
+    <!-- TOAST -->
+    <div id="systemToast" class="fixed top-6 left-1/2 -translate-x-1/2 glassmorphism-light px-6 py-3 rounded-full font-mono-tc text-[10px] font-bold tracking-widest uppercase z-50 pointer-events-none opacity-0 transition-opacity duration-300 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-blue-400 live-dot"></span>
+        <span id="toastText">Configuración Actualizada</span>
+    </div>
+
+    <!-- ══════════════════ MOTOR ══════════════════ -->
+    <script>
+    try { if (typeof lucide !== 'undefined') lucide.createIcons(); } catch(e) {}
+
+    /* ─── DOM ─── */
+    const canvas             = document.getElementById('sliderCanvas');
+    const ctx                = canvas.getContext('2d', { willReadFrequently: true });
+    const interactionOverlay = document.getElementById('interactionOverlay');
+    const customCursor       = document.getElementById('customCursor');
+    const slideContent       = document.getElementById('slideContent');
+    const slideCategory      = document.getElementById('slideCategory');
+    const slideTitle         = document.getElementById('slideTitle');
+    const slideDesc          = document.getElementById('slideDesc');
+    const slideBtns          = document.getElementById('slideBtns');
+    const currentNum         = document.getElementById('currentNum');
+    const totalNum           = document.getElementById('totalNum');
+    const progressBar        = document.getElementById('progressBar');
+    const slideDotsContainer = document.getElementById('slideDots');
+    const prevBtn            = document.getElementById('prevBtn');
+    const nextBtn            = document.getElementById('nextBtn');
+    const toggleSettings     = document.getElementById('toggleSettings');
+    const settingsPanel      = document.getElementById('settingsPanel');
+    const closeSettings      = document.getElementById('closeSettings');
+    const resetSettings      = document.getElementById('resetSettings');
+    const transitionStyleSel = document.getElementById('transitionStyle');
+    const sliderSize         = document.getElementById('sliderSize');
+    const sliderWind         = document.getElementById('sliderWind');
+    const sliderGravity      = document.getElementById('sliderGravity');
+    const sliderDensity      = document.getElementById('sliderDensity');
+    const valSize            = document.getElementById('valSize');
+    const valWind            = document.getElementById('valWind');
+    const valGravity         = document.getElementById('valGravity');
+    const valDensity         = document.getElementById('valDensity');
+
+    /* ─── ESTADO ─── */
+    let width  = canvas.width  = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    let state                  = 'idle';
+    let currentSlideIndex      = 0;
+    let targetSlideIndex       = 0;
+    let transitionFrameCount   = 0;
+    let transitionParticles    = [];
+    let idleParticles          = [];
+    let autoplayTimer          = null;
+    let progressInterval       = null;
+    let progressPercent        = 0;
+    const AUTOPLAY_DURATION    = 7000;
+
+    let mouse      = { x: -1000, y: -1000, px: -1000, py: -1000, force: 0 };
+    let isMouseOver = false;
+
+    let config = {
+        particleSize: 4,
+        windForce: 1.5,
+        gravity: 0.2,
+        sampleStep: 6,
+        transitionType: 'sandstorm',
+        transitionDuration: 130
+    };
+
+    /* ─── SLIDES — Token City ─── */
+    const slides = [
+        {
+            category: 'TOKENIZACIÓN · BLOCKCHAIN',
+            title: 'Líder en\nTokenización\nde Activos',
+            desc: 'Infraestructura tecnológica blockchain para digitalizar y gestionar activos reales con pleno cumplimiento normativo. El futuro de la inversión tokenizada.',
+            imgUrl: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1600&q=80',
+            img: null,
+            accentColor: '#4677C8',
+            btns: [
+                { label: 'Solicitar información', style: 'primary', href: '#' },
+                { label: 'Ver soluciones', style: 'ghost', href: '#' }
+            ],
+            palette: [
+                { r: 24,  g: 85,  b: 186 },
+                { r: 70,  g: 119, b: 200 },
+                { r: 96,  g: 165, b: 250 },
+                { r: 147, g: 197, b: 253 }
+            ],
+            drawFallback(c, w, h) {
+                const g = c.createLinearGradient(0, 0, w, h);
+                g.addColorStop(0, '#030e1f');
+                g.addColorStop(0.5, '#071a40');
+                g.addColorStop(1, '#0a224a');
+                c.fillStyle = g; c.fillRect(0, 0, w, h);
+            }
+        },
+        {
+            category: 'EXCHANGE · REGULADO CNMV',
+            title: 'Opera en los\nmercados de\nactivos digitales',
+            desc: 'Compra y vende Security Tokens con pleno reconocimiento jurídico. La primera plataforma regulada por la CNMV para instrumentos financieros tokenizados.',
+            imgUrl: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1600&q=80',
+            img: null,
+            accentColor: '#c084fc',
+            btns: [
+                { label: 'Ir al Exchange', style: 'purp', href: 'https://exchange.token-city.com' },
+                { label: 'Crear cuenta gratis', style: 'ghost', href: '#' }
+            ],
+            palette: [
+                { r: 124, g: 58,  b: 237 },
+                { r: 192, g: 132, b: 252 },
+                { r: 167, g: 139, b: 250 },
+                { r: 216, g: 180, b: 254 }
+            ],
+            drawFallback(c, w, h) {
+                const g = c.createLinearGradient(0, 0, w, h);
+                g.addColorStop(0, '#0d0519');
+                g.addColorStop(0.5, '#1a0535');
+                g.addColorStop(1, '#2e1065');
+                c.fillStyle = g; c.fillRect(0, 0, w, h);
+            }
+        },
+        {
+            category: 'RWA · ACTIVOS DEL MUNDO REAL',
+            title: 'El mundo físico\nen la cadena\nde bloques',
+            desc: 'Desde inmuebles hasta bonos corporativos. Tokeniza activos del mundo real y ábrelos a una base global de inversores con liquidez 24/7.',
+            imgUrl: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1600&q=80',
+            img: null,
+            accentColor: '#34d399',
+            btns: [
+                { label: 'Explorar RWA', style: 'green', href: '#' },
+                { label: 'Leer más', style: 'ghost', href: '#' }
+            ],
+            palette: [
+                { r: 6,   g: 95,  b: 70  },
+                { r: 16,  g: 185, b: 129 },
+                { r: 52,  g: 211, b: 153 },
+                { r: 110, g: 231, b: 183 }
+            ],
+            drawFallback(c, w, h) {
+                const g = c.createLinearGradient(0, 0, w, h);
+                g.addColorStop(0, '#020d09');
+                g.addColorStop(0.5, '#022415');
+                g.addColorStop(1, '#065f46');
+                c.fillStyle = g; c.fillRect(0, 0, w, h);
+            }
+        }
+    ];
+
+    /* ─── RENDER SLIDE ─── */
+    function drawCoverImage(c, img, w, h) {
+        const ir = img.width / img.height;
+        const cr = w / h;
+        let dx = 0, dy = 0, dw = w, dh = h;
+        if (cr > ir) { dh = w / ir; dy = (h - dh) / 2; }
+        else          { dw = h * ir; dx = (w - dw) / 2; }
+        c.drawImage(img, dx, dy, dw, dh);
+    }
+
+    function drawSlide(slide, c, w, h) {
+        if (slide.img) {
+            try {
+                drawCoverImage(c, slide.img, w, h);
+                // Overlay oscuro degradado desde abajo
+                const ov = c.createLinearGradient(0, 0, 0, h);
+                ov.addColorStop(0,   'rgba(3,6,13,0.55)');
+                ov.addColorStop(0.4, 'rgba(3,6,13,0.20)');
+                ov.addColorStop(1,   'rgba(3,6,13,0.80)');
+                c.fillStyle = ov;
+                c.fillRect(0, 0, w, h);
+            } catch(e) {
+                slide.drawFallback(c, w, h);
+            }
+        } else {
+            slide.drawFallback(c, w, h);
+        }
+    }
+
+    /* ─── PRELOAD ─── */
+    async function preloadImages() {
+        const bar = document.getElementById('preloadBar');
+        let loaded = 0;
+        const promises = slides.map(slide => new Promise(resolve => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.src = slide.imgUrl;
+            img.onload = () => {
+                slide.img = img;
+                loaded++;
+                if (bar) bar.style.width = (loaded / slides.length * 100) + '%';
+                resolve(true);
+            };
+            img.onerror = () => {
+                slide.img = null;
+                loaded++;
+                if (bar) bar.style.width = (loaded / slides.length * 100) + '%';
+                resolve(false);
+            };
+        }));
+        await Promise.race([Promise.all(promises), new Promise(r => setTimeout(r, 3500))]);
+    }
+
+    /* ─── TOAST ─── */
+    function showToast(text) {
+        const t = document.getElementById('systemToast');
+        document.getElementById('toastText').innerText = text;
+        t.style.opacity = '1';
+        setTimeout(() => { t.style.opacity = '0'; }, 2000);
+    }
+
+    /* ─── DOTS ─── */
+    function initDots() {
+        slideDotsContainer.innerHTML = '';
+        slides.forEach((_, idx) => {
+            const btn = document.createElement('button');
+            btn.className = `h-2 rounded-full transition-all duration-300 ${idx === currentSlideIndex ? 'w-8 bg-blue-400' : 'w-2 bg-white/30 hover:bg-white/60'}`;
+            btn.onclick = () => { if (state === 'idle' && currentSlideIndex !== idx) changeSlide(idx); };
+            slideDotsContainer.appendChild(btn);
+        });
+    }
+
+    /* ─── TEXTO SLIDE ─── */
+    function buildBtns(slide) {
+        slideBtns.innerHTML = '';
+        slide.btns.forEach(btn => {
+            const a = document.createElement('a');
+            a.href = btn.href;
+            if (btn.href.startsWith('http')) a.target = '_blank';
+            a.innerText = btn.label;
+
+            const base = 'px-7 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 hover:scale-105 cursor-pointer inline-block';
+            if      (btn.style === 'primary') a.className = `${base} bg-tc-blue-500 text-white hover:bg-tc-blue-600 shadow-lg shadow-blue-500/25`;
+            else if (btn.style === 'purp')    a.className = `${base} bg-violet-600 text-white hover:bg-violet-700 shadow-lg shadow-violet-500/25`;
+            else if (btn.style === 'green')   a.className = `${base} bg-emerald-800 text-emerald-300 hover:bg-emerald-700 shadow-lg shadow-emerald-500/20`;
+            else                               a.className = `${base} border border-white/20 text-white/80 hover:border-white/50 hover:text-white`;
+            slideBtns.appendChild(a);
+        });
+    }
+
+    function updateTextContent(idx) {
+        slideContent.classList.remove('animate-fade-in');
+        slideContent.classList.add('animate-fade-out');
+        setTimeout(() => {
+            const s = slides[idx];
+            slideCategory.innerText = s.category;
+            slideTitle.innerHTML    = s.title.replace(/\n/g, '<br>');
+            slideDesc.innerText     = s.desc;
+            slideTitle.style.color  = '#ffffff';
+            // Última línea del título con el color accent del slide
+            const lines = s.title.split('\n');
+            if (lines.length >= 2) {
+                const lastLine = lines[lines.length - 1];
+                slideTitle.innerHTML = lines.slice(0, -1).join('<br>') +
+                    `<br><span style="color:${s.accentColor}">${lastLine}</span>`;
+            }
+            buildBtns(s);
+            currentNum.innerText = String(idx + 1).padStart(2, '0');
+
+            const dots = slideDotsContainer.children;
+            for (let i = 0; i < dots.length; i++) {
+                if (i === idx) {
+                    dots[i].className = 'h-2 rounded-full transition-all duration-300 w-8 bg-blue-400';
+                } else {
+                    dots[i].className = 'h-2 w-2 rounded-full transition-all duration-300 bg-white/30 hover:bg-white/60';
+                }
+            }
+            slideContent.classList.remove('animate-fade-out');
+            slideContent.classList.add('animate-fade-in');
+        }, 600);
+    }
+
+    /* ─── CURSOR ─── */
+    document.addEventListener('mousemove', e => {
+        customCursor.style.left    = e.clientX + 'px';
+        customCursor.style.top     = e.clientY + 'px';
+        customCursor.style.opacity = '1';
+        mouse.px = mouse.x; mouse.py = mouse.y;
+        mouse.x  = e.clientX; mouse.y = e.clientY;
+        const dx = mouse.x - mouse.px, dy = mouse.y - mouse.py;
+        mouse.force = Math.min(Math.sqrt(dx*dx + dy*dy) * 0.4, 12);
+    });
+    document.addEventListener('mouseleave', () => { customCursor.style.opacity = '0'; isMouseOver = false; });
+    document.addEventListener('mouseenter', () => { isMouseOver = true; });
+
+    /* ─── AUTOPLAY ─── */
+    function resetAutoplay() {
+        clearInterval(progressInterval);
+        clearTimeout(autoplayTimer);
+        progressPercent = 0;
+        progressBar.style.width = '0%';
+        if (state !== 'idle') return;
+
+        const step = (50 / AUTOPLAY_DURATION) * 100;
+        progressInterval = setInterval(() => {
+            progressPercent += step;
+            if (progressPercent >= 100) { progressPercent = 100; clearInterval(progressInterval); }
+            progressBar.style.width = progressPercent + '%';
+        }, 50);
+
+        autoplayTimer = setTimeout(() => {
+            changeSlide((currentSlideIndex + 1) % slides.length);
+        }, AUTOPLAY_DURATION);
+    }
+
+    /* ─── PARTÍCULA REPOSO (trail ratón) ─── */
+    class IdleParticle {
+        constructor(x, y, color) {
+            this.x = x; this.y = y;
+            this.vx = (Math.random() - 0.5) * 3;
+            this.vy = (Math.random() - 0.5) * 2 + 1;
+            this.life  = 1.0;
+            this.decay = 0.015 + Math.random() * 0.02;
+            this.size  = 1.5 + Math.random() * 2.5;
+            this.color = color;
+        }
+        update() { this.x += this.vx; this.y += this.vy; this.life -= this.decay; }
+        draw()   {
+            ctx.fillStyle = `rgba(${this.color.r},${this.color.g},${this.color.b},${Math.max(0,this.life)})`;
+            ctx.fillRect(this.x, this.y, this.size, this.size);
+        }
+    }
+
+    /* ─── PARTÍCULA TRANSICIÓN ─── */
+    class Particle {
+        constructor(x, y, color) {
+            this.x = x; this.y = y;
+            this.color = color;
+            this.vx    = (Math.random() - 0.5) * 2;
+            this.vy    = (Math.random() - 0.5) * 2;
+            this.life  = 1.0;
+            this.decay = 0.006 + Math.random() * 0.012;
+            this.size  = config.particleSize + (Math.random() - 0.5) * 1.8;
+            this.mass  = this.size * 0.55;
+            this.delay = Math.random() * 25;
+        }
+
+        update(f) {
+            if (f < this.delay) return;
+
+            if (config.transitionType === 'sandstorm') {
+                this.vx += config.windForce * 0.16 + Math.random() * 0.05;
+                this.vy += config.gravity * 0.3 + (Math.random() - 0.5) * 0.08;
+            } else if (config.transitionType === 'gravity') {
+                this.vy += config.gravity * 0.8 + Math.random() * 0.07;
+                this.vx += (Math.random() - 0.5) * 0.14;
+            } else {
+                const cx = width / 2, cy = height / 2;
+                const dx = this.x - cx, dy = this.y - cy;
+                const d  = Math.sqrt(dx*dx + dy*dy) || 1;
+                this.vx += (-dy / d) * 0.09 * config.windForce;
+                this.vy += ( dx / d) * 0.09 * config.windForce;
+                this.vx += (dx / d) * config.gravity * 0.12;
+                this.vy += (dy / d) * config.gravity * 0.12;
+            }
+
+            const mdx = this.x - mouse.x, mdy = this.y - mouse.y;
+            const md  = Math.sqrt(mdx*mdx + mdy*mdy);
+            if (md < 140 && isMouseOver) {
+                const pf = (1 - md / 140) * mouse.force * 0.9;
+                this.vx += (mdx / md) * pf / this.mass;
+                this.vy += (mdy / md) * pf / this.mass;
+            }
+
+            this.x += this.vx; this.y += this.vy;
+            this.life -= this.decay;
+        }
+
+        draw() {
+            if (this.life <= 0) return;
+            ctx.fillStyle = `rgba(${this.color.r},${this.color.g},${this.color.b},${this.life})`;
+            ctx.fillRect(this.x, this.y, this.size, this.size);
+        }
+    }
+
+    /* ─── MOTOR DE TRANSICIÓN ─── */
+    function changeSlide(nextIdx) {
+        if (state !== 'idle') return;
+        clearInterval(progressInterval);
+        clearTimeout(autoplayTimer);
+
+        const bufA  = document.createElement('canvas');
+        bufA.width  = width; bufA.height = height;
+        const ctxA  = bufA.getContext('2d');
+        drawSlide(slides[currentSlideIndex], ctxA, width, height);
+
+        let pixels = null, isTainted = false;
+        try {
+            pixels = ctxA.getImageData(0, 0, width, height).data;
+        } catch(e) { isTainted = true; }
+
+        transitionParticles = [];
+        const step = config.sampleStep;
+
+        if (!isTainted && pixels) {
+            for (let y = 0; y < height; y += step) {
+                for (let x = 0; x < width; x += step) {
+                    const i = (y * width + x) * 4;
+                    const r = pixels[i], g = pixels[i+1], b = pixels[i+2], a = pixels[i+3];
+                    if (a > 50 && (r+g+b) > 20)
+                        transitionParticles.push(new Particle(x, y, { r, g, b }));
+                }
+            }
+        } else {
+            const pal = slides[currentSlideIndex].palette;
+            for (let y = 0; y < height; y += step * 1.3) {
+                for (let x = 0; x < width; x += step * 1.3) {
+                    const c = pal[Math.floor(Math.random() * pal.length)];
+                    transitionParticles.push(new Particle(x, y, c));
+                }
+            }
+        }
+
+        updateTextContent(nextIdx);
+        targetSlideIndex  = nextIdx;
+        transitionFrameCount = 0;
+        state = 'transitioning';
+    }
+
+    /* ─── LOOP PRINCIPAL 60fps ─── */
+    function mainLoop() {
+        requestAnimationFrame(mainLoop);
+
+        if (state === 'idle') {
+            drawSlide(slides[currentSlideIndex], ctx, width, height);
+
+            if (isMouseOver && mouse.force > 0.1) {
+                const pal = slides[currentSlideIndex].palette;
+                const n   = Math.min(Math.floor(mouse.force * 1.5), 10);
+                for (let i = 0; i < n; i++) {
+                    const c  = pal[Math.floor(Math.random() * pal.length)];
+                    const rx = mouse.x + (Math.random() - 0.5) * 15;
+                    const ry = mouse.y + (Math.random() - 0.5) * 15;
+                    idleParticles.push(new IdleParticle(rx, ry, c));
+                }
+                mouse.force *= 0.85;
+            }
+
+            for (let i = idleParticles.length - 1; i >= 0; i--) {
+                const p = idleParticles[i];
+                p.update();
+                if (p.life <= 0) idleParticles.splice(i, 1);
+                else p.draw();
+            }
+
+        } else if (state === 'transitioning') {
+            transitionFrameCount++;
+            drawSlide(slides[targetSlideIndex], ctx, width, height);
+
+            let active = 0;
+            for (let i = 0; i < transitionParticles.length; i++) {
+                const p = transitionParticles[i];
+                if (p.life > 0) {
+                    p.update(transitionFrameCount);
+                    p.draw();
+                    active++;
+                }
+            }
+
+            if (active === 0 || transitionFrameCount >= config.transitionDuration) {
+                transitionParticles = [];
+                currentSlideIndex   = targetSlideIndex;
+                state = 'idle';
+                resetAutoplay();
+            }
+        }
+    }
+
+    /* ─── RESIZE ─── */
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        drawSlide(slides[currentSlideIndex], ctx, width, height);
+    });
+
+    /* ─── TOUCH SWIPE ─── */
+    let touchStartX = 0;
+    interactionOverlay.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+        isMouseOver = true;
+        mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; mouse.force = 7;
+    }, { passive: true });
+    interactionOverlay.addEventListener('touchmove', e => {
+        mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY;
+    }, { passive: true });
+    interactionOverlay.addEventListener('touchend', e => {
+        isMouseOver = false;
+        const dx = touchStartX - e.changedTouches[0].screenX;
+        if (Math.abs(dx) > 60) (dx > 0 ? nextBtn : prevBtn).click();
+    }, { passive: true });
+
+    /* ─── CONTROLES ─── */
+    nextBtn.addEventListener('click', () => {
+        if (state !== 'idle') return;
+        changeSlide((currentSlideIndex + 1) % slides.length);
+    });
+    prevBtn.addEventListener('click', () => {
+        if (state !== 'idle') return;
+        changeSlide((currentSlideIndex - 1 + slides.length) % slides.length);
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') nextBtn.click();
+        if (e.key === 'ArrowLeft')  prevBtn.click();
+    });
+
+    /* ─── SETTINGS ─── */
+    toggleSettings.addEventListener('click', () => settingsPanel.classList.remove('translate-x-full'));
+    closeSettings.addEventListener('click',  () => settingsPanel.classList.add('translate-x-full'));
+    interactionOverlay.addEventListener('click', () => {
+        if (!settingsPanel.classList.contains('translate-x-full'))
+            settingsPanel.classList.add('translate-x-full');
+    });
+
+    sliderSize.addEventListener('input', e => {
+        config.particleSize = parseFloat(e.target.value);
+        valSize.innerText = `${config.particleSize}px`;
+    });
+    sliderWind.addEventListener('input', e => {
+        config.windForce = parseFloat(e.target.value);
+        valWind.innerText = config.windForce.toFixed(1);
+    });
+    sliderGravity.addEventListener('input', e => {
+        config.gravity = parseFloat(e.target.value);
+        valGravity.innerText = config.gravity.toFixed(1);
+    });
+    sliderDensity.addEventListener('input', e => {
+        const v = parseInt(e.target.value);
+        config.sampleStep = v;
+        valDensity.innerText = v === 4 ? 'Alta' : v === 6 ? 'Media' : v === 8 ? 'Baja' : 'Mínima';
+    });
+    transitionStyleSel.addEventListener('change', e => {
+        config.transitionType = e.target.value;
+        showToast(transitionStyleSel.options[transitionStyleSel.selectedIndex].text);
+    });
+    resetSettings.addEventListener('click', () => {
+        config = { particleSize:4, windForce:1.5, gravity:0.2, sampleStep:6, transitionType:'sandstorm', transitionDuration:130 };
+        sliderSize.value = 4;    valSize.innerText    = '4px';
+        sliderWind.value = 1.5;  valWind.innerText    = '1.5';
+        sliderGravity.value = 0.2; valGravity.innerText = '0.2';
+        sliderDensity.value = 6; valDensity.innerText = 'Media';
+        transitionStyleSel.value = 'sandstorm';
+        showToast('Física restaurada');
+    });
+
+    /* ─── INIT ─── */
+    async function startApp() {
+        totalNum.innerText = String(slides.length).padStart(2, '0');
+        initDots();
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+
+        await preloadImages();
+
+        const pre = document.getElementById('preloader');
+        pre.style.opacity = '0'; pre.style.pointerEvents = 'none';
+        setTimeout(() => { pre.style.display = 'none'; }, 700);
+
+        drawSlide(slides[0], ctx, width, height);
+
+        setTimeout(() => {
+            const s = slides[0];
+            slideCategory.innerText = s.category;
+            slideTitle.innerHTML    = s.title.replace(/\n/g,'<br>');
+            const lines = s.title.split('\n');
+            if (lines.length >= 2) {
+                slideTitle.innerHTML = lines.slice(0,-1).join('<br>') +
+                    `<br><span style="color:${s.accentColor}">${lines[lines.length-1]}</span>`;
+            }
+            slideDesc.innerText = s.desc;
+            buildBtns(s);
+            slideContent.classList.add('animate-fade-in');
+        }, 150);
+
+        mainLoop();
+        resetAutoplay();
+    }
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') startApp();
+    else window.addEventListener('DOMContentLoaded', startApp);
+    </script>
+</body>
+</html>
