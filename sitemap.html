@@ -191,6 +191,21 @@
         /* Sector pills */
         .sm-pill { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; border: 1px solid var(--glass-border); color: var(--text-muted); background: var(--glass-bg); }
 
+        /* Inventario local → live */
+        .sm-map-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        .sm-map-table th { text-align: left; padding: 0.4rem 0.75rem; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); }
+        .sm-map-table td { padding: 0.45rem 0.75rem; border-bottom: 1px solid var(--glass-border); color: var(--text-muted); vertical-align: middle; }
+        .sm-map-table td:first-child { white-space: nowrap; }
+        .sm-map-table td code { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.18); border-radius: 4px; padding: 0.1rem 0.35rem; color: #818cf8; }
+        .sm-map-table a { color: #1855BA; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; }
+        body:not(.light-mode) .sm-map-table a { color: #7eb3ff; }
+        .sm-map-table a:hover { text-decoration: underline; }
+        .sm-map-table tr:last-child td { border-bottom: none; }
+        .sm-tag { display: inline-flex; padding: 0.25rem 0.6rem; border-radius: 0.5rem; background: rgba(99,102,241,0.07); border: 1px solid rgba(99,102,241,0.18); }
+        .sm-tag code { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: #818cf8; }
+        .sm-tag-dev { background: rgba(148,163,184,0.06); border-color: var(--glass-border); }
+        .sm-tag-dev code { color: var(--text-muted); }
+
         @media (max-width: 640px) {
             .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
             .sm-grid { grid-template-columns: 1fr; }
@@ -505,6 +520,119 @@
                         <div class="sm-card-icon" style="background:rgba(148,163,184,0.08);color:#94a3b8;"><i data-lucide="shield" class="w-4 h-4"></i></div>
                         <div class="sm-card-body"><div class="sm-card-label">Cookie Policy</div><div class="sm-card-url">/cookie-policy</div></div>
                     </a>
+                </div>
+            </div>
+
+            <!-- ── 8. Inventario Local → Live ── -->
+            <div class="sm-section">
+                <div class="sm-section-header">
+                    <div class="sm-icon" style="background:rgba(99,102,241,0.1);color:#818cf8;"><i data-lucide="git-compare" class="w-4 h-4"></i></div>
+                    <span class="sm-title">Inventario — Archivo local → URL live</span>
+                    <span class="sm-count">dev</span>
+                </div>
+
+                <!-- Navegación principal -->
+                <p class="text-xs font-bold uppercase tracking-widest mb-2 mt-4" style="color:var(--text-muted)">Navegación principal</p>
+                <div class="overflow-x-auto mb-6">
+                    <table class="sm-map-table">
+                        <thead><tr><th>Archivo local</th><th>URL live</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>index.html</code> / <code>home.html</code></td><td><a href="https://www.token-city.com/es" target="_blank">/es</a></td></tr>
+                            <tr><td><code>marketplace.html</code></td><td><a href="https://www.token-city.com/es/marketplace" target="_blank">/es/marketplace</a></td></tr>
+                            <tr><td><code>real-estate.html</code></td><td><a href="https://www.token-city.com/es/real-estate" target="_blank">/es/real-estate</a></td></tr>
+                            <tr><td><code>scaleups.html</code></td><td><a href="https://www.token-city.com/es/scaleups" target="_blank">/es/scaleups</a></td></tr>
+                            <tr><td><code>energy.html</code></td><td><a href="https://www.token-city.com/es/energy" target="_blank">/es/energy</a></td></tr>
+                            <tr><td><code>eventos.html</code></td><td><a href="https://www.token-city.com/es/eventos" target="_blank">/es/eventos</a></td></tr>
+                            <tr><td><code>evento-detalle.html</code></td><td>/es/evento/[slug] <span style="color:var(--text-muted)">(template ×45)</span></td></tr>
+                            <tr><td><code>equipo.html</code></td><td><a href="https://www.token-city.com/es/acerca-de/equipo" target="_blank">/es/acerca-de/equipo</a></td></tr>
+                            <tr><td><code>presskit.html</code></td><td><a href="https://www.token-city.com/es/presskit" target="_blank">/es/presskit</a></td></tr>
+                            <tr><td><code>Contacto.html</code> / <code>contacto-tc.html</code></td><td><a href="https://www.token-city.com/es/contacto" target="_blank">/es/contacto</a></td></tr>
+                            <tr><td><code>blog.html</code></td><td><a href="https://www.token-city.com/es/recursos/categoria/blog" target="_blank">/es/recursos/categoria/blog</a></td></tr>
+                            <tr><td><code>faqs.html</code></td><td><a href="https://www.token-city.com/es/faqs" target="_blank">/es/faqs</a></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Plataforma -->
+                <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--text-muted)">Plataforma</p>
+                <div class="overflow-x-auto mb-6">
+                    <table class="sm-map-table">
+                        <thead><tr><th>Archivo local</th><th>URL live</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>taas.html</code></td><td><a href="https://www.token-city.com/es/plataforma/maas" target="_blank">/es/plataforma/maas</a></td></tr>
+                            <tr><td><code>la-erir-emisiones-tokenizados.html</code></td><td><a href="https://www.token-city.com/es/plataforma/erir" target="_blank">/es/plataforma/erir</a></td></tr>
+                            <tr><td><code>slider-blockchain.html</code></td><td><a href="https://www.token-city.com/es/plataforma/blockchain" target="_blank">/es/plataforma/blockchain</a></td></tr>
+                            <tr><td><code>tokencityexchange.html</code></td><td><a href="https://exchange.token-city.com" target="_blank">exchange.token-city.com</a></td></tr>
+                            <tr><td><code>aliuscapital.html</code></td><td><a href="https://www.aliuscap.com/" target="_blank">aliuscap.com</a></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Legal -->
+                <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--text-muted)">Legal</p>
+                <div class="overflow-x-auto mb-6">
+                    <table class="sm-map-table">
+                        <thead><tr><th>Archivo local</th><th>URL live</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>cookie-policy.html</code></td><td><a href="https://www.token-city.com/es/politica-cookies" target="_blank">/es/politica-cookies</a></td></tr>
+                            <tr><td><code>politica-privacidad.html</code></td><td><a href="https://www.token-city.com/es/politica-privacidad" target="_blank">/es/politica-privacidad</a></td></tr>
+                            <tr><td><code>aviso-legal.html</code></td><td><a href="https://www.token-city.com/es/aviso-legal" target="_blank">/es/aviso-legal</a></td></tr>
+                            <tr><td><code>Términos y Condiciones.html</code></td><td><a href="https://www.token-city.com/es/tc-token-city" target="_blank">/es/tc-token-city</a></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Casos de éxito -->
+                <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--text-muted)">Casos de éxito — /es/casos-de-exito/[slug]</p>
+                <div class="overflow-x-auto mb-6">
+                    <table class="sm-map-table">
+                        <thead><tr><th>Archivo local</th><th>Slug live</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>dianelum.html</code></td><td><a href="https://www.token-city.com/es/casos-de-exito/el-viaje-a-la-financiacion-de-dianelum-con-token-city" target="_blank">el-viaje-a-la-financiacion-de-dianelum-con-token-city</a></td></tr>
+                            <tr><td><code>beselfbrands.html</code></td><td><a href="https://www.token-city.com/es/casos-de-exito/la-tokenizacion-de-acciones-reguladas-de-beself-brands" target="_blank">la-tokenizacion-de-acciones-reguladas-de-beself-brands</a></td></tr>
+                            <tr><td><code>equalice.html</code></td><td><a href="https://www.token-city.com/es/casos-de-exito/equalice-democratizando-la-inversion-inmobiliaria-y-corporativa" target="_blank">equalice-democratizando-la-inversion-inmobiliaria-y-corporativa</a></td></tr>
+                            <tr><td><code>meduliocapital.html</code></td><td><a href="https://www.token-city.com/es/casos-de-exito/acceso-digital-a-activos-exclusivos-con-medulio-capital" target="_blank">acceso-digital-a-activos-exclusivos-con-medulio-capital</a></td></tr>
+                            <tr><td><code>themuxic.html</code></td><td><a href="https://www.token-city.com/es/casos-de-exito/convirtiendo-a-los-fans-en-socios-mediante-la-tokenizacion-de-derechos-musicales" target="_blank">convirtiendo-a-los-fans-en-socios…</a></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Marketplace — fichas sin URL live propia -->
+                <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--text-muted)">Marketplace — fichas de producto (sin URL live individual confirmada)</p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="sm-tag"><code>arcahabitatum.html</code></span>
+                    <span class="sm-tag"><code>equito.html</code></span>
+                    <span class="sm-tag"><code>finka.html</code></span>
+                    <span class="sm-tag"><code>globalgold.html</code></span>
+                    <span class="sm-tag"><code>groinversia.html</code></span>
+                    <span class="sm-tag"><code>hds.html</code></span>
+                    <span class="sm-tag"><code>marv.html</code></span>
+                    <span class="sm-tag"><code>okohaus.html</code></span>
+                    <span class="sm-tag"><code>padelrenting.html</code></span>
+                    <span class="sm-tag"><code>realbites.html</code></span>
+                    <span class="sm-tag"><code>block4e.html</code></span>
+                    <span class="sm-tag"><code>ways.html</code></span>
+                    <span class="sm-tag"><code>tokenbit.html</code></span>
+                    <span class="sm-tag"><code>tokengo.html</code></span>
+                    <span class="sm-tag"><code>tokenix.html</code></span>
+                    <span class="sm-tag"><code>valorix.html</code></span>
+                </div>
+
+                <!-- Dev only -->
+                <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--text-muted)">Solo desarrollo — sin equivalente live</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="sm-tag sm-tag-dev"><code>plantilla.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>componentes.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>componentes-reutilizables.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>template-ejemplo.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>policy-template.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>sitemap.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>INdex2.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>footer-component.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>participantes-mercado.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>crear-participante.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>guia-union-ahorros-inversion.html</code></span>
+                    <span class="sm-tag sm-tag-dev"><code>la-oportunidad-inmobiliaria.html</code></span>
                 </div>
             </div>
 
