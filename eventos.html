@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Eventos</title>
+    <meta name="description" content="Todos los eventos, webinars, mesas redondas y congresos en los que Token City ha participado desde 2020.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) { isLight = savedTheme === 'light'; }
+            else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                isLight = !systemDark && !(hour >= 19 || hour < 7);
+            }
+            if (isLight) document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --accent:       #1855BA;
+            --accent-rgb:   24,85,186;
+            --accent-hover: #134495;
+            --primary-blue: #1855BA;
+            --text-main:    #0f172a;
+            --text-muted:   #475569;
+            --bg-color:     #f8fafc;
+            --glass-bg:     rgba(255,255,255,0.85);
+            --glass-border: rgba(0,0,0,0.1);
+            --nav-bg:       rgba(5,7,10,0.95);
+            --nav-text:     #ffffff;
+            --nav-text-muted: #9ca3af;
+        }
+        body:not(.light-mode) {
+            --text-main:    #ffffff;
+            --text-muted:   #94a3b8;
+            --bg-color:     #05070a;
+            --glass-bg:     rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.09);
+        }
+
+        .heading-text { color: var(--text-main); }
+        .body-text    { color: var(--text-muted); }
+        .section-label {
+            font-weight: 700; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent);
+        }
+        body:not(.light-mode) .section-label { color: #7eb3ff; }
+
+        /* ── Hero ── */
+        .hero-wrap {
+            position: relative; overflow: hidden;
+            background: #05070a !important;
+            min-height: 60vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 120px 1.5rem 80px;
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(160deg,
+                rgba(5,7,10,0.92) 0%,
+                rgba(24,85,186,0.10) 55%,
+                rgba(5,7,10,0.96) 100%);
+        }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 85%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 85%);
+        }
+        .hero-glow {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; height: 400px;
+            background: radial-gradient(ellipse, rgba(24,85,186,0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-wrap .heading-text,
+        .hero-wrap h1 { color: #ffffff !important; }
+        .hero-wrap .body-text,
+        .hero-wrap p:not(.section-label) { color: #cbd5e1 !important; }
+        .hero-wrap .section-label { color: #7eb3ff !important; }
+
+        /* ── Stats chips ── */
+        .stat-chip {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 1rem; border-radius: 999px;
+            font-size: 0.75rem; font-weight: 700;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.13);
+            color: #cbd5e1;
+            backdrop-filter: blur(8px);
+        }
+        .stat-chip strong { color: #ffffff; }
+
+        /* ── Section background ── */
+        .events-section {
+            background: var(--bg-color);
+            padding: 4rem 0 6rem;
+            transition: background 0.3s;
+        }
+
+        /* ── Filter tabs ── */
+        .filter-row {
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+            align-items: center;
+        }
+        .filter-btn {
+            padding: 0.4rem 1rem; border-radius: 999px;
+            font-size: 0.75rem; font-weight: 700;
+            border: 1.5px solid var(--glass-border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover {
+            border-color: rgba(var(--accent-rgb), 0.4);
+            color: var(--accent);
+        }
+        body:not(.light-mode) .filter-btn:hover { color: #7eb3ff; }
+        .filter-btn.active {
+            background: rgba(var(--accent-rgb), 0.12);
+            border-color: rgba(var(--accent-rgb), 0.45);
+            color: var(--accent);
+        }
+        body:not(.light-mode) .filter-btn.active {
+            color: #7eb3ff;
+            background: rgba(24,85,186,0.18);
+        }
+
+        /* ── Event cards ── */
+        .event-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            display: flex; flex-direction: column; gap: 0.875rem;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            text-decoration: none;
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(var(--accent-rgb), 0.35);
+            box-shadow: 0 16px 40px rgba(var(--accent-rgb), 0.10);
+        }
+
+        .event-type-badge {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.2rem 0.65rem; border-radius: 999px;
+            font-size: 0.65rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            width: fit-content;
+        }
+        /* type colors */
+        .badge-webinar      { background: rgba(168,85,247,0.14); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+        .badge-mesa-redonda { background: rgba(6,182,212,0.12);  color: #06b6d4; border: 1px solid rgba(6,182,212,0.28); }
+        .badge-congreso     { background: rgba(234,179,8,0.13);  color: #ca8a04; border: 1px solid rgba(234,179,8,0.3); }
+        .badge-jornada      { background: rgba(34,197,94,0.12);  color: #16a34a; border: 1px solid rgba(34,197,94,0.28); }
+        .badge-taller       { background: rgba(249,115,22,0.13); color: #ea580c; border: 1px solid rgba(249,115,22,0.3); }
+        .badge-masterclass  { background: rgba(236,72,153,0.12); color: #db2777; border: 1px solid rgba(236,72,153,0.28); }
+        .badge-summit       { background: rgba(99,102,241,0.13); color: #6366f1; border: 1px solid rgba(99,102,241,0.3); }
+        .badge-expo         { background: rgba(99,102,241,0.13); color: #6366f1; border: 1px solid rgba(99,102,241,0.3); }
+        .badge-evento       { background: rgba(24,85,186,0.12);  color: #1855BA; border: 1px solid rgba(24,85,186,0.28); }
+
+        body:not(.light-mode) .badge-congreso { color: #facc15; }
+        body:not(.light-mode) .badge-jornada  { color: #4ade80; }
+        body:not(.light-mode) .badge-taller   { color: #fb923c; }
+        body:not(.light-mode) .badge-masterclass { color: #f472b6; }
+        body:not(.light-mode) .badge-evento   { color: #7eb3ff; border-color: rgba(24,85,186,0.4); background: rgba(24,85,186,0.16); }
+
+        .event-title {
+            font-size: 0.9rem; font-weight: 700; line-height: 1.4;
+            color: var(--text-main);
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .event-meta {
+            display: flex; align-items: center; gap: 0.35rem;
+            font-size: 0.7rem; color: var(--text-muted); font-weight: 500;
+        }
+        .event-link {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-size: 0.72rem; font-weight: 700;
+            color: var(--accent); margin-top: auto;
+            transition: gap 0.2s;
+        }
+        body:not(.light-mode) .event-link { color: #7eb3ff; }
+        .event-card:hover .event-link { gap: 0.5rem; }
+
+        /* ── Year section divider ── */
+        .year-label {
+            font-size: 2.5rem; font-weight: 900;
+            color: var(--text-main); opacity: 0.06;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -0.05em;
+            line-height: 1; user-select: none;
+        }
+
+        /* ── No results ── */
+        #no-results {
+            display: none;
+            text-align: center; padding: 4rem 1rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Count badge ── */
+        .count-badge {
+            display: inline-flex; align-items: center;
+            padding: 0.2rem 0.6rem; border-radius: 999px;
+            font-size: 0.7rem; font-weight: 700;
+            background: rgba(var(--accent-rgb), 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            margin-left: 0.5rem;
+        }
+        body:not(.light-mode) .count-badge { color: #7eb3ff; }
+    </style>
+</head>
+
+<body class="font-['Montserrat']">
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+
+        <!-- ════════════════════════════════════════
+             HERO
+        ════════════════════════════════════════ -->
+        <section class="hero-wrap">
+            <div class="hero-grid"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-glow"></div>
+            <div class="relative z-10 text-center max-w-3xl mx-auto">
+                <p class="section-label mb-4">
+                    <span class="lang-es">Agenda &amp; Comunidad</span>
+                    <span class="lang-en">Agenda &amp; Community</span>
+                </p>
+                <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-5 heading-text">
+                    <span class="lang-es">Eventos</span>
+                    <span class="lang-en">Events</span>
+                </h1>
+                <p class="text-lg md:text-xl font-medium mb-8 body-text max-w-xl mx-auto leading-relaxed">
+                    <span class="lang-es">No querrás perderte lo que estamos preparando</span>
+                    <span class="lang-en">You won't want to miss what we're preparing</span>
+                </p>
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <div class="stat-chip">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                        <span><strong>45+</strong> <span class="lang-es">eventos</span><span class="lang-en">events</span></span>
+                    </div>
+                    <div class="stat-chip">
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                        <span><strong>10+</strong> <span class="lang-es">ciudades</span><span class="lang-en">cities</span></span>
+                    </div>
+                    <div class="stat-chip">
+                        <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                        <span><span class="lang-es">desde</span><span class="lang-en">since</span> <strong>2020</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════════════
+             EVENTOS
+        ════════════════════════════════════════ -->
+        <section class="events-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <!-- Filters -->
+                <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-black heading-text mb-1">
+                            <span class="lang-es">Todos los eventos</span>
+                            <span class="lang-en">All events</span>
+                            <span id="count-badge" class="count-badge">45</span>
+                        </h2>
+                        <p class="text-xs body-text font-medium">
+                            <span class="lang-es">Webinars, congresos, mesas redondas y más</span>
+                            <span class="lang-en">Webinars, congresses, roundtables and more</span>
+                        </p>
+                    </div>
+                    <div class="filter-row" id="year-filters">
+                        <button class="filter-btn active" data-year="all">
+                            <span class="lang-es">Todos</span><span class="lang-en">All</span>
+                        </button>
+                        <button class="filter-btn" data-year="2025">2025</button>
+                        <button class="filter-btn" data-year="2024">2024</button>
+                        <button class="filter-btn" data-year="2023">2023</button>
+                        <button class="filter-btn" data-year="2022">2022</button>
+                        <button class="filter-btn" data-year="2021">2021</button>
+                        <button class="filter-btn" data-year="2020">2020</button>
+                    </div>
+                </div>
+
+                <!-- Grid -->
+                <div id="events-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+                <div id="no-results">
+                    <i data-lucide="calendar-x" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
+                    <p class="font-bold text-sm">
+                        <span class="lang-es">No hay eventos para este filtro</span>
+                        <span class="lang-en">No events for this filter</span>
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════════════
+             CTA BANNER
+        ════════════════════════════════════════ -->
+        <section class="py-20 px-4" style="background: #05070a;">
+            <div class="max-w-3xl mx-auto text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+                    style="background: rgba(24,85,186,0.15); border: 1px solid rgba(24,85,186,0.3);">
+                    <i data-lucide="bell" class="w-3.5 h-3.5" style="color:#7eb3ff;"></i>
+                    <span class="text-xs font-bold" style="color:#7eb3ff;">
+                        <span class="lang-es">Próximos eventos</span>
+                        <span class="lang-en">Upcoming events</span>
+                    </span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-black mb-4" style="color:#ffffff;">
+                    <span class="lang-es">¿Quieres estar al día?</span>
+                    <span class="lang-en">Want to stay updated?</span>
+                </h2>
+                <p class="text-base mb-8 max-w-lg mx-auto" style="color:#94a3b8;">
+                    <span class="lang-es">Síguenos y sé el primero en enterarte de los próximos eventos sobre tokenización de activos.</span>
+                    <span class="lang-en">Follow us and be the first to hear about upcoming events on asset tokenization.</span>
+                </p>
+                <a href="https://www.token-city.com/es/eventos" target="_blank" rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 px-7 py-3.5 rounded-[12px] font-extrabold text-sm text-white transition-all"
+                    style="background: var(--accent);"
+                    onmouseover="this.style.background='#134495'" onmouseout="this.style.background='#1855BA'">
+                    <span class="lang-es">Ver todos los eventos</span>
+                    <span class="lang-en">See all events</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script>
+        /* ── Events data ── */
+        const EVENTS = [
+            /* 2025 */
+            { y:2025, d:"26 Nov 2025",      l:"Online",    t:"webinar",      ti:"WEBINAR: OTESA Calella Living — todo lo que quieras preguntar sobre la emisión del 1er bono tokenizado con garantía hipotecaria", slug:"webinar-otesa-calella-living-todo-lo-que-quieras-preguntar-sobre-la-emision-del-1er-bono-tokenizado-con-garantia-hipotecaria" },
+            { y:2025, d:"31 Oct 2025",      l:"Barcelona", t:"evento",       ti:"Tokenización inmobiliaria, modelos de negocio y oportunidades", slug:"tokenizacion-inmobiliaria-modelos-de-negocio-y-oportunidades" },
+            { y:2025, d:"23 Oct 2025",      l:"A Coruña",  t:"evento",       ti:"Presentación Casa Outeiro y su comunidad", slug:"presentacion-casa-outeiro-y-su-comunidad" },
+            { y:2025, d:"18 Jun 2025",      l:"Madrid",    t:"summit",       ti:"NPLs & Real Estate Summit 2025", slug:"npls-real-estate-summit-2025" },
+            { y:2025, d:"12 Jun 2025",      l:"Barcelona", t:"evento",       ti:"Speed of Latvia: Blockchain Gateway to the European Market", slug:"speed-of-latvia-blockchain-gateway-to-the-european-market-2" },
+            { y:2025, d:"28 Feb 2025",      l:"Online",    t:"webinar",      ti:"Webinar con Dianelum — Primera emisión supervisada por la CNMV", slug:"webinar-con-dianelum" },
+            { y:2025, d:"24 Feb 2025",      l:"Londres",   t:"summit",       ti:"RWA London Summit 2025", slug:"rwa-london-summit" },
+            /* 2024 */
+            { y:2024, d:"28 May 2024",      l:"Madrid",    t:"expo",         ti:"Blockchain Profesional Expo 2024", slug:"blockchain-profesional-expo-2024" },
+            { y:2024, d:"22 May 2024",      l:"Madrid",    t:"mesa-redonda", ti:"IFEMA: La Tokenización en el Sector Inmobiliario", slug:"ifema-la-tokenizacion-en-el-sector-inmobiliario" },
+            { y:2024, d:"14–15 May 2024",   l:"Granada",   t:"evento",       ti:"Block World Tour Granada 2024", slug:"block-world-tour-granada-2024" },
+            { y:2024, d:"18–19 Abr 2024",   l:"Madrid",    t:"congreso",     ti:"IV Congreso Nacional de Derecho Bancario", slug:"iv-congreso-nacional-de-derecho-bancario" },
+            { y:2024, d:"2024",             l:"Madrid",    t:"jornada",      ti:"Jornadas sobre Economía y Finanzas Digitales: Blockchain, Cripto y Tokenización", slug:"jornadas-sobre-economia-y-finanzas-digitales-blockchain-cripto-y-tokenizacion" },
+            { y:2024, d:"15 Feb 2024",      l:"Barcelona", t:"jornada",      ti:"V Jornada Blockchain — Bolsa de Barcelona", slug:"v-jornada-blockchain-bolsa-de-barcelona" },
+            /* 2023 */
+            { y:2023, d:"13 Dic 2023",      l:"Sevilla",   t:"congreso",     ti:"Congreso Internacional de Startups — Sevilla", slug:"congreso-internacional-de-startups-2023" },
+            { y:2023, d:"28–29 Nov 2023",   l:"Zaragoza",  t:"evento",       ti:"Token City en el BDZ 2023 Event", slug:"token-city-en-el-bdz-2023-event" },
+            { y:2023, d:"23 Nov 2023",      l:"Online",    t:"mesa-redonda", ti:"AML Forum: blanqueo de capitales en el sector de las criptomonedas", slug:"aml-forum-blanqueo-de-capitales-en-el-sector-de-las-criptomonedas" },
+            { y:2023, d:"23–24 Nov 2023",   l:"Madrid",    t:"congreso",     ti:"II Congreso Internacional Activos Digitales y Sector Financiero", slug:"ii-congreso-internacional-activos-digitales-y-sector-financiero" },
+            { y:2023, d:"14 Nov 2023",      l:"Madrid",    t:"evento",       ti:"Revolución de los mercados de valores y la financiación empresarial tokenizada", slug:"revolucion-de-los-mercados-de-valores-y-la-financiacion-empresarial-tokenizada" },
+            { y:2023, d:"15 Nov 2023",      l:"Oviedo",    t:"mesa-redonda", ti:"Startups tecnológicas disruptivas", slug:"mesa-redonda-startups-tecnologicas-disruptivas" },
+            { y:2023, d:"14 Nov 2023",      l:"Madrid",    t:"summit",       ti:"V Fintech Innovation Summit", slug:"v-fintech-innovation-summit" },
+            { y:2023, d:"8 Jun 2023",       l:"Online",    t:"taller",       ti:"Taller de tokenización de activos del mundo real", slug:"taller-de-tokenizacion-de-activos-del-mundo-real" },
+            { y:2023, d:"21 Feb 2023",      l:"Madrid",    t:"jornada",      ti:"Tokenización de activos: Nueva Vía de Financiación para tu Negocio", slug:"tokenizacion-de-activos-nueva-via-de-financiacion-para-tu-negocio" },
+            { y:2023, d:"14 Feb 2023",      l:"Madrid",    t:"mesa-redonda", ti:"Sandbox: lecciones aprendidas y primeras experiencias sandbox en nuestro país", slug:"sandbox-lecciones-aprendidas-y-primeras-experiencias-sandbox-en-nuestro-pais" },
+            { y:2023, d:"2 Feb 2023",       l:"Madrid",    t:"evento",       ti:"Apertura del market de EthicHub en Token City", slug:"alianza-token-city-ethichub" },
+            { y:2023, d:"26–27 Ene 2023",   l:"Granada",   t:"evento",       ti:"Blockworld Tour Granada — el evento blockchain más importante del sur de Europa", slug:"blockworld-tour-granada-el-evento-blockchain-mas-importante-del-sur-de-europa" },
+            /* 2022 */
+            { y:2022, d:"15 Dic 2022",      l:"Online",    t:"evento",       ti:"Inversión, Activos Digitales y Real Estate", slug:"inversion-activos-digitales-y-real-estate" },
+            { y:2022, d:"16 Nov 2022",      l:"Online",    t:"evento",       ti:"Economía tokenizada: el fenómeno que está revolucionando la nueva era de las finanzas", slug:"economia-tokenizada-el-fenomeno-que-esta-revolucionando-la-nueva-era-de-las-finanzas" },
+            { y:2022, d:"25 Oct 2022",      l:"Online",    t:"evento",       ti:"Lanzamiento de la Comisión de Criptoactivos WLW", slug:"lanzamiento-de-la-comision-de-criptoactivos-wlw" },
+            { y:2022, d:"6 Oct 2022",       l:"Online",    t:"evento",       ti:"Cómo financiar tu proyecto con la emisión de Utility Tokens, NFTs y Security Tokens", slug:"como-financiar-tu-proyecto-con-la-emision-de-utility-tokens-nfts-y-security-tokens" },
+            { y:2022, d:"30 Jun 2022",      l:"Online",    t:"evento",       ti:"Cómo financiar una compañía a través de la inversión tokenizada", slug:"como-financiar-una-compania-a-traves-de-la-inversion-tokenizada" },
+            { y:2022, d:"1 Feb 2022",       l:"Online",    t:"evento",       ti:"Presentación del Marketplace de Criptoactivos de Token City", slug:"presentacion-del-markerplace-de-criptoactivos-de-token-city" },
+            /* 2021 */
+            { y:2021, d:"1 Dic 2021",       l:"Online",    t:"evento",       ti:"Claves para posicionar a España a la vanguardia en Blockchain y Cryptoactivos", slug:"claves-para-posicionar-a-espana-a-la-vanguardia-en-blockchain-y-cryptoactivos" },
+            { y:2021, d:"23 Nov 2021",      l:"Online",    t:"mesa-redonda", ti:"Female Founders Day", slug:"female-founders-day-es" },
+            { y:2021, d:"18 Nov 2021",      l:"Online",    t:"mesa-redonda", ti:"V Mujeres líderes inspiradoras en la era digital", slug:"v-mujeres-lideres-inspiradoras-en-la-era-digital" },
+            { y:2021, d:"29 Sep 2021",      l:"Online",    t:"masterclass",  ti:"Cómo financiar mi proyecto de manera exitosa mediante una STO con Token City", slug:"como-financiar-mi-proyecto-de-manera-exitosa-mediante-una-sto-con-token-city" },
+            { y:2021, d:"13 Jul 2021",      l:"Granada",   t:"evento",       ti:"Alhambra Venture", slug:"alhambra-venture-2" },
+            { y:2021, d:"1 Jul 2021",       l:"Online",    t:"mesa-redonda", ti:"Presentación del observatorio blockchain y criptoactivos", slug:"presentacion-del-observatorio-blockchain-y-criptoactivos" },
+            { y:2021, d:"30 Jun–1 Jul 2021",l:"Barcelona", t:"evento",       ti:"4YFN está de vuelta!", slug:"4yfn-esta-de-vuelta" },
+            { y:2021, d:"16 Jun 2021",      l:"Online",    t:"mesa-redonda", ti:"Inversores, de lo tradicional a los Criptoactivos", slug:"inversores-de-lo-tradicional-a-los-criptoactivos" },
+            { y:2021, d:"26 May 2021",      l:"Online",    t:"evento",       ti:"Cómo crear, gestionar y vender tus Tokens con Token City", slug:"como-crear-gestionar-y-vender-tus-tokens-con-token-city" },
+            { y:2021, d:"21 Abr 2021",      l:"Online",    t:"mesa-redonda", ti:"La Confianza en el ecosistema de cripto activos", slug:"la-confianza-en-el-ecosistema-de-cripto-activos" },
+            { y:2021, d:"23 Mar 2021",      l:"Online",    t:"mesa-redonda", ti:"Ecosistemas de cripto activos: Conceptos básicos", slug:"ecosistemas-de-cripto-activos-conceptos-basicos" },
+            { y:2021, d:"24 Feb 2021",      l:"Online",    t:"mesa-redonda", ti:"Cómo invertir en Security Tokens", slug:"como-invertir-en-security-tokens" },
+            { y:2021, d:"27 Ene 2021",      l:"Online",    t:"masterclass",  ti:"La tokenización de activos explicada de forma sencilla", slug:"la-tokenizacion-de-activos-explicada-de-forma-sencilla" },
+            /* 2020 */
+            { y:2020, d:"17 Dic 2020",      l:"Online",    t:"evento",       ti:"Lanzamiento de Token City", slug:"lanzamiento-de-token-city" },
+        ];
+
+        const TYPE_LABELS = {
+            webinar:      { es: "Webinar",       en: "Webinar" },
+            "mesa-redonda":{ es: "Mesa Redonda", en: "Roundtable" },
+            congreso:     { es: "Congreso",      en: "Congress" },
+            jornada:      { es: "Jornada",       en: "Session" },
+            taller:       { es: "Taller",        en: "Workshop" },
+            masterclass:  { es: "MasterClass",   en: "MasterClass" },
+            summit:       { es: "Summit",        en: "Summit" },
+            expo:         { es: "Expo",          en: "Expo" },
+            evento:       { es: "Evento",        en: "Event" },
+        };
+
+        let activeYear = 'all';
+
+        function renderEvents() {
+            const grid = document.getElementById('events-grid');
+            const noResults = document.getElementById('no-results');
+            const isEn = document.body.classList.contains('lang-en');
+
+            const filtered = activeYear === 'all'
+                ? EVENTS
+                : EVENTS.filter(e => e.y === parseInt(activeYear));
+
+            document.getElementById('count-badge').textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.style.display = 'block';
+                if (window.lucide) window.lucide.createIcons();
+                return;
+            }
+            noResults.style.display = 'none';
+
+            const label = (e) => {
+                const tl = TYPE_LABELS[e.t] || { es: e.t, en: e.t };
+                return isEn ? tl.en : tl.es;
+            };
+
+            const locLabel = (l) => l === 'Online'
+                ? `<i data-lucide="video" class="w-3 h-3"></i> Online`
+                : `<i data-lucide="map-pin" class="w-3 h-3"></i> ${l}`;
+
+            const readMore = isEn ? 'Read more' : 'Leer más';
+
+            grid.innerHTML = filtered.map(e => `
+                <a href="https://www.token-city.com/es/evento/${e.slug}"
+                   target="_blank" rel="noopener noreferrer"
+                   class="event-card reveal-growth">
+                    <div>
+                        <span class="event-type-badge badge-${e.t}">${label(e)}</span>
+                    </div>
+                    <p class="event-title">${e.ti}</p>
+                    <div class="flex flex-col gap-1">
+                        <div class="event-meta">
+                            <i data-lucide="calendar" class="w-3 h-3 flex-shrink-0"></i>
+                            <span>${e.d}</span>
+                        </div>
+                        <div class="event-meta">
+                            ${locLabel(e.l)}
+                        </div>
+                    </div>
+                    <div class="event-link">
+                        <span>${readMore}</span>
+                        <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                    </div>
+                </a>
+            `).join('');
+
+            if (window.lucide) window.lucide.createIcons();
+
+            const obs = new IntersectionObserver(
+                entries => entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('active'); }),
+                { threshold: 0.05 }
+            );
+            grid.querySelectorAll('.reveal-growth').forEach(el => obs.observe(el));
+        }
+
+        /* ── Filter buttons ── */
+        document.getElementById('year-filters').addEventListener('click', e => {
+            const btn = e.target.closest('.filter-btn');
+            if (!btn) return;
+            activeYear = btn.dataset.year;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderEvents();
+        });
+
+        /* ── Init ── */
+        let __pageInited = false;
+        function initPage() {
+            if (__pageInited) return;
+            __pageInited = true;
+            renderEvents();
+            updateToggleVisuals();
+        }
+        window.addEventListener('tcav:components-loaded', initPage);
+        if (document.readyState !== 'loading') {
+            setTimeout(() => { if (!__pageInited && document.querySelector('#navbar')) initPage(); }, 150);
+        }
+
+        /* ── Theme / Lang ── */
+        function toggleTheme() {
+            const body = document.body;
+            const html = document.documentElement;
+            const isLight = body.classList.toggle('light-mode');
+            if (isLight) { html.classList.remove('dark'); localStorage.setItem('themePreference', 'light'); }
+            else { html.classList.add('dark'); localStorage.setItem('themePreference', 'dark'); }
+            updateToggleVisuals();
+        }
+
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const isEn = document.body.classList.contains('lang-en');
+
+            document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
+            document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
+
+            const activeIconName = isLight ? 'sun' : 'moon';
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
+                </div>
+            `;
+            document.querySelectorAll('.theme-toggle').forEach(toggle => { toggle.innerHTML = trackHTML; });
+            if (window.lucide) window.lucide.createIcons();
+
+            /* re-render cards with updated language */
+            renderEvents();
+        }
+
+        function toggleLanguage() {
+            document.body.classList.toggle('lang-en');
+            updateToggleVisuals();
+        }
+
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobileDrawer');
+            if (!drawer) return;
+            const isOpen = drawer.classList.toggle('open');
+            const overlay = document.getElementById('navOverlay');
+            const controlsBar = document.querySelector('.controls-bar');
+            overlay.style.visibility = isOpen ? 'visible' : (document.querySelector('.nav-item:hover') ? 'visible' : 'hidden');
+            overlay.style.opacity = isOpen ? '1' : (document.querySelector('.nav-item:hover') ? '1' : '0');
+            if (controlsBar) controlsBar.style.display = isOpen ? 'none' : 'flex';
+        }
+
+        function toggleSubmenu(id) {
+            const node = document.getElementById(id);
+            if (node) node.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
