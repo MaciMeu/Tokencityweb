@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Token City | Eventos</title>
     <meta name="description" content="Todos los eventos, webinars, mesas redondas y congresos en los que Token City ha participado desde 2020.">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,21 +23,23 @@
             }
         };
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="tcav-components.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles-tcav.css">
 
     <script>
         (function () {
             const savedTheme = localStorage.getItem('themePreference');
             let isLight;
-            if (savedTheme) { isLight = savedTheme === 'light'; }
-            else {
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
                 const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 const hour = new Date().getHours();
-                isLight = !systemDark && !(hour >= 19 || hour < 7);
+                const nightTime = (hour >= 19 || hour < 7);
+                isLight = !systemDark && !nightTime;
             }
             if (isLight) document.documentElement.classList.remove('dark');
             else document.documentElement.classList.add('dark');
@@ -48,225 +49,74 @@
 
     <style>
         :root {
-            --accent:       #1855BA;
-            --accent-rgb:   24,85,186;
-            --accent-hover: #134495;
             --primary-blue: #1855BA;
-            --text-main:    #0f172a;
-            --text-muted:   #475569;
-            --bg-color:     #f8fafc;
-            --glass-bg:     rgba(255,255,255,0.85);
-            --glass-border: rgba(0,0,0,0.1);
-            --nav-bg:       rgba(5,7,10,0.95);
-            --nav-text:     #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --nav-text: #ffffff;
             --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5, 7, 10, 0.95);
         }
+
         body:not(.light-mode) {
-            --text-main:    #ffffff;
-            --text-muted:   #94a3b8;
-            --bg-color:     #05070a;
-            --glass-bg:     rgba(255,255,255,0.04);
-            --glass-border: rgba(255,255,255,0.09);
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
         .heading-text { color: var(--text-main); }
         .body-text    { color: var(--text-muted); }
-        .section-label {
-            font-weight: 700; font-size: 0.7rem;
-            text-transform: uppercase; letter-spacing: 0.1em;
-            color: var(--accent);
-        }
-        body:not(.light-mode) .section-label { color: #7eb3ff; }
+        .section-label { color: var(--primary-blue); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        body:not(.light-mode) .section-label { color: #60a5fa; }
 
         /* ── Hero ── */
-        .hero-wrap {
-            position: relative; overflow: hidden;
-            background: #05070a !important;
-            min-height: 60vh;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            padding: 120px 1.5rem 80px;
+        .hero-team { position: relative; overflow: hidden; background: #05070a; }
+        .hero-media {
+            position: absolute; inset: 0;
+            background-image: url('mercado.jpg');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            transform: scale(1.03);
         }
         .hero-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(160deg,
-                rgba(5,7,10,0.92) 0%,
-                rgba(24,85,186,0.10) 55%,
-                rgba(5,7,10,0.96) 100%);
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
         }
         .hero-grid {
-            position: absolute; inset: 0;
             background-image:
-                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 40px 40px;
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 85%);
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 85%);
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
         }
-        .hero-glow {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px; height: 400px;
-            background: radial-gradient(ellipse, rgba(24,85,186,0.18) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .hero-wrap .heading-text,
-        .hero-wrap h1 { color: #ffffff !important; }
-        .hero-wrap .body-text,
-        .hero-wrap p:not(.section-label) { color: #cbd5e1 !important; }
-        .hero-wrap .section-label { color: #7eb3ff !important; }
-
-        /* ── Stats chips ── */
-        .stat-chip {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.5rem 1rem; border-radius: 999px;
-            font-size: 0.75rem; font-weight: 700;
-            background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.13);
-            color: #cbd5e1;
-            backdrop-filter: blur(8px);
-        }
-        .stat-chip strong { color: #ffffff; }
-
-        /* ── Section background ── */
-        .events-section {
-            background: var(--bg-color);
-            padding: 4rem 0 6rem;
-            transition: background 0.3s;
+        body.light-mode .hero-grid {
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
         }
 
-        /* ── Filter tabs ── */
-        .filter-row {
-            display: flex; flex-wrap: wrap; gap: 0.5rem;
-            align-items: center;
-        }
-        .filter-btn {
-            padding: 0.4rem 1rem; border-radius: 999px;
-            font-size: 0.75rem; font-weight: 700;
-            border: 1.5px solid var(--glass-border);
-            background: transparent;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .filter-btn:hover {
-            border-color: rgba(var(--accent-rgb), 0.4);
-            color: var(--accent);
-        }
-        body:not(.light-mode) .filter-btn:hover { color: #7eb3ff; }
-        .filter-btn.active {
-            background: rgba(var(--accent-rgb), 0.12);
-            border-color: rgba(var(--accent-rgb), 0.45);
-            color: var(--accent);
-        }
-        body:not(.light-mode) .filter-btn.active {
-            color: #7eb3ff;
-            background: rgba(24,85,186,0.18);
-        }
-
-        /* ── Event cards ── */
-        .event-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 1.25rem;
-            padding: 1.5rem;
-            display: flex; flex-direction: column; gap: 0.875rem;
-            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-            text-decoration: none;
-        }
-        .event-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(var(--accent-rgb), 0.35);
-            box-shadow: 0 16px 40px rgba(var(--accent-rgb), 0.10);
-        }
-
-        .event-type-badge {
-            display: inline-flex; align-items: center; gap: 0.3rem;
-            padding: 0.2rem 0.65rem; border-radius: 999px;
-            font-size: 0.65rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 0.08em;
-            width: fit-content;
-        }
-        /* type colors */
-        .badge-webinar      { background: rgba(168,85,247,0.14); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
-        .badge-mesa-redonda { background: rgba(6,182,212,0.12);  color: #06b6d4; border: 1px solid rgba(6,182,212,0.28); }
-        .badge-congreso     { background: rgba(234,179,8,0.13);  color: #ca8a04; border: 1px solid rgba(234,179,8,0.3); }
-        .badge-jornada      { background: rgba(34,197,94,0.12);  color: #16a34a; border: 1px solid rgba(34,197,94,0.28); }
-        .badge-taller       { background: rgba(249,115,22,0.13); color: #ea580c; border: 1px solid rgba(249,115,22,0.3); }
-        .badge-masterclass  { background: rgba(236,72,153,0.12); color: #db2777; border: 1px solid rgba(236,72,153,0.28); }
-        .badge-summit       { background: rgba(99,102,241,0.13); color: #6366f1; border: 1px solid rgba(99,102,241,0.3); }
-        .badge-expo         { background: rgba(99,102,241,0.13); color: #6366f1; border: 1px solid rgba(99,102,241,0.3); }
-        .badge-evento       { background: rgba(24,85,186,0.12);  color: #1855BA; border: 1px solid rgba(24,85,186,0.28); }
-
-        body:not(.light-mode) .badge-congreso { color: #facc15; }
-        body:not(.light-mode) .badge-jornada  { color: #4ade80; }
-        body:not(.light-mode) .badge-taller   { color: #fb923c; }
-        body:not(.light-mode) .badge-masterclass { color: #f472b6; }
-        body:not(.light-mode) .badge-evento   { color: #7eb3ff; border-color: rgba(24,85,186,0.4); background: rgba(24,85,186,0.16); }
-
-        .event-title {
-            font-size: 0.9rem; font-weight: 700; line-height: 1.4;
-            color: var(--text-main);
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .event-meta {
-            display: flex; align-items: center; gap: 0.35rem;
-            font-size: 0.7rem; color: var(--text-muted); font-weight: 500;
-        }
-        .event-link {
-            display: inline-flex; align-items: center; gap: 0.3rem;
-            font-size: 0.72rem; font-weight: 700;
-            color: var(--accent); margin-top: auto;
-            transition: gap 0.2s;
-        }
-        body:not(.light-mode) .event-link { color: #7eb3ff; }
-        .event-card:hover .event-link { gap: 0.5rem; }
-
-        /* ── Year section divider ── */
-        .year-label {
-            font-size: 2.5rem; font-weight: 900;
-            color: var(--text-main); opacity: 0.06;
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: -0.05em;
-            line-height: 1; user-select: none;
-        }
-
-        /* ── No results ── */
-        #no-results {
-            display: none;
-            text-align: center; padding: 4rem 1rem;
-            color: var(--text-muted);
-        }
-
-        /* ── Count badge ── */
-        .count-badge {
-            display: inline-flex; align-items: center;
-            padding: 0.2rem 0.6rem; border-radius: 999px;
-            font-size: 0.7rem; font-weight: 700;
-            background: rgba(var(--accent-rgb), 0.1);
-            color: var(--accent);
-            border: 1px solid rgba(var(--accent-rgb), 0.25);
-            margin-left: 0.5rem;
-        }
-        body:not(.light-mode) .count-badge { color: #7eb3ff; }
-
-        /* ─── Nav overlay ─── */
+        /* ── Nav overlay ── */
         .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
-        .nav-link { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
+        .nav-link  { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
         .nav-item:hover .nav-link { color: #4f86ed; }
-        .nav-item:hover .nav-link i { opacity: 1; transform: rotate(180deg); transition: transform 0.3s ease; }
-        .nav-link i { transition: transform 0.3s ease; }
-        .mega-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100; }
+        .nav-item:hover .nav-link i { opacity: 1; transform: rotate(180deg); transition: transform 0.3s ease, opacity 0.3s ease; }
+        .nav-link i { transition: transform 0.3s ease, opacity 0.3s ease; }
+        .mega-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem; opacity: 0; visibility: hidden; overflow: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100; }
         .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .mega-link { display: block; padding: 0.5rem 0; font-size: 0.875rem; color: var(--nav-text-muted); transition: all 0.2s ease; }
+        .mega-link:hover { color: var(--nav-text); padding-left: 0.5rem; }
         #navOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
         body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
         #mobileDrawer { position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px; background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; border-left: 1px solid var(--glass-border); }
         #mobileDrawer.open { transform: translateX(0); }
 
-        /* ─── Controls bar ─── */
+        /* ── Controls ── */
         .theme-toggle { position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1); border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
-        .theme-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background-color: #ffffff; border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; }
+        .theme-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: #fff; border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; }
         .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
         .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
         body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
@@ -274,7 +124,7 @@
         .lang-label { font-size: 10px; font-weight: 800; color: #a1a1aa; transition: color 0.3s ease; }
         .lang-label.active { color: #ffffff; }
         .lang-switch-track { position: relative; width: 32px; height: 16px; background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; }
-        .lang-switch-thumb { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; background-color: #ffffff; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        .lang-switch-thumb { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; background: #fff; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
         body.lang-en .lang-switch-thumb { transform: translateX(16px); }
         .controls-bar { position: fixed; bottom: 24px; right: 24px; z-index: 100; display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: rgba(5,7,10,0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
         .controls-bar .theme-toggle { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); }
@@ -282,61 +132,133 @@
         .controls-bar .thumb-icon { color: var(--primary-blue); }
         .controls-bar .lang-switch-track { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
         @media (max-width: 640px) { .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; } }
+
+        /* ── Reveal ── */
+        .reveal-growth { opacity: 0; transform: scale(0.92) translateY(40px); transition: all 1.2s cubic-bezier(0.34,1.56,0.64,1); }
+        .reveal-growth.active { opacity: 1; transform: scale(1) translateY(0); }
+        .delay-100 { transition-delay: 180ms; }
+        .delay-200 { transition-delay: 360ms; }
+        .delay-300 { transition-delay: 540ms; }
+
+        /* ── Stat chips ── */
+        .stat-chip {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 1rem; border-radius: 999px;
+            font-size: 0.75rem; font-weight: 700;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
+            color: #cbd5e1; backdrop-filter: blur(8px);
+        }
+        .stat-chip strong { color: #ffffff; }
+
+        /* ── Event cards ── */
+        .event-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 1.25rem; padding: 1.5rem;
+            display: flex; flex-direction: column; gap: 0.875rem;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            text-decoration: none;
+        }
+        .event-card:hover { transform: translateY(-5px); border-color: rgba(24,85,186,0.4); box-shadow: 0 16px 40px rgba(24,85,186,0.1); }
+        .event-type-badge {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.2rem 0.65rem; border-radius: 999px;
+            font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
+            width: fit-content;
+        }
+        /* Badge colors — AA ≥4.5:1 on light bg, bright on dark */
+        .badge-webinar      { background: rgba(168,85,247,0.12); color: #9333ea; border: 1px solid rgba(168,85,247,0.3); }
+        .badge-mesa-redonda { background: rgba(6,182,212,0.10);  color: #0e7490; border: 1px solid rgba(6,182,212,0.25); }
+        .badge-congreso     { background: rgba(234,179,8,0.11);  color: #b45309; border: 1px solid rgba(234,179,8,0.28); }
+        .badge-jornada      { background: rgba(34,197,94,0.10);  color: #15803d; border: 1px solid rgba(34,197,94,0.25); }
+        .badge-taller       { background: rgba(249,115,22,0.11); color: #c2410c; border: 1px solid rgba(249,115,22,0.28); }
+        .badge-masterclass  { background: rgba(236,72,153,0.10); color: #be185d; border: 1px solid rgba(236,72,153,0.25); }
+        .badge-summit       { background: rgba(99,102,241,0.11); color: #4f46e5; border: 1px solid rgba(99,102,241,0.28); }
+        .badge-expo         { background: rgba(99,102,241,0.11); color: #4f46e5; border: 1px solid rgba(99,102,241,0.28); }
+        .badge-evento       { background: rgba(24,85,186,0.12);  color: #1855BA; border: 1px solid rgba(24,85,186,0.28); }
+        body:not(.light-mode) .badge-webinar      { color: #c084fc; }
+        body:not(.light-mode) .badge-mesa-redonda { color: #22d3ee; }
+        body:not(.light-mode) .badge-congreso     { color: #facc15; }
+        body:not(.light-mode) .badge-jornada      { color: #4ade80; }
+        body:not(.light-mode) .badge-taller       { color: #fb923c; }
+        body:not(.light-mode) .badge-masterclass  { color: #f472b6; }
+        body:not(.light-mode) .badge-summit       { color: #818cf8; }
+        body:not(.light-mode) .badge-expo         { color: #818cf8; }
+        body:not(.light-mode) .badge-evento       { color: #7eb3ff; border-color: rgba(24,85,186,0.4); background: rgba(24,85,186,0.16); }
+
+        .event-title { font-size: 0.9rem; font-weight: 700; line-height: 1.4; color: var(--text-main); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .event-meta  { display: flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+        .event-link  { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 700; color: #1855BA; margin-top: auto; transition: gap 0.2s; }
+        body:not(.light-mode) .event-link { color: #7eb3ff; }
+        .event-card:hover .event-link { gap: 0.5rem; }
+
+        /* ── Filter ── */
+        .filter-btn {
+            padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;
+            border: 1.5px solid var(--glass-border); background: transparent;
+            color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+        }
+        .filter-btn:hover { border-color: rgba(24,85,186,0.4); color: #1855BA; }
+        body:not(.light-mode) .filter-btn:hover { color: #7eb3ff; }
+        .filter-btn.active { background: rgba(24,85,186,0.12); border-color: rgba(24,85,186,0.45); color: #1855BA; }
+        body:not(.light-mode) .filter-btn.active { color: #7eb3ff; background: rgba(24,85,186,0.18); }
+
+        /* ── Count badge ── */
+        .count-badge { display: inline-flex; align-items: center; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; background: rgba(24,85,186,0.1); color: #1855BA; border: 1px solid rgba(24,85,186,0.25); margin-left: 0.5rem; }
+        body:not(.light-mode) .count-badge { color: #7eb3ff; }
+
+        #no-results { display: none; text-align: center; padding: 4rem 1rem; color: var(--text-muted); }
     </style>
 </head>
 
-<body class="font-['Montserrat']">
+<body>
     <script>if (window.__isThemeLight) document.body.classList.add('light-mode');</script>
 
     <div id="navOverlay"></div>
     <div data-component="components/header-component.html"></div>
 
     <main>
-
-        <!-- ════════════════════════════════════════
-             HERO
-        ════════════════════════════════════════ -->
-        <section class="hero-wrap">
-            <div class="hero-grid"></div>
+        <!-- ── HERO ── -->
+        <section class="hero-team min-h-[85vh] pt-28 md:pt-36 pb-0 px-6 overflow-hidden">
+            <div class="hero-media"></div>
             <div class="hero-overlay"></div>
-            <div class="hero-glow"></div>
-            <div class="relative z-10 text-center max-w-3xl mx-auto">
-                <p class="section-label mb-4">
-                    <span class="lang-es">Agenda &amp; Comunidad</span>
-                    <span class="lang-en">Agenda &amp; Community</span>
-                </p>
-                <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-5 heading-text">
-                    <span class="lang-es">Eventos</span>
-                    <span class="lang-en">Events</span>
-                </h1>
-                <p class="text-lg md:text-xl font-medium mb-8 body-text max-w-xl mx-auto leading-relaxed">
-                    <span class="lang-es">No querrás perderte lo que estamos preparando</span>
-                    <span class="lang-en">You won't want to miss what we're preparing</span>
-                </p>
-                <div class="flex flex-wrap items-center justify-center gap-3">
-                    <div class="stat-chip">
-                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-                        <span><strong>45+</strong> <span class="lang-es">eventos</span><span class="lang-en">events</span></span>
-                    </div>
-                    <div class="stat-chip">
-                        <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
-                        <span><strong>10+</strong> <span class="lang-es">ciudades</span><span class="lang-en">cities</span></span>
-                    </div>
-                    <div class="stat-chip">
-                        <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                        <span><span class="lang-es">desde</span><span class="lang-en">since</span> <strong>2020</strong></span>
+            <div class="hero-grid absolute inset-0"></div>
+            <div class="relative max-w-4xl mx-auto text-center">
+                <div class="reveal-growth delay-100">
+                    <p class="section-label mb-4">
+                        <span class="lang-es">Agenda &amp; Comunidad</span>
+                        <span class="lang-en">Agenda &amp; Community</span>
+                    </p>
+                    <h1 class="text-5xl md:text-7xl font-black tracking-tight text-white mb-5">
+                        <span class="lang-es">Eventos</span>
+                        <span class="lang-en">Events</span>
+                    </h1>
+                    <p class="text-lg md:text-xl font-medium text-slate-300 mb-8 max-w-xl mx-auto leading-relaxed">
+                        <span class="lang-es">No querrás perderte lo que estamos preparando</span>
+                        <span class="lang-en">You won't want to miss what we're preparing</span>
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center gap-3">
+                        <div class="stat-chip">
+                            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                            <span><strong>45+</strong> <span class="lang-es">eventos</span><span class="lang-en">events</span></span>
+                        </div>
+                        <div class="stat-chip">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                            <span><strong>10+</strong> <span class="lang-es">ciudades</span><span class="lang-en">cities</span></span>
+                        </div>
+                        <div class="stat-chip">
+                            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                            <span><span class="lang-es">desde</span><span class="lang-en">since</span> <strong>2020</strong></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ════════════════════════════════════════
-             EVENTOS
-        ════════════════════════════════════════ -->
-        <section class="events-section">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- ── EVENTOS GRID ── -->
+        <section class="px-4 sm:px-6 pt-12 pb-24">
+            <div class="max-w-7xl mx-auto">
 
-                <!-- Filters -->
+                <!-- Filters row -->
                 <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
                         <h2 class="text-xl font-black heading-text mb-1">
@@ -349,10 +271,8 @@
                             <span class="lang-en">Webinars, congresses, roundtables and more</span>
                         </p>
                     </div>
-                    <div class="filter-row" id="year-filters">
-                        <button class="filter-btn active" data-year="all">
-                            <span class="lang-es">Todos</span><span class="lang-en">All</span>
-                        </button>
+                    <div class="flex flex-wrap gap-2" id="year-filters">
+                        <button class="filter-btn active" data-year="all"><span class="lang-es">Todos</span><span class="lang-en">All</span></button>
                         <button class="filter-btn" data-year="2025">2025</button>
                         <button class="filter-btn" data-year="2024">2024</button>
                         <button class="filter-btn" data-year="2023">2023</button>
@@ -363,50 +283,14 @@
                 </div>
 
                 <!-- Grid -->
-                <div id="events-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+                <div id="events-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
                 <div id="no-results">
-                    <i data-lucide="calendar-x" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
-                    <p class="font-bold text-sm">
-                        <span class="lang-es">No hay eventos para este filtro</span>
-                        <span class="lang-en">No events for this filter</span>
-                    </p>
+                    <i data-lucide="calendar-x" class="w-10 h-10 mx-auto mb-3 opacity-30"></i>
+                    <p class="font-semibold"><span class="lang-es">Sin resultados</span><span class="lang-en">No results</span></p>
                 </div>
 
             </div>
         </section>
-
-        <!-- ════════════════════════════════════════
-             CTA BANNER
-        ════════════════════════════════════════ -->
-        <section class="py-20 px-4" style="background: #05070a;">
-            <div class="max-w-3xl mx-auto text-center">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-                    style="background: rgba(24,85,186,0.15); border: 1px solid rgba(24,85,186,0.3);">
-                    <i data-lucide="bell" class="w-3.5 h-3.5" style="color:#7eb3ff;"></i>
-                    <span class="text-xs font-bold" style="color:#7eb3ff;">
-                        <span class="lang-es">Próximos eventos</span>
-                        <span class="lang-en">Upcoming events</span>
-                    </span>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-black mb-4" style="color:#ffffff;">
-                    <span class="lang-es">¿Quieres estar al día?</span>
-                    <span class="lang-en">Want to stay updated?</span>
-                </h2>
-                <p class="text-base mb-8 max-w-lg mx-auto" style="color:#94a3b8;">
-                    <span class="lang-es">Síguenos y sé el primero en enterarte de los próximos eventos sobre tokenización de activos.</span>
-                    <span class="lang-en">Follow us and be the first to hear about upcoming events on asset tokenization.</span>
-                </p>
-                <a href="https://www.token-city.com/es/eventos" target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 px-7 py-3.5 rounded-[12px] font-extrabold text-sm text-white transition-all"
-                    style="background: var(--accent);"
-                    onmouseover="this.style.background='#134495'" onmouseout="this.style.background='#1855BA'">
-                    <span class="lang-es">Ver todos los eventos</span>
-                    <span class="lang-en">See all events</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </a>
-            </div>
-        </section>
-
     </main>
 
     <div data-component="components/footer-component.html"></div>
@@ -469,15 +353,15 @@
         ];
 
         const TYPE_LABELS = {
-            webinar:      { es: "Webinar",       en: "Webinar" },
-            "mesa-redonda":{ es: "Mesa Redonda", en: "Roundtable" },
-            congreso:     { es: "Congreso",      en: "Congress" },
-            jornada:      { es: "Jornada",       en: "Session" },
-            taller:       { es: "Taller",        en: "Workshop" },
-            masterclass:  { es: "MasterClass",   en: "MasterClass" },
-            summit:       { es: "Summit",        en: "Summit" },
-            expo:         { es: "Expo",          en: "Expo" },
-            evento:       { es: "Evento",        en: "Event" },
+            webinar:       { es:"Webinar",       en:"Webinar" },
+            "mesa-redonda":{ es:"Mesa Redonda",  en:"Roundtable" },
+            congreso:      { es:"Congreso",      en:"Congress" },
+            jornada:       { es:"Jornada",       en:"Session" },
+            taller:        { es:"Taller",        en:"Workshop" },
+            masterclass:   { es:"MasterClass",   en:"MasterClass" },
+            summit:        { es:"Summit",        en:"Summit" },
+            expo:          { es:"Expo",          en:"Expo" },
+            evento:        { es:"Evento",        en:"Event" },
         };
 
         let activeYear = 'all';
@@ -487,58 +371,29 @@
             const noResults = document.getElementById('no-results');
             const isEn = document.body.classList.contains('lang-en');
 
-            const filtered = activeYear === 'all'
-                ? EVENTS
-                : EVENTS.filter(e => e.y === parseInt(activeYear));
-
+            const filtered = activeYear === 'all' ? EVENTS : EVENTS.filter(e => e.y === parseInt(activeYear));
             document.getElementById('count-badge').textContent = filtered.length;
 
-            if (filtered.length === 0) {
-                grid.innerHTML = '';
-                noResults.style.display = 'block';
-                if (window.lucide) window.lucide.createIcons();
-                return;
-            }
+            if (!filtered.length) { grid.innerHTML = ''; noResults.style.display = 'block'; if (window.lucide) window.lucide.createIcons(); return; }
             noResults.style.display = 'none';
 
-            const label = (e) => {
-                const tl = TYPE_LABELS[e.t] || { es: e.t, en: e.t };
-                return isEn ? tl.en : tl.es;
-            };
-
-            const locLabel = (l) => l === 'Online'
-                ? `<i data-lucide="video" class="w-3 h-3"></i> Online`
-                : `<i data-lucide="map-pin" class="w-3 h-3"></i> ${l}`;
-
+            const label = e => { const tl = TYPE_LABELS[e.t] || {es:e.t, en:e.t}; return isEn ? tl.en : tl.es; };
+            const locLabel = l => l === 'Online' ? `<i data-lucide="video" class="w-3 h-3"></i> Online` : `<i data-lucide="map-pin" class="w-3 h-3"></i> ${l}`;
             const readMore = isEn ? 'Read more' : 'Leer más';
 
             grid.innerHTML = filtered.map(e => `
-                <a href="https://www.token-city.com/es/evento/${e.slug}"
-                   target="_blank" rel="noopener noreferrer"
-                   class="event-card reveal-growth">
-                    <div>
-                        <span class="event-type-badge badge-${e.t}">${label(e)}</span>
-                    </div>
+                <a href="https://www.token-city.com/es/evento/${e.slug}" target="_blank" rel="noopener noreferrer" class="event-card reveal-growth">
+                    <div><span class="event-type-badge badge-${e.t}">${label(e)}</span></div>
                     <p class="event-title">${e.ti}</p>
                     <div class="flex flex-col gap-1">
-                        <div class="event-meta">
-                            <i data-lucide="calendar" class="w-3 h-3 flex-shrink-0"></i>
-                            <span>${e.d}</span>
-                        </div>
-                        <div class="event-meta">
-                            ${locLabel(e.l)}
-                        </div>
+                        <div class="event-meta"><i data-lucide="calendar" class="w-3 h-3 flex-shrink-0"></i><span>${e.d}</span></div>
+                        <div class="event-meta">${locLabel(e.l)}</div>
                     </div>
-                    <div class="event-link">
-                        <span>${readMore}</span>
-                        <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                    </div>
+                    <div class="event-link"><span>${readMore}</span><i data-lucide="arrow-right" class="w-3 h-3"></i></div>
                 </a>
             `).join('');
 
             if (window.lucide) window.lucide.createIcons();
-
-            /* Cards ya están en viewport — activar inmediatamente */
             requestAnimationFrame(() => {
                 grid.querySelectorAll('.reveal-growth').forEach((el, i) => {
                     setTimeout(() => el.classList.add('active'), i * 20);
@@ -546,7 +401,6 @@
             });
         }
 
-        /* ── Filter buttons ── */
         document.getElementById('year-filters').addEventListener('click', e => {
             const btn = e.target.closest('.filter-btn');
             if (!btn) return;
@@ -563,6 +417,11 @@
             __pageInited = true;
             renderEvents();
             updateToggleVisuals();
+
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal-growth:not(#events-grid .reveal-growth)').forEach(el => obs.observe(el));
         }
         window.addEventListener('tcav:components-loaded', initPage);
         if (document.readyState !== 'loading') {
@@ -582,33 +441,19 @@
         function updateToggleVisuals() {
             const isLight = document.body.classList.contains('light-mode');
             const isEn = document.body.classList.contains('lang-en');
-
             document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
             document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
-
             const activeIconName = isLight ? 'sun' : 'moon';
             const trackHTML = `
-                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
-                    <i data-lucide="moon" class="toggle-track-icon"></i>
-                </div>
-                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
-                    <i data-lucide="sun" class="toggle-track-icon"></i>
-                </div>
-                <div class="theme-toggle-thumb">
-                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
-                </div>
-            `;
-            document.querySelectorAll('.theme-toggle').forEach(toggle => { toggle.innerHTML = trackHTML; });
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300"><i data-lucide="moon" class="toggle-track-icon"></i></div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300"><i data-lucide="sun" class="toggle-track-icon"></i></div>
+                <div class="theme-toggle-thumb"><i data-lucide="${activeIconName}" class="thumb-icon"></i></div>`;
+            document.querySelectorAll('.theme-toggle').forEach(t => { t.innerHTML = trackHTML; });
             if (window.lucide) window.lucide.createIcons();
-
-            /* re-render cards with updated language */
             renderEvents();
         }
 
-        function toggleLanguage() {
-            document.body.classList.toggle('lang-en');
-            updateToggleVisuals();
-        }
+        function toggleLanguage() { document.body.classList.toggle('lang-en'); updateToggleVisuals(); }
 
         function toggleMobileMenu() {
             const drawer = document.getElementById('mobileDrawer');
@@ -616,15 +461,48 @@
             const isOpen = drawer.classList.toggle('open');
             const overlay = document.getElementById('navOverlay');
             const controlsBar = document.querySelector('.controls-bar');
-            overlay.style.visibility = isOpen ? 'visible' : (document.querySelector('.nav-item:hover') ? 'visible' : 'hidden');
-            overlay.style.opacity = isOpen ? '1' : (document.querySelector('.nav-item:hover') ? '1' : '0');
+            overlay.style.visibility = isOpen ? 'visible' : '';
+            overlay.style.opacity = isOpen ? '1' : '';
             if (controlsBar) controlsBar.style.display = isOpen ? 'none' : 'flex';
         }
 
-        function toggleSubmenu(id) {
-            const node = document.getElementById(id);
-            if (node) node.classList.toggle('open');
+        function toggleSubmenu(id) { const n = document.getElementById(id); if (n) n.classList.toggle('open'); }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+            btnText.textContent = '';
+            btnLoader.classList.remove('hidden');
+            btn.disabled = true;
+            setTimeout(() => {
+                btnText.textContent = btnText.dataset.original || 'Suscribirse';
+                btnLoader.classList.add('hidden');
+                btn.disabled = false;
+                e.target.reset();
+                showToast('¡Suscrito a la newsletter!', 'success');
+            }, 1400);
         }
+
+        function showToast(message, type = 'success') {
+            let container = document.getElementById('toastContainer');
+            if (!container) { container = document.createElement('div'); container.id = 'toastContainer'; container.className = 'fixed top-4 right-4 z-50 flex flex-col gap-2'; document.body.appendChild(container); }
+            const toast = document.createElement('div');
+            toast.className = 'toast p-4 rounded-[15px] shadow-2xl backdrop-blur-md border border-white/10 flex items-center gap-3';
+            toast.style.backgroundColor = type === 'success' ? 'rgba(22,163,74,0.95)' : 'rgba(220,38,38,0.95)';
+            toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'alert-octagon'}" class="w-5 h-5 text-white"></i><span class="text-sm font-bold text-white">${message}</span>`;
+            container.appendChild(toast);
+            if (window.lucide) window.lucide.createIcons();
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 260); }, 2600);
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (nav) { if (window.scrollY > 50) nav.classList.add('shadow-lg'); else nav.classList.remove('shadow-lg'); }
+        });
     </script>
 </body>
+
 </html>
