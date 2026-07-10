@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | Inventario de páginas</title>
+    <meta name="description" content="Inventario de archivos HTML locales y su correspondencia con las URLs de la web live de Token City.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC',
+                            100: '#DCE6F5',
+                            200: '#A3BBE3',
+                            300: '#7499D6',
+                            400: '#4677C8',
+                            500: '#1855BA',
+                            600: '#134495',
+                            700: '#0E3370',
+                            800: '#0A224A',
+                            900: '#051125',
+                            950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                const nightTime = (hour >= 19 || hour < 7);
+                isLight = !systemDark && !nightTime;
+            }
+            if (isLight) {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5, 7, 10, 0.95);
+        }
+
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+            --nav-bg: rgba(5, 7, 10, 0.95);
+        }
+
+        .heading-text { color: var(--text-main); }
+        .body-text { color: var(--text-muted); }
+
+        .section-label {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        body:not(.light-mode) .section-label { color: #60a5fa; }
+
+        .hero-team {
+            position: relative;
+            overflow: hidden;
+            background: #05070a;
+        }
+
+        .hero-media {
+            position: absolute;
+            inset: 0;
+            background-image: url('mercado.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform: scale(1.03);
+            opacity: 0.15;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+        }
+
+        .hero-grid {
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+        }
+
+        .inv-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            backdrop-filter: blur(6px);
+        }
+
+        .inv-section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .inv-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .inv-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+        .inv-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+        .inv-table th {
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .inv-table td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            vertical-align: middle;
+        }
+        .inv-table tr:last-child td { border-bottom: none; }
+        .inv-table td:first-child { white-space: nowrap; }
+
+        .inv-table code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.18);
+            border-radius: 4px;
+            padding: 0.1rem 0.4rem;
+            color: #818cf8;
+        }
+
+        .inv-table a {
+            color: #1855BA;
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            word-break: break-all;
+        }
+        body:not(.light-mode) .inv-table a { color: #7eb3ff; }
+        .inv-table a:hover { text-decoration: underline; }
+
+        .inv-tag {
+            display: inline-flex;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.5rem;
+            background: rgba(99, 102, 241, 0.07);
+            border: 1px solid rgba(99, 102, 241, 0.18);
+        }
+        .inv-tag code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: #818cf8;
+        }
+        .inv-tag-dev { background: rgba(148, 163, 184, 0.06); border-color: var(--glass-border); }
+        .inv-tag-dev code { color: var(--text-muted); }
+
+        .inv-note {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Animations */
+        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .nav-item:hover .nav-link i { opacity: 1; transform: rotate(180deg); transition: transform 0.3s ease, opacity 0.3s ease; }
+        .nav-link i { transition: transform 0.3s ease, opacity 0.3s ease; }
+
+        .mega-menu {
+            position: absolute; top: 100%; left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 90vw; max-width: 1000px;
+            background: var(--nav-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem;
+            opacity: 0; visibility: hidden; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); z-index: 100;
+        }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .mega-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .mega-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #60a5fa; margin-bottom: 1rem; display: block; }
+        .mega-link { display: block; padding: 0.5rem 0; font-size: 0.875rem; color: var(--nav-text-muted); transition: all 0.2s ease; }
+        .mega-link:hover { color: var(--nav-text); padding-left: 0.5rem; }
+
+        #navOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+
+        #mobileDrawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+            background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; border-left: 1px solid var(--glass-border);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+        .mobile-link { padding: 1rem 1.5rem; border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; color: var(--nav-text); font-weight: 600; }
+        .mobile-submenu { background: rgba(255,255,255,0.03); display: none; padding-left: 1rem; }
+        .mobile-submenu.open { display: block; }
+
+        .theme-toggle { position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1); border-radius: 999px; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.2); overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
+        .theme-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background-color: #ffffff; border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+
+        .lang-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+        .lang-label { font-size: 10px; font-weight: 800; color: #a1a1aa; transition: color 0.3s ease; }
+        .lang-label.active { color: #ffffff; }
+        .lang-switch-track { position: relative; width: 32px; height: 16px; background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; }
+        .lang-switch-thumb { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; background-color: #ffffff; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        body.lang-en .lang-switch-thumb { transform: translateX(16px); }
+
+        .controls-bar { position: fixed; bottom: 24px; right: 24px; z-index: 100; display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: rgba(5,7,10,0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .controls-bar .theme-toggle { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); }
+        .controls-bar .toggle-track-icon { color: #ffffff; }
+        .controls-bar .thumb-icon { color: var(--primary-blue); }
+        .controls-bar .lang-switch-track { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
+
+        .reveal-growth { opacity: 0; transform: scale(0.92) translateY(40px); transition: all 1.2s cubic-bezier(0.34,1.56,0.64,1); }
+        .reveal-growth.active { opacity: 1; transform: scale(1) translateY(0); }
+        .delay-100 { transition-delay: 180ms; }
+        .delay-200 { transition-delay: 360ms; }
+        .delay-300 { transition-delay: 540ms; }
+
+        .hero-copy { color: #e2e8f0; }
+        body.light-mode .hero-copy { color: #ffffff; }
+        body.light-mode .hero-team-title { color: #ffffff; }
+
+        @media (max-width: 640px) {
+            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+            .inv-table td, .inv-table th { padding: 0.4rem 0.5rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        if (window.__isThemeLight) document.body.classList.add('light-mode');
+    </script>
+
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero-team min-h-[42vh] pt-28 md:pt-36 pb-0 px-6 overflow-hidden">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid absolute inset-0"></div>
+            <div class="relative max-w-7xl mx-auto text-center pb-12">
+                <div class="max-w-3xl mx-auto reveal-growth delay-100">
+                    <p class="section-label mb-4">Desarrollo interno</p>
+                    <h1 class="hero-team-title text-4xl md:text-5xl font-extrabold leading-tight text-white mb-4">
+                        Inventario de páginas
+                    </h1>
+                    <p class="hero-copy text-base md:text-lg opacity-80 max-w-xl mx-auto">
+                        Correspondencia entre los archivos HTML del repo local y las URLs live en <span class="font-mono text-sm">token-city.com</span>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content -->
+        <section class="px-6 pb-24 pt-0">
+            <div class="max-w-5xl mx-auto space-y-6">
+
+                <!-- Repo/Live links bar -->
+                <div class="inv-card p-5 reveal-growth delay-100 flex flex-wrap gap-4 items-center">
+                    <div class="flex items-center gap-2 text-sm body-text">
+                        <i data-lucide="github" class="w-4 h-4 flex-shrink-0"></i>
+                        <span class="font-semibold heading-text">Repo:</span>
+                        <a href="https://github.com/MaciMeu/Tokencityweb" target="_blank" rel="noopener noreferrer" class="font-mono text-xs" style="color:#818cf8">github.com/MaciMeu/Tokencityweb</a>
+                    </div>
+                    <div class="w-px h-4 bg-[var(--glass-border)] hidden sm:block"></div>
+                    <div class="flex items-center gap-2 text-sm body-text">
+                        <i data-lucide="globe" class="w-4 h-4 flex-shrink-0"></i>
+                        <span class="font-semibold heading-text">Live:</span>
+                        <a href="https://www.token-city.com/es" target="_blank" rel="noopener noreferrer" class="font-mono text-xs" style="color:#818cf8">www.token-city.com/es</a>
+                    </div>
+                    <div class="ml-auto">
+                        <span class="text-xs body-text font-mono">rama: main</span>
+                    </div>
+                </div>
+
+                <!-- 1. Navegación principal -->
+                <div class="inv-card p-6 reveal-growth delay-200">
+                    <div class="inv-section-header">
+                        <div class="inv-icon" style="background:rgba(24,85,186,0.12);color:#60a5fa">
+                            <i data-lucide="navigation" class="w-4 h-4"></i>
+                        </div>
+                        <span class="inv-title">Navegación principal</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="inv-table">
+                            <thead>
+                                <tr><th>Archivo local</th><th>URL live</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>index.html</code> / <code>home.html</code></td>
+                                    <td><a href="https://www.token-city.com/es" target="_blank">/es</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>marketplace.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/marketplace" target="_blank">/es/marketplace</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>real-estate.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/real-estate" target="_blank">/es/real-estate</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>scaleups.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/scaleups" target="_blank">/es/scaleups</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>energy.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/energy" target="_blank">/es/energy</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>eventos.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/eventos" target="_blank">/es/eventos</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>evento-detalle.html</code></td>
+                                    <td><span class="inv-note">/es/evento/[slug] — template para los 45 eventos</span></td>
+                                </tr>
+                                <tr>
+                                    <td><code>equipo.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/acerca-de/equipo" target="_blank">/es/acerca-de/equipo</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>presskit.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/presskit" target="_blank">/es/presskit</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>Contacto.html</code> / <code>contacto-tc.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/contacto" target="_blank">/es/contacto</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>blog.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/recursos/categoria/blog" target="_blank">/es/recursos/categoria/blog</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>faqs.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/faqs" target="_blank">/es/faqs</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 2. Plataforma -->
+                <div class="inv-card p-6 reveal-growth delay-200">
+                    <div class="inv-section-header">
+                        <div class="inv-icon" style="background:rgba(99,102,241,0.12);color:#818cf8">
+                            <i data-lucide="cpu" class="w-4 h-4"></i>
+                        </div>
+                        <span class="inv-title">Plataforma</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="inv-table">
+                            <thead>
+                                <tr><th>Archivo local</th><th>URL live</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>taas.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/plataforma/maas" target="_blank">/es/plataforma/maas</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>la-erir-emisiones-tokenizados.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/plataforma/erir" target="_blank">/es/plataforma/erir</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>slider-blockchain.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/plataforma/blockchain" target="_blank">/es/plataforma/blockchain</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>tokencityexchange.html</code></td>
+                                    <td><a href="https://exchange.token-city.com" target="_blank">exchange.token-city.com</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>aliuscapital.html</code></td>
+                                    <td><a href="https://www.aliuscap.com/" target="_blank">aliuscap.com</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 3. Legal -->
+                <div class="inv-card p-6 reveal-growth delay-200">
+                    <div class="inv-section-header">
+                        <div class="inv-icon" style="background:rgba(16,185,129,0.12);color:#34d399">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        </div>
+                        <span class="inv-title">Legal</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="inv-table">
+                            <thead>
+                                <tr><th>Archivo local</th><th>URL live</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>cookie-policy.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/politica-cookies" target="_blank">/es/politica-cookies</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>politica-privacidad.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/politica-privacidad" target="_blank">/es/politica-privacidad</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>aviso-legal.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/aviso-legal" target="_blank">/es/aviso-legal</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>Términos y Condiciones.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/tc-token-city" target="_blank">/es/tc-token-city</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4. Casos de éxito -->
+                <div class="inv-card p-6 reveal-growth delay-200">
+                    <div class="inv-section-header">
+                        <div class="inv-icon" style="background:rgba(245,158,11,0.12);color:#fbbf24">
+                            <i data-lucide="trophy" class="w-4 h-4"></i>
+                        </div>
+                        <span class="inv-title">Casos de éxito</span>
+                    </div>
+                    <p class="text-xs body-text mb-3 font-mono">Patrón: /es/casos-de-exito/[slug]</p>
+                    <div class="overflow-x-auto">
+                        <table class="inv-table">
+                            <thead>
+                                <tr><th>Archivo local</th><th>Slug live</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>dianelum.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/casos-de-exito/el-viaje-a-la-financiacion-de-dianelum-con-token-city" target="_blank">el-viaje-a-la-financiacion-de-dianelum-con-token-city</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>beselfbrands.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/casos-de-exito/la-tokenizacion-de-acciones-reguladas-de-beself-brands" target="_blank">la-tokenizacion-de-acciones-reguladas-de-beself-brands</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>equalice.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/casos-de-exito/equalice-democratizando-la-inversion-inmobiliaria-y-corporativa" target="_blank">equalice-democratizando-la-inversion-inmobiliaria-y-corporativa</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>meduliocapital.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/casos-de-exito/acceso-digital-a-activos-exclusivos-con-medulio-capital" target="_blank">acceso-digital-a-activos-exclusivos-con-medulio-capital</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code>themuxic.html</code></td>
+                                    <td><a href="https://www.token-city.com/es/casos-de-exito/convirtiendo-a-los-fans-en-socios-mediante-la-tokenizacion-de-derechos-musicales" target="_blank">convirtiendo-a-los-fans-en-socios-mediante-la-tokenizacion-de-derechos-musicales</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 5. Marketplace — fichas sin URL individual -->
+                <div class="inv-card p-6 reveal-growth delay-200">
+                    <div class="inv-section-header">
+                        <div class="inv-icon" style="background:rgba(236,72,153,0.12);color:#f472b6">
+                            <i data-lucide="store" class="w-4 h-4"></i>
+                        </div>
+                        <span class="inv-title">Marketplace — fichas de activo</span>
+                    </div>
+                    <p class="text-xs body-text mb-4">Sin URL live individual confirmada. El live los lista en <span class="font-mono">/es/marketplace</span> y enlaza al exchange o proyecto externo.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inv-tag"><code>arcahabitatum.html</code></span>
+                        <span class="inv-tag"><code>equito.html</code></span>
+                        <span class="inv-tag"><code>finka.html</code></span>
+                        <span class="inv-tag"><code>globalgold.html</code></span>
+                        <span class="inv-tag"><code>groinversia.html</code></span>
+                        <span class="inv-tag"><code>hds.html</code></span>
+                        <span class="inv-tag"><code>marv.html</code></span>
+                        <span class="inv-tag"><code>okohaus.html</code></span>
+                        <span class="inv-tag"><code>padelrenting.html</code></span>
+                        <span class="inv-tag"><code>realbites.html</code></span>
+                        <span class="inv-tag"><code>block4e.html</code></span>
+                        <span class="inv-tag"><code>ways.html</code></span>
+                        <span class="inv-tag"><code>tokenbit.html</code></span>
+                        <span class="inv-tag"><code>tokengo.html</code></span>
+                        <span class="inv-tag"><code>tokenix.html</code></span>
+                        <span class="inv-tag"><code>valorix.html</code></span>
+                    </div>
+                </div>
+
+                <!-- 6. Recursos/guías -->
+                <div class="inv-card p-6 reveal-growth delay-200">
+                    <div class="inv-section-header">
+                        <div class="inv-icon" style="background:rgba(6,182,212,0.12);color:#22d3ee">
+                            <i data-lucide="book-open" class="w-4 h-4"></i>
+                        </div>
+                        <span class="inv-title">Recursos y guías</span>
+                    </div>
+                    <p class="text-xs body-text mb-4">Sin URL live individual confirmada.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inv-tag"><code>guia-union-ahorros-inversion.html</code></span>
+                        <span class="inv-tag"><code>la-oportunidad-inmobiliaria.html</code></span>
+                        <span class="inv-tag"><code>participantes-mercado.html</code></span>
+                        <span class="inv-tag"><code>crear-participante.html</code></span>
+                    </div>
+                </div>
+
+                <!-- 7. Solo desarrollo -->
+                <div class="inv-card p-6 reveal-growth delay-200">
+                    <div class="inv-section-header">
+                        <div class="inv-icon" style="background:rgba(148,163,184,0.1);color:#94a3b8">
+                            <i data-lucide="code-2" class="w-4 h-4"></i>
+                        </div>
+                        <span class="inv-title">Solo desarrollo — sin equivalente live</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-5">
+                        <span class="inv-tag inv-tag-dev"><code>plantilla.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>componentes.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>componentes-reutilizables.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>template-ejemplo.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>policy-template.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>sitemap.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>inventario.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>INdex2.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>Index Alternativo.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>footer-component.html</code></span>
+                    </div>
+                    <p class="text-xs body-text font-semibold mb-2 uppercase tracking-widest">Componentes compartidos (data-component)</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inv-tag inv-tag-dev"><code>components/header-component.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>components/footer-component.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>components/floating-controls-component.html</code></span>
+                        <span class="inv-tag inv-tag-dev"><code>components/formulario-component.html</code></span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script>
+        let __invInited = false;
+
+        function initInventarioPage() {
+            if (__invInited) return;
+            __invInited = true;
+            if (window.lucide) window.lucide.createIcons();
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.remove('reverse');
+                        e.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.05 });
+
+            document.querySelectorAll('.reveal-growth').forEach(el => observer.observe(el));
+            updateToggleVisuals();
+        }
+
+        window.addEventListener('tcav:components-loaded', initInventarioPage);
+
+        if (document.readyState !== 'loading') {
+            setTimeout(() => {
+                if (!document.querySelector('#navbar')) return;
+                initInventarioPage();
+            }, 50);
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const html = document.documentElement;
+            const isLight = body.classList.toggle('light-mode');
+            if (isLight) { html.classList.remove('dark'); localStorage.setItem('themePreference', 'light'); }
+            else { html.classList.add('dark'); localStorage.setItem('themePreference', 'dark'); }
+            updateToggleVisuals();
+        }
+
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const isEn = document.body.classList.contains('lang-en');
+            document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
+            document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
+            const activeIconName = isLight ? 'sun' : 'moon';
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300"><i data-lucide="moon" class="toggle-track-icon"></i></div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300"><i data-lucide="sun" class="toggle-track-icon"></i></div>
+                <div class="theme-toggle-thumb"><i data-lucide="${activeIconName}" class="thumb-icon"></i></div>
+            `;
+            document.querySelectorAll('.theme-toggle').forEach(toggle => { toggle.innerHTML = trackHTML; });
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function toggleLanguage() {
+            document.body.classList.toggle('lang-en');
+            updateToggleVisuals();
+        }
+
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobileDrawer');
+            if (!drawer) return;
+            const isOpen = drawer.classList.toggle('open');
+            const overlay = document.getElementById('navOverlay');
+            const controlsBar = document.querySelector('.controls-bar');
+            overlay.style.visibility = isOpen ? 'visible' : 'hidden';
+            overlay.style.opacity = isOpen ? '1' : '0';
+            controlsBar.style.display = isOpen ? 'none' : 'flex';
+        }
+
+        function toggleSubmenu(id) {
+            const node = document.getElementById(id);
+            if (node) node.classList.toggle('open');
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+            btnText.textContent = '';
+            btnLoader.classList.remove('hidden');
+            btn.disabled = true;
+            setTimeout(() => {
+                btnText.textContent = 'Suscribirse';
+                btnLoader.classList.add('hidden');
+                btn.disabled = false;
+                e.target.reset();
+                showToast('¡Suscrito a la newsletter!', 'success');
+            }, 1400);
+        }
+
+        function showToast(message, type = 'success') {
+            let container = document.getElementById('toastContainer');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toastContainer';
+                container.className = 'fixed top-4 right-4 z-50 flex flex-col gap-2';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            toast.className = 'toast p-4 rounded-[15px] shadow-2xl backdrop-blur-md border border-white/10 flex items-center gap-3';
+            toast.style.backgroundColor = type === 'success' ? 'rgba(22,163,74,0.95)' : 'rgba(220,38,38,0.95)';
+            toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'alert-octagon'}" class="w-5 h-5 text-white"></i><span class="text-sm font-bold text-white">${message}</span>`;
+            container.appendChild(toast);
+            if (window.lucide) window.lucide.createIcons();
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 260); }, 2600);
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (nav) { if (window.scrollY > 50) nav.classList.add('shadow-lg'); else nav.classList.remove('shadow-lg'); }
+        });
+    </script>
+</body>
+
+</html>

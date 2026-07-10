@@ -509,13 +509,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-5">
-                                    <a href="https://www.token-city.com/es/evento/webinar-otesa-calella-living-todo-lo-que-quieras-preguntar-sobre-la-emision-del-1er-bono-tokenizado-con-garantia-hipotecaria" target="_blank" rel="noopener noreferrer" class="cta-btn w-full justify-center text-sm">
-                                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                                        <span class="lang-es">Ver en Token City</span>
-                                        <span class="lang-en">View on Token City</span>
-                                    </a>
-                                </div>
+                                <div class="mt-5" id="evento-cta"></div>
                             </div>
 
                             <!-- More events -->
@@ -563,6 +557,50 @@
     <div data-component="components/floating-controls-component.html"></div>
 
     <script>
+        /* ── Configuración del evento ──────────────────────────────────────────
+           Editar estos valores para cada evento:
+           estado: 'proximo' | 'pasado'
+           registroUrl: URL de inscripción (solo si estado='proximo')
+           videoUrl: URL del vídeo (YouTube, Vimeo…) — null si no hay grabación
+        ── */
+        const EVENTO = {
+            estado: 'pasado',         // 'proximo' o 'pasado'
+            registroUrl: null,        // ej: 'https://lu.ma/...'
+            videoUrl: null            // ej: 'https://www.youtube.com/watch?v=...'
+        };
+
+        /* ── Renderiza el CTA del sidebar según el estado del evento ── */
+        function renderEventoCTA() {
+            const el = document.getElementById('evento-cta');
+            if (!el) return;
+            const isEn = document.body.classList.contains('lang-en');
+
+            if (EVENTO.estado === 'proximo') {
+                const url = EVENTO.registroUrl || '#';
+                el.innerHTML = `
+                    <a href="${url}" ${EVENTO.registroUrl ? 'target="_blank" rel="noopener noreferrer"' : ''} class="cta-btn w-full justify-center text-sm">
+                        <i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>
+                        <span class="lang-es">Inscribirse</span>
+                        <span class="lang-en">Register</span>
+                    </a>`;
+            } else if (EVENTO.videoUrl) {
+                el.innerHTML = `
+                    <a href="${EVENTO.videoUrl}" target="_blank" rel="noopener noreferrer" class="cta-btn w-full justify-center text-sm">
+                        <i data-lucide="play-circle" class="w-3.5 h-3.5"></i>
+                        <span class="lang-es">Ver grabación</span>
+                        <span class="lang-en">Watch recording</span>
+                    </a>`;
+            } else {
+                el.innerHTML = `
+                    <button disabled class="cta-btn w-full justify-center text-sm" style="opacity:0.45;cursor:not-allowed;pointer-events:none;">
+                        <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                        <span class="lang-es">Evento finalizado</span>
+                        <span class="lang-en">Event ended</span>
+                    </button>`;
+            }
+            if (window.lucide) window.lucide.createIcons();
+        }
+
         /* ── Reading progress ── */
         window.addEventListener('scroll', () => {
             const bar = document.getElementById('reading-progress');
@@ -578,6 +616,7 @@
             if (__pageInited) return;
             __pageInited = true;
             updateToggleVisuals();
+            renderEventoCTA();
 
             const obs = new IntersectionObserver(entries => {
                 entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
