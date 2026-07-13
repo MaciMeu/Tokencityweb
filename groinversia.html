@@ -91,7 +91,7 @@
             min-height: 100vh;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            padding: 100px 1.5rem 60px;
+            padding: var(--space-5) var(--space-3) var(--space-4);
         }
         .hero-bg {
             position: absolute; inset: 0;
@@ -133,20 +133,20 @@
         /* ─── Logo — glass transparente ─── */
         .logo-container {
             width: 160px; height: 160px;
-            border-radius: 28px;
+            border-radius: var(--radius-md);
             background: rgba(255,255,255,0.08);
             border: 1.5px solid rgba(255,255,255,0.15);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             display: flex; align-items: center; justify-content: center;
-            padding: 20px;
+            padding: var(--space-2);
             box-shadow: 0 0 60px rgba(var(--accent-rgb), 0.2);
         }
 
         /* ─── Tags ─── */
         .ptag {
-            display: inline-flex; align-items: center; gap: 0.35rem;
-            padding: 0.3rem 0.8rem; border-radius: 999px;
+            display: inline-flex; align-items: center; gap: var(--space-1);
+            padding: var(--space-1) var(--space-2); border-radius: var(--radius-pill);
             font-size: 0.7rem; font-weight: 700;
         }
         /* dark — todos sobre fondo ~#05070a */
@@ -167,8 +167,8 @@
         .info-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 1.5rem;
-            padding: 2rem 1.75rem;
+            border-radius: var(--radius-md);
+            padding: var(--space-3) var(--space-3);
             backdrop-filter: blur(8px);
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
@@ -178,7 +178,7 @@
             box-shadow: 0 20px 50px rgba(var(--accent-rgb), 0.12);
         }
         .info-icon {
-            width: 52px; height: 52px; border-radius: 14px;
+            width: 52px; height: 52px; border-radius: var(--radius-sm);
             background: rgba(var(--accent-rgb), 0.12);
             border: 1px solid rgba(var(--accent-rgb), 0.2);
             display: flex; align-items: center; justify-content: center;
@@ -196,9 +196,9 @@
         .cta-wrap {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 2rem;
+            border-radius: var(--radius-md);
             backdrop-filter: blur(12px);
-            padding: 2.5rem 2rem;
+            padding: var(--space-3) var(--space-3);
             text-align: center;
         }
 
@@ -208,7 +208,7 @@
             background: rgba(0,0,0,0.72);
             backdrop-filter: blur(8px);
             display: flex; align-items: center; justify-content: center;
-            padding: 1.5rem;
+            padding: var(--space-3);
             opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
@@ -217,8 +217,8 @@
         .modal-box {
             background: #0d1424;
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1.75rem;
-            padding: 2.25rem 2rem;
+            border-radius: var(--radius-md);
+            padding: var(--space-3) var(--space-3);
             max-width: 420px; width: 100%;
             position: relative;
             transform: scale(0.93) translateY(24px);
@@ -232,15 +232,15 @@
         .modal-backdrop.open .modal-box { transform: scale(1) translateY(0); }
 
         .modal-icon-ring {
-            width: 56px; height: 56px; border-radius: 16px;
+            width: 56px; height: 56px; border-radius: var(--radius-sm);
             background: rgba(var(--accent-rgb), 0.12);
             border: 1px solid rgba(var(--accent-rgb), 0.25);
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 1.25rem;
+            margin: 0 auto var(--space-2);
         }
         .modal-dest-row {
-            display: flex; align-items: center; gap: 0.75rem;
-            padding: 0.75rem 1rem; border-radius: 12px;
+            display: flex; align-items: center; gap: var(--space-2);
+            padding: var(--space-2) var(--space-2); border-radius: var(--radius-sm);
             background: rgba(255,255,255,0.04);
             border: 1px solid var(--glass-border);
             margin-bottom: 1.25rem;
@@ -263,12 +263,12 @@
         .delay-300 { transition-delay: 480ms; }
 
         /* ─── Nav ─── */
-        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
-        .nav-link { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
+        .nav-item { position: relative; padding: var(--space-3) 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link { display: flex; align-items: center; gap: var(--space-1); transition: color 0.3s ease; }
         .nav-item:hover .nav-link { color: #4f86ed; }
         .nav-item:hover .nav-link i { opacity: 1; transform: rotate(180deg); transition: transform 0.3s ease; }
         .nav-link i { transition: transform 0.3s ease; }
-        .mega-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100; }
+        .mega-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius: var(--radius-md); padding: var(--space-3); opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100; }
         .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
         #navOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
         body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
@@ -276,23 +276,23 @@
         #mobileDrawer.open { transform: translateX(0); }
 
         /* ─── Controls ─── */
-        .theme-toggle { position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1); border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
-        .theme-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background-color: #ffffff; border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; }
+        .theme-toggle { position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1); border-radius: var(--radius-pill); cursor: pointer; border: 1px solid rgba(255,255,255,0.2); overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-1); }
+        .theme-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background-color: #ffffff; border-radius: var(--radius-circle); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; }
         .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
         .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
         body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
-        .lang-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+        .lang-toggle { display: flex; align-items: center; gap: var(--space-1); cursor: pointer; user-select: none; }
         .lang-label { font-size: 10px; font-weight: 800; color: #a1a1aa; transition: color 0.3s ease; }
         .lang-label.active { color: #ffffff; }
-        .lang-switch-track { position: relative; width: 32px; height: 16px; background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; }
-        .lang-switch-thumb { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; background-color: #ffffff; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        .lang-switch-track { position: relative; width: 32px; height: 16px; background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-pill); }
+        .lang-switch-thumb { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; background-color: #ffffff; border-radius: var(--radius-circle); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
         body.lang-en .lang-switch-thumb { transform: translateX(16px); }
-        .controls-bar { position: fixed; bottom: 24px; right: 24px; z-index: 100; display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: rgba(5,7,10,0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .controls-bar { position: fixed; bottom: 24px; right: 24px; z-index: 100; display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2); background: rgba(5,7,10,0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-pill); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
         .controls-bar .theme-toggle { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); }
         .controls-bar .toggle-track-icon { color: #ffffff; }
         .controls-bar .thumb-icon { color: var(--primary-blue); }
         .controls-bar .lang-switch-track { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
-        @media (max-width: 640px) { .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; } }
+        @media (max-width: 640px) { .controls-bar { right: 12px; bottom: 16px; padding: var(--space-1) var(--space-2); gap: var(--space-1); } }
     </style>
 </head>
 

@@ -60,6 +60,39 @@
     /* Skeleton Loading Colors */
     --skeleton-primary: #1f2937;
     --skeleton-secondary: #374151;
+
+    /* ==============================================
+       DESIGN SYSTEM — Bordes redondeados (escala fija)
+       Usar solo estos 4 valores para border-radius.
+       ============================================== */
+    --radius-xs: 5px;    /* mínimo: inputs, chips pequeños */
+    --radius-sm: 15px;   /* botones y tarjetas pequeñas */
+    --radius-md: 30px;   /* tarjetas, paneles, modales */
+    --radius-lg: 60px;   /* máximo: bloques hero, contenedores grandes */
+    --radius-button: 15px; /* fijo para TODOS los botones/CTAs */
+    --radius-pill: 999px;   /* excepción: pills/tags/badges */
+    --radius-circle: 50%;   /* excepción: avatares/iconos circulares */
+
+    /* ==============================================
+       DESIGN SYSTEM — Espaciado (escala fija)
+       Usar para gap, padding y margin entre elementos.
+       En móvil cada paso baja un nivel (ver media query abajo),
+       ej: --space-3 = 30px en desktop / 15px en móvil.
+       ============================================== */
+    --space-1: 5px;
+    --space-2: 15px;
+    --space-3: 30px;
+    --space-4: 60px;
+    --space-5: 120px;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --space-2: 5px;
+        --space-3: 15px;
+        --space-4: 30px;
+        --space-5: 60px;
+    }
 }
 
 /* Variables Modo Claro */
@@ -400,7 +433,7 @@ body.light-mode ::-webkit-calendar-picker-indicator {
     width: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    border-radius: 1rem;
+    border-radius: var(--radius-sm);
 }
 
 .flip-card-back {
@@ -412,7 +445,7 @@ body.light-mode ::-webkit-calendar-picker-indicator {
     width: 20px;
     height: 36px;
     background-color: var(--toggle-track-bg);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     cursor: pointer;
     transition: all 0.3s ease;
     border: 1px solid var(--glass-border);
@@ -452,7 +485,7 @@ body.light-mode ::-webkit-calendar-picker-indicator {
     width: 16px;
     height: 16px;
     background-color: var(--toggle-thumb-bg);
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
     display: flex;
     align-items: center;
@@ -558,7 +591,7 @@ body.light-mode .controls-bar .lang-toggle {
     height: 24px;
     background-color: var(--toggle-track-bg);
     border: 1px solid var(--glass-border);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     transition: all 0.3s ease;
 }
 
@@ -576,7 +609,7 @@ body.light-mode .controls-bar .lang-toggle {
     width: 18px;
     height: 18px;
     background-color: var(--toggle-thumb-bg);
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
@@ -777,7 +810,7 @@ footer.dark-footer input {
 .led-border-wrapper {
     position: absolute;
     inset: 0;
-    border-radius: 2.5rem;
+    border-radius: var(--radius-md);
     padding: 2px;
     -webkit-mask:
         linear-gradient(#fff 0 0) content-box,

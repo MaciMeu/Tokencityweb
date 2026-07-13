@@ -73,7 +73,7 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            padding: 0 2rem;
+            padding: 0 var(--space-3);
         }
 
         .contact-banner h1 {
@@ -99,8 +99,8 @@
             width: 60px;
             height: 3px;
             background: linear-gradient(90deg, #1855BA, #4f86ed);
-            border-radius: 2px;
-            margin: 1rem auto 1.25rem;
+            border-radius: var(--radius-xs);
+            margin: var(--space-2) auto var(--space-2);
         }
 
         @media (max-width: 768px) {
@@ -129,12 +129,12 @@
         .page-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 5rem 1.5rem 6rem;
+            padding: var(--space-4) var(--space-3) var(--space-5);
         }
 
         @media (max-width: 768px) {
             .page-content {
-                padding: 3.5rem 1rem 5rem;
+                padding: var(--space-4) var(--space-2) var(--space-4);
             }
         }
 
@@ -142,7 +142,7 @@
         .section-label {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: var(--space-1);
             font-size: 0.7rem;
             font-weight: 700;
             letter-spacing: 0.12em;
@@ -172,14 +172,14 @@
         .contact-cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+            gap: var(--space-3);
             margin-top: 3rem;
         }
 
         @media (max-width: 768px) {
             .contact-cards-grid {
                 grid-template-columns: 1fr;
-                gap: 1.25rem;
+                gap: var(--space-2);
             }
         }
 
@@ -195,7 +195,7 @@
             transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-            border-radius: 30px;
+            border-radius: var(--radius-md);
         }
 
         .contact-flip-card:hover .contact-flip-inner {
@@ -205,14 +205,14 @@
         .contact-face {
             position: absolute;
             inset: 0;
-            border-radius: 30px;
+            border-radius: var(--radius-md);
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 1rem;
+            gap: var(--space-2);
             border: 1px solid var(--glass-border);
             overflow: hidden;
         }
@@ -225,7 +225,7 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
             align-items: flex-start;
             justify-content: flex-end;
-            padding: 1.75rem 1.5rem;
+            padding: var(--space-3) var(--space-3);
             text-align: left;
             transition: transform 0.3s ease;
         }
@@ -288,8 +288,8 @@
         .contact-face-back {
             transform: rotateY(180deg);
             background: linear-gradient(135deg, var(--card-icon-from), var(--card-icon-to));
-            gap: 0.75rem;
-            padding: 2rem;
+            gap: var(--space-2);
+            padding: var(--space-3);
             text-align: center;
         }
 
@@ -318,12 +318,12 @@
         .contact-face-back .back-cta {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: var(--space-1);
             margin-top: 0.5rem;
-            padding: 0.5rem 1.2rem;
+            padding: var(--space-1) var(--space-2);
             background: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 9999px;
+            border-radius: var(--radius-pill);
             font-size: 0.75rem;
             font-weight: 700;
             color: #ffffff;
@@ -362,7 +362,7 @@
         .card-icon-badge {
             width: 36px;
             height: 36px;
-            border-radius: 0.625rem;
+            border-radius: var(--radius-xs);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -382,8 +382,8 @@
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-radius: 1.75rem;
-            padding: 3rem;
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
             margin-top: 2.5rem;
             box-shadow: 0 32px 64px rgba(0, 0, 0, 0.15);
         }
@@ -395,14 +395,14 @@
 
         @media (max-width: 640px) {
             .form-card {
-                padding: 1.75rem 1.25rem;
+                padding: var(--space-3) var(--space-2);
             }
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem;
+            gap: var(--space-2);
         }
 
         @media (max-width: 640px) {
@@ -414,7 +414,7 @@
         .form-field {
             display: flex;
             flex-direction: column;
-            gap: 0.45rem;
+            gap: var(--space-1);
         }
 
         .form-field.full-width {
@@ -435,8 +435,8 @@
             width: 100%;
             background: var(--input-bg);
             border: 1px solid var(--input-border);
-            border-radius: 0.75rem;
-            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            padding: var(--space-2) var(--space-2);
             font-size: 0.9rem;
             font-family: 'Montserrat', sans-serif;
             color: var(--text-main);
@@ -464,11 +464,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 0.5rem;
+            gap: var(--space-1);
             background: var(--input-bg);
             border: 1px solid var(--input-border);
-            border-radius: 0.75rem;
-            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            padding: var(--space-2) var(--space-2);
             font-size: 0.9rem;
             font-family: 'Montserrat', sans-serif;
             color: var(--text-main);
@@ -493,7 +493,7 @@
             background: #111827;
             /* More opaque for better legibility */
             border: 1px solid var(--glass-border);
-            border-radius: 0.875rem;
+            border-radius: var(--radius-sm);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             overflow: hidden;
@@ -555,8 +555,8 @@
                 left: 0 !important;
                 right: 0 !important;
                 width: 100vw !important;
-                border-radius: 1.5rem 1.5rem 0 0 !important;
-                padding: 0.5rem 0 2.5rem !important;
+                border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
+                padding: var(--space-1) 0 var(--space-3) !important;
                 transform: translateY(100%);
                 transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 z-index: 100 !important;
@@ -589,14 +589,14 @@
                 width: 40px;
                 height: 4px;
                 background: rgba(156, 163, 175, 0.5);
-                border-radius: 10px;
-                margin: 0.75rem auto 0.5rem;
+                border-radius: var(--radius-xs);
+                margin: var(--space-2) auto var(--space-1);
                 flex-shrink: 0;
                 align-self: center;
             }
 
             .custom-select-option {
-                padding: 1rem 1.25rem;
+                padding: var(--space-2) var(--space-2);
                 border-bottom: 1px solid var(--glass-border);
                 font-size: 0.95rem;
             }
@@ -615,7 +615,7 @@
         .custom-select-option {
             width: 100%;
             text-align: left;
-            padding: 0.7rem 1rem;
+            padding: var(--space-2) var(--space-2);
             font-size: 0.875rem;
             font-family: 'Montserrat', sans-serif;
             font-weight: 500;
@@ -672,8 +672,8 @@
         .checkbox-row {
             display: flex;
             align-items: flex-start;
-            gap: 0.75rem;
-            padding: 1rem 0 0;
+            gap: var(--space-2);
+            padding: var(--space-2) 0 0;
         }
 
         .checkbox-row input[type="checkbox"] {
@@ -704,8 +704,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.6rem;
-            padding: 0.9rem 2.5rem;
+            gap: var(--space-1);
+            padding: var(--space-2) var(--space-3);
             background: linear-gradient(135deg, #1855BA, #2d6fde);
             color: #ffffff;
             font-family: 'Montserrat', sans-serif;
@@ -713,7 +713,7 @@
             font-weight: 700;
             letter-spacing: 0.03em;
             border: none;
-            border-radius: 15px;
+            border-radius: var(--radius-button);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             margin-top: 0.5rem;
@@ -738,7 +738,7 @@
         .error-msg {
             display: none;
             align-items: center;
-            gap: 0.35rem;
+            gap: var(--space-1);
             font-size: 0.72rem;
             font-weight: 600;
             color: #ef4444;
@@ -754,7 +754,7 @@
             height: 14px;
             background: #ef4444;
             color: white;
-            border-radius: 50%;
+            border-radius: var(--radius-circle);
             font-size: 0.6rem;
             font-weight: 900;
             flex-shrink: 0;
@@ -832,12 +832,12 @@
             z-index: 100;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 16px;
+            gap: var(--space-2);
+            padding: var(--space-1) var(--space-2);
             background: rgba(5, 7, 10, 0.95);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 999px;
+            border-radius: var(--radius-pill);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 

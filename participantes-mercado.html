@@ -74,7 +74,7 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            padding: 0 2rem;
+            padding: 0 var(--space-3);
         }
 
         .policy-banner h1 {
@@ -100,13 +100,13 @@
             max-width: 1280px;
             /* max-w-7xl */
             margin: 0 auto;
-            padding: 4rem 1rem;
+            padding: var(--space-4) var(--space-2);
             line-height: 1.8;
         }
 
         @media (min-width: 768px) {
             .page-content {
-                padding: 5rem 2rem;
+                padding: var(--space-4) var(--space-3);
             }
         }
 
@@ -114,11 +114,11 @@
         .back-button {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
+            gap: var(--space-1);
+            padding: var(--space-2) var(--space-3);
             background-color: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 0.75rem;
+            border-radius: var(--radius-button);
             color: var(--text-main);
             text-decoration: none;
             transition: all 0.3s ease;
@@ -133,7 +133,7 @@
         /* Footer styles */
         footer {
             margin-top: 4rem;
-            padding: 2rem;
+            padding: var(--space-3);
             border-top: 1px solid var(--glass-border);
             text-align: left;
             color: var(--text-muted);
@@ -152,7 +152,7 @@
             }
 
             .page-content {
-                padding: 3rem 1rem;
+                padding: var(--space-4) var(--space-2);
             }
         }
 
@@ -189,7 +189,7 @@
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-            border-radius: 1.5rem;
+            border-radius: var(--radius-md);
         }
 
         .participant-card.is-flipped .participant-card-inner {
@@ -202,7 +202,7 @@
             height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            border-radius: 1.5rem;
+            border-radius: var(--radius-md);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -215,7 +215,7 @@
             /* Dark gray for dark mode */
             justify-content: center;
             align-items: center;
-            padding: 1.5rem;
+            padding: var(--space-3);
             /* Slightly reduced padding for tighter height */
             border-left: 4px solid var(--card-accent, var(--primary-blue));
             transition: background-color 0.3s ease;
@@ -263,7 +263,7 @@
         .face-back {
             background-color: var(--glass-bg);
             transform: rotateY(180deg);
-            padding: 1.75rem 1.5rem;
+            padding: var(--space-3) var(--space-3);
             /* Adjusted padding for 260px height */
             text-align: left;
             backdrop-filter: blur(16px);
@@ -278,7 +278,7 @@
             right: 1rem;
             width: 34px;
             height: 34px;
-            border-radius: 50%;
+            border-radius: var(--radius-circle);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -298,7 +298,7 @@
         .participant-logo {
             width: 54px;
             height: 54px;
-            border-radius: 0.75rem;
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -312,9 +312,9 @@
         .participant-card .card-type-tag {
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
-            padding: 0.25rem 0.6rem;
-            border-radius: 9999px;
+            gap: var(--space-1);
+            padding: var(--space-1) var(--space-1);
+            border-radius: var(--radius-pill);
             font-size: 0.65rem;
             font-weight: 700;
             text-transform: uppercase;
@@ -324,7 +324,7 @@
         .participant-card .card-info-row {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: var(--space-1);
             font-size: 0.8rem;
         }
 
@@ -344,7 +344,7 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 0.75rem;
+            gap: var(--space-2);
             margin-bottom: 2rem;
         }
 
@@ -352,11 +352,11 @@
             height: 44px;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0 1.5rem;
+            gap: var(--space-1);
+            padding: 0 var(--space-3);
             background-color: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 0.75rem;
+            border-radius: var(--radius-button);
             color: var(--text-main);
             text-decoration: none;
             transition: all 0.3s ease;
@@ -379,16 +379,16 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 1rem;
+            padding: 0 var(--space-2);
             background-color: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 0.75rem;
+            border-radius: var(--radius-sm);
             color: var(--text-main);
             font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            gap: 0.5rem;
+            gap: var(--space-1);
         }
 
         .dropdown-trigger:hover {
@@ -412,8 +412,8 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            border-radius: 1rem;
-            padding: 0.5rem;
+            border-radius: var(--radius-sm);
+            padding: var(--space-1);
             z-index: 100;
             opacity: 0;
             visibility: hidden;
@@ -429,11 +429,11 @@
         }
 
         .dropdown-item {
-            padding: 0.75rem 1rem;
+            padding: var(--space-2) var(--space-2);
             font-size: 0.8rem;
             font-weight: 500;
             color: var(--text-muted);
-            border-radius: 0.5rem;
+            border-radius: var(--radius-xs);
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
@@ -488,7 +488,7 @@
             .filters-bar {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 1rem;
+                gap: var(--space-2);
                 padding-bottom: 0.5rem;
                 flex-wrap: nowrap;
                 overflow-x: visible;
@@ -525,8 +525,8 @@
                 bottom: 0;
                 left: 0;
                 width: 100vw;
-                border-radius: 1.5rem 1.5rem 0 0;
-                padding: 1.5rem 1rem 2rem 1rem;
+                border-radius: var(--radius-md) var(--radius-md) 0 0;
+                padding: var(--space-3) var(--space-2) var(--space-3) var(--space-2);
                 transform: translateY(100%);
                 z-index: 100;
                 border: none;
@@ -551,7 +551,7 @@
                 height: 4px;
                 background-color: rgba(156, 163, 175, 0.5);
                 /* Neutral gray indicator */
-                border-radius: 10px;
+                border-radius: var(--radius-xs);
             }
 
             .dropdown-menu.open {
@@ -559,7 +559,7 @@
             }
 
             .dropdown-item {
-                padding: 1rem 0.5rem;
+                padding: var(--space-2) var(--space-1);
                 border-bottom: 1px solid var(--glass-border);
                 font-size: 0.95rem;
                 /* Larger text for mobile */
@@ -603,12 +603,12 @@
             z-index: 100;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 16px;
+            gap: var(--space-2);
+            padding: var(--space-1) var(--space-2);
             background: rgba(5, 7, 10, 0.95);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 999px;
+            border-radius: var(--radius-pill);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 

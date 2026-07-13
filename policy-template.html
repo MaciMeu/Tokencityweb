@@ -74,7 +74,7 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            padding: 0 2rem;
+            padding: 0 var(--space-3);
         }
 
         .policy-banner h1 {
@@ -88,7 +88,7 @@
         .policy-content {
             max-width: 900px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: var(--space-4) var(--space-3);
             line-height: 1.8;
         }
 
@@ -144,9 +144,9 @@
             background-color: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-left: 4px solid var(--primary-blue);
-            border-radius: 0.75rem;
-            padding: 2rem;
-            margin: 2rem 0;
+            border-radius: var(--radius-sm);
+            padding: var(--space-3);
+            margin: var(--space-3) 0;
             backdrop-filter: blur(10px);
         }
 
@@ -179,9 +179,9 @@
         .highlight-section {
             background-color: var(--card-highlight-bg);
             border-left: 4px solid #22c55e;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 0.5rem;
+            padding: var(--space-3);
+            margin: var(--space-3) 0;
+            border-radius: var(--radius-xs);
         }
 
         .highlight-section p {
@@ -192,11 +192,11 @@
         .back-button {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
+            gap: var(--space-1);
+            padding: var(--space-2) var(--space-3);
             background-color: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 0.75rem;
+            border-radius: var(--radius-button);
             color: var(--text-main);
             text-decoration: none;
             transition: all 0.3s ease;
@@ -211,7 +211,7 @@
         /* Footer */
         footer {
             margin-top: 4rem;
-            padding: 2rem;
+            padding: var(--space-3);
             border-top: 1px solid var(--glass-border);
             text-align: left;
             color: var(--text-muted);
@@ -229,7 +229,7 @@
             }
 
             .policy-content {
-                padding: 2rem 1rem;
+                padding: var(--space-3) var(--space-2);
             }
 
             .policy-content h2 {
@@ -242,7 +242,7 @@
             }
 
             .toc-box {
-                padding: 1.5rem;
+                padding: var(--space-3);
             }
         }
 
@@ -275,12 +275,12 @@
             z-index: 100;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 16px;
+            gap: var(--space-2);
+            padding: var(--space-1) var(--space-2);
             background: rgba(5, 7, 10, 0.95);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 999px;
+            border-radius: var(--radius-pill);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 

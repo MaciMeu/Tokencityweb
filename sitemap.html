@@ -87,13 +87,13 @@
         }
 
         /* ── Nav ── */
-        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
-        .nav-link  { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s; }
+        .nav-item { position: relative; padding: var(--space-3) 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link  { display: flex; align-items: center; gap: var(--space-1); transition: color 0.3s; }
         .nav-item:hover .nav-link { color: #4f86ed; }
         .mega-menu {
             position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
             width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem;
+            backdrop-filter: blur(20px); border-radius: var(--radius-md); padding: var(--space-3);
             opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
             box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100;
         }
@@ -111,19 +111,19 @@
         /* ── Controls ── */
         .controls-bar {
             position: fixed; bottom: 24px; right: 24px; z-index: 100;
-            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2);
             background: rgba(5,7,10,0.95); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-pill);
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
         .theme-toggle {
             position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1);
-            border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
-            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+            border-radius: var(--radius-pill); cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-1);
         }
         .theme-toggle-thumb {
             position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: #fff;
-            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            border-radius: var(--radius-circle); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
             display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2;
         }
         .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
@@ -133,25 +133,25 @@
         /* ── Sitemap cards ── */
         .sm-section { margin-bottom: 3.5rem; }
         .sm-section-header {
-            display: flex; align-items: center; gap: 0.875rem;
+            display: flex; align-items: center; gap: var(--space-2);
             margin-bottom: 1.25rem; padding-bottom: 1rem;
             border-bottom: 1px solid var(--glass-border);
         }
         .sm-icon {
-            width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+            width: 36px; height: 36px; border-radius: var(--radius-xs); flex-shrink: 0;
             display: flex; align-items: center; justify-content: center;
         }
         .sm-title { font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); }
-        .sm-count { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 700; color: var(--text-muted); margin-left: auto; padding: 0.2rem 0.6rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 999px; }
+        .sm-count { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 700; color: var(--text-muted); margin-left: auto; padding: var(--space-1) var(--space-1); background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); }
 
-        .sm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 0.75rem; }
+        .sm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: var(--space-2); }
 
         /* URL card — infra-card-style adapted */
         .sm-card {
             background: var(--glass-bg); border: 1px solid var(--glass-border);
             border-left: 3px solid var(--card-accent, #1855BA);
-            border-radius: 1.25rem; padding: 1rem 1.25rem;
-            display: flex; align-items: center; gap: 0.875rem;
+            border-radius: var(--radius-sm); padding: var(--space-2) var(--space-2);
+            display: flex; align-items: center; gap: var(--space-2);
             text-decoration: none; transition: all 0.25s ease;
             backdrop-filter: blur(10px);
         }
@@ -163,7 +163,7 @@
         .sm-card:hover { border-left-color: var(--card-accent, #60a5fa); }
         body.light-mode .sm-card { background: rgba(255,255,255,0.85); }
 
-        .sm-card-icon { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .sm-card-icon { width: 32px; height: 32px; border-radius: var(--radius-xs); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .sm-card-body { flex: 1; min-width: 0; }
         .sm-card-label { font-size: 0.82rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; line-height: 1.35; }
         .sm-card-url { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -171,10 +171,10 @@
 
         /* Article row */
         .sm-article {
-            display: flex; align-items: flex-start; gap: 1rem;
-            padding: 0.75rem 1rem; text-decoration: none;
+            display: flex; align-items: flex-start; gap: var(--space-2);
+            padding: var(--space-2) var(--space-2); text-decoration: none;
             background: var(--glass-bg); border: 1px solid var(--glass-border);
-            border-radius: 1rem; margin-bottom: 0.5rem;
+            border-radius: var(--radius-sm); margin-bottom: 0.5rem;
             transition: all 0.2s ease; backdrop-filter: blur(10px);
         }
         .sm-article:hover { background: rgba(24,85,186,0.06); border-color: rgba(24,85,186,0.25); transform: translateX(4px); }
@@ -184,16 +184,16 @@
         body:not(.light-mode) .sm-article-num { color: #60a5fa; }
         .sm-article-body { flex: 1; min-width: 0; }
         .sm-article-title { font-size: 0.82rem; font-weight: 600; color: var(--text-main); line-height: 1.4; margin-bottom: 0.2rem; }
-        .sm-article-meta { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+        .sm-article-meta { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
         .sm-article-date { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text-muted); }
         .sm-article-url { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 320px; }
 
         /* Sector pills */
-        .sm-pill { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; border: 1px solid var(--glass-border); color: var(--text-muted); background: var(--glass-bg); }
+        .sm-pill { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-1) var(--space-2); border-radius: var(--radius-pill); font-size: 0.72rem; font-weight: 600; border: 1px solid var(--glass-border); color: var(--text-muted); background: var(--glass-bg); }
 
 
         @media (max-width: 640px) {
-            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+            .controls-bar { right: 12px; bottom: 16px; padding: var(--space-1) var(--space-2); gap: var(--space-1); }
             .sm-grid { grid-template-columns: 1fr; }
             .sm-article-url { display: none; }
         }

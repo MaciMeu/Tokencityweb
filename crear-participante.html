@@ -62,7 +62,7 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            padding: 0 2rem;
+            padding: 0 var(--space-3);
         }
 
         .policy-banner h1 {
@@ -75,12 +75,12 @@
         .page-content {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 3rem 1.25rem 5rem;
+            padding: var(--space-4) var(--space-2) var(--space-4);
         }
 
         @media(min-width:768px) {
             .page-content {
-                padding: 4rem 2rem 6rem;
+                padding: var(--space-4) var(--space-3) var(--space-5);
             }
         }
 
@@ -106,7 +106,7 @@
             transition: transform .6s cubic-bezier(.4, 0, .2, 1);
             transform-style: preserve-3d;
             box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
-            border-radius: 1.5rem;
+            border-radius: var(--radius-md);
         }
 
         .participant-card.is-flipped .participant-card-inner {
@@ -119,7 +119,7 @@
             height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            border-radius: 1.5rem;
+            border-radius: var(--radius-md);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -130,7 +130,7 @@
             background-color: #111827;
             justify-content: center;
             align-items: center;
-            padding: 1.5rem;
+            padding: var(--space-3);
             border-left: 4px solid var(--card-accent, var(--primary-blue));
             transition: border-color .3s ease, background-color .3s ease;
         }
@@ -154,7 +154,7 @@
         .face-back {
             background-color: var(--glass-bg);
             transform: rotateY(180deg);
-            padding: 1.75rem 1.5rem;
+            padding: var(--space-3) var(--space-3);
             text-align: left;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -167,7 +167,7 @@
             right: 1rem;
             width: 34px;
             height: 34px;
-            border-radius: 50%;
+            border-radius: var(--radius-circle);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -203,7 +203,7 @@
             align-items: center;
             gap: .35rem;
             padding: .2rem .6rem;
-            border-radius: 9999px;
+            border-radius: var(--radius-pill);
             font-size: .65rem;
             font-weight: 700;
             text-transform: uppercase;
@@ -285,8 +285,8 @@
         /* ── Drop zone ── */
         .drop-zone {
             border: 2px dashed var(--glass-border);
-            border-radius: 1rem;
-            padding: 2.5rem 1rem;
+            border-radius: var(--radius-sm);
+            padding: var(--space-3) var(--space-2);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -332,7 +332,7 @@
         .form-input,
         .form-select {
             width: 100%;
-            padding: .75rem 1rem;
+            padding: .75rem var(--space-2);
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
             border-radius: .75rem;
@@ -364,7 +364,7 @@
         .color-swatch-btn {
             width: 44px;
             height: 44px;
-            border-radius: .75rem;
+            border-radius: var(--radius-button);
             border: 2px solid var(--glass-border);
             cursor: pointer;
             transition: all .3s ease;
@@ -379,7 +379,7 @@
         .color-hex-input {
             flex: 1;
             min-width: 110px;
-            padding: .75rem 1rem;
+            padding: .75rem var(--space-2);
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
             border-radius: .75rem;
@@ -400,8 +400,8 @@
             align-items: center;
             justify-content: center;
             gap: .4rem;
-            padding: .65rem 1rem;
-            border-radius: .75rem;
+            padding: .65rem var(--space-2);
+            border-radius: var(--radius-button);
             border: 1px solid var(--glass-border);
             background-color: var(--glass-bg);
             color: var(--text-muted);
@@ -428,7 +428,7 @@
         .preset-dot {
             width: 28px;
             height: 28px;
-            border-radius: 50%;
+            border-radius: var(--radius-circle);
             cursor: pointer;
             border: 2px solid transparent;
             transition: all .25s ease;
@@ -449,7 +449,7 @@
             position: relative;
             width: 60px;
             height: 30px;
-            border-radius: 9999px;
+            border-radius: var(--radius-pill);
             background: rgba(255, 255, 255, 0.1) !important;
             border: 1px solid rgba(255, 255, 255, 0.2) !important;
             cursor: pointer;
@@ -467,7 +467,7 @@
         .theme-toggle-thumb {
             width: 26px;
             height: 26px;
-            border-radius: 50%;
+            border-radius: var(--radius-circle);
             background: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             display: flex;
@@ -491,9 +491,9 @@
         .btn-mercado {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            border-radius: 0.75rem;
+            gap: var(--space-1);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-button);
             border: 1px solid rgba(255, 255, 255, 0.3) !important;
             background: rgba(255, 255, 255, 0.1) !important;
             color: #fff !important;
@@ -526,9 +526,9 @@
         .btn-tertiary {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            padding: 0.55rem 1.1rem;
-            border-radius: 0.8rem;
+            gap: var(--space-1);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-button);
             border: 1px solid var(--glass-border);
             background-color: transparent;
             color: var(--text-main);
@@ -578,7 +578,7 @@
             background-color: #0d1117 !important;
             border: 1px solid #30363d;
             border-radius: 0 0 .75rem .75rem;
-            padding: 1.25rem 1.5rem;
+            padding: var(--space-2) var(--space-3);
             font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
             font-size: .73rem;
             color: #c9d1d9;
@@ -594,11 +594,11 @@
         .btn-primary {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
+            gap: var(--space-1);
+            padding: var(--space-2) var(--space-3);
             background-color: var(--primary-blue);
             color: #fff;
-            border-radius: 0.75rem;
+            border-radius: var(--radius-button);
             font-weight: 700;
             transition: all 0.3s ease;
             cursor: pointer;
@@ -620,8 +620,8 @@
             display: inline-flex;
             align-items: center;
             gap: .5rem;
-            padding: .65rem 1.5rem;
-            border-radius: .75rem;
+            padding: .65rem var(--space-3);
+            border-radius: var(--radius-button);
             background-color: var(--primary-blue);
             color: #fff;
             font-weight: 700;
@@ -685,8 +685,8 @@
             display: inline-flex;
             align-items: center;
             gap: .5rem;
-            padding: .55rem 1.1rem;
-            border-radius: .75rem;
+            padding: .55rem var(--space-2);
+            border-radius: var(--radius-button);
             border: 1px solid var(--glass-border);
             background-color: var(--glass-bg);
             color: var(--text-muted);
@@ -705,8 +705,8 @@
         .form-section {
             background-color: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 1.25rem;
-            padding: 1.75rem;
+            border-radius: var(--radius-sm);
+            padding: var(--space-3);
             max-width: 664px;
         }
 
@@ -742,8 +742,8 @@
             display: inline-flex;
             align-items: center;
             gap: .5rem;
-            padding: .6rem 1.25rem;
-            border-radius: .75rem;
+            padding: .6rem var(--space-2);
+            border-radius: var(--radius-button);
             background-color: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
@@ -757,7 +757,7 @@
         /* ── Management Section ── */
         .management-section {
             margin-top: 4rem;
-            padding: 3rem 0;
+            padding: var(--space-4) 0;
             border-top: 1px solid var(--glass-border);
             background: var(--card-bg);
             opacity: 0.95;
@@ -766,14 +766,14 @@
         .mgmt-card-item {
             background: var(--card-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 1rem;
-            padding: 1rem;
+            border-radius: var(--radius-sm);
+            padding: var(--space-2);
             transition: all 0.3s ease;
             cursor: pointer;
             height: 100%;
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: var(--space-2);
             position: relative;
         }
 
@@ -814,8 +814,8 @@
             background: var(--primary-blue);
             color: white;
             border: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 0.5rem;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-button);
             font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
@@ -828,7 +828,7 @@
             border: none !important;
             width: 32px !important;
             height: 32px !important;
-            border-radius: 0.6rem !important;
+            border-radius: var(--radius-button) !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -852,7 +852,7 @@
             border: 1px solid var(--glass-border) !important;
             width: 32px !important;
             height: 32px !important;
-            border-radius: 0.6rem !important;
+            border-radius: var(--radius-button) !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -884,7 +884,7 @@
             background: var(--card-bg);
             width: 40px;
             height: 40px;
-            border-radius: 50%;
+            border-radius: var(--radius-circle);
             border: 1px solid var(--glass-border);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
@@ -915,8 +915,8 @@
         .sync-banner {
             background: rgba(34, 197, 94, 0.1);
             border: 1px dashed #22c55e;
-            border-radius: 1rem;
-            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            padding: var(--space-3);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -931,12 +931,12 @@
             z-index: 100;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 16px;
+            gap: var(--space-2);
+            padding: var(--space-1) var(--space-2);
             background: rgba(5, 7, 10, 0.95);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 999px;
+            border-radius: var(--radius-pill);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 

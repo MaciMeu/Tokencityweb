@@ -87,13 +87,13 @@
         }
 
         /* ── Nav ── */
-        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
-        .nav-link  { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s; }
+        .nav-item { position: relative; padding: var(--space-3) 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link  { display: flex; align-items: center; gap: var(--space-1); transition: color 0.3s; }
         .nav-item:hover .nav-link { color: #4f86ed; }
         .mega-menu {
             position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
             width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem;
+            backdrop-filter: blur(20px); border-radius: var(--radius-md); padding: var(--space-3);
             opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
             box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100;
         }
@@ -111,19 +111,19 @@
         /* ── Controls ── */
         .controls-bar {
             position: fixed; bottom: 24px; right: 24px; z-index: 100;
-            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2);
             background: rgba(5,7,10,0.95); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-pill);
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
         .theme-toggle {
             position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1);
-            border-radius: 999px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
-            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+            border-radius: var(--radius-pill); cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-1);
         }
         .theme-toggle-thumb {
             position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: #fff;
-            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            border-radius: var(--radius-circle); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
             display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2;
         }
         .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
@@ -132,8 +132,8 @@
 
         /* ── Contact method cards ── */
         .contact-method {
-            display: flex; flex-direction: column; gap: 1rem;
-            padding: 2rem; border-radius: 1.875rem;
+            display: flex; flex-direction: column; gap: var(--space-2);
+            padding: var(--space-3); border-radius: var(--radius-md);
             background: var(--glass-bg); border: 1px solid var(--glass-border);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
@@ -142,20 +142,20 @@
         .contact-method:hover { transform: translateY(-4px); box-shadow: 0 28px 56px rgba(0,0,0,0.2); }
         body.light-mode .contact-method { background: rgba(255,255,255,0.92); }
         .contact-icon {
-            width: 48px; height: 48px; border-radius: 14px;
+            width: 48px; height: 48px; border-radius: var(--radius-sm);
             display: flex; align-items: center; justify-content: center;
         }
         .contact-btn {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            font-size: 0.8rem; font-weight: 700; padding: 0.6rem 1.25rem;
-            border-radius: 999px; transition: all 0.2s ease; border: none; cursor: pointer;
+            display: inline-flex; align-items: center; gap: var(--space-1);
+            font-size: 0.8rem; font-weight: 700; padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-pill); transition: all 0.2s ease; border: none; cursor: pointer;
         }
 
         /* ── Form card ── */
         .contact-form-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 2rem; padding: 3rem;
+            border-radius: var(--radius-md); padding: var(--space-4);
             backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
             box-shadow: 0 24px 64px rgba(0,0,0,0.15);
         }
@@ -179,7 +179,7 @@
         }
 
         /* ── Success state ── */
-        .form-success { display: none; text-align: center; padding: 3rem 1rem; flex-direction: column; align-items: center; }
+        .form-success { display: none; text-align: center; padding: var(--space-4) var(--space-2); flex-direction: column; align-items: center; }
         .form-success.visible { display: flex; }
         .svg-draw-circle { stroke-dasharray: 66; stroke-dashoffset: 66; animation: draw-circle 0.8s ease forwards 0.2s; }
         .svg-draw-check  { stroke-dasharray: 24; stroke-dashoffset: 24; animation: draw-check 0.5s ease forwards 0.9s; }
@@ -187,8 +187,8 @@
         @keyframes draw-check  { to { stroke-dashoffset: 0; } }
 
         @media (max-width: 640px) {
-            .contact-form-card { padding: 1.5rem 1.25rem; }
-            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+            .contact-form-card { padding: var(--space-3) var(--space-2); }
+            .controls-bar { right: 12px; bottom: 16px; padding: var(--space-1) var(--space-2); gap: var(--space-1); }
         }
     </style>
 </head>

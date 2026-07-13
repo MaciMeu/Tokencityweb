@@ -20,6 +20,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles-tcav.css">
     <style>
         * { box-sizing: border-box; }
         body {
@@ -55,7 +56,7 @@
         .animate-fade-out { animation: fadeOutDown 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
 
         /* Dot activo que se expande */
-        .dot-active { width: 2rem !important; border-radius: 4px !important; }
+        .dot-active { width: 2rem !important; border-radius: var(--radius-xs) !important; }
 
         /* Pulse del badge LIVE */
         @keyframes pulse-live {
@@ -69,13 +70,13 @@
             -webkit-appearance: none;
             height: 4px;
             background: rgba(255,255,255,0.10);
-            border-radius: 9999px;
+            border-radius: var(--radius-pill);
             cursor: pointer;
         }
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 14px; height: 14px;
-            border-radius: 50%;
+            border-radius: var(--radius-circle);
             background: #1855BA;
             cursor: pointer;
         }

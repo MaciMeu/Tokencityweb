@@ -97,13 +97,13 @@
         }
 
         /* Navigation Specifics */
-        .nav-item { position: relative; padding: 1.5rem 0; display: flex; align-items: center; cursor: pointer; }
-        .nav-link { display: flex; align-items: center; gap: 0.25rem; transition: color 0.3s ease; }
+        .nav-item { position: relative; padding: var(--space-3) 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link { display: flex; align-items: center; gap: var(--space-1); transition: color 0.3s ease; }
         .nav-item:hover .nav-link { color: #4f86ed; }
         .mega-menu {
             position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
             width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px); border-radius: 1.5rem; padding: 2rem; opacity: 0; visibility: hidden;
+            backdrop-filter: blur(20px); border-radius: var(--radius-md); padding: var(--space-3); opacity: 0; visibility: hidden;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); z-index: 100;
         }
         .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
@@ -122,20 +122,20 @@
         /* Floating Controls */
         .controls-bar {
             position: fixed; bottom: 24px; right: 24px; z-index: 100;
-            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2);
             background: rgba(5, 7, 10, 0.95); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-pill);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
         /* Override styles-tcav.css vertical toggle → horizontal */
         .theme-toggle {
             position: relative; width: 52px; height: 28px; background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 999px; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.2);
-            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 4px;
+            border-radius: var(--radius-pill); cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-1);
         }
         .theme-toggle-thumb {
             position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background-color: #ffffff;
-            border-radius: 50%; transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border-radius: var(--radius-circle); transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
             display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); z-index: 2;
         }
         .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
@@ -147,7 +147,7 @@
         .controls-bar .lang-switch-track { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.15); }
 
         .lead-form-realestate {
-            background: var(--glass-bg); padding: 3rem; border-radius: 2rem;
+            background: var(--glass-bg); padding: var(--space-4); border-radius: var(--radius-md);
             border: 1px solid var(--glass-border); backdrop-filter: blur(12px);
         }
 
@@ -164,8 +164,8 @@
         }
 
         @media (max-width: 640px) {
-            .lead-form-realestate { padding: 1.5rem; }
-            .controls-bar { right: 12px; bottom: 16px; padding: 8px 12px; gap: 10px; }
+            .lead-form-realestate { padding: var(--space-3); }
+            .controls-bar { right: 12px; bottom: 16px; padding: var(--space-1) var(--space-2); gap: var(--space-1); }
         }
     </style>
 </head>
