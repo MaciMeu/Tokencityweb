@@ -97,12 +97,10 @@
             background-image: url('mercado.jpg'); /* ← cambiar por cliente */
             background-size: cover; background-position: center;
             opacity: 0.15; transform: scale(1.04);
-            mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 96%);
-            -webkit-mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 96%);
         }
         .hero-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(rgba(5,7,10,0.85), rgba(5,7,10,0.5), var(--bg-color));
+            background: linear-gradient(rgba(5,7,10,0.85) 0%, rgba(5,7,10,0.96) 60%, var(--bg-color) 100%);
         }
         .hero-grid {
             position: absolute; inset: 0;
