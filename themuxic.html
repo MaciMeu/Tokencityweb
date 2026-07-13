@@ -88,10 +88,9 @@
         .hero-wrap {
             position: relative; overflow: hidden;
             background: #05070a !important;
-            min-height: 100vh;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            padding: var(--space-5) var(--space-3) var(--space-4);
+            padding: var(--space-5) var(--space-3) 0;
         }
         .hero-bg {
             position: absolute; inset: 0;
@@ -101,10 +100,7 @@
         }
         .hero-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(160deg,
-                rgba(5,7,10,0.95) 0%,
-                rgba(var(--accent-rgb),0.12) 55%,
-                rgba(5,7,10,0.97) 100%);
+            background: linear-gradient(rgba(5,7,10,0.85), rgba(5,7,10,0.5), var(--bg-color));
         }
         .hero-grid {
             position: absolute; inset: 0;
@@ -127,8 +123,24 @@
         .hero-wrap .heading-text,
         .hero-wrap h1 { color: #ffffff !important; }
         .hero-wrap .body-text,
-        .hero-wrap p:not(.section-label) { color: #cbd5e1 !important; }
+        .hero-wrap p:not(.section-label):not(.hero-tagline) { color: #cbd5e1 !important; }
         .hero-wrap .section-label { color: #7eb3ff !important; }
+        .hero-tagline { color: #cbd5e1; }
+        body.light-mode .hero-tagline { color: #0f172a; }
+
+
+        .hero-muted-link {
+            display: inline-flex; align-items: center; gap: var(--space-1);
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-button);
+            background: transparent;
+            color: var(--accent);
+            transition: background-color 0.25s ease;
+        }
+        .hero-muted-link:hover {
+            background: rgba(var(--accent-rgb), 0.1);
+        }
 
         /* ─── Logo — glass transparente ─── */
         .logo-container {
@@ -351,8 +363,7 @@
                 <h1 class="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-4 reveal-growth delay-100">
                     The Muxic
                 </h1>
-                <p class="text-base mb-8 reveal-growth delay-200 max-w-sm mx-auto"
-                    style="color: #cbd5e1; line-height: 1.6;">
+                <p class="hero-tagline text-base mb-8 reveal-growth delay-200 max-w-sm mx-auto" style="line-height: 1.6;">
                     <!-- ← descripción corta cambia por cliente -->
                     <span class="lang-es">Comunidad de fans que invierte en música</span>
                     <span class="lang-en">Fan community that invests in music</span>
@@ -366,6 +377,14 @@
                     <span class="lang-en">Access platform</span>
                     <i data-lucide="external-link" class="w-4 h-4"></i>
                 </button>
+                <!-- Enlace al caso de éxito -->
+                <a href="themuxic-casos-exito.html"
+                    class="hero-muted-link inline-flex items-center gap-1.5 text-xs font-bold mt-5 reveal-growth delay-200 group">
+                    <span class="lang-es">Ver caso de éxito</span>
+                    <span class="lang-en">View success story</span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1"></i>
+                </a>
+
 
             </div>
         </section>
@@ -374,7 +393,7 @@
              INFO CARDS  (icono + título + texto)
              ← contenido varía por cliente
         ════════════════════════════════════════ -->
-        <section class="px-6 py-20" style="background: var(--bg-color);">
+        <section class="px-6 pt-[60px] pb-20" style="background: var(--bg-color);">
             <div class="max-w-5xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 

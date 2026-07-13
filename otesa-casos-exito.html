@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token City | OTESA — Caso de éxito</title>
+    <meta name="description" content="El primer bono hipotecario tokenizado en España, lanzado a través de la plataforma de crowdfunding regulada de Token City, Alius Capital.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC',
+                            100: '#DCE6F5',
+                            200: '#A3BBE3',
+                            300: '#7499D6',
+                            400: '#4677C8',
+                            500: '#1855BA',
+                            600: '#134495',
+                            700: '#0E3370',
+                            800: '#0A224A',
+                            900: '#051125',
+                            950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                const nightTime = (hour >= 19 || hour < 7);
+                isLight = !systemDark && !nightTime;
+            }
+
+            if (isLight) {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(15, 23, 42, 0.12);
+            --nav-bg: rgba(5, 7, 10, 0.95);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+        }
+
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .hero-blog {
+            position: relative;
+            overflow: hidden;
+            background: #05070a;
+        }
+
+        .hero-media {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://cms-prod.token-city.com/wp-content/uploads/2026/02/real-estate-2-1568x1187.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.32;
+            transform: scale(1.03);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+            pointer-events: none;
+        }
+
+        .hero-blog-title {
+            color: #ffffff;
+        }
+
+        body.light-mode .hero-blog-title {
+            color: #ffffff;
+        }
+
+        .hero-subtitle { color: #e2e8f0; }
+        body.light-mode .hero-subtitle { color: #0f172a; }
+
+        .hero-grid {
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+        }
+
+        body.light-mode .hero-grid {
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+        }
+
+        .section-label {
+            color: var(--primary-blue);
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        body:not(.light-mode) .section-label {
+            color: #60a5fa;
+        }
+
+        .body-text {
+            color: var(--text-muted);
+        }
+
+        .heading-text {
+            color: var(--text-main);
+        }
+
+        .partner-logo-badge {
+            width: 160px;
+            height: 160px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3);
+            margin: 0 auto var(--space-3);
+            box-shadow: 0 0 60px rgba(24, 85, 186, 0.15);
+        }
+
+        .nav-item {
+            position: relative;
+            padding: var(--space-3) 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            transition: color 0.3s ease;
+        }
+
+        .nav-item:hover .nav-link {
+            color: #4f86ed;
+        }
+
+        .nav-item:hover .nav-link i {
+            opacity: 1;
+            transform: rotate(180deg);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .nav-link i {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .mega-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 90vw;
+            max-width: 1000px;
+            background: var(--nav-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-md);
+            padding: var(--space-3);
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .nav-item:hover .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #navOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        body:has(.nav-item:hover) #navOverlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #mobileDrawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 400px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--glass-border);
+        }
+
+        #mobileDrawer.open {
+            transform: translateX(0);
+        }
+
+        .mobile-link {
+            padding: var(--space-2) var(--space-3);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--nav-text);
+            font-weight: 600;
+        }
+
+        .mobile-submenu {
+            background: rgba(255, 255, 255, 0.03);
+            display: none;
+            padding-left: 1rem;
+        }
+
+        .mobile-submenu.open {
+            display: block;
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-1);
+        }
+
+        .theme-toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background-color: #ffffff;
+            border-radius: var(--radius-circle);
+            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .toggle-track-icon {
+            color: #94a3b8;
+            width: 12px;
+            height: 12px;
+            z-index: 1;
+        }
+
+        .thumb-icon {
+            width: 12px;
+            height: 12px;
+            color: var(--primary-blue);
+        }
+
+        body.light-mode .theme-toggle-thumb {
+            transform: translateX(24px);
+        }
+
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .lang-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #a1a1aa;
+            transition: color 0.3s ease;
+        }
+
+        .lang-label.active {
+            color: #ffffff;
+        }
+
+        .lang-switch-track {
+            position: relative;
+            width: 32px;
+            height: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-pill);
+        }
+
+        .lang-switch-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 10px;
+            height: 10px;
+            background-color: #ffffff;
+            border-radius: var(--radius-circle);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.lang-en .lang-switch-thumb {
+            transform: translateX(16px);
+        }
+
+        /* ─── Tarjeta de artículo (equivalente a blog-card) ─── */
+        .case-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-3);
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .case-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(24, 85, 186, 0.4);
+            box-shadow: 0 20px 45px rgba(24, 85, 186, 0.12);
+        }
+
+        body:not(.light-mode) .case-card {
+            background: rgba(10, 20, 40, 0.78);
+            border-color: rgba(96, 165, 250, 0.25);
+        }
+
+        .testimonial-quote-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-circle);
+            background: rgba(24, 85, 186, 0.12);
+            border: 1px solid rgba(24, 85, 186, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            margin: 0 auto var(--space-3);
+        }
+
+        body:not(.light-mode) .testimonial-quote-icon {
+            color: #60a5fa;
+        }
+
+        .need-row {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-2);
+            padding: var(--space-1) 0;
+        }
+
+        .need-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-xs);
+            flex-shrink: 0;
+            background: rgba(24, 85, 186, 0.12);
+            border: 1px solid rgba(24, 85, 186, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+        }
+
+        body:not(.light-mode) .need-dot {
+            color: #60a5fa;
+        }
+
+        .video-embed {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .video-embed iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .content-image-frame {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .content-image-frame img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .highlight-row {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-2);
+            padding: var(--space-2) 0;
+        }
+
+        .highlight-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-xs);
+            flex-shrink: 0;
+            background: rgba(24, 85, 186, 0.12);
+            border: 1px solid rgba(24, 85, 186, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+        }
+
+        body:not(.light-mode) .highlight-dot {
+            color: #60a5fa;
+        }
+
+        .usecase-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-sm);
+            background: rgba(24, 85, 186, 0.12);
+            border: 1px solid rgba(24, 85, 186, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            margin-bottom: 1.25rem;
+        }
+
+        body:not(.light-mode) .usecase-icon {
+            color: #60a5fa;
+        }
+
+        /* ─── CTA final (equivalente a promo-card) ─── */
+        .promo-card {
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: linear-gradient(145deg, #1855BA, #0d3a8a);
+            color: #ffffff;
+            padding: var(--space-4) var(--space-3);
+            text-align: center;
+        }
+
+        .promo-title {
+            font-size: clamp(1.4rem, 2.4vw, 2rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.7rem;
+        }
+
+        .promo-text {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+        }
+
+        .promo-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            border-radius: var(--radius-pill);
+            padding: var(--space-2) var(--space-3);
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: background-color 0.25s ease;
+        }
+
+        .promo-button:hover {
+            background: rgba(255, 255, 255, 0.26);
+        }
+
+        .reveal-growth {
+            opacity: 0;
+            transform: scale(0.92) translateY(40px);
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .reveal-growth.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .delay-100 { transition-delay: 120ms; }
+        .delay-200 { transition-delay: 240ms; }
+
+        .controls-bar {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-1) var(--space-2);
+            background: rgba(5, 7, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-pill);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .controls-bar .theme-toggle {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .controls-bar .toggle-track-icon {
+            color: #ffffff;
+        }
+
+        .controls-bar .thumb-icon {
+            color: var(--primary-blue);
+        }
+
+        .controls-bar .lang-switch-track {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 640px) {
+            .controls-bar {
+                right: 12px;
+                bottom: 16px;
+                padding: var(--space-1) var(--space-2);
+                gap: var(--space-1);
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <script>
+        if (window.__isThemeLight) document.body.classList.add('light-mode');
+    </script>
+
+    <div id="navOverlay"></div>
+    <div data-component="components/header-component.html"></div>
+
+    <main class="pt-0 pb-24">
+        <!-- ════════════════════════════════════════
+             HERO — con degradado hero-media/hero-overlay
+        ════════════════════════════════════════ -->
+        <section class="hero-blog min-h-[62vh] pt-28 md:pt-36 pb-16 px-6 overflow-hidden">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid absolute inset-0"></div>
+            <div class="relative max-w-3xl mx-auto text-center">
+                <div class="reveal-growth">
+                    <div class="partner-logo-badge">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/02/otesalogo.png" alt="OTESA" class="w-full h-full object-contain">
+                    </div>
+                    <span class="section-label">Caso de éxito</span>
+                    <h1 class="hero-blog-title text-3xl md:text-5xl font-extrabold mt-3 mb-4 tracking-tight">La intersección regulada entre tokenización y sector inmobiliario</h1>
+                    <p class="hero-subtitle text-base md:text-lg opacity-90">El primer bono hipotecario tokenizado en España, lanzado a través de la plataforma de crowdfunding regulada de Token City, Alius Capital.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="max-w-3xl mx-auto px-6 space-y-8">
+
+            <!-- TESTIMONIO -->
+            <article class="case-card reveal-growth text-center">
+                <div class="testimonial-quote-icon">
+                    <i data-lucide="quote" class="w-5 h-5"></i>
+                </div>
+                <p class="text-lg md:text-xl font-medium heading-text leading-relaxed mb-4">"Queremos establecer un nuevo estándar en la forma en que los promotores inmobiliarios interactúan con el mercado digital. La asociación con Alius Capital y Token City nos permite ofrecer un producto que es seguro, fácilmente transferible, respaldado por activos tangibles y accesible a una base de inversores moderna."</p>
+                <p class="text-sm font-bold body-text">Francesc Salas, CEO de OTESA</p>
+            </article>
+
+            <!-- COMBINANDO EXPERIENCIA E INNOVACIÓN -->
+            <article class="case-card reveal-growth delay-100">
+                <h2 class="text-2xl font-extrabold heading-text tracking-tight mb-4">Combinando experiencia e innovación</h2>
+                <p class="text-sm leading-relaxed body-text mb-4">Grupo OTESA es un pilar fundamental del sector inmobiliario español. Su trayectoria está avalada por más de dos décadas de historia, más de 70 promociones finalizadas con éxito y la venta de más de 1.000 inmuebles.</p>
+                <p class="text-sm leading-relaxed body-text mb-6">Para adquirir un solar de alta demanda, OTESA buscaba un mecanismo de financiación que fuera tan ágil y vanguardista como su propia estrategia de promoción. Necesitaban una solución que ofreciera rapidez, transparencia y una ventaja competitiva, superando la lenta burocracia de los préstamos promotores tradicionales y las limitaciones de financiar el proyecto con recursos propios.</p>
+
+                <div class="video-embed">
+                    <iframe src="https://www.youtube.com/embed/ndePZRtvtZw" title="OTESA x Token City" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                </div>
+            </article>
+
+            <!-- ACTIVOS DE PRIMER NIVEL Y CAPITAL ÁGIL -->
+            <article class="case-card reveal-growth">
+                <h2 class="text-2xl font-extrabold heading-text tracking-tight mb-4">Activos de primer nivel y capital ágil</h2>
+                <p class="text-sm leading-relaxed body-text mb-4">Alius Capital y Token City combinaron un proceso de captación de fondos regulado, permitiendo a los inversores realizar el onboarding, invertir y recibir el instrumento financiero en su monedero digital una vez completada y registrada la emisión. Alius y Token City gestionan en nombre de OTESA el proceso completo de emisión e inversión.</p>
+                <p class="text-sm leading-relaxed body-text">La flexibilidad de esta modalidad de recaudar fondos permitió a OTESA ofrecer a sus inversores un muy atractivo retorno, al liberar capital para más proyectos de los que podría acometer de otro modo.</p>
+            </article>
+
+            <!-- IMAGEN + BENEFICIOS -->
+            <article class="case-card reveal-growth delay-100">
+                <div class="content-image-frame mb-6">
+                    <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/02/1762556505QQxzqE97CfXrWOS9QkEWGemini_Generated_Image_xgjofkxgjofkxgjo-1.png" alt="OTESA — concepto inmobiliario tokenizado">
+                </div>
+                <div class="highlight-row">
+                    <div class="highlight-dot"><i data-lucide="droplets" class="w-4 h-4"></i></div>
+                    <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Liquidez con garantías reales:</strong> OTESA consiguió democratizar con éxito el acceso a la deuda inmobiliaria de calidad institucional. La tokenización del bono permitió a los inversores participar con una estrategia de salida clara (12 meses) y una garantía tangible (la hipoteca), derribando las barreras de entrada que a menudo se encuentra el pequeño inversor ante las SOCIMIs.</p>
+                </div>
+                <div class="highlight-row">
+                    <div class="highlight-dot"><i data-lucide="zap" class="w-4 h-4"></i></div>
+                    <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Eficiencia y transparencia:</strong> la infraestructura de Token City agiliza todo el ciclo de vida del bono. Desde la captación de interés en la pre-campaña hasta la distribución automatizada de los tokens tras la firma ante notario, el proceso reduce la fricción administrativa.</p>
+                </div>
+                <div class="highlight-row">
+                    <div class="highlight-dot"><i data-lucide="handshake" class="w-4 h-4"></i></div>
+                    <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Alineación de intereses:</strong> la estructura asegura que OTESA comparte los incentivos de los inversores. El grupo aportó su propio capital al proyecto antes de la campaña de crowdfunding, señalando su fuerte compromiso con el éxito del proyecto.</p>
+                </div>
+            </article>
+
+            <!-- 4 SOLUCIONES (usecase items) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <article class="case-card reveal-growth">
+                    <div class="usecase-icon"><i data-lucide="gauge" class="w-6 h-6"></i></div>
+                    <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Velocidad de ejecución</h3>
+                    <p class="text-sm leading-relaxed body-text">OTESA necesitaba recaudar 1M€ en tiempo adecuado para comprar un solar edificable a solo 20 metros de la playa.</p>
+                </article>
+                <article class="case-card reveal-growth delay-100">
+                    <div class="usecase-icon"><i data-lucide="badge-check" class="w-6 h-6"></i></div>
+                    <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Confianza del inversor</h3>
+                    <p class="text-sm leading-relaxed body-text">A diferencia de las startups nativas digitales, OTESA necesitaba traducir su solvencia física (un solar tasado en 1,6 millones de euros) a un ámbito digital en el que los inversores pudieran confiar.</p>
+                </article>
+                <article class="case-card reveal-growth delay-200">
+                    <div class="usecase-icon"><i data-lucide="scale" class="w-6 h-6"></i></div>
+                    <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Cumplimiento normativo</h3>
+                    <p class="text-sm leading-relaxed body-text">Como empresa consolidada, requerían un entorno estrictamente regulado para emitir deuda sin vacíos legales.</p>
+                </article>
+                <article class="case-card reveal-growth delay-300">
+                    <div class="usecase-icon"><i data-lucide="workflow" class="w-6 h-6"></i></div>
+                    <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Simplicidad del proceso</h3>
+                    <p class="text-sm leading-relaxed body-text">OTESA necesitaba recaudar fondos manteniendo el foco en su actividad principal de desarrollo inmobiliario.</p>
+                </article>
+            </div>
+
+            <!-- CTA FINAL -->
+            <div class="promo-card reveal-growth">
+                <p class="promo-title">Inmobiliario que funciona para todos</p>
+                <p class="promo-text">Contacto con Alius para saber más</p>
+                <a class="promo-button" href="https://aliuscap.com/contact/" target="_blank" rel="noopener noreferrer">
+                    Contactar Alius Capital <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script>
+        let __caseInit = false;
+
+        function initCasePage() {
+            if (__caseInit) return;
+            __caseInit = true;
+            if (window.__isThemeLight) document.body.classList.add('light-mode');
+
+            const drawer = document.getElementById('mobileDrawer');
+            if (drawer) drawer.classList.remove('open');
+
+            const overlay = document.getElementById('navOverlay');
+            if (overlay) {
+                overlay.style.visibility = 'hidden';
+                overlay.style.opacity = '0';
+            }
+
+            const controlsBar = document.querySelector('.controls-bar');
+            if (controlsBar) controlsBar.style.display = 'flex';
+
+            updateToggleVisuals();
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        window.addEventListener('tcav:components-loaded', initCasePage);
+
+        function toggleTheme() {
+            const body = document.body;
+            const html = document.documentElement;
+            const isLight = body.classList.toggle('light-mode');
+            if (isLight) {
+                html.classList.remove('dark');
+                localStorage.setItem('themePreference', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('themePreference', 'dark');
+            }
+            updateToggleVisuals();
+        }
+
+        function toggleLanguage() {
+            document.body.classList.toggle('lang-en');
+            updateToggleVisuals();
+        }
+
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const isEn = document.body.classList.contains('lang-en');
+
+            document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
+            document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
+
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${isLight ? 'sun' : 'moon'}" class="thumb-icon"></i>
+                </div>
+            `;
+
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.innerHTML = trackHTML;
+            });
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobileDrawer');
+            if (!drawer) return;
+            const isOpen = drawer.classList.toggle('open');
+            const overlay = document.getElementById('navOverlay');
+            const controlsBar = document.querySelector('.controls-bar');
+            overlay.style.visibility = isOpen ? 'visible' : (document.querySelector('.nav-item:hover') ? 'visible' : 'hidden');
+            overlay.style.opacity = isOpen ? '1' : (document.querySelector('.nav-item:hover') ? '1' : '0');
+            if (controlsBar) controlsBar.style.display = isOpen ? 'none' : 'flex';
+        }
+
+        function toggleSubmenu(id) {
+            const submenu = document.getElementById(id);
+            if (submenu) submenu.classList.toggle('open');
+        }
+
+        // ── Scroll Reveal Animation ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.remove('reverse');
+                    e.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const observerReverse = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (!e.isIntersecting && e.boundingClientRect.top > 0) {
+                    e.target.classList.remove('active');
+                    e.target.classList.add('reverse');
+                    setTimeout(() => {
+                        e.target.classList.remove('reverse');
+                    }, 1500);
+                }
+            });
+        }, { threshold: 0 });
+
+        document.querySelectorAll('.reveal-growth').forEach(el => {
+            observer.observe(el);
+            observerReverse.observe(el);
+        });
+    </script>
+</body>
+
+</html>

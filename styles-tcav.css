@@ -737,6 +737,15 @@ footer.dark-footer a:hover {
     color: #1855BA !important;
 }
 
+/* Los círculos de redes sociales cambian de fondo en hover; su letra debe
+   seguir siendo blanca o se pierde contra el mismo azul de fondo. */
+footer.dark-footer a[aria-label="LinkedIn"]:hover,
+footer.dark-footer a[aria-label="X"]:hover,
+footer.dark-footer a[aria-label="Instagram"]:hover,
+footer.dark-footer a[aria-label="YouTube"]:hover {
+    color: #ffffff !important;
+}
+
 footer.dark-footer input {
     background-color: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.1) !important;

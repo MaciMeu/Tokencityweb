@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Casos de éxito - Token City</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'azul-acero': {
+                            50: '#F3F7FC',
+                            100: '#DCE6F5',
+                            200: '#A3BBE3',
+                            300: '#7499D6',
+                            400: '#4677C8',
+                            500: '#1855BA',
+                            600: '#134495',
+                            700: '#0E3370',
+                            800: '#0A224A',
+                            900: '#051125',
+                            950: '#020813'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="tcav-components.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles-tcav.css">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('themePreference');
+            let isLight;
+            if (savedTheme) {
+                isLight = savedTheme === 'light';
+            } else {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const hour = new Date().getHours();
+                const nightTime = (hour >= 19 || hour < 7);
+                isLight = !systemDark && !nightTime;
+            }
+
+            if (isLight) {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+            window.__isThemeLight = isLight;
+        })();
+    </script>
+
+    <style>
+        :root {
+            --primary-blue: #1855BA;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(15, 23, 42, 0.12);
+            --nav-bg: rgba(5, 7, 10, 0.95);
+            --nav-text: #ffffff;
+            --nav-text-muted: #9ca3af;
+        }
+
+        body:not(.light-mode) {
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --bg-color: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .hero-blog {
+            position: relative;
+            overflow: hidden;
+            background: #05070a;
+        }
+
+        .hero-media {
+            position: absolute;
+            inset: 0;
+            background-image: url('mercado.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.32;
+            transform: scale(1.03);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+            pointer-events: none;
+        }
+
+        .hero-blog-title {
+            color: #ffffff;
+        }
+
+        body.light-mode .hero-blog-title {
+            color: #ffffff;
+        }
+
+        .hero-subtitle { color: #e2e8f0; }
+        body.light-mode .hero-subtitle { color: #0f172a; }
+
+        .hero-grid {
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+        }
+
+        body.light-mode .hero-grid {
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+        }
+
+        .section-label {
+            color: var(--primary-blue);
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        body:not(.light-mode) .section-label {
+            color: #60a5fa;
+        }
+
+        .body-text {
+            color: var(--text-muted);
+        }
+
+        .nav-item {
+            position: relative;
+            padding: var(--space-3) 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            transition: color 0.3s ease;
+        }
+
+        .nav-item:hover .nav-link {
+            color: #4f86ed;
+        }
+
+        .nav-item:hover .nav-link i {
+            opacity: 1;
+            transform: rotate(180deg);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .nav-link i {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .mega-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 90vw;
+            max-width: 1000px;
+            background: var(--nav-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-md);
+            padding: var(--space-3);
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .nav-item:hover .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #navOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        body:has(.nav-item:hover) #navOverlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #mobileDrawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 400px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--glass-border);
+        }
+
+        #mobileDrawer.open {
+            transform: translateX(0);
+        }
+
+        .mobile-link {
+            padding: var(--space-2) var(--space-3);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--nav-text);
+            font-weight: 600;
+        }
+
+        .mobile-submenu {
+            background: rgba(255, 255, 255, 0.03);
+            display: none;
+            padding-left: 1rem;
+        }
+
+        .mobile-submenu.open {
+            display: block;
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-1);
+        }
+
+        .theme-toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background-color: #ffffff;
+            border-radius: var(--radius-circle);
+            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .toggle-track-icon {
+            color: #94a3b8;
+            width: 12px;
+            height: 12px;
+            z-index: 1;
+        }
+
+        .thumb-icon {
+            width: 12px;
+            height: 12px;
+            color: var(--primary-blue);
+        }
+
+        body.light-mode .theme-toggle-thumb {
+            transform: translateX(24px);
+        }
+
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .lang-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #a1a1aa;
+            transition: color 0.3s ease;
+        }
+
+        .lang-label.active {
+            color: #ffffff;
+        }
+
+        .lang-switch-track {
+            position: relative;
+            width: 32px;
+            height: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-pill);
+        }
+
+        .lang-switch-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 10px;
+            height: 10px;
+            background-color: #ffffff;
+            border-radius: var(--radius-circle);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.lang-en .lang-switch-thumb {
+            transform: translateX(16px);
+        }
+
+        .filter-chip {
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-main);
+            border-radius: var(--radius-pill);
+            padding: var(--space-1) var(--space-2);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            transition: all 0.25s ease;
+        }
+
+        .filter-chip:hover {
+            border-color: rgba(24, 85, 186, 0.55);
+            transform: translateY(-2px);
+        }
+
+        .filter-chip.active {
+            background: linear-gradient(135deg, #1855BA, #0d3a8a);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: var(--space-2);
+        }
+
+        .blog-card {
+            grid-column: span 12;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(24, 85, 186, 0.52);
+            box-shadow: 0 20px 45px rgba(24, 85, 186, 0.17);
+        }
+
+        .blog-card-main {
+            padding: var(--space-2);
+            display: flex;
+            flex-direction: column;
+            min-height: 250px;
+        }
+
+        body:not(.light-mode) .blog-card {
+            background: rgba(10, 20, 40, 0.78);
+            border-color: rgba(96, 165, 250, 0.25);
+        }
+
+        .blog-card-media {
+            position: relative;
+            width: 100%;
+            height: 190px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #12386f, #0b1d3f);
+            border-bottom: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+        }
+
+        .blog-card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0.85;
+            transform: scale(1.02);
+            border-radius: var(--radius-sm);
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            flex-wrap: wrap;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.7rem;
+        }
+
+        body:not(.light-mode) .post-meta {
+            color: #b6c7e6;
+        }
+
+        .post-title {
+            font-size: clamp(1.2rem, 2vw, 1.42rem);
+            font-weight: 800;
+            line-height: 1.22;
+            margin-bottom: 0.65rem;
+            color: var(--text-main);
+        }
+
+        body:not(.light-mode) .post-title {
+            color: #f8fbff;
+        }
+
+        .post-excerpt {
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        body:not(.light-mode) .post-excerpt {
+            color: #c7d6ee;
+        }
+
+        .read-more-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: var(--space-1) var(--space-2);
+            border: none;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            transition: background-color 0.25s ease, color 0.25s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .read-more-link:hover {
+            background: rgba(24, 85, 186, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .read-more-link:active {
+            background: rgba(24, 85, 186, 0.18);
+        }
+
+        body:not(.light-mode) .read-more-link {
+            color: #60a5fa;
+        }
+
+        body:not(.light-mode) .read-more-link:hover {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+        }
+
+        .promo-card {
+            grid-column: span 12;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: linear-gradient(145deg, #1855BA, #0d3a8a);
+            color: #ffffff;
+            padding: var(--space-3);
+        }
+
+        .promo-title {
+            font-size: clamp(1.4rem, 2.4vw, 2rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.7rem;
+        }
+
+        .promo-text {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .promo-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            border-radius: var(--radius-pill);
+            padding: var(--space-1) var(--space-2);
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.83rem;
+        }
+
+        .pagination-wrap {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-1);
+            flex-wrap: wrap;
+            width: 100%;
+            text-align: center;
+        }
+
+        .page-link {
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: all 0.25s ease;
+        }
+
+        .page-link:hover {
+            transform: translateY(-2px);
+            border-color: rgba(24, 85, 186, 0.55);
+            background: rgba(24, 85, 186, 0.14);
+            color: #0e3370;
+        }
+
+        body:not(.light-mode) .page-link {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.16);
+            color: #e5edf9;
+        }
+
+        body:not(.light-mode) .page-link:hover {
+            background: rgba(24, 85, 186, 0.26);
+            border-color: rgba(96, 165, 250, 0.7);
+            color: #ffffff;
+            box-shadow: 0 8px 18px rgba(24, 85, 186, 0.28);
+        }
+
+        .page-link.active {
+            background: linear-gradient(135deg, #1855BA, #0d3a8a);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 8px 18px rgba(24, 85, 186, 0.28);
+        }
+
+        .reveal-growth {
+            opacity: 0;
+            transform: scale(0.92) translateY(40px);
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .reveal-growth.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .controls-bar {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-1) var(--space-2);
+            background: rgba(5, 7, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-pill);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .controls-bar .theme-toggle {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .controls-bar .toggle-track-icon {
+            color: #ffffff;
+        }
+
+        .controls-bar .thumb-icon {
+            color: var(--primary-blue);
+        }
+
+        .controls-bar .lang-switch-track {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 640px) {
+            .controls-bar {
+                right: 12px;
+                bottom: 16px;
+                padding: var(--space-1) var(--space-2);
+                gap: var(--space-1);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .blog-card {
+                grid-column: span 6;
+            }
+
+            .promo-card {
+                grid-column: span 12;
+            }
+        }
+
+        @media (min-width: 1120px) {
+            .blog-card {
+                grid-column: span 4;
+            }
+
+            .promo-card {
+                grid-column: span 4;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <script>
+        if (window.__isThemeLight) document.body.classList.add('light-mode');
+    </script>
+
+    <div data-component="components/header-component.html"></div>
+
+    <main class="pt-0 pb-24">
+        <section class="hero-blog min-h-[78vh] pt-28 md:pt-36 pb-0 px-6 overflow-hidden">
+            <div class="hero-media"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-grid absolute inset-0"></div>
+            <div class="relative max-w-7xl mx-auto text-center">
+                <div class="max-w-4xl mx-auto reveal-growth">
+                <span class="section-label">Clientes</span>
+                <h1 class="hero-blog-title text-4xl md:text-6xl font-extrabold mt-3 mb-4 tracking-tight">Casos de éxito</h1>
+                <p class="hero-subtitle text-base md:text-lg max-w-2xl mx-auto opacity-90">Historias reales de empresas que tokenizaron su negocio con Token City: inmobiliario, contenido, música, capital privado y más.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto px-6 md:px-10 relative z-10" style="margin-top: -300px;">
+            <div class="blog-grid">
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/03/Codigoo-recompensas-tokenizadas-promocion-1024x572.jpg" alt="Codigoo" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>Audiovisual</span></div>
+                        <h2 class="post-title">Codigoo: Tokenización de contenido audiovisual</h2>
+                        <p class="post-excerpt">Infraestructura API para integrar identidad, metadatos y operativa tokenizada en una experiencia propia de contenido y fidelización.</p>
+                        <a class="read-more-link" href="codigoo-casos-exito.html">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/03/exclusive-regulated-digital-assets-concept-art.png" alt="Medulio Capital" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>Capital privado</span></div>
+                        <h2 class="post-title">Medulio Capital: Acceso digital a activos exclusivos</h2>
+                        <p class="post-excerpt">El rigor de la banca de inversión con la agilidad de la tecnología blockchain para ofrecer oportunidades únicas de rentabilidad.</p>
+                        <a class="read-more-link" href="meduliocapital-casos-exito.html">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/02/Gemini_Generated_Image_hyeayvhyeayvhyea-1568x855.jpg" alt="Equito" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>Inmobiliario</span></div>
+                        <h2 class="post-title">Equito: Inversión inmobiliaria en tu bolsillo desde 100 €</h2>
+                        <p class="post-excerpt">Una experiencia mobile-first con tecnología blockchain operando de manera invisible para más de 120.000 usuarios registrados.</p>
+                        <a class="read-more-link" href="equito-casos-exito.html">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/02/diamante-solo.png" alt="Dianelum" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>Commodities</span></div>
+                        <h2 class="post-title">El viaje a la financiación de Dianelum con Token City</h2>
+                        <p class="post-excerpt">Primer bono nativo on-chain completamente regulado, emitido mediante la plataforma SaaS de marca personalizada de Token City.</p>
+                        <a class="read-more-link" href="dianelum-casos-exito.html">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/02/real-estate-2-1568x1187.png" alt="OTESA" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>Inmobiliario</span></div>
+                        <h2 class="post-title">OTESA: tokenización regulada en el sector inmobiliario</h2>
+                        <p class="post-excerpt">El primer bono hipotecario tokenizado en España, lanzado a través de Alius Capital, la plataforma de crowdfunding regulada de Token City.</p>
+                        <a class="read-more-link" href="otesa-casos-exito.html">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/02/shh-scaled.jpg" alt="Beself Brands" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>Hogar y estilo de vida</span></div>
+                        <h2 class="post-title">La tokenización de acciones reguladas de Beself Brands</h2>
+                        <p class="post-excerpt">Primera ampliación de capital tokenizada de una SA española, para emitir 8 millones de euros en capital social.</p>
+                        <a class="read-more-link" href="beselfbrands-casos-exito.html">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/02/23-1568x641.jpg" alt="Equalice" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>Inmobiliario</span></div>
+                        <h2 class="post-title">Equalice: Democratizando la Inversión Inmobiliaria y Corporativa</h2>
+                        <p class="post-excerpt">Más de 5,3 millones de euros financiados y 500 inversores mediante una infraestructura de mercado digital robusta.</p>
+                        <a class="read-more-link" href="equalice-casos-exito.html">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card reveal-growth">
+                    <div class="blog-card-media">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/02/Gemini_Generated_Image_4wkey64wkey64wke-1568x875.jpg" alt="The Muxic" loading="lazy">
+                    </div>
+                    <div class="blog-card-main">
+                        <div class="post-meta"><span>Música</span></div>
+                        <h2 class="post-title">Convirtiendo a los Fans en socios mediante la tokenización de derechos musicales</h2>
+                        <p class="post-excerpt">Donde los derechos musicales se convierten en activos invertibles tanto para fans como para inversores profesionales.</p>
+                        <a class="read-more-link" href="themuxic-casos-exito.html">Leer Más <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <div data-component="components/footer-component.html"></div>
+    <div data-component="components/floating-controls-component.html"></div>
+
+    <script>
+        let __blogInit = false;
+
+        function initBlogPage() {
+            if (__blogInit) return;
+            __blogInit = true;
+            if (window.__isThemeLight) document.body.classList.add('light-mode');
+
+            const drawer = document.getElementById('mobileDrawer');
+            if (drawer) drawer.classList.remove('open');
+
+            const overlay = document.getElementById('navOverlay');
+            if (overlay) {
+                overlay.style.visibility = 'hidden';
+                overlay.style.opacity = '0';
+            }
+
+            const controlsBar = document.querySelector('.controls-bar');
+            if (controlsBar) controlsBar.style.display = 'flex';
+
+            updateToggleVisuals();
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        window.addEventListener('tcav:components-loaded', initBlogPage);
+
+        function toggleTheme() {
+            const body = document.body;
+            const html = document.documentElement;
+            const isLight = body.classList.toggle('light-mode');
+            if (isLight) {
+                html.classList.remove('dark');
+                localStorage.setItem('themePreference', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('themePreference', 'dark');
+            }
+            updateToggleVisuals();
+        }
+
+        function toggleLanguage() {
+            document.body.classList.toggle('lang-en');
+            updateToggleVisuals();
+        }
+
+        function updateToggleVisuals() {
+            const isLight = document.body.classList.contains('light-mode');
+            const isEn = document.body.classList.contains('lang-en');
+
+            document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
+            document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
+
+            const trackHTML = `
+                <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
+                    <i data-lucide="moon" class="toggle-track-icon"></i>
+                </div>
+                <div class="absolute right-1 md:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? 'opacity-0' : ''} transition-opacity duration-300">
+                    <i data-lucide="sun" class="toggle-track-icon"></i>
+                </div>
+                <div class="theme-toggle-thumb">
+                    <i data-lucide="${isLight ? 'sun' : 'moon'}" class="thumb-icon"></i>
+                </div>
+            `;
+
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.innerHTML = trackHTML;
+            });
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobileDrawer');
+            if (!drawer) return;
+            const isOpen = drawer.classList.toggle('open');
+            const overlay = document.getElementById('navOverlay');
+            const controlsBar = document.querySelector('.controls-bar');
+            overlay.style.visibility = isOpen ? 'visible' : (document.querySelector('.nav-item:hover') ? 'visible' : 'hidden');
+            overlay.style.opacity = isOpen ? '1' : (document.querySelector('.nav-item:hover') ? '1' : '0');
+            if (controlsBar) controlsBar.style.display = isOpen ? 'none' : 'flex';
+        }
+
+        function toggleSubmenu(id) {
+            const submenu = document.getElementById(id);
+            if (submenu) submenu.classList.toggle('open');
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+            const originalText = btnText.textContent;
+
+            btnText.textContent = '';
+            btnLoader.classList.remove('hidden');
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btnText.textContent = originalText;
+                btnLoader.classList.add('hidden');
+                btn.disabled = false;
+                e.target.reset();
+            }, 1200);
+        }
+
+        // ── Scroll Reveal Animation ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.remove('reverse');
+                    e.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const observerReverse = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (!e.isIntersecting && e.boundingClientRect.top > 0) {
+                    e.target.classList.remove('active');
+                    e.target.classList.add('reverse');
+                    setTimeout(() => {
+                        e.target.classList.remove('reverse');
+                    }, 1500);
+                }
+            });
+        }, { threshold: 0 });
+
+        document.querySelectorAll('.reveal-growth').forEach(el => {
+            observer.observe(el);
+            observerReverse.observe(el);
+        });
+    </script>
+</body>
+
+</html>

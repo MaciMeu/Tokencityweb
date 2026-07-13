@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Token City | Marv</title>
-    <meta name="description" content="Estrategia de inversión inmobiliaria basada en adquirir, reformar y alquilar propiedades seleccionadas para generar ingresos recurrentes.">
+    <title>Token City | Codigoo</title>
+    <meta name="description" content="Infraestructura API para integrar identidad, metadatos y operativa tokenizada en una experiencia propia de contenido y fidelización.">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -51,9 +51,9 @@
            VARIABLES  (editar por cliente)
            ───────────────────────────────────────── */
         :root {
-            --accent:        #22c55e;     /* color de acento del cliente     */
-            --accent-rgb:    34,197,94;   /* mismo en RGB para rgba()        */
-            --accent-hover:  #16a34a;     /* hover del botón principal       */
+            --accent:        #06b6d4;     /* color de acento del cliente     */
+            --accent-rgb:    6,182,212;   /* mismo en RGB para rgba()        */
+            --accent-hover:  #0891b2;     /* hover del botón principal       */
 
             /* sistema */
             --primary-blue:  #1855BA;
@@ -128,6 +128,19 @@
         .hero-tagline { color: #cbd5e1; }
         body.light-mode .hero-tagline { color: #0f172a; }
 
+
+        .hero-muted-link {
+            display: inline-flex; align-items: center; gap: var(--space-1);
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-button);
+            background: transparent;
+            color: var(--accent);
+            transition: background-color 0.25s ease;
+        }
+        .hero-muted-link:hover {
+            background: rgba(var(--accent-rgb), 0.1);
+        }
 
         /* ─── Logo — glass transparente ─── */
         .logo-container {
@@ -325,45 +338,50 @@
 
                 <!-- LOGO — protagonista -->
                 <div class="logo-container mb-8 reveal-growth">
-                    <!-- ← cambiar imagen por cliente -->
-                    <img src="Logos/marv.png" alt="Marv" class="w-full h-full object-contain">
+                    <img src="Logos/codigoo.png" alt="Codigoo" class="w-full h-full object-contain">
                 </div>
 
                 <!-- Tags -->
                 <div class="flex flex-wrap gap-2 justify-center mb-6 reveal-growth delay-100">
-                    <!-- ← sector, mercado y token cambian por cliente -->
                     <span class="ptag ptag-sector">
-                        <i data-lucide="building-2" class="w-3 h-3"></i>
-                        <span class="lang-es">Real Estate</span><span class="lang-en">Real Estate</span>
+                        <i data-lucide="clapperboard" class="w-3 h-3"></i>
+                        <span class="lang-es">Audiovisual</span><span class="lang-en">Audiovisual</span>
                     </span>
                     <span class="ptag ptag-market">
-                        <span class="mat-icon material-symbols-outlined" style="font-size:0.9rem;line-height:1;">groups</span>
-                        Crowdfunding
+                        <span class="mat-icon material-symbols-outlined" style="font-size:0.9rem;line-height:1;">storefront</span>
+                        Marketplace
                     </span>
                     <span class="ptag ptag-token">
-                        <span class="mat-icon material-symbols-outlined" style="font-size:0.9rem;line-height:1;">verified_user</span>
-                        Security Token
+                        <span class="mat-icon material-symbols-outlined" style="font-size:0.9rem;line-height:1;">bolt</span>
+                        Utility Token
                     </span>
                 </div>
 
                 <!-- Nombre y tagline -->
                 <h1 class="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-4 reveal-growth delay-100">
-                    Marv
+                    Codigoo
                 </h1>
                 <p class="hero-tagline text-base mb-8 reveal-growth delay-200 max-w-sm mx-auto" style="line-height: 1.6;">
-                    <!-- ← descripción corta cambia por cliente -->
-                    <span class="lang-es">Compramos, reformamos y alquilamos para ti</span>
-                    <span class="lang-en">We buy, renovate and rent for you</span>
+                    <span class="lang-es">Infraestructura API para integrar identidad, metadatos y operativa tokenizada en tu contenido</span>
+                    <span class="lang-en">API infrastructure to embed identity, metadata and tokenized operations into your content</span>
                 </p>
 
                 <!-- CTA -->
                 <button onclick="openRedirectModal()"
                     class="inline-flex items-center gap-2 px-8 py-4 font-extrabold rounded-[15px] text-sm text-white transition-all reveal-growth delay-200"
                     style="background: var(--accent);">
-                    <span class="lang-es">Acceder a la plataforma</span>
-                    <span class="lang-en">Access platform</span>
+                    <span class="lang-es">Visitar Codigoo</span>
+                    <span class="lang-en">Visit Codigoo</span>
                     <i data-lucide="external-link" class="w-4 h-4"></i>
                 </button>
+
+                <!-- Enlace al caso de éxito -->
+                <a href="codigoo-casos-exito.html"
+                    class="hero-muted-link inline-flex items-center gap-1.5 text-xs font-bold mt-5 reveal-growth delay-200 group">
+                    <span class="lang-es">Ver caso de éxito</span>
+                    <span class="lang-en">View success story</span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1"></i>
+                </a>
 
             </div>
         </section>
@@ -376,44 +394,43 @@
             <div class="max-w-5xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                    <!-- CARD 1 — cambiar icono, título y texto por cliente -->
+                    <!-- CARD 1 -->
                     <div class="info-card reveal-growth">
                         <div class="info-icon">
-                            <!-- icono Material Symbols — varía por cliente -->
-                            <span class="mat-icon material-symbols-outlined" style="font-size:1.6rem;">house</span>
+                            <span class="mat-icon material-symbols-outlined" style="font-size:1.6rem;">how_to_reg</span>
                         </div>
-                        <p class="info-title lang-es">Buy & Reform</p>
-                        <p class="info-title lang-en">Buy & Reform</p>
-                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-es">Creamos valor antes de alquilar</h3>
-                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-en">We create value before renting</h3>
-                        <p class="text-sm leading-relaxed body-text lang-es">Marv adquiere propiedades infravaloradas, las reforma con criterios de calidad y diseño, y las incorpora a una cartera de alquiler optimizada.</p>
-                        <p class="text-sm leading-relaxed body-text lang-en">Marv acquires undervalued properties, renovates them with quality and design criteria, and incorporates them into an optimized rental portfolio.</p>
+                        <p class="info-title lang-es">Onboarding simple</p>
+                        <p class="info-title lang-en">Simple onboarding</p>
+                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-es">Sin fricción para usuarios no especializados</h3>
+                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-en">No friction for non-specialized users</h3>
+                        <p class="text-sm leading-relaxed body-text lang-es">Alta sencilla desde web o móvil, sin exigir conocimientos previos de blockchain, criptomonedas o finanzas digitales.</p>
+                        <p class="text-sm leading-relaxed body-text lang-en">Simple sign-up from web or mobile, with no prior knowledge of blockchain, crypto or digital finance required.</p>
                     </div>
 
                     <!-- CARD 2 -->
                     <div class="info-card reveal-growth delay-100">
                         <div class="info-icon">
-                            <span class="mat-icon material-symbols-outlined" style="font-size:1.6rem;">payments</span>
+                            <span class="mat-icon material-symbols-outlined" style="font-size:1.6rem;">redeem</span>
                         </div>
-                        <p class="info-title lang-es">Ingresos recurrentes</p>
-                        <p class="info-title lang-en">Recurring income</p>
-                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-es">Rentas mensuales estables para el inversor</h3>
-                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-en">Stable monthly rents for the investor</h3>
-                        <p class="text-sm leading-relaxed body-text lang-es">La estrategia se centra en maximizar la ocupación y la rentabilidad por alquiler, generando flujos de caja predecibles y estables.</p>
-                        <p class="text-sm leading-relaxed body-text lang-en">The strategy focuses on maximizing occupancy and rental profitability, generating predictable and stable cash flows.</p>
+                        <p class="info-title lang-es">Wallets y recompensas</p>
+                        <p class="info-title lang-en">Wallets and rewards</p>
+                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-es">Tokens canjeables por productos y servicios</h3>
+                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-en">Tokens redeemable for products and services</h3>
+                        <p class="text-sm leading-relaxed body-text lang-es">Cada usuario recibe un monedero digital sin tener que interactuar con infraestructura blockchain de forma directa.</p>
+                        <p class="text-sm leading-relaxed body-text lang-en">Every user gets a digital wallet without directly interacting with blockchain infrastructure.</p>
                     </div>
 
                     <!-- CARD 3 -->
                     <div class="info-card reveal-growth delay-200">
                         <div class="info-icon">
-                            <span class="mat-icon material-symbols-outlined" style="font-size:1.6rem;">verified</span>
+                            <span class="mat-icon material-symbols-outlined" style="font-size:1.6rem;">hub</span>
                         </div>
-                        <p class="info-title lang-es">Selección rigurosa</p>
-                        <p class="info-title lang-en">Rigorous selection</p>
-                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-es">Solo propiedades con potencial probado</h3>
-                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-en">Only properties with proven potential</h3>
-                        <p class="text-sm leading-relaxed body-text lang-es">Cada inmueble pasa por un análisis exhaustivo de mercado, estado físico y potencial de revalorización antes de incorporarse al portfolio.</p>
-                        <p class="text-sm leading-relaxed body-text lang-en">Each property goes through an exhaustive analysis of market, physical condition and appreciation potential before joining the portfolio.</p>
+                        <p class="info-title lang-es">Escalabilidad</p>
+                        <p class="info-title lang-en">Scalability</p>
+                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-es">Una base API para nuevos partners y verticales</h3>
+                        <h3 class="text-xl font-extrabold heading-text uppercase tracking-tight mb-3 lang-en">One API base for new partners and verticals</h3>
+                        <p class="text-sm leading-relaxed body-text lang-es">De contenido audiovisual a deporte o gaming, sin rediseñar el producto cada vez que se incorpora un nuevo caso de uso.</p>
+                        <p class="text-sm leading-relaxed body-text lang-en">From audiovisual content to sports or gaming, without redesigning the product for every new use case.</p>
                     </div>
 
                 </div>
@@ -423,8 +440,8 @@
                     <button onclick="openRedirectModal()"
                         class="inline-flex items-center gap-2 px-8 py-4 font-extrabold rounded-[15px] text-sm text-white transition-all"
                         style="background: var(--accent);">
-                        <span class="lang-es">Acceder a la plataforma</span>
-                        <span class="lang-en">Access platform</span>
+                        <span class="lang-es">Visitar Codigoo</span>
+                        <span class="lang-en">Visit Codigoo</span>
                         <i data-lucide="external-link" class="w-4 h-4"></i>
                     </button>
                     <a href="marketplace.html"
@@ -456,14 +473,14 @@
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
 
-            <!-- Icono del cliente — varía por cliente -->
+            <!-- Icono del cliente -->
             <div class="modal-icon-ring">
                 <span class="mat-icon material-symbols-outlined"
-                    style="font-size:1.75rem; color: var(--accent);">house</span>
+                    style="font-size:1.75rem; color: var(--accent);">clapperboard</span>
             </div>
 
             <!-- Título -->
-            <h2 class="text-xl font-extrabold text-center mb-1 heading-text">Marv</h2>
+            <h2 class="text-xl font-extrabold text-center mb-1 heading-text">Codigoo</h2>
             <p class="text-xs text-center mb-5 body-text lang-es">Vas a salir de Token City</p>
             <p class="text-xs text-center mb-5 body-text lang-en">You are leaving Token City</p>
 
@@ -471,34 +488,32 @@
             <div class="modal-dest-row">
                 <div class="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center p-1 overflow-hidden"
                     style="background: rgba(var(--accent-rgb), 0.15); border: 1.5px solid rgba(var(--accent-rgb), 0.35);">
-                    <img src="Logos/marv.png" alt="Marv" class="w-full h-full object-contain">
+                    <img src="Logos/codigoo.png" alt="Codigoo" class="w-full h-full object-contain">
                 </div>
                 <div class="flex-1 min-w-0">
-                    <!-- ← URL visible cambia por cliente -->
-                    <p class="text-xs font-bold heading-text">marv.com</p>
-                    <p class="text-[10px] truncate body-text lang-es">Sitio externo — operado por Marv</p>
-                    <p class="text-[10px] truncate body-text lang-en">External site — operated by Marv</p>
+                    <p class="text-xs font-bold heading-text">codigoo.info</p>
+                    <p class="text-[10px] truncate body-text lang-es">Sitio externo — operado por Codigoo</p>
+                    <p class="text-[10px] truncate body-text lang-en">External site — operated by Codigoo</p>
                 </div>
                 <i data-lucide="external-link" class="w-3.5 h-3.5 flex-shrink-0 body-text"></i>
             </div>
 
             <!-- Aviso legal -->
             <p class="modal-disclaimer lang-es">
-                Serás redirigido a una plataforma externa operada por Marv bajo sus propios términos y condiciones. Token City no es responsable del contenido ni los servicios de dicha plataforma.
+                Serás redirigido a una plataforma externa operada por Codigoo bajo sus propios términos y condiciones. Token City no es responsable del contenido ni los servicios de dicha plataforma.
             </p>
             <p class="modal-disclaimer lang-en">
-                You will be redirected to an external platform operated by Marv under its own terms and conditions. Token City is not responsible for the content or services of that platform.
+                You will be redirected to an external platform operated by Codigoo under its own terms and conditions. Token City is not responsible for the content or services of that platform.
             </p>
 
             <!-- Acciones -->
             <div class="flex flex-col gap-2">
-                <!-- ← href destino cambia por cliente -->
-                <a href="https://marv.com" target="_blank" rel="noopener noreferrer"
+                <a href="https://www.codigoo.info/" target="_blank" rel="noopener noreferrer"
                     onclick="closeRedirectModal()"
                     class="w-full flex items-center justify-center gap-2 py-3.5 font-extrabold rounded-[12px] text-sm text-white transition-all"
                     style="background: var(--accent);">
-                    <span class="lang-es">Continuar a Marv</span>
-                    <span class="lang-en">Continue to Marv</span>
+                    <span class="lang-es">Continuar a Codigoo</span>
+                    <span class="lang-en">Continue to Codigoo</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
                 <button onclick="closeRedirectModal()"
