@@ -37,26 +37,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles-tcav.css">
 
-    <script>
-        (function () {
-            const savedTheme = localStorage.getItem('themePreference');
-            let isLight;
-            if (savedTheme) {
-                isLight = savedTheme === 'light';
-            } else {
-                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const hour = new Date().getHours();
-                const nightTime = (hour >= 19 || hour < 7);
-                isLight = !systemDark && !nightTime;
-            }
-            if (isLight) {
-                document.documentElement.classList.remove('dark');
-            } else {
-                document.documentElement.classList.add('dark');
-            }
-            window.__isThemeLight = isLight;
-        })();
-    </script>
+    <script src="theme-init.js"></script>
 
     <style>
         :root {

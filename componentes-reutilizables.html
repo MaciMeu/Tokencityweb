@@ -25,15 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles-tcav.css">
-    <script>
-        (function () {
-            const saved = localStorage.getItem('themePreference');
-            let isLight = saved ? saved === 'light' : !window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (isLight) document.documentElement.classList.remove('dark');
-            else document.documentElement.classList.add('dark');
-            window.__isThemeLight = isLight;
-        })();
-    </script>
+    <script src="theme-init.js"></script>
 
     <style>
         /* ── Base ── */

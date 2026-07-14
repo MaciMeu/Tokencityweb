@@ -17,21 +17,7 @@
                 }
             }
         </script>
-        <script>
-            // Script para modo oscuro automático (opcional)
-            (function() {
-                const hour = new Date().getHours();
-                const nightTime = (hour >= 19 || hour < 7);
-                const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const isLight = !systemDark && !nightTime;
-                if (isLight) {
-                    document.documentElement.classList.remove('dark');
-                } else {
-                    document.documentElement.classList.add('dark');
-                }
-                window.__isThemeLight = isLight;
-            })();
-        </script>
+        <script src="theme-init.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="tcav-components.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
