@@ -513,7 +513,10 @@
             const links    = document.querySelectorAll('.toc-link');
             function update() {
                 let current = '';
-                headings.forEach(h => { if (window.scrollY >= h.offsetTop - 130) current = h.id; });
+                // getBoundingClientRect() en vez de h.offsetTop: offsetTop se mide
+                // relativo al ancestro con "transform" más cercano (p.ej. .reveal-growth),
+                // no a la página, y da valores incorrectos.
+                headings.forEach(h => { if ((h.getBoundingClientRect().top + window.scrollY) - 130 <= window.scrollY) current = h.id; });
                 links.forEach(l => {
                     l.classList.toggle('active', l.getAttribute('href') === '#' + current);
                 });
