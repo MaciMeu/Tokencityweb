@@ -63,35 +63,37 @@
 
     /* ==============================================
        DESIGN SYSTEM — Bordes redondeados (escala fija)
+       Múltiplos de 8 para mantener la proporción visual.
        Usar solo estos 4 valores para border-radius.
        ============================================== */
-    --radius-xs: 5px;    /* mínimo: inputs, chips pequeños */
-    --radius-sm: 15px;   /* botones y tarjetas pequeñas */
-    --radius-md: 30px;   /* tarjetas, paneles, modales */
-    --radius-lg: 60px;   /* máximo: bloques hero, contenedores grandes */
-    --radius-button: 15px; /* fijo para TODOS los botones/CTAs */
+    --radius-xs: 8px;    /* mínimo: inputs, chips pequeños */
+    --radius-sm: 16px;   /* botones y tarjetas pequeñas */
+    --radius-md: 32px;   /* tarjetas, paneles, modales */
+    --radius-lg: 64px;   /* máximo: bloques hero, contenedores grandes */
+    --radius-button: 16px; /* fijo para TODOS los botones/CTAs */
     --radius-pill: 999px;   /* excepción: pills/tags/badges */
     --radius-circle: 50%;   /* excepción: avatares/iconos circulares */
 
     /* ==============================================
        DESIGN SYSTEM — Espaciado (escala fija)
+       Múltiplos de 8 para mantener la proporción visual.
        Usar para gap, padding y margin entre elementos.
        En móvil cada paso baja un nivel (ver media query abajo),
-       ej: --space-3 = 30px en desktop / 15px en móvil.
+       ej: --space-3 = 32px en desktop / 16px en móvil.
        ============================================== */
-    --space-1: 5px;
-    --space-2: 15px;
-    --space-3: 30px;
-    --space-4: 60px;
-    --space-5: 120px;
+    --space-1: 8px;
+    --space-2: 16px;
+    --space-3: 32px;
+    --space-4: 64px;
+    --space-5: 128px;
 }
 
 @media (max-width: 768px) {
     :root {
-        --space-2: 5px;
-        --space-3: 15px;
-        --space-4: 30px;
-        --space-5: 60px;
+        --space-2: 8px;
+        --space-3: 16px;
+        --space-4: 32px;
+        --space-5: 64px;
     }
 }
 

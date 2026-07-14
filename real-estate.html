@@ -180,7 +180,7 @@
 
     <main>
         <!-- Hero -->
-        <section class="hero-team min-h-[85vh] flex flex-col items-center justify-center text-center pt-28 pb-48 px-6">
+        <section class="hero-team min-h-[85vh] flex flex-col items-center justify-center text-center pt-28 pb-[var(--space-5)] px-6">
             <div class="hero-media"></div>
             <div class="hero-overlay"></div>
             <div class="hero-grid absolute inset-0"></div>
@@ -196,7 +196,7 @@
         </section>
 
         <!-- Formulario -->
-        <section class="px-6 -mt-40 md:-mt-56 relative z-30 pb-20">
+        <section class="px-6 -mt-[var(--space-3)] relative z-30 pb-20">
             <div class="max-w-5xl mx-auto">
                 <div class="lead-form-realestate shadow-2xl reveal-growth delay-200">
                     <div class="text-center mb-10">
@@ -204,30 +204,30 @@
                         <p class="body-text text-base">Cuéntanos sobre tu activo y te ayudaremos a estructurar la mejor solución.</p>
                     </div>
 
-                    <form class="grid grid-cols-1 md:grid-cols-2 gap-[15px]" onsubmit="event.preventDefault();">
-                        <div class="space-y-[2.5px]">
+                    <form class="grid grid-cols-1 md:grid-cols-2 gap-[16px]" onsubmit="event.preventDefault();">
+                        <div class="space-y-[var(--space-1)]">
                             <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Nombre</label>
-                            <input type="text" required placeholder="Nombre completo" class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                            <input type="text" required placeholder="Nombre completo" class="w-full px-[16px] py-[16px] rounded-[16px] border">
                         </div>
-                        <div class="space-y-[2.5px]">
+                        <div class="space-y-[var(--space-1)]">
                             <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Apellidos</label>
-                            <input type="text" required placeholder="Apellidos" class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                            <input type="text" required placeholder="Apellidos" class="w-full px-[16px] py-[16px] rounded-[16px] border">
                         </div>
-                        <div class="space-y-[2.5px]">
+                        <div class="space-y-[var(--space-1)]">
                             <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Email corporativo</label>
-                            <input type="email" required placeholder="ejemplo@empresa.com" class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                            <input type="email" required placeholder="ejemplo@empresa.com" class="w-full px-[16px] py-[16px] rounded-[16px] border">
                         </div>
-                        <div class="space-y-[2.5px]">
+                        <div class="space-y-[var(--space-1)]">
                             <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Teléfono</label>
-                            <input type="tel" required placeholder="+34 600 000 000" class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                            <input type="tel" required placeholder="+34 600 000 000" class="w-full px-[16px] py-[16px] rounded-[16px] border">
                         </div>
-                        <div class="space-y-[2.5px]">
+                        <div class="space-y-[var(--space-1)]">
                             <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Empresa</label>
-                            <input type="text" placeholder="Nombre de tu empresa" class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                            <input type="text" placeholder="Nombre de tu empresa" class="w-full px-[16px] py-[16px] rounded-[16px] border">
                         </div>
-                        <div class="space-y-[2.5px]">
+                        <div class="space-y-[var(--space-1)]">
                             <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">País</label>
-                            <select class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                            <select class="w-full px-[16px] py-[16px] rounded-[16px] border">
                                 <option value="">Selecciona país</option>
                                 <option>España</option>
                                 <option>México</option>
@@ -236,18 +236,18 @@
                                 <option>Otros</option>
                             </select>
                         </div>
-                        <div class="space-y-[2.5px]">
+                        <div class="space-y-[var(--space-1)]">
                             <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">¿Tienes comunidad inversora propia?</label>
-                            <select class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                            <select class="w-full px-[16px] py-[16px] rounded-[16px] border">
                                 <option value="">Selecciona</option>
                                 <option>Sí</option>
                                 <option>No</option>
                                 <option>Parcialmente</option>
                             </select>
                         </div>
-                        <div class="space-y-[2.5px]">
+                        <div class="space-y-[var(--space-1)]">
                             <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Perfil empresarial</label>
-                            <select class="w-full px-[15px] py-[15px] rounded-[15px] border">
+                            <select class="w-full px-[16px] py-[16px] rounded-[16px] border">
                                 <option value="">Selecciona perfil</option>
                                 <option>Agente inmobiliario</option>
                                 <option>Promotor</option>
@@ -257,9 +257,9 @@
                                 <option>Otros</option>
                             </select>
                         </div>
-                        <div class="space-y-[2.5px] md:col-span-2">
+                        <div class="space-y-[var(--space-1)] md:col-span-2">
                             <label class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-main);">Descripción de tus necesidades</label>
-                            <textarea rows="4" placeholder="Cuéntanos cómo podemos ayudar" class="w-full px-[15px] py-[15px] rounded-[15px] border"></textarea>
+                            <textarea rows="4" placeholder="Cuéntanos cómo podemos ayudar" class="w-full px-[16px] py-[16px] rounded-[16px] border"></textarea>
                         </div>
 
                         <div class="md:col-span-2 space-y-3 pt-3 border-t" style="border-color: var(--glass-border);">
@@ -274,7 +274,7 @@
                         </div>
 
                         <div class="md:col-span-2 mt-2">
-                            <button type="submit" class="w-full py-[15px] bg-green-600 hover:bg-green-700 text-white font-bold rounded-[15px] transition-all active:scale-[0.98] flex items-center justify-center gap-2 group">
+                            <button type="submit" class="w-full py-[16px] bg-green-600 hover:bg-green-700 text-white font-bold rounded-[16px] transition-all active:scale-[0.98] flex items-center justify-center gap-2 group">
                                 <span>Consulta sin compromiso</span>
                                 <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
                             </button>
@@ -340,22 +340,22 @@
                     <h2 class="text-4xl font-extrabold heading-text uppercase tracking-tight">¿Cómo tokenizamos tu inmueble?</h2>
                 </div>
                 <div class="grid md:grid-cols-3 gap-10">
-                    <div class="infra-card-style p-10 rounded-[30px] text-center reveal-growth delay-100" style="border-left-color: #22c55e;">
-                        <div class="w-12 h-12 mx-auto mb-8 rounded-[15px] bg-green-500/10 flex items-center justify-center text-green-500">
+                    <div class="infra-card-style p-10 rounded-[32px] text-center reveal-growth delay-100" style="border-left-color: #22c55e;">
+                        <div class="w-12 h-12 mx-auto mb-8 rounded-[16px] bg-green-500/10 flex items-center justify-center text-green-500">
                             <i data-lucide="building-2" class="w-6 h-6"></i>
                         </div>
                         <h4 class="text-2xl font-semibold heading-text mb-4 uppercase tracking-tight">1. Activo Real</h4>
                         <p class="body-text text-base">Evaluamos tu activo y te ayudamos a estructurar la tokenización, ya sea equity o deuda.</p>
                     </div>
-                    <div class="infra-card-style p-10 rounded-[30px] text-center reveal-growth delay-200" style="border-left-color: #3b82f6;">
-                        <div class="w-12 h-12 mx-auto mb-8 rounded-[15px] bg-blue-500/10 flex items-center justify-center text-blue-500">
+                    <div class="infra-card-style p-10 rounded-[32px] text-center reveal-growth delay-200" style="border-left-color: #3b82f6;">
+                        <div class="w-12 h-12 mx-auto mb-8 rounded-[16px] bg-blue-500/10 flex items-center justify-center text-blue-500">
                             <i data-lucide="coins" class="w-6 h-6"></i>
                         </div>
                         <h4 class="text-2xl font-semibold heading-text mb-4 uppercase tracking-tight">2. Financiación</h4>
                         <p class="body-text text-base">Proporcionamos la infraestructura y cobertura regulatoria para la venta de tokens, tanto en comunidades privadas como en canales regulados.</p>
                     </div>
-                    <div class="infra-card-style p-10 rounded-[30px] text-center reveal-growth delay-300" style="border-left-color: #8b5cf6;">
-                        <div class="w-12 h-12 mx-auto mb-8 rounded-[15px] bg-purple-500/10 flex items-center justify-center text-purple-500">
+                    <div class="infra-card-style p-10 rounded-[32px] text-center reveal-growth delay-300" style="border-left-color: #8b5cf6;">
+                        <div class="w-12 h-12 mx-auto mb-8 rounded-[16px] bg-purple-500/10 flex items-center justify-center text-purple-500">
                             <i data-lucide="arrow-left-right" class="w-6 h-6"></i>
                         </div>
                         <h4 class="text-2xl font-semibold heading-text mb-4 uppercase tracking-tight">3. Negociación</h4>
@@ -397,7 +397,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
                         <div class="col-span-1 p-6 rounded-[1.5rem] relative overflow-hidden group hover:-translate-y-1 min-h-[140px] flex flex-col justify-center infra-card-style" style="border-left-color: #22c55e;">
                             <div class="relative z-10 flex flex-col items-start gap-3">
-                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[15px] flex items-center justify-center shrink-0" style="background-color: var(--card-hover-bg); color: #22c55e;">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[16px] flex items-center justify-center shrink-0" style="background-color: var(--card-hover-bg); color: #22c55e;">
                                     <i data-lucide="zap" class="w-4 h-4 md:w-5 md:h-5"></i>
                                 </div>
                                 <div>
@@ -409,7 +409,7 @@
                         </div>
                         <div class="col-span-1 p-6 rounded-[1.5rem] relative overflow-hidden group hover:-translate-y-1 min-h-[140px] flex flex-col justify-center infra-card-style" style="border-left-color: #3b82f6;">
                             <div class="relative z-10 flex flex-col items-start gap-3">
-                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[15px] flex items-center justify-center shrink-0" style="background-color: var(--card-hover-bg); color: #3b82f6;">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[16px] flex items-center justify-center shrink-0" style="background-color: var(--card-hover-bg); color: #3b82f6;">
                                     <i data-lucide="globe" class="w-4 h-4 md:w-5 md:h-5"></i>
                                 </div>
                                 <div>
@@ -421,7 +421,7 @@
                         </div>
                         <div class="col-span-1 p-6 rounded-[1.5rem] relative overflow-hidden group hover:-translate-y-1 min-h-[140px] flex flex-col justify-center infra-card-style" style="border-left-color: #22c55e;">
                             <div class="relative z-10 flex flex-col items-start gap-3">
-                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[15px] flex items-center justify-center shrink-0" style="background-color: var(--card-hover-bg); color: #22c55e;">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-[16px] flex items-center justify-center shrink-0" style="background-color: var(--card-hover-bg); color: #22c55e;">
                                     <i data-lucide="settings" class="w-4 h-4 md:w-5 md:h-5"></i>
                                 </div>
                                 <div>
@@ -445,8 +445,8 @@
                     <p class="body-text text-base mt-4 max-w-2xl mx-auto">Para transformar el sector inmobiliario.</p>
                 </div>
                 <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                    <div class="infra-card-style p-8 rounded-[30px] reveal-growth delay-100 flex flex-col gap-4" style="border-left-color: #22c55e;">
-                        <div class="w-12 h-12 rounded-[15px] bg-green-500/10 flex items-center justify-center text-green-500">
+                    <div class="infra-card-style p-8 rounded-[32px] reveal-growth delay-100 flex flex-col gap-4" style="border-left-color: #22c55e;">
+                        <div class="w-12 h-12 rounded-[16px] bg-green-500/10 flex items-center justify-center text-green-500">
                             <i data-lucide="handshake" class="w-6 h-6"></i>
                         </div>
                         <div>
@@ -454,8 +454,8 @@
                             <p class="body-text text-sm">Asesoramiento especializado en inversión y estructuración de activos inmobiliarios tokenizados.</p>
                         </div>
                     </div>
-                    <div class="infra-card-style p-8 rounded-[30px] reveal-growth delay-200 flex flex-col gap-4" style="border-left-color: #3b82f6;">
-                        <div class="w-12 h-12 rounded-[15px] bg-blue-500/10 flex items-center justify-center text-blue-500">
+                    <div class="infra-card-style p-8 rounded-[32px] reveal-growth delay-200 flex flex-col gap-4" style="border-left-color: #3b82f6;">
+                        <div class="w-12 h-12 rounded-[16px] bg-blue-500/10 flex items-center justify-center text-blue-500">
                             <i data-lucide="users" class="w-6 h-6"></i>
                         </div>
                         <div>

@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Token City | Codigoo</title>
+    <title>Token City | Codigoo — Caso de éxito</title>
     <meta name="description" content="Codigoo tokeniza su operativa de contenido audiovisual con Token City: identidad, metadatos, wallets y recompensas integrados vía API.">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,762 +15,484 @@
                 extend: {
                     colors: {
                         'azul-acero': {
-                            50: '#F3F7FC',
-                            100: '#DCE6F5',
-                            200: '#A3BBE3',
-                            300: '#7499D6',
-                            400: '#4677C8',
-                            500: '#1855BA',
-                            600: '#134495',
-                            700: '#0E3370',
-                            800: '#0A224A',
-                            900: '#051125',
-                            950: '#020813'
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
                         }
                     }
                 }
             }
         };
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="tcav-components.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles-tcav.css">
 
     <script>
         (function () {
             const savedTheme = localStorage.getItem('themePreference');
             let isLight;
-            if (savedTheme) {
-                isLight = savedTheme === 'light';
-            } else {
+            if (savedTheme) { isLight = savedTheme === 'light'; }
+            else {
                 const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 const hour = new Date().getHours();
-                const nightTime = (hour >= 19 || hour < 7);
-                isLight = !systemDark && !nightTime;
+                isLight = !systemDark && !(hour >= 19 || hour < 7);
             }
-
-            if (isLight) {
-                document.documentElement.classList.remove('dark');
-            } else {
-                document.documentElement.classList.add('dark');
-            }
+            if (isLight) document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
             window.__isThemeLight = isLight;
         })();
     </script>
 
     <style>
+        /* ─────────────────────────────────────────
+           VARIABLES  (editar por cliente)
+           ───────────────────────────────────────── */
         :root {
-            --primary-blue: #1855BA;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --bg-color: #f8fafc;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --nav-text: #ffffff;
-            --nav-text-muted: #9ca3af;
-            --nav-bg: rgba(5, 7, 10, 0.95);
-        }
+            --accent:        #06b6d4;     /* color de acento del cliente     */
+            --accent-rgb:    6,182,212;   /* mismo en RGB para rgba()        */
+            --accent-hover:  #0891b2;     /* hover del botón principal       */
 
+            /* sistema */
+            --primary-blue:  #1855BA;
+            --text-main:     #0f172a;
+            --text-muted:    #475569;     /* AA ≥4.5:1 sobre bg claro        */
+            --bg-color:      #f8fafc;
+            --glass-bg:      rgba(255,255,255,0.85);
+            --glass-border:  rgba(0,0,0,0.1);
+            --nav-bg:        rgba(5,7,10,0.95);
+            --nav-text:      #ffffff;
+            --nav-text-muted:#9ca3af;
+        }
         body:not(.light-mode) {
-            --text-main: #ffffff;
-            --text-muted: #9ca3af;
-            --bg-color: #05070a;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --nav-text: #ffffff;
-            --nav-text-muted: #9ca3af;
-            --nav-bg: rgba(5, 7, 10, 0.95);
+            --text-main:    #ffffff;
+            --text-muted:   #94a3b8;      /* AA ≥4.5:1 sobre #05070a        */
+            --bg-color:     #05070a;
+            --glass-bg:     rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.09);
         }
 
-        .heading-text {
-            color: var(--text-main);
-        }
-
-        .body-text {
-            color: var(--text-muted);
-        }
-
+        /* ─── Tipografía / layout base ─── */
+        .heading-text { color: var(--text-main); }
+        .body-text    { color: var(--text-muted); }
         .section-label {
-            color: var(--primary-blue);
-            font-weight: 700;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+            font-weight: 700; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent);
         }
+        body:not(.light-mode) .section-label { color: #7eb3ff; }
 
-        body:not(.light-mode) .section-label {
-            color: #60a5fa;
+        /* ─── Hero — siempre oscuro, no cambia con el tema ─── */
+        .hero-wrap {
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: var(--space-5) var(--space-3) 0;
+            min-height: 80vh; /* TEMP: para poder ver el parallax al aprobar diseño */
         }
-
-        .hero-team .section-label {
-            color: #60a5fa;
+        /* Parallax real: la imagen se fija a la ventana (no al hero-wrap) y la
+           siguiente sección (opaca) la cubre de forma natural al hacer scroll. */
+        .hero-bg {
+            position: fixed; inset: 0;
+            z-index: -1;
+            background-image: url('mercado.jpg'); /* ← cambiar por cliente */
+            background-size: cover; background-position: center;
         }
-
-        .hero-team {
-            position: relative;
-            overflow: hidden;
-            background: #05070a;
+        @media (max-width: 768px) {
+            /* position:fixed backgrounds son poco fiables en iOS Safari */
+            .hero-bg { position: absolute; }
         }
-
-        .hero-media {
-            position: absolute;
-            inset: 0;
-            background-image: url('https://cms-prod.token-city.com/wp-content/uploads/2026/03/Codigoo-recompensas-tokenizadas-promocion-1568x875.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transform: scale(1.03);
-        }
-
-        .partner-logo-badge {
-            width: 160px;
-            height: 160px;
-            border-radius: var(--radius-md);
-            background: rgba(255, 255, 255, 0.08);
-            border: 1.5px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: var(--space-3);
-            margin: 0 auto var(--space-3);
-            box-shadow: 0 0 60px rgba(6, 182, 212, 0.15);
-        }
-
-        /* ─── Testimonio ─── */
-        .testimonial-quote-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: var(--radius-circle);
-            background: rgba(24, 85, 186, 0.12);
-            border: 1px solid rgba(24, 85, 186, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-blue);
-            margin: 0 auto var(--space-3);
-        }
-        body:not(.light-mode) .testimonial-quote-icon { color: #60a5fa; }
-
-        /* ─── Vídeo ─── */
-        .video-frame {
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-        }
-        .video-frame video { display: block; width: 100%; height: auto; background: #000; }
-
-        /* ─── Imagen de sección ─── */
-        .content-image-frame {
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-        }
-        .content-image-frame img { display: block; width: 100%; height: auto; }
-
-        /* ─── Feature icon ─── */
-        .feature-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: var(--radius-sm);
-            background: rgba(24, 85, 186, 0.12);
-            border: 1px solid rgba(24, 85, 186, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-blue);
-            margin-bottom: 1.25rem;
-        }
-        body:not(.light-mode) .feature-icon { color: #60a5fa; }
-
-        /* ─── Bullet destacado ─── */
-        .highlight-row {
-            display: flex;
-            align-items: flex-start;
-            gap: var(--space-2);
-            padding: var(--space-2) 0;
-            text-align: left;
-        }
-        .highlight-dot {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-xs);
-            flex-shrink: 0;
-            background: rgba(24, 85, 186, 0.12);
-            border: 1px solid rgba(24, 85, 186, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-blue);
-        }
-        body:not(.light-mode) .highlight-dot { color: #60a5fa; }
-
         .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(5,7,10,0.85) 0%, rgba(5,7,10,0.96) 60%, #05070a 100%);
         }
-
+        body.light-mode .hero-overlay {
+            background: linear-gradient(rgba(5, 7, 10, 0.85) 0%, rgb(5 7 10 / 50%) 50%, #f8fafc 100%);
+        }
         .hero-grid {
+            position: absolute; inset: 0;
             background-image:
-                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
             background-size: 40px 40px;
-            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent 80%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent 80%);
+        }
+        .hero-glow {
+            position: absolute; top: 40%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 65%);
+            opacity: 0.07; pointer-events: none;
         }
 
-        body.light-mode .hero-grid {
-            background-image:
-                linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+        /* textos del hero — fijos en claro sobre oscuro */
+        .hero-wrap .heading-text,
+        .hero-wrap h1 { color: #ffffff !important; }
+        .hero-wrap .body-text,
+        .hero-wrap p:not(.section-label):not(.hero-tagline) { color: #cbd5e1 !important; }
+        .hero-wrap .section-label { color: #7eb3ff !important; }
+        .hero-tagline { color: #cbd5e1; }
+        body.light-mode .hero-tagline { color: #0f172a; }
+
+
+        .hero-muted-link {
+            display: inline-flex; align-items: center; gap: var(--space-1);
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-button);
+            background: transparent;
+            color: #e2e8f0;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+        body.light-mode .hero-muted-link {
+            color: #0f172a;
+        }
+        .hero-muted-link:hover {
+            background: rgba(var(--accent-rgb), 0.1);
+            color: var(--accent);
         }
 
-        .team-card {
+        /* Keep this link visible even if reveal observer is delayed/fails. */
+        .hero-wrap .hero-muted-link.reveal-growth {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ─── Logo — glass transparente ─── */
+        .logo-container {
+            width: 160px; height: 160px;
+            border-radius: var(--radius-md);
+            background: rgba(255,255,255,0.08);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex; align-items: center; justify-content: center;
+            padding: var(--space-2);
+            box-shadow: 0 0 60px rgba(var(--accent-rgb), 0.2);
+        }
+
+        /* ─── Tags ─── */
+        .ptag {
+            display: inline-flex; align-items: center; gap: var(--space-1);
+            padding: var(--space-1) var(--space-2); border-radius: var(--radius-pill);
+            font-size: 0.7rem; font-weight: 700;
+        }
+        /* dark — todos sobre fondo ~#05070a */
+        .ptag-sector { background: rgba(var(--accent-rgb),0.18); color: #7eb3ff; border: 1px solid rgba(var(--accent-rgb),0.35); }
+        .ptag-market { background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.14); }
+        .ptag-token  { background: transparent; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.22); }
+        /* light — sobre fondo ~#f8fafc (cards section) */
+        body.light-mode .ptag-sector { background: rgba(var(--accent-rgb),0.08); color: var(--accent); border-color: rgba(var(--accent-rgb),0.25); }
+        body.light-mode .ptag-market { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+        body.light-mode .ptag-token  { background: transparent; color: #334155; border-color: #94a3b8; }
+
+        /* hero siempre oscuro — revertir light-mode en los tags del hero */
+        body.light-mode .hero-wrap .ptag-sector { background: rgba(var(--accent-rgb),0.18); color: #7eb3ff; border-color: rgba(var(--accent-rgb),0.35); }
+        body.light-mode .hero-wrap .ptag-market { background: rgba(255,255,255,0.08); color: #cbd5e1; border-color: rgba(255,255,255,0.14); }
+        body.light-mode .hero-wrap .ptag-token  { background: transparent; color: #cbd5e1; border-color: rgba(255,255,255,0.22); }
+
+        /* ─── Info cards ─── */
+        .info-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius-md);
-            overflow: hidden;
-            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-            backdrop-filter: blur(6px);
+            padding: var(--space-3) var(--space-3);
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            contain: layout paint style;
         }
-
-        .team-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(24, 85, 186, 0.6);
-            box-shadow: 0 20px 50px rgba(24, 85, 186, 0.2);
+        .info-card:hover {
+            border-color: rgba(var(--accent-rgb), 0.4);
+            box-shadow: 0 20px 50px rgba(var(--accent-rgb), 0.12);
         }
-
-        .team-image {
-            height: 260px;
-            width: 100%;
-            object-fit: cover;
-            object-position: center;
-            background: linear-gradient(135deg, #0b1426, #1a315d);
+        .info-icon {
+            width: 52px; height: 52px; border-radius: var(--radius-sm);
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.2);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent); margin-bottom: 1.25rem;
         }
-
-        .team-role {
-            color: #60a5fa;
-            letter-spacing: 0.12em;
-            font-weight: 800;
-            font-size: 0.68rem;
-            text-transform: uppercase;
+        body:not(.light-mode) .info-icon { color: #7eb3ff; }
+        .info-title {
+            font-size: 0.65rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--accent); margin-bottom: 0.5rem;
         }
+        body:not(.light-mode) .info-title { color: #7eb3ff; }
 
-        body.light-mode .team-role {
-            color: #1855BA;
-        }
-
-        .team-link {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-1);
-            color: #93c5fd;
-            font-size: 0.82rem;
-            font-weight: 700;
-            padding: var(--space-1) var(--space-2);
-            border-radius: var(--radius-sm);
-            background: transparent;
-            text-decoration: none;
-            transition: background-color 0.25s ease, color 0.25s ease;
-        }
-
-        .team-link:hover {
-            background: rgba(96, 165, 250, 0.15);
-            color: #ffffff;
-        }
-
-        body.light-mode .team-link {
-            color: #1855BA;
-        }
-
-        body.light-mode .team-link:hover {
-            background: rgba(24, 85, 186, 0.1);
-            color: #1855BA;
-        }
-
-        .nav-item {
-            position: relative;
-            padding: var(--space-3) 0;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: var(--space-1);
-            transition: color 0.3s ease;
-        }
-
-        .nav-item:hover .nav-link {
-            color: #4f86ed;
-        }
-
-        .nav-item:hover .nav-link i {
-            opacity: 1;
-            transform: rotate(180deg);
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .nav-link i {
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .mega-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            width: 90vw;
-            max-width: 1000px;
-            background: var(--nav-bg);
+        /* ─── Contenido del caso de éxito ─── */
+        .case-card {
+            background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius-md);
+            /* R2 = R1 + D: radio de los elementos internos (--radius-sm) + su padding (--space-3) */
+            border-radius: calc(var(--radius-sm) + var(--space-3));
             padding: var(--space-3);
-            opacity: 0;
-            visibility: hidden;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            z-index: 100;
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
         }
-
-        .nav-item:hover .mega-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
+        .case-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(var(--accent-rgb), 0.4);
+            box-shadow: 0 20px 45px rgba(var(--accent-rgb), 0.12);
         }
-
-        .mega-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: var(--space-3);
+        body:not(.light-mode) .case-card {
+            background: rgba(10, 20, 40, 0.78);
+            border-color: rgba(var(--accent-rgb), 0.25);
         }
-
-        .mega-title {
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #60a5fa;
-            margin-bottom: 1rem;
-            display: block;
+        .testimonial-quote-icon {
+            width: 52px; height: 52px; border-radius: var(--radius-circle);
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent); margin: 0 auto var(--space-3);
         }
-
-        .mega-link {
-            display: block;
-            padding: var(--space-1) 0;
-            font-size: 0.875rem;
-            color: var(--nav-text-muted);
-            transition: all 0.2s ease;
+        body:not(.light-mode) .testimonial-quote-icon { color: #7eb3ff; }
+        .need-row { display: flex; align-items: flex-start; gap: var(--space-2); padding: var(--space-1) 0; }
+        .need-dot {
+            width: 28px; height: 28px; border-radius: var(--radius-xs); flex-shrink: 0;
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            display: flex; align-items: center; justify-content: center; color: var(--accent);
         }
-
-        .mega-link:hover {
-            color: var(--nav-text);
-            padding-left: 0.5rem;
+        body:not(.light-mode) .need-dot { color: #7eb3ff; }
+        .video-embed {
+            position: relative; width: 100%; padding-top: 56.25%;
+            border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--glass-border);
         }
-
-        .mega-link.active {
-            color: #ffffff;
-            font-weight: 700;
+        .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .video-embed video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
+        .content-image-frame { border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--glass-border); }
+        .content-image-frame img { display: block; width: 100%; height: auto; }
+        .highlight-row { display: flex; align-items: flex-start; gap: var(--space-2); padding: var(--space-2) 0; }
+        .highlight-dot {
+            width: 32px; height: 32px; border-radius: var(--radius-xs); flex-shrink: 0;
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            display: flex; align-items: center; justify-content: center; color: var(--accent);
         }
-
-        #navOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 40;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
+        body:not(.light-mode) .highlight-dot { color: #7eb3ff; }
+        .usecase-icon {
+            width: 52px; height: 52px; border-radius: var(--radius-sm);
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.2);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent); margin-bottom: 1.25rem;
         }
-
-        body:has(.nav-item:hover) #navOverlay {
-            opacity: 1;
-            visibility: visible;
+        body:not(.light-mode) .usecase-icon { color: #7eb3ff; }
+        .promo-card {
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: linear-gradient(145deg, #1855BA, #0d3a8a);
+            color: #ffffff; padding: var(--space-4) var(--space-3); text-align: center;
         }
-
-        #mobileDrawer {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            max-width: 400px;
-            background: var(--nav-bg);
-            backdrop-filter: blur(20px);
-            z-index: 100;
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            border-left: 1px solid var(--glass-border);
+        .promo-title { font-size: clamp(1.4rem, 2.4vw, 2rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.7rem; }
+        .promo-text { color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; }
+        .promo-button {
+            display: inline-flex; align-items: center; gap: var(--space-1);
+            border-radius: var(--radius-pill); padding: var(--space-2) var(--space-3);
+            background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff; font-weight: 700; font-size: 0.9rem;
+            transition: background-color 0.25s ease;
         }
+        .promo-button:hover { background: rgba(255, 255, 255, 0.26); }
 
-        #mobileDrawer.open {
-            transform: translateX(0);
-        }
-
-        .mobile-link {
-            padding: var(--space-2) var(--space-3);
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--nav-text);
-            font-weight: 600;
-        }
-
-        .mobile-submenu {
-            background: rgba(255, 255, 255, 0.03);
-            display: none;
-            padding-left: 1rem;
-        }
-
-        .mobile-submenu.open {
-            display: block;
-        }
-
-        .theme-toggle {
-            position: relative;
-            width: 52px;
-            height: 28px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-pill);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 var(--space-1);
-        }
-
-        .theme-toggle-thumb {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 22px;
-            height: 22px;
-            background-color: #ffffff;
-            border-radius: var(--radius-circle);
-            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            z-index: 2;
-        }
-
-        .toggle-track-icon {
-            color: #94a3b8;
-            width: 12px;
-            height: 12px;
-            z-index: 1;
-        }
-
-        .thumb-icon {
-            width: 12px;
-            height: 12px;
-            color: var(--primary-blue);
-        }
-
-        body.light-mode .theme-toggle-thumb {
-            transform: translateX(24px);
-        }
-
-        .lang-toggle {
-            display: flex;
-            align-items: center;
-            gap: var(--space-1);
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .lang-label {
-            font-size: 10px;
-            font-weight: 800;
-            color: #a1a1aa;
-            transition: color 0.3s ease;
-        }
-
-        .lang-label.active {
-            color: #ffffff;
-        }
-
-        .lang-switch-track {
-            position: relative;
-            width: 32px;
-            height: 16px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: var(--radius-pill);
-        }
-
-        .lang-switch-thumb {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 10px;
-            height: 10px;
-            background-color: #ffffff;
-            border-radius: var(--radius-circle);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        body.lang-en .lang-switch-thumb {
-            transform: translateX(16px);
-        }
-
-        .controls-bar {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-            padding: var(--space-1) var(--space-2);
-            background: rgba(5, 7, 10, 0.95);
+        /* ─── CTA section ─── */
+        .cta-wrap {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-pill);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            padding: var(--space-3) var(--space-3);
+            text-align: center;
         }
 
-        .controls-bar .theme-toggle {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .controls-bar .toggle-track-icon {
-            color: #ffffff;
-        }
-
-        .controls-bar .thumb-icon {
-            color: var(--primary-blue);
-        }
-
-        .controls-bar .lang-switch-track {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
+        /* ─── Reveal ─── */
         .reveal-growth {
-            opacity: 0;
-            transform: scale(0.92) translateY(40px);
-            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0; transform: scale(0.93) translateY(36px);
+            transition: all 1.1s cubic-bezier(0.34,1.56,0.64,1);
         }
+        .reveal-growth.active { opacity: 1; transform: scale(1) translateY(0); }
+        .delay-100 { transition-delay: 160ms; }
+        .delay-200 { transition-delay: 320ms; }
+        .delay-300 { transition-delay: 480ms; }
 
-        .reveal-growth.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
+        /* ─── Nav ─── */
+        .nav-item { position: relative; padding: var(--space-3) 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link { display: flex; align-items: center; gap: var(--space-1); transition: color 0.3s ease; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .nav-item:hover .nav-link i { opacity: 1; transform: rotate(180deg); transition: transform 0.3s ease; }
+        .nav-link i { transition: transform 0.3s ease; }
+        .mega-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius: var(--radius-md); padding: var(--space-3); opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100; }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        #navOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+        #mobileDrawer { position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px; background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; border-left: 1px solid var(--glass-border); }
+        #mobileDrawer.open { transform: translateX(0); }
 
-        .reveal-growth.reverse {
-            opacity: 0;
-            transform: scale(0.92) translateY(-40px);
-        }
-
-        .reveal-growth.reverse.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
-
-        .hero-copy {
-            color: #e2e8f0;
-        }
-
-        body.light-mode .hero-copy {
-            color: #0f172a;
-        }
-
-        .delay-100 {
-            transition-delay: 180ms;
-        }
-
-        .delay-200 {
-            transition-delay: 360ms;
-        }
-
-        .delay-300 {
-            transition-delay: 540ms;
-        }
-
-        body.light-mode .hero-team-title {
-            color: #ffffff;
-        }
-
-        @media (max-width: 640px) {
-            .team-image {
-                height: 220px;
-            }
-
-            .controls-bar {
-                right: 12px;
-                bottom: 16px;
-                padding: var(--space-1) var(--space-2);
-                gap: var(--space-1);
-            }
-        }
+        /* ─── Controls ─── */
+        .theme-toggle { position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1); border-radius: var(--radius-pill); cursor: pointer; border: 1px solid rgba(255,255,255,0.2); overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-1); }
+        .theme-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background-color: #ffffff; border-radius: var(--radius-circle); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+        .lang-toggle { display: flex; align-items: center; gap: var(--space-1); cursor: pointer; user-select: none; }
+        .lang-label { font-size: 10px; font-weight: 800; color: #a1a1aa; transition: color 0.3s ease; }
+        .lang-label.active { color: #ffffff; }
+        .lang-switch-track { position: relative; width: 32px; height: 16px; background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-pill); }
+        .lang-switch-thumb { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; background-color: #ffffff; border-radius: var(--radius-circle); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        body.lang-en .lang-switch-thumb { transform: translateX(16px); }
+        .controls-bar { position: fixed; bottom: 24px; right: 24px; z-index: 100; display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2); background: rgba(5,7,10,0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-pill); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .controls-bar .theme-toggle { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); }
+        .controls-bar .toggle-track-icon { color: #ffffff; }
+        .controls-bar .thumb-icon { color: var(--primary-blue); }
+        .controls-bar .lang-switch-track { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
+        @media (max-width: 640px) { .controls-bar { right: 12px; bottom: 16px; padding: var(--space-1) var(--space-2); gap: var(--space-1); } }
     </style>
 </head>
 
 <body>
-    <script>
-        if (window.__isThemeLight) document.body.classList.add('light-mode');
-    </script>
+    <script>if (window.__isThemeLight) document.body.classList.add('light-mode');</script>
 
     <div id="navOverlay"></div>
     <div data-component="components/header-component.html"></div>
 
     <main>
+
         <!-- ════════════════════════════════════════
-             HERO — con degradado hero-media/hero-overlay
+             HERO
         ════════════════════════════════════════ -->
-        <section class="hero-team min-h-[70vh] pt-28 md:pt-36 pb-16 px-6 overflow-hidden">
-            <div class="hero-media"></div>
+        <section class="hero-wrap">
+            <div class="hero-bg"></div>
             <div class="hero-overlay"></div>
-            <div class="hero-grid absolute inset-0"></div>
-            <div class="relative max-w-4xl mx-auto text-center">
-                <div class="reveal-growth delay-100">
-                    <div class="partner-logo-badge">
-                        <img src="Logos/codigoo.png" alt="Codigoo" class="w-full h-full object-contain">
+            <div class="hero-grid"></div>
+            <div class="hero-glow"></div>
+
+            <div class="relative z-10 max-w-xl w-full mx-auto text-center flex flex-col items-center">
+
+                <!-- Breadcrumb -->
+                <a href="marketplace.html"
+                    class="inline-flex items-center gap-1.5 text-xs font-bold mb-10 group"
+                    style="color: #94a3b8;">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1"></i>
+                    <span class="lang-es">Marketplace</span>
+                    <span class="lang-en">Marketplace</span>
+                </a>
+
+                <!-- LOGO — protagonista -->
+                <div class="logo-container mb-8 reveal-growth">
+                    <img src="Logos/codigoo.png" alt="Codigoo" class="w-full h-full object-contain">
+                </div>
+
+                <!-- Tags -->
+                <div class="flex flex-wrap gap-2 justify-center mb-6 reveal-growth delay-100">
+                    <span class="ptag ptag-sector">
+                        <i data-lucide="clapperboard" class="w-3 h-3"></i>
+                        <span class="lang-es">Caso de éxito</span><span class="lang-en">Success story</span>
+                    </span>
+                </div>
+
+                <!-- Nombre y tagline -->
+                <h1 class="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-4 reveal-growth delay-100">
+                    Codigoo
+                </h1>
+                <p class="hero-tagline text-base mb-8 reveal-growth delay-200 max-w-sm mx-auto" style="line-height: 1.6;">
+                    <span class="lang-es">Infraestructura API para integrar identidad, metadatos y operativa tokenizada en una experiencia propia de contenido y fidelización.</span>
+                    <span class="lang-en">API infrastructure to embed identity, metadata and tokenized operations into a proprietary content and loyalty experience.</span>
+                </p>
+
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════════════
+             CONTENIDO DEL CASO DE ÉXITO
+        ════════════════════════════════════════ -->
+        <section class="px-6 pt-[64px] pb-20" style="background: var(--bg-color);">
+            <div class="max-w-3xl mx-auto space-y-8">
+
+                <!-- TESTIMONIO -->
+                <article class="case-card reveal-growth text-center">
+                    <div class="testimonial-quote-icon">
+                        <i data-lucide="quote" class="w-5 h-5"></i>
                     </div>
-                    <p class="section-label mb-4"><span class="lang-es">Caso de éxito · Marketplace</span><span class="lang-en">Success story · Marketplace</span></p>
-                    <h1 class="hero-team-title text-4xl md:text-6xl font-extrabold leading-tight text-white mb-4">
-                        Codigoo
-                    </h1>
-                    <p class="hero-copy text-base md:text-lg max-w-2xl mx-auto opacity-90">
-                        <span class="lang-es">Infraestructura API para integrar identidad, metadatos y operativa tokenizada en una experiencia propia de contenido y fidelización.</span>
-                        <span class="lang-en">API infrastructure to embed identity, metadata and tokenized operations into a proprietary content and loyalty experience.</span>
+                    <p class="text-lg md:text-xl font-medium heading-text leading-relaxed mb-4 lang-es">
+                        "Queríamos crear una experiencia completamente intuitiva para el usuario, con una capa tecnológica lo menos visible posible. La integración vía API con Token City nos permite activar wallets, tokens y lógica transaccional en segundo plano, reforzando nuestro modelo de contenido, metadatos y recompensas digitales."
                     </p>
-                </div>
-            </div>
-        </section>
+                    <p class="text-lg md:text-xl font-medium heading-text leading-relaxed mb-4 lang-en">
+                        "We wanted a completely intuitive experience for the user, with as little visible technology layer as possible. The API integration with Token City lets us activate wallets, tokens and transactional logic in the background, reinforcing our content, metadata and digital rewards model."
+                    </p>
+                    <p class="text-sm font-bold body-text">— Unai Ortuzar, <span class="lang-es">CEO de Codigoo</span><span class="lang-en">CEO of Codigoo</span></p>
+                </article>
 
-        <!-- ════════════════════════════════════════
-             TESTIMONIO
-        ════════════════════════════════════════ -->
-        <section class="px-6 pt-16">
-            <div class="max-w-3xl mx-auto team-card p-8 md:p-12 reveal-growth text-center">
-                <div class="testimonial-quote-icon">
-                    <i data-lucide="quote" class="w-5 h-5"></i>
-                </div>
-                <p class="text-lg md:text-xl font-medium heading-text leading-relaxed mb-4 lang-es">
-                    "Queríamos crear una experiencia completamente intuitiva para el usuario, con una capa tecnológica lo menos visible posible. La integración vía API con Token City nos permite activar wallets, tokens y lógica transaccional en segundo plano, reforzando nuestro modelo de contenido, metadatos y recompensas digitales."
-                </p>
-                <p class="text-lg md:text-xl font-medium heading-text leading-relaxed mb-4 lang-en">
-                    "We wanted a completely intuitive experience for the user, with as little visible technology layer as possible. The API integration with Token City lets us activate wallets, tokens and transactional logic in the background, reinforcing our content, metadata and digital rewards model."
-                </p>
-                <p class="text-sm font-bold body-text">— Unai Ortuzar, <span class="lang-es">CEO de Codigoo</span><span class="lang-en">CEO of Codigoo</span></p>
-            </div>
-        </section>
+                <!-- DEL CONTENIDO A LA ACTIVACIÓN DIGITAL + VÍDEO -->
+                <article class="case-card reveal-growth delay-100">
+                    <p class="section-label mb-3 text-center lang-es">Del contenido a la activación</p>
+                    <p class="section-label mb-3 text-center lang-en">From content to activation</p>
+                    <h2 class="text-2xl font-extrabold heading-text tracking-tight mb-4 text-center lang-es">Del contenido a la activación digital</h2>
+                    <h2 class="text-2xl font-extrabold heading-text tracking-tight mb-4 text-center lang-en">From content to digital activation</h2>
 
-        <!-- ════════════════════════════════════════
-             DEL CONTENIDO A LA ACTIVACIÓN DIGITAL + VÍDEO
-        ════════════════════════════════════════ -->
-        <section class="px-6 py-20">
-            <div class="max-w-3xl mx-auto">
-                <p class="section-label mb-3 text-center lang-es">Del contenido a la activación</p>
-                <p class="section-label mb-3 text-center lang-en">From content to activation</p>
-                <h2 class="text-2xl md:text-3xl font-extrabold heading-text tracking-tight mb-6 text-center reveal-growth lang-es">Del contenido a la activación digital</h2>
-                <h2 class="text-2xl md:text-3xl font-extrabold heading-text tracking-tight mb-6 text-center reveal-growth lang-en">From content to digital activation</h2>
+                    <p class="text-sm leading-relaxed body-text mb-4 lang-es">Codigoo nace para resolver una necesidad concreta del sector audiovisual: registrar contenido y metadatos, organizar su uso dentro de un entorno digital propio y conectar esa actividad con dinámicas de recompensa para usuarios y comunidades. Su propuesta combina verificación de identidad, registro de metadatos, gestor de contenido personalizado y una lógica de interacción orientada a creadores, fans y marcas.</p>
+                    <p class="text-sm leading-relaxed body-text mb-4 lang-en">Codigoo was created to solve a specific need in the audiovisual sector: registering content and metadata, organizing its use within a proprietary digital environment, and connecting that activity with reward dynamics for users and communities. Its proposal combines identity verification, metadata registration, a custom content manager and an interaction logic aimed at creators, fans and brands.</p>
 
-                <p class="text-sm leading-relaxed body-text mb-4 reveal-growth delay-100 lang-es">Codigoo nace para resolver una necesidad concreta del sector audiovisual: registrar contenido y metadatos, organizar su uso dentro de un entorno digital propio y conectar esa actividad con dinámicas de recompensa para usuarios y comunidades. Su propuesta combina verificación de identidad, registro de metadatos, gestor de contenido personalizado y una lógica de interacción orientada a creadores, fans y marcas.</p>
-                <p class="text-sm leading-relaxed body-text mb-4 reveal-growth delay-100 lang-en">Codigoo was created to solve a specific need in the audiovisual sector: registering content and metadata, organizing its use within a proprietary digital environment, and connecting that activity with reward dynamics for users and communities. Its proposal combines identity verification, metadata registration, a custom content manager and an interaction logic aimed at creators, fans and brands.</p>
+                    <p class="text-sm leading-relaxed body-text mb-6 lang-es">El modelo exigía una experiencia sencilla para usuarios no especializados: acceso desde navegador, alta simple, pero con infraestructura capaz de abrir monederos digitales y habilitar operativas con tokens sin trasladar al usuario la complejidad técnica del backend.</p>
+                    <p class="text-sm leading-relaxed body-text mb-6 lang-en">The model required a simple experience for non-specialized users: browser access, simple sign-up, but with infrastructure capable of opening digital wallets and enabling token operations without exposing the user to backend technical complexity.</p>
 
-                <p class="text-sm leading-relaxed body-text mb-8 reveal-growth delay-100 lang-es">El modelo exigía una experiencia sencilla para usuarios no especializados: acceso desde navegador, alta simple, pero con infraestructura capaz de abrir monederos digitales y habilitar operativas con tokens sin trasladar al usuario la complejidad técnica del backend.</p>
-                <p class="text-sm leading-relaxed body-text mb-8 reveal-growth delay-100 lang-en">The model required a simple experience for non-specialized users: browser access, simple sign-up, but with infrastructure capable of opening digital wallets and enabling token operations without exposing the user to backend technical complexity.</p>
+                    <div class="video-embed">
+                        <video controls playsinline poster="https://cms-prod.token-city.com/wp-content/uploads/2026/03/Codigoo-recompensas-tokenizadas-promocion-1024x572.jpg">
+                            <source src="https://cms-prod.token-city.com/wp-content/uploads/2026/03/Codigoo-recompensas-tokenizadas-promocion.webm" type="video/webm">
+                        </video>
+                    </div>
+                </article>
 
-                <div class="video-frame reveal-growth delay-200">
-                    <video controls playsinline poster="https://cms-prod.token-city.com/wp-content/uploads/2026/03/Codigoo-recompensas-tokenizadas-promocion-1024x572.jpg">
-                        <source src="https://cms-prod.token-city.com/wp-content/uploads/2026/03/Codigoo-recompensas-tokenizadas-promocion.webm" type="video/webm">
-                    </video>
-                </div>
-            </div>
-        </section>
+                <!-- INFRAESTRUCTURA EMBEBIDA -->
+                <article class="case-card reveal-growth text-center">
+                    <h2 class="text-2xl font-extrabold heading-text tracking-tight mb-4 lang-es">Infraestructura embebida</h2>
+                    <h2 class="text-2xl font-extrabold heading-text tracking-tight mb-4 lang-en">Embedded infrastructure</h2>
+                    <p class="text-sm leading-relaxed body-text lang-es">Para hacerlo posible, Codigoo necesitaba una capa tecnológica que pudiera integrarse dentro de su propia plataforma sin romper la continuidad de la experiencia. Token City aporta esa infraestructura vía API, de modo que la lógica blockchain y la operativa de activos digitales quedan embebidas en el producto de Codigoo, en lugar de depender de un entorno externo.</p>
+                    <p class="text-sm leading-relaxed body-text lang-en">To make this possible, Codigoo needed a technology layer that could integrate within its own platform without breaking the continuity of the experience. Token City provides that infrastructure via API, so blockchain logic and digital asset operations remain embedded in Codigoo's product instead of depending on an external environment.</p>
+                </article>
 
-        <!-- ════════════════════════════════════════
-             INFRAESTRUCTURA EMBEBIDA
-        ════════════════════════════════════════ -->
-        <section class="px-6 pb-20">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-2xl md:text-3xl font-extrabold heading-text tracking-tight mb-6 reveal-growth lang-es">Infraestructura embebida</h2>
-                <h2 class="text-2xl md:text-3xl font-extrabold heading-text tracking-tight mb-6 reveal-growth lang-en">Embedded infrastructure</h2>
-                <p class="text-sm leading-relaxed body-text reveal-growth delay-100 lang-es">Para hacerlo posible, Codigoo necesitaba una capa tecnológica que pudiera integrarse dentro de su propia plataforma sin romper la continuidad de la experiencia. Token City aporta esa infraestructura vía API, de modo que la lógica blockchain y la operativa de activos digitales quedan embebidas en el producto de Codigoo, en lugar de depender de un entorno externo.</p>
-                <p class="text-sm leading-relaxed body-text reveal-growth delay-100 lang-en">To make this possible, Codigoo needed a technology layer that could integrate within its own platform without breaking the continuity of the experience. Token City provides that infrastructure via API, so blockchain logic and digital asset operations remain embedded in Codigoo's product instead of depending on an external environment.</p>
-            </div>
-        </section>
-
-        <!-- ════════════════════════════════════════
-             4 PILARES
-        ════════════════════════════════════════ -->
-        <section class="px-6 pb-20">
-            <div class="max-w-5xl mx-auto">
+                <!-- 4 PILARES -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    <div class="team-card p-8 reveal-growth">
-                        <div class="feature-icon">
-                            <i data-lucide="user-check" class="w-6 h-6"></i>
-                        </div>
+                    <article class="case-card reveal-growth">
+                        <div class="usecase-icon"><i data-lucide="user-check" class="w-6 h-6"></i></div>
                         <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3 lang-es">Onboarding para usuarios no especializados</h3>
                         <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3 lang-en">Onboarding for non-specialized users</h3>
                         <p class="text-sm leading-relaxed body-text lang-es">Sistema de onboarding pensado para usuarios sin conocimientos previos de blockchain, criptomonedas o finanzas digitales. La integración vía API sostiene una operativa invisible para el usuario, con una entrada sencilla desde web o móvil.</p>
                         <p class="text-sm leading-relaxed body-text lang-en">Onboarding system designed for users with no prior knowledge of blockchain, crypto or digital finance. The API integration keeps the operation invisible to the user, with a simple entry point from web or mobile.</p>
-                    </div>
+                    </article>
 
-                    <div class="team-card p-8 reveal-growth delay-100">
-                        <div class="feature-icon">
-                            <i data-lucide="fingerprint" class="w-6 h-6"></i>
-                        </div>
+                    <article class="case-card reveal-growth delay-100">
+                        <div class="usecase-icon"><i data-lucide="fingerprint" class="w-6 h-6"></i></div>
                         <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3 lang-es">Registro de metadatos y lógica de uso</h3>
                         <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3 lang-en">Metadata registration and usage logic</h3>
                         <p class="text-sm leading-relaxed body-text lang-es">Token City conecta el sistema propio de Codigoo para verificar identidad y registrar metadatos con una capa transaccional integrada, gestionando contenido, códigos únicos de uso y su lógica de explotación desde una única experiencia.</p>
                         <p class="text-sm leading-relaxed body-text lang-en">Token City connects Codigoo's own identity-verification and metadata-registration system with an integrated transactional layer, managing content, unique usage codes and exploitation logic from a single experience.</p>
-                    </div>
+                    </article>
 
-                    <div class="team-card p-8 reveal-growth delay-200">
-                        <div class="feature-icon">
-                            <i data-lucide="gift" class="w-6 h-6"></i>
-                        </div>
+                    <article class="case-card reveal-growth delay-200">
+                        <div class="usecase-icon"><i data-lucide="gift" class="w-6 h-6"></i></div>
                         <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3 lang-es">Wallets y recompensas programables</h3>
                         <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3 lang-en">Programmable wallets and rewards</h3>
                         <p class="text-sm leading-relaxed body-text lang-es">El usuario recibe un monedero digital y obtiene tokens canjeables por productos y servicios. La API de Token City articula la apertura de wallets y los flujos de tokens sin que el usuario interactúe con infraestructura blockchain de forma directa.</p>
                         <p class="text-sm leading-relaxed body-text lang-en">The user receives a digital wallet and earns tokens redeemable for products and services. Token City's API handles wallet creation and token flows without the user directly interacting with blockchain infrastructure.</p>
-                    </div>
+                    </article>
 
-                    <div class="team-card p-8 reveal-growth delay-300">
-                        <div class="feature-icon">
-                            <i data-lucide="share-2" class="w-6 h-6"></i>
-                        </div>
+                    <article class="case-card reveal-growth delay-300">
+                        <div class="usecase-icon"><i data-lucide="share-2" class="w-6 h-6"></i></div>
                         <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3 lang-es">Escalabilidad para comunidades y partners</h3>
                         <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3 lang-en">Scalability for communities and partners</h3>
                         <p class="text-sm leading-relaxed body-text lang-es">La propuesta de Codigoo se proyecta sobre varios verticales, desde contenido audiovisual hasta deporte o gaming. Una arquitectura API permite ampliar campañas y casos de uso sobre una misma base tecnológica sin rediseñar el producto.</p>
                         <p class="text-sm leading-relaxed body-text lang-en">Codigoo's proposal extends across several verticals, from audiovisual content to sports or gaming. An API architecture allows expanding campaigns and use cases on the same technology base without redesigning the product.</p>
+                    </article>
+                </div>
+
+                <!-- IMAGEN + BENEFICIOS -->
+                <article class="case-card reveal-growth delay-100">
+                    <div class="content-image-frame mb-6">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/03/COdigoo-tokenizacion.png" alt="Codigoo tokenización promo">
                     </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- ════════════════════════════════════════
-             IMAGEN + BENEFICIOS
-        ════════════════════════════════════════ -->
-        <section class="px-6 pb-20">
-            <div class="max-w-3xl mx-auto">
-                <div class="content-image-frame mb-8 reveal-growth">
-                    <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/03/COdigoo-tokenizacion.png" alt="Codigoo tokenización promo">
-                </div>
-
-                <div class="reveal-growth delay-100">
                     <div class="highlight-row">
                         <div class="highlight-dot"><i data-lucide="layers" class="w-4 h-4"></i></div>
                         <p class="text-sm leading-relaxed body-text lang-es"><strong class="heading-text">Experiencia 100% integrada:</strong> Codigoo conserva el control del recorrido de usuario y de la relación con su comunidad, mientras la infraestructura digital opera de forma embebida en segundo plano.</p>
@@ -785,101 +508,56 @@
                         <p class="text-sm leading-relaxed body-text lang-es"><strong class="heading-text">Base preparada para crecer:</strong> La arquitectura vía API ofrece a Codigoo una forma de extender su modelo a nuevos contenidos, partners y esquemas de recompensa sin alterar la experiencia principal del producto.</p>
                         <p class="text-sm leading-relaxed body-text lang-en"><strong class="heading-text">Ready to grow:</strong> The API architecture gives Codigoo a way to extend its model to new content, partners and reward schemes without altering the product's main experience.</p>
                     </div>
-                </div>
-            </div>
-        </section>
+                </article>
 
-        <!-- ════════════════════════════════════════
-             CTA FINAL
-        ════════════════════════════════════════ -->
-        <section class="px-6 pb-24">
-            <div class="max-w-3xl mx-auto team-card p-8 md:p-12 reveal-growth text-center">
-                <h3 class="text-xl font-extrabold heading-text tracking-tight mb-2 lang-es">¿Quieres saber más?</h3>
-                <h3 class="text-xl font-extrabold heading-text tracking-tight mb-2 lang-en">Want to know more?</h3>
-                <p class="text-sm body-text mb-6 lang-es">Visita la página de Codigoo</p>
-                <p class="text-sm body-text mb-6 lang-en">Visit the Codigoo website</p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-                    <a href="https://www.codigoo.info/" target="_blank" rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 px-8 py-4 font-extrabold rounded-[15px] text-sm text-white transition-all"
-                        style="background: var(--primary-blue);">
+                <!-- CTA FINAL -->
+                <div class="promo-card reveal-growth">
+                    <p class="promo-title lang-es">¿Quieres saber más?</p>
+                    <p class="promo-title lang-en">Want to know more?</p>
+                    <p class="promo-text lang-es">Visita la página de Codigoo</p>
+                    <p class="promo-text lang-en">Visit the Codigoo website</p>
+                    <a class="promo-button" href="https://www.codigoo.info/" target="_blank" rel="noopener noreferrer">
                         <span class="lang-es">Visitar Codigoo</span>
                         <span class="lang-en">Visit Codigoo</span>
                         <i data-lucide="external-link" class="w-4 h-4"></i>
                     </a>
-                    <a href="marketplace.html"
-                        class="inline-flex items-center gap-2 px-6 py-4 font-bold rounded-[15px] text-sm transition-all"
-                        style="border: 1px solid var(--glass-border); color: var(--text-muted);">
-                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                        <span class="lang-es">Ver más participantes</span>
-                        <span class="lang-en">More participants</span>
-                    </a>
                 </div>
+
             </div>
         </section>
+
     </main>
+
 
     <div data-component="components/footer-component.html"></div>
     <div data-component="components/floating-controls-component.html"></div>
 
     <script>
-        let __templateInited = false;
-
-        function initTemplatePage() {
-            if (__templateInited) return;
-            __templateInited = true;
+        /* ── Init ── */
+        let __pageInited = false;
+        function initPage() {
+            if (__pageInited) return;
+            __pageInited = true;
             if (window.lucide) window.lucide.createIcons();
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) {
-                        e.target.classList.remove('reverse');
-                        e.target.classList.add('active');
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            const observerReverse = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (!e.isIntersecting && e.boundingClientRect.top > 0) {
-                        e.target.classList.remove('active');
-                        e.target.classList.add('reverse');
-                        setTimeout(() => {
-                            e.target.classList.remove('reverse');
-                        }, 1200);
-                    }
-                });
-            }, { threshold: 0 });
-
-            document.querySelectorAll('.reveal-growth').forEach(el => {
-                observer.observe(el);
-                observerReverse.observe(el);
-            });
-
+            const obs = new IntersectionObserver(
+                entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); }),
+                { threshold: 0.08 }
+            );
+            document.querySelectorAll('.reveal-growth').forEach(el => obs.observe(el));
             updateToggleVisuals();
         }
-
-        window.addEventListener('tcav:components-loaded', initTemplatePage);
-
+        window.addEventListener('tcav:components-loaded', initPage);
         if (document.readyState !== 'loading') {
-            setTimeout(() => {
-                if (!document.querySelector('#navbar')) return;
-                initTemplatePage();
-            }, 50);
+            setTimeout(() => { if (!__pageInited && document.querySelector('#navbar')) initPage(); }, 150);
         }
 
+        /* ── Theme / Lang — idéntico a equipo.html ── */
         function toggleTheme() {
             const body = document.body;
             const html = document.documentElement;
             const isLight = body.classList.toggle('light-mode');
-
-            if (isLight) {
-                html.classList.remove('dark');
-                localStorage.setItem('themePreference', 'light');
-            } else {
-                html.classList.add('dark');
-                localStorage.setItem('themePreference', 'dark');
-            }
-
+            if (isLight) { html.classList.remove('dark'); localStorage.setItem('themePreference', 'light'); }
+            else { html.classList.add('dark'); localStorage.setItem('themePreference', 'dark'); }
             updateToggleVisuals();
         }
 
@@ -891,7 +569,6 @@
             document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
 
             const activeIconName = isLight ? 'sun' : 'moon';
-
             const trackHTML = `
                 <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
                     <i data-lucide="moon" class="toggle-track-icon"></i>
@@ -903,11 +580,7 @@
                     <i data-lucide="${activeIconName}" class="thumb-icon"></i>
                 </div>
             `;
-
-            document.querySelectorAll('.theme-toggle').forEach(toggle => {
-                toggle.innerHTML = trackHTML;
-            });
-
+            document.querySelectorAll('.theme-toggle').forEach(toggle => { toggle.innerHTML = trackHTML; });
             if (window.lucide) window.lucide.createIcons();
         }
 
@@ -924,63 +597,13 @@
             const controlsBar = document.querySelector('.controls-bar');
             overlay.style.visibility = isOpen ? 'visible' : (document.querySelector('.nav-item:hover') ? 'visible' : 'hidden');
             overlay.style.opacity = isOpen ? '1' : (document.querySelector('.nav-item:hover') ? '1' : '0');
-            controlsBar.style.display = isOpen ? 'none' : 'flex';
+            if (controlsBar) controlsBar.style.display = isOpen ? 'none' : 'flex';
         }
 
         function toggleSubmenu(id) {
             const node = document.getElementById(id);
             if (node) node.classList.toggle('open');
         }
-
-        function handleNewsletterSubmit(e) {
-            e.preventDefault();
-            const btn = e.target.querySelector('button');
-            const btnText = btn.querySelector('.btn-text');
-            const btnLoader = btn.querySelector('.btn-loader');
-            const originalText = btnText.textContent;
-
-            btnText.textContent = '';
-            btnLoader.classList.remove('hidden');
-            btn.disabled = true;
-
-            setTimeout(() => {
-                btnText.textContent = originalText;
-                btnLoader.classList.add('hidden');
-                btn.disabled = false;
-                e.target.reset();
-                showToast('¡Suscrito a la newsletter!', 'success');
-            }, 1400);
-        }
-
-        function showToast(message, type = 'success') {
-            let container = document.getElementById('toastContainer');
-            if (!container) {
-                container = document.createElement('div');
-                container.id = 'toastContainer';
-                container.className = 'fixed top-4 right-4 z-50 flex flex-col gap-2';
-                document.body.appendChild(container);
-            }
-
-            const toast = document.createElement('div');
-            toast.className = 'toast p-4 rounded-[15px] shadow-2xl backdrop-blur-md border border-white/10 flex items-center gap-3';
-            toast.style.backgroundColor = type === 'success' ? 'rgba(22, 163, 74, 0.95)' : 'rgba(220, 38, 38, 0.95)';
-            toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'alert-octagon'}" class="w-5 h-5 text-white"></i><span class="text-sm font-bold text-white">${message}</span>`;
-            container.appendChild(toast);
-            if (window.lucide) window.lucide.createIcons();
-
-            requestAnimationFrame(() => toast.classList.add('show'));
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 260);
-            }, 2600);
-        }
-
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) nav.classList.add('shadow-lg');
-            else nav.classList.remove('shadow-lg');
-        });
     </script>
 </body>
-
 </html>

@@ -533,7 +533,7 @@
                             <span class="lang-es">Negro</span><span class="lang-en">Black</span>
                         </label>
                     </div>
-                    <button onclick="downloadSelectedLogos()" class="inline-flex items-center gap-2 px-6 py-3 bg-[#1855BA] text-white font-bold rounded-[15px] hover:bg-[#134495] transition-colors">
+                    <button onclick="downloadSelectedLogos()" class="inline-flex items-center gap-2 px-6 py-3 bg-[#1855BA] text-white font-bold rounded-[16px] hover:bg-[#134495] transition-colors">
                         <i data-lucide="download" class="w-4 h-4"></i>
                         <span class="lang-es">Descargar seleccionados</span><span class="lang-en">Download selected</span>
                     </button>
@@ -795,7 +795,7 @@
             }
 
             const toast = document.createElement('div');
-            toast.className = 'toast p-4 rounded-[15px] shadow-2xl backdrop-blur-md border border-white/10 flex items-center gap-3';
+            toast.className = 'toast p-4 rounded-[16px] shadow-2xl backdrop-blur-md border border-white/10 flex items-center gap-3';
             toast.style.backgroundColor = type === 'success' ? 'rgba(22, 163, 74, 0.95)' : 'rgba(220, 38, 38, 0.95)';
             toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'alert-octagon'}" class="w-5 h-5 text-white"></i><span class="text-sm font-bold text-white">${message}</span>`;
             container.appendChild(toast);

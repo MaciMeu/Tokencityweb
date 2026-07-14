@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Token City | Dianelum — Caso de éxito</title>
     <meta name="description" content="Token City proporciona a Dianelum su propia plataforma totalmente personalizada, conectada a un servicio blockchain para el despliegue de smart contracts y la gestión de activos tokenizados.">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,776 +15,675 @@
                 extend: {
                     colors: {
                         'azul-acero': {
-                            50: '#F3F7FC',
-                            100: '#DCE6F5',
-                            200: '#A3BBE3',
-                            300: '#7499D6',
-                            400: '#4677C8',
-                            500: '#1855BA',
-                            600: '#134495',
-                            700: '#0E3370',
-                            800: '#0A224A',
-                            900: '#051125',
-                            950: '#020813'
+                            50: '#F3F7FC', 100: '#DCE6F5', 200: '#A3BBE3', 300: '#7499D6',
+                            400: '#4677C8', 500: '#1855BA', 600: '#134495', 700: '#0E3370',
+                            800: '#0A224A', 900: '#051125', 950: '#020813'
                         }
                     }
                 }
             }
         };
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="tcav-components.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles-tcav.css">
 
     <script>
         (function () {
             const savedTheme = localStorage.getItem('themePreference');
             let isLight;
-            if (savedTheme) {
-                isLight = savedTheme === 'light';
-            } else {
+            if (savedTheme) { isLight = savedTheme === 'light'; }
+            else {
                 const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 const hour = new Date().getHours();
-                const nightTime = (hour >= 19 || hour < 7);
-                isLight = !systemDark && !nightTime;
+                isLight = !systemDark && !(hour >= 19 || hour < 7);
             }
-
-            if (isLight) {
-                document.documentElement.classList.remove('dark');
-            } else {
-                document.documentElement.classList.add('dark');
-            }
+            if (isLight) document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
             window.__isThemeLight = isLight;
         })();
     </script>
 
     <style>
+        /* ─────────────────────────────────────────
+           VARIABLES  (editar por cliente)
+           ───────────────────────────────────────── */
         :root {
-            --primary-blue: #1855BA;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --bg-color: #f8fafc;
-            --glass-bg: rgba(255, 255, 255, 0.9);
-            --glass-border: rgba(15, 23, 42, 0.12);
-            --nav-bg: rgba(5, 7, 10, 0.95);
-            --nav-text: #ffffff;
-            --nav-text-muted: #9ca3af;
-        }
+            --accent:        #f97316;     /* color de acento del cliente     */
+            --accent-rgb:    249,115,22;   /* mismo en RGB para rgba()        */
+            --accent-hover:  #ea580c;     /* hover del botón principal       */
 
+            /* sistema */
+            --primary-blue:  #1855BA;
+            --text-main:     #0f172a;
+            --text-muted:    #475569;     /* AA ≥4.5:1 sobre bg claro        */
+            --bg-color:      #f8fafc;
+            --glass-bg:      rgba(255,255,255,0.85);
+            --glass-border:  rgba(0,0,0,0.1);
+            --nav-bg:        rgba(5,7,10,0.95);
+            --nav-text:      #ffffff;
+            --nav-text-muted:#9ca3af;
+        }
         body:not(.light-mode) {
-            --text-main: #ffffff;
-            --text-muted: #9ca3af;
-            --bg-color: #05070a;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main:    #ffffff;
+            --text-muted:   #94a3b8;      /* AA ≥4.5:1 sobre #05070a        */
+            --bg-color:     #05070a;
+            --glass-bg:     rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.09);
         }
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .hero-blog {
-            position: relative;
-            overflow: hidden;
-            background: #05070a;
-        }
-
-        .hero-media {
-            position: absolute;
-            inset: 0;
-            background-image: url('https://cms-prod.token-city.com/wp-content/uploads/2026/02/diamante-solo.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.32;
-            transform: scale(1.03);
-        }
-
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
-            pointer-events: none;
-        }
-
-        .hero-blog-title {
-            color: #ffffff;
-        }
-
-        body.light-mode .hero-blog-title {
-            color: #ffffff;
-        }
-
-        .hero-subtitle { color: #e2e8f0; }
-        body.light-mode .hero-subtitle { color: #0f172a; }
-
-        .hero-grid {
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
-        }
-
-        body.light-mode .hero-grid {
-            background-image:
-                linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
-        }
-
+        /* ─── Tipografía / layout base ─── */
+        .heading-text { color: var(--text-main); }
+        .body-text    { color: var(--text-muted); }
         .section-label {
-            color: var(--primary-blue);
-            font-weight: 800;
-            font-size: 0.7rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
+            font-weight: 700; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent);
+        }
+        body:not(.light-mode) .section-label { color: #7eb3ff; }
+
+        /* ─── Hero — siempre oscuro, no cambia con el tema ─── */
+        .hero-wrap {
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: var(--space-5) var(--space-3) 0;
+            min-height: 80vh; /* TEMP: para poder ver el parallax al aprobar diseño */
+        }
+        /* Parallax real: la imagen se fija a la ventana (no al hero-wrap) y la
+           siguiente sección (opaca) la cubre de forma natural al hacer scroll. */
+        .hero-bg {
+            position: fixed; inset: 0;
+            z-index: -1;
+            background-image: url('mercado.jpg'); /* ← cambiar por cliente */
+            background-size: cover; background-position: center;
+        }
+        @media (max-width: 768px) {
+            /* position:fixed backgrounds son poco fiables en iOS Safari */
+            .hero-bg { position: absolute; }
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(5,7,10,0.85) 0%, rgba(5,7,10,0.96) 60%, #05070a 100%);
+        }
+        body.light-mode .hero-overlay {
+            background: linear-gradient(rgba(5, 7, 10, 0.85) 0%, rgb(5 7 10 / 50%) 50%, #f8fafc 100%);
+        }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent 80%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent 80%);
+        }
+        .hero-glow {
+            position: absolute; top: 40%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 65%);
+            opacity: 0.07; pointer-events: none;
         }
 
-        body:not(.light-mode) .section-label {
-            color: #60a5fa;
+        /* textos del hero — fijos en claro sobre oscuro */
+        .hero-wrap .heading-text,
+        .hero-wrap h1 { color: #ffffff !important; }
+        .hero-wrap .body-text,
+        .hero-wrap p:not(.section-label):not(.hero-tagline) { color: #cbd5e1 !important; }
+        .hero-wrap .section-label { color: #7eb3ff !important; }
+        .hero-tagline { color: #cbd5e1; }
+        body.light-mode .hero-tagline { color: #0f172a; }
+
+
+        .hero-muted-link {
+            display: inline-flex; align-items: center; gap: var(--space-1);
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-button);
+            background: transparent;
+            color: #e2e8f0;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+        body.light-mode .hero-muted-link {
+            color: #0f172a;
+        }
+        .hero-muted-link:hover {
+            background: rgba(var(--accent-rgb), 0.1);
+            color: var(--accent);
         }
 
-        .body-text {
-            color: var(--text-muted);
+        /* Keep this link visible even if reveal observer is delayed/fails. */
+        .hero-wrap .hero-muted-link.reveal-growth {
+            opacity: 1;
+            transform: none;
         }
 
-        .heading-text {
-            color: var(--text-main);
-        }
-
-        .partner-logo-badge {
-            width: 160px;
-            height: 160px;
+        /* ─── Logo — glass transparente ─── */
+        .logo-container {
+            width: 160px; height: 160px;
             border-radius: var(--radius-md);
-            background: rgba(255, 255, 255, 0.08);
-            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255,255,255,0.08);
+            border: 1.5px solid rgba(255,255,255,0.15);
             backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: var(--space-3);
-            margin: 0 auto var(--space-3);
-            box-shadow: 0 0 60px rgba(24, 85, 186, 0.15);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex; align-items: center; justify-content: center;
+            padding: var(--space-2);
+            box-shadow: 0 0 60px rgba(var(--accent-rgb), 0.2);
         }
 
-        .nav-item {
-            position: relative;
-            padding: var(--space-3) 0;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
+        /* ─── Tags ─── */
+        .ptag {
+            display: inline-flex; align-items: center; gap: var(--space-1);
+            padding: var(--space-1) var(--space-2); border-radius: var(--radius-pill);
+            font-size: 0.7rem; font-weight: 700;
         }
+        /* dark — todos sobre fondo ~#05070a */
+        .ptag-sector { background: rgba(var(--accent-rgb),0.18); color: #7eb3ff; border: 1px solid rgba(var(--accent-rgb),0.35); }
+        .ptag-market { background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.14); }
+        .ptag-token  { background: transparent; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.22); }
+        /* light — sobre fondo ~#f8fafc (cards section) */
+        body.light-mode .ptag-sector { background: rgba(var(--accent-rgb),0.08); color: var(--accent); border-color: rgba(var(--accent-rgb),0.25); }
+        body.light-mode .ptag-market { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+        body.light-mode .ptag-token  { background: transparent; color: #334155; border-color: #94a3b8; }
 
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: var(--space-1);
-            transition: color 0.3s ease;
-        }
+        /* hero siempre oscuro — revertir light-mode en los tags del hero */
+        body.light-mode .hero-wrap .ptag-sector { background: rgba(var(--accent-rgb),0.18); color: #7eb3ff; border-color: rgba(var(--accent-rgb),0.35); }
+        body.light-mode .hero-wrap .ptag-market { background: rgba(255,255,255,0.08); color: #cbd5e1; border-color: rgba(255,255,255,0.14); }
+        body.light-mode .hero-wrap .ptag-token  { background: transparent; color: #cbd5e1; border-color: rgba(255,255,255,0.22); }
 
-        .nav-item:hover .nav-link {
-            color: #4f86ed;
-        }
-
-        .nav-item:hover .nav-link i {
-            opacity: 1;
-            transform: rotate(180deg);
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .nav-link i {
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .mega-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            width: 90vw;
-            max-width: 1000px;
-            background: var(--nav-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius-md);
-            padding: var(--space-3);
-            opacity: 0;
-            visibility: hidden;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-        }
-
-        .nav-item:hover .mega-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        #navOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 40;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
-        }
-
-        body:has(.nav-item:hover) #navOverlay {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #mobileDrawer {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            max-width: 400px;
-            background: var(--nav-bg);
-            backdrop-filter: blur(20px);
-            z-index: 100;
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            border-left: 1px solid var(--glass-border);
-        }
-
-        #mobileDrawer.open {
-            transform: translateX(0);
-        }
-
-        .mobile-link {
-            padding: var(--space-2) var(--space-3);
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--nav-text);
-            font-weight: 600;
-        }
-
-        .mobile-submenu {
-            background: rgba(255, 255, 255, 0.03);
-            display: none;
-            padding-left: 1rem;
-        }
-
-        .mobile-submenu.open {
-            display: block;
-        }
-
-        .theme-toggle {
-            position: relative;
-            width: 52px;
-            height: 28px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-pill);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 var(--space-1);
-        }
-
-        .theme-toggle-thumb {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 22px;
-            height: 22px;
-            background-color: #ffffff;
-            border-radius: var(--radius-circle);
-            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            z-index: 2;
-        }
-
-        .toggle-track-icon {
-            color: #94a3b8;
-            width: 12px;
-            height: 12px;
-            z-index: 1;
-        }
-
-        .thumb-icon {
-            width: 12px;
-            height: 12px;
-            color: var(--primary-blue);
-        }
-
-        body.light-mode .theme-toggle-thumb {
-            transform: translateX(24px);
-        }
-
-        .lang-toggle {
-            display: flex;
-            align-items: center;
-            gap: var(--space-1);
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .lang-label {
-            font-size: 10px;
-            font-weight: 800;
-            color: #a1a1aa;
-            transition: color 0.3s ease;
-        }
-
-        .lang-label.active {
-            color: #ffffff;
-        }
-
-        .lang-switch-track {
-            position: relative;
-            width: 32px;
-            height: 16px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: var(--radius-pill);
-        }
-
-        .lang-switch-thumb {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 10px;
-            height: 10px;
-            background-color: #ffffff;
-            border-radius: var(--radius-circle);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        body.lang-en .lang-switch-thumb {
-            transform: translateX(16px);
-        }
-
-        /* ─── Tarjeta de artículo (equivalente a blog-card) ─── */
-        .case-card {
+        /* ─── Info cards ─── */
+        .info-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius-md);
+            padding: var(--space-3) var(--space-3);
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            contain: layout paint style;
+        }
+        .info-card:hover {
+            border-color: rgba(var(--accent-rgb), 0.4);
+            box-shadow: 0 20px 50px rgba(var(--accent-rgb), 0.12);
+        }
+        .info-icon {
+            width: 52px; height: 52px; border-radius: var(--radius-sm);
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.2);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent); margin-bottom: 1.25rem;
+        }
+        body:not(.light-mode) .info-icon { color: #7eb3ff; }
+        .info-title {
+            font-size: 0.65rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--accent); margin-bottom: 0.5rem;
+        }
+        body:not(.light-mode) .info-title { color: #7eb3ff; }
+
+        /* ─── Contenido del caso de éxito (TEST) ─── */
+        .case-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            /* R2 = R1 + D: radio de los elementos internos (--radius-sm) + su padding (--space-3) */
+            border-radius: calc(var(--radius-sm) + var(--space-3));
             padding: var(--space-3);
             transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
         }
-
         .case-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(24, 85, 186, 0.4);
-            box-shadow: 0 20px 45px rgba(24, 85, 186, 0.12);
+            border-color: rgba(var(--accent-rgb), 0.4);
+            box-shadow: 0 20px 45px rgba(var(--accent-rgb), 0.12);
         }
-
         body:not(.light-mode) .case-card {
             background: rgba(10, 20, 40, 0.78);
-            border-color: rgba(96, 165, 250, 0.25);
+            border-color: rgba(var(--accent-rgb), 0.25);
         }
-
         .testimonial-quote-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: var(--radius-circle);
-            background: rgba(24, 85, 186, 0.12);
-            border: 1px solid rgba(24, 85, 186, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-blue);
-            margin: 0 auto var(--space-3);
+            width: 52px; height: 52px; border-radius: var(--radius-circle);
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent); margin: 0 auto var(--space-3);
         }
-
-        body:not(.light-mode) .testimonial-quote-icon {
-            color: #60a5fa;
-        }
-
-        .need-row {
-            display: flex;
-            align-items: flex-start;
-            gap: var(--space-2);
-            padding: var(--space-1) 0;
-        }
-
+        body:not(.light-mode) .testimonial-quote-icon { color: #7eb3ff; }
+        .need-row { display: flex; align-items: flex-start; gap: var(--space-2); padding: var(--space-1) 0; }
         .need-dot {
-            width: 28px;
-            height: 28px;
-            border-radius: var(--radius-xs);
-            flex-shrink: 0;
-            background: rgba(24, 85, 186, 0.12);
-            border: 1px solid rgba(24, 85, 186, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-blue);
+            width: 28px; height: 28px; border-radius: var(--radius-xs); flex-shrink: 0;
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            display: flex; align-items: center; justify-content: center; color: var(--accent);
         }
-
-        body:not(.light-mode) .need-dot {
-            color: #60a5fa;
-        }
-
+        body:not(.light-mode) .need-dot { color: #7eb3ff; }
         .video-embed {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%;
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
+            position: relative; width: 100%; padding-top: 56.25%;
+            border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--glass-border);
         }
-
-        .video-embed iframe {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        .content-image-frame {
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-        }
-
-        .content-image-frame img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
-        .highlight-row {
-            display: flex;
-            align-items: flex-start;
-            gap: var(--space-2);
-            padding: var(--space-2) 0;
-        }
-
+        .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .content-image-frame { border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--glass-border); }
+        .content-image-frame img { display: block; width: 100%; height: auto; }
+        .highlight-row { display: flex; align-items: flex-start; gap: var(--space-2); padding: var(--space-2) 0; }
         .highlight-dot {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-xs);
-            flex-shrink: 0;
-            background: rgba(24, 85, 186, 0.12);
-            border: 1px solid rgba(24, 85, 186, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-blue);
+            width: 32px; height: 32px; border-radius: var(--radius-xs); flex-shrink: 0;
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            display: flex; align-items: center; justify-content: center; color: var(--accent);
         }
-
-        body:not(.light-mode) .highlight-dot {
-            color: #60a5fa;
-        }
-
+        body:not(.light-mode) .highlight-dot { color: #7eb3ff; }
         .usecase-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: var(--radius-sm);
-            background: rgba(24, 85, 186, 0.12);
-            border: 1px solid rgba(24, 85, 186, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-blue);
-            margin-bottom: 1.25rem;
+            width: 52px; height: 52px; border-radius: var(--radius-sm);
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.2);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent); margin-bottom: 1.25rem;
         }
-
-        body:not(.light-mode) .usecase-icon {
-            color: #60a5fa;
-        }
-
-        /* ─── CTA final (equivalente a promo-card) ─── */
+        body:not(.light-mode) .usecase-icon { color: #7eb3ff; }
         .promo-card {
             border-radius: var(--radius-md);
             border: 1px solid rgba(255, 255, 255, 0.18);
             background: linear-gradient(145deg, #1855BA, #0d3a8a);
-            color: #ffffff;
-            padding: var(--space-4) var(--space-3);
+            color: #ffffff; padding: var(--space-4) var(--space-3); text-align: center;
+        }
+        .promo-title { font-size: clamp(1.4rem, 2.4vw, 2rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.7rem; }
+        .promo-text { color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; }
+        .promo-button {
+            display: inline-flex; align-items: center; gap: var(--space-1);
+            border-radius: var(--radius-pill); padding: var(--space-2) var(--space-3);
+            background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff; font-weight: 700; font-size: 0.9rem;
+            transition: background-color 0.25s ease;
+        }
+        .promo-button:hover { background: rgba(255, 255, 255, 0.26); }
+
+        /* ─── CTA section ─── */
+        .cta-wrap {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            backdrop-filter: blur(12px);
+            padding: var(--space-3) var(--space-3);
             text-align: center;
         }
 
-        .promo-title {
-            font-size: clamp(1.4rem, 2.4vw, 2rem);
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 0.7rem;
+        /* ─── Redirect Modal ─── */
+        .modal-backdrop {
+            position: fixed; inset: 0; z-index: 500;
+            background: rgba(0,0,0,0.72);
+            backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            padding: var(--space-3);
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-backdrop.open { opacity: 1; visibility: visible; }
+
+        .modal-box {
+            background: #0d1424;
+            border: 1px solid rgba(255,255,255,0.1);
+            /* R2 = R1 + D: radio del modal-icon-ring (--radius-sm) + su padding (--space-3) */
+            border-radius: calc(var(--radius-sm) + var(--space-3));
+            padding: var(--space-3) var(--space-3);
+            max-width: 420px; width: 100%;
+            position: relative;
+            transform: scale(0.93) translateY(24px);
+            transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        body.light-mode .modal-box {
+            background: #ffffff;
+            border-color: rgba(0,0,0,0.1);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+        }
+        .modal-backdrop.open .modal-box { transform: scale(1) translateY(0); }
+
+        .modal-icon-ring {
+            width: 56px; height: 56px; border-radius: var(--radius-sm);
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto var(--space-2);
+        }
+        .modal-dest-row {
+            display: flex; align-items: center; gap: var(--space-2);
+            padding: var(--space-2) var(--space-2); border-radius: var(--radius-sm);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 1.25rem;
+        }
+        body.light-mode .modal-dest-row { background: #f8fafc; }
+        .modal-disclaimer {
+            font-size: 0.7rem; line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem; text-align: center;
         }
 
-        .promo-text {
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1.5rem;
-        }
-
-        .promo-button {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-1);
-            border-radius: var(--radius-pill);
-            padding: var(--space-2) var(--space-3);
-            background: rgba(255, 255, 255, 0.16);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: background-color 0.25s ease;
-        }
-
-        .promo-button:hover {
-            background: rgba(255, 255, 255, 0.26);
-        }
-
+        /* ─── Reveal ─── */
         .reveal-growth {
-            opacity: 0;
-            transform: scale(0.92) translateY(40px);
-            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0; transform: scale(0.93) translateY(36px);
+            transition: all 1.1s cubic-bezier(0.34,1.56,0.64,1);
         }
+        .reveal-growth.active { opacity: 1; transform: scale(1) translateY(0); }
+        .delay-100 { transition-delay: 160ms; }
+        .delay-200 { transition-delay: 320ms; }
+        .delay-300 { transition-delay: 480ms; }
 
-        .reveal-growth.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
+        /* ─── Nav ─── */
+        .nav-item { position: relative; padding: var(--space-3) 0; display: flex; align-items: center; cursor: pointer; }
+        .nav-link { display: flex; align-items: center; gap: var(--space-1); transition: color 0.3s ease; }
+        .nav-item:hover .nav-link { color: #4f86ed; }
+        .nav-item:hover .nav-link i { opacity: 1; transform: rotate(180deg); transition: transform 0.3s ease; }
+        .nav-link i { transition: transform 0.3s ease; }
+        .mega-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); width: 90vw; max-width: 1000px; background: var(--nav-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius: var(--radius-md); padding: var(--space-3); opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 100; }
+        .nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        #navOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
+        body:has(.nav-item:hover) #navOverlay { opacity: 1; visibility: visible; }
+        #mobileDrawer { position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px; background: var(--nav-bg); backdrop-filter: blur(20px); z-index: 100; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; border-left: 1px solid var(--glass-border); }
+        #mobileDrawer.open { transform: translateX(0); }
 
-        .delay-100 { transition-delay: 120ms; }
-        .delay-200 { transition-delay: 240ms; }
-
-        .controls-bar {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-            padding: var(--space-1) var(--space-2);
-            background: rgba(5, 7, 10, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-pill);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .controls-bar .theme-toggle {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .controls-bar .toggle-track-icon {
-            color: #ffffff;
-        }
-
-        .controls-bar .thumb-icon {
-            color: var(--primary-blue);
-        }
-
-        .controls-bar .lang-switch-track {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        @media (max-width: 640px) {
-            .controls-bar {
-                right: 12px;
-                bottom: 16px;
-                padding: var(--space-1) var(--space-2);
-                gap: var(--space-1);
-            }
-        }
+        /* ─── Controls ─── */
+        .theme-toggle { position: relative; width: 52px; height: 28px; background-color: rgba(255,255,255,0.1); border-radius: var(--radius-pill); cursor: pointer; border: 1px solid rgba(255,255,255,0.2); overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-1); }
+        .theme-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background-color: #ffffff; border-radius: var(--radius-circle); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; }
+        .toggle-track-icon { color: #94a3b8; width: 12px; height: 12px; z-index: 1; }
+        .thumb-icon { width: 12px; height: 12px; color: var(--primary-blue); }
+        body.light-mode .theme-toggle-thumb { transform: translateX(24px); }
+        .lang-toggle { display: flex; align-items: center; gap: var(--space-1); cursor: pointer; user-select: none; }
+        .lang-label { font-size: 10px; font-weight: 800; color: #a1a1aa; transition: color 0.3s ease; }
+        .lang-label.active { color: #ffffff; }
+        .lang-switch-track { position: relative; width: 32px; height: 16px; background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-pill); }
+        .lang-switch-thumb { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; background-color: #ffffff; border-radius: var(--radius-circle); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        body.lang-en .lang-switch-thumb { transform: translateX(16px); }
+        .controls-bar { position: fixed; bottom: 24px; right: 24px; z-index: 100; display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2); background: rgba(5,7,10,0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-pill); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .controls-bar .theme-toggle { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); }
+        .controls-bar .toggle-track-icon { color: #ffffff; }
+        .controls-bar .thumb-icon { color: var(--primary-blue); }
+        .controls-bar .lang-switch-track { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
+        @media (max-width: 640px) { .controls-bar { right: 12px; bottom: 16px; padding: var(--space-1) var(--space-2); gap: var(--space-1); } }
     </style>
 </head>
 
-<body class="antialiased">
-    <script>
-        if (window.__isThemeLight) document.body.classList.add('light-mode');
-    </script>
+<body>
+    <script>if (window.__isThemeLight) document.body.classList.add('light-mode');</script>
 
     <div id="navOverlay"></div>
     <div data-component="components/header-component.html"></div>
 
-    <main class="pt-0 pb-24">
+    <main>
+
         <!-- ════════════════════════════════════════
-             HERO — con degradado hero-media/hero-overlay
+             HERO
         ════════════════════════════════════════ -->
-        <section class="hero-blog min-h-[62vh] pt-28 md:pt-36 pb-16 px-6 overflow-hidden">
-            <div class="hero-media"></div>
+        <section class="hero-wrap">
+            <div class="hero-bg"></div>
             <div class="hero-overlay"></div>
-            <div class="hero-grid absolute inset-0"></div>
-            <div class="relative max-w-3xl mx-auto text-center">
-                <div class="reveal-growth">
-                    <div class="partner-logo-badge">
-                        <img src="Logos/dianelum.png" alt="Dianelum" class="w-full h-full object-contain">
-                    </div>
-                    <span class="section-label">Caso de éxito</span>
-                    <h1 class="hero-blog-title text-3xl md:text-5xl font-extrabold mt-3 mb-4 tracking-tight">El viaje a la financiación de Dianelum con Token City</h1>
-                    <p class="hero-subtitle text-base md:text-lg opacity-90">Primer bono nativo on-chain completamente regulado. Emisión realizada mediante la plataforma SaaS de marca personalizada de Token City.</p>
+            <div class="hero-grid"></div>
+            <div class="hero-glow"></div>
+
+            <div class="relative z-10 max-w-xl w-full mx-auto text-center flex flex-col items-center">
+
+                <!-- Breadcrumb -->
+                <a href="marketplace.html"
+                    class="inline-flex items-center gap-1.5 text-xs font-bold mb-10 group"
+                    style="color: #94a3b8;">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1"></i>
+                    <span class="lang-es">Marketplace</span>
+                    <span class="lang-en">Marketplace</span>
+                </a>
+
+                <!-- LOGO — protagonista -->
+                <div class="logo-container mb-8 reveal-growth">
+                    <!-- ← cambiar imagen por cliente -->
+                    <img src="Logos/dianelum.png" alt="Dianelum" class="w-full h-full object-contain">
                 </div>
+
+                <!-- Tags -->
+                <div class="flex flex-wrap gap-2 justify-center mb-6 reveal-growth delay-100">
+                    <span class="ptag ptag-sector">
+                        <i data-lucide="gem" class="w-3 h-3"></i>
+                        <span class="lang-es">Caso de éxito</span><span class="lang-en">Success story</span>
+                    </span>
+                </div>
+
+                <!-- Nombre y tagline -->
+                <h1 class="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-4 reveal-growth delay-100">
+                    Dianelum
+                </h1>
+                <p class="hero-tagline text-base mb-8 reveal-growth delay-200 max-w-sm mx-auto" style="line-height: 1.6;">
+                    <span class="lang-es">El viaje a la financiación de Dianelum con Token City. Primer bono nativo on-chain completamente regulado.</span>
+                    <span class="lang-en">Dianelum's journey to financing with Token City. First fully regulated native on-chain bond.</span>
+                </p>
+
             </div>
         </section>
 
-        <div class="max-w-3xl mx-auto px-6 space-y-8">
+        <!-- ════════════════════════════════════════
+             CONTENIDO REAL DE dianelum-casos-exito.html
+        ════════════════════════════════════════ -->
+        <section class="px-6 pt-[64px] pb-20" style="background: var(--bg-color);">
+            <div class="max-w-3xl mx-auto space-y-8">
 
-            <!-- TESTIMONIO -->
-            <article class="case-card reveal-growth text-center">
-                <div class="testimonial-quote-icon">
-                    <i data-lucide="quote" class="w-5 h-5"></i>
-                </div>
-                <p class="text-lg md:text-xl font-medium heading-text leading-relaxed mb-4">"Poder acceder y gestionar financiación mediante una operación financiera en nuestros propios términos fue decisivo para captar capital e iniciar la producción de nuestros diamantes de marca, en colaboración con marcas globales."</p>
-                <p class="text-sm font-bold body-text">Jonathan Gonzalez, CEO de Dianelum</p>
-            </article>
-
-            <!-- PREPARANDO EL TERRENO -->
-            <article class="case-card reveal-growth delay-100">
-                <h2 class="text-2xl font-extrabold heading-text tracking-tight mb-4">Preparando el terreno</h2>
-                <p class="text-sm leading-relaxed body-text mb-4">Dianelum transformó el mercado del diamante mediante producción en laboratorio, una alternativa sostenible a la extracción tradicional. Para impulsar su ambicioso plan de negocio, la empresa se propuso captar 5 millones de euros a través de una plataforma de inversión digital que aportara confianza regulatoria, facilidad de uso y permitiera el acceso de inversores desde cualquier lugar. Dianelum necesitaba apoyo experto para:</p>
-
-                <div class="mb-6">
-                    <div class="need-row">
-                        <div class="need-dot"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
-                        <p class="text-sm leading-relaxed body-text">Diseñar una operación de captación de fondos alineada tanto con los objetivos del negocio como con las expectativas de los inversores.</p>
+                <!-- TESTIMONIO -->
+                <article class="case-card reveal-growth text-center">
+                    <div class="testimonial-quote-icon">
+                        <i data-lucide="quote" class="w-5 h-5"></i>
                     </div>
-                    <div class="need-row">
-                        <div class="need-dot"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
-                        <p class="text-sm leading-relaxed body-text">Navegar un panorama regulatorio europeo en evolución en el ámbito de los activos tokenizados.</p>
-                    </div>
-                    <div class="need-row">
-                        <div class="need-dot"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
-                        <p class="text-sm leading-relaxed body-text">Garantizar el pleno cumplimiento de la normativa financiera, haciendo que la inversión fuese totalmente digital.</p>
-                    </div>
-                    <div class="need-row">
-                        <div class="need-dot"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
-                        <p class="text-sm leading-relaxed body-text">Proporcionar a los inversores un entorno seguro y una experiencia de usuario positiva.</p>
-                    </div>
-                </div>
-                <p class="text-sm leading-relaxed body-text mb-6">Por eso recurrieron a Token City.</p>
-
-                <div class="video-embed">
-                    <iframe src="https://www.youtube.com/embed/ODQWTCWZ0fo" title="Dianelum x Token City" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-                </div>
-            </article>
-
-            <!-- INFRAESTRUCTURA DIGITAL A MEDIDA -->
-            <article class="case-card reveal-growth">
-                <h2 class="text-2xl font-extrabold heading-text tracking-tight mb-4">Infraestructura digital a medida</h2>
-                <p class="text-sm leading-relaxed body-text">Token City entregó una solución de doble capa, combinando tecnología avanzada con experiencia regulatoria y financiera.</p>
-            </article>
-
-            <!-- IMAGEN + BENEFICIOS -->
-            <article class="case-card reveal-growth delay-100">
-                <div class="content-image-frame mb-6">
-                    <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/01/Gemini_Generated_Image_mdzlxmmdzlxmmdzl-scaled.jpg" alt="Diamante sobre concepto tecnológico con el nombre de Dianelum">
-                </div>
-                <div class="highlight-row">
-                    <div class="highlight-dot"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
-                    <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Control total:</strong> Dianelum gestionó de forma independiente y eficiente todos los aspectos de la captación de fondos: onboarding, verificación, trazabilidad del activo y comunicación con inversores.</p>
-                </div>
-                <div class="highlight-row">
-                    <div class="highlight-dot"><i data-lucide="scale" class="w-4 h-4"></i></div>
-                    <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Cumplimiento permanente:</strong> el diseño de smart contracts de Token City y su asesoramiento experto garantizaron que cada transacción, verificación de identidad y transferencia de tokens cumpliese con la normativa aplicable.</p>
-                </div>
-                <div class="highlight-row">
-                    <div class="highlight-dot"><i data-lucide="lock" class="w-4 h-4"></i></div>
-                    <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Arquitectura resiliente y segura:</strong> la seguridad por capas —incluido wallets respaldadas por identidad y protocolos de recuperación de tokens— protegió al emisor y los inversores frente a riesgos operativos y ciberamenazas.</p>
-                </div>
-                <div class="highlight-row">
-                    <div class="highlight-dot"><i data-lucide="trending-up" class="w-4 h-4"></i></div>
-                    <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Ejecución financiera estratégica:</strong> con el apoyo de Token City, Dianelum estructuró su propuesta financiera para alinearla con su objetivo de atraer a los inversores adecuados, con una oferta tecnológica y jurídicamente sólida.</p>
-                </div>
-            </article>
-
-            <!-- 4 SOLUCIONES (usecase items) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <article class="case-card reveal-growth">
-                    <div class="usecase-icon"><i data-lucide="layout-dashboard" class="w-6 h-6"></i></div>
-                    <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Plataforma personalizada de inversión</h3>
-                    <p class="text-sm leading-relaxed body-text">Token City proporcionó una plataforma de marca personalizada con la identidad de Dianelum. Un portal web que permite a los inversores acceder a la documentación de la oferta, completar el proceso KYC y realizar inversiones tokenizadas de forma fácil y segura.</p>
+                    <p class="text-lg md:text-xl font-medium heading-text leading-relaxed mb-4">"Poder acceder y gestionar financiación mediante una operación financiera en nuestros propios términos fue decisivo para captar capital e iniciar la producción de nuestros diamantes de marca, en colaboración con marcas globales."</p>
+                    <p class="text-sm font-bold body-text">Jonathan Gonzalez, CEO de Dianelum</p>
                 </article>
+
+                <!-- PREPARANDO EL TERRENO -->
                 <article class="case-card reveal-growth delay-100">
-                    <div class="usecase-icon"><i data-lucide="link-2" class="w-6 h-6"></i></div>
-                    <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Servicio blockchain</h3>
-                    <p class="text-sm leading-relaxed body-text">Activos totalmente digitales, regulados y seguros mediante la emisión de tokens ERC3643, ERC734 y ERC735, con funcionalidad modular para el cumplimiento normativo, la gestión de identidad, la gestión de activos y la capa de seguridad.</p>
+                    <h2 class="text-2xl font-extrabold heading-text tracking-tight mb-4">Preparando el terreno</h2>
+                    <p class="text-sm leading-relaxed body-text mb-4">Dianelum transformó el mercado del diamante mediante producción en laboratorio, una alternativa sostenible a la extracción tradicional. Para impulsar su ambicioso plan de negocio, la empresa se propuso captar 5 millones de euros a través de una plataforma de inversión digital que aportara confianza regulatoria, facilidad de uso y permitiera el acceso de inversores desde cualquier lugar. Dianelum necesitaba apoyo experto para:</p>
+
+                    <div class="mb-6">
+                        <div class="need-row">
+                            <div class="need-dot"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
+                            <p class="text-sm leading-relaxed body-text">Diseñar una operación de captación de fondos alineada tanto con los objetivos del negocio como con las expectativas de los inversores.</p>
+                        </div>
+                        <div class="need-row">
+                            <div class="need-dot"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
+                            <p class="text-sm leading-relaxed body-text">Navegar un panorama regulatorio europeo en evolución en el ámbito de los activos tokenizados.</p>
+                        </div>
+                        <div class="need-row">
+                            <div class="need-dot"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
+                            <p class="text-sm leading-relaxed body-text">Garantizar el pleno cumplimiento de la normativa financiera, haciendo que la inversión fuese totalmente digital.</p>
+                        </div>
+                        <div class="need-row">
+                            <div class="need-dot"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
+                            <p class="text-sm leading-relaxed body-text">Proporcionar a los inversores un entorno seguro y una experiencia de usuario positiva.</p>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-relaxed body-text mb-6">Por eso recurrieron a Token City.</p>
+
+                    <div class="video-embed">
+                        <iframe src="https://www.youtube.com/embed/ODQWTCWZ0fo" title="Dianelum x Token City" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                    </div>
                 </article>
-                <article class="case-card reveal-growth delay-200">
-                    <div class="usecase-icon"><i data-lucide="landmark" class="w-6 h-6"></i></div>
-                    <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Flujo regulatorio con ERIR</h3>
-                    <p class="text-sm leading-relaxed body-text">Token City habilitó una conexión nativa con Ursus-3Capital, la ERIR del proyecto, y aseguró una integración fluida con el custodio designado. La plataforma ERIR de Ursus-3Capital también utiliza tecnología de Token City.</p>
+
+                <!-- INFRAESTRUCTURA DIGITAL A MEDIDA -->
+                <article class="case-card reveal-growth">
+                    <h2 class="text-2xl font-extrabold heading-text tracking-tight mb-4">Infraestructura digital a medida</h2>
+                    <p class="text-sm leading-relaxed body-text">Token City entregó una solución de doble capa, combinando tecnología avanzada con experiencia regulatoria y financiera.</p>
                 </article>
-                <article class="case-card reveal-growth delay-300">
-                    <div class="usecase-icon"><i data-lucide="briefcase" class="w-6 h-6"></i></div>
-                    <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Asesoramiento legal y estratégico</h3>
-                    <p class="text-sm leading-relaxed body-text">El equipo legal y financiero de Token City trabajó mano a mano con Dianelum para estructurar la oferta conforme a MiFID, MiCA, DORA, AML/CTF y las demás normativas aplicables.</p>
+
+                <!-- IMAGEN + BENEFICIOS -->
+                <article class="case-card reveal-growth delay-100">
+                    <div class="content-image-frame mb-6">
+                        <img src="https://cms-prod.token-city.com/wp-content/uploads/2026/01/Gemini_Generated_Image_mdzlxmmdzlxmmdzl-scaled.jpg" alt="Diamante sobre concepto tecnológico con el nombre de Dianelum">
+                    </div>
+                    <div class="highlight-row">
+                        <div class="highlight-dot"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+                        <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Control total:</strong> Dianelum gestionó de forma independiente y eficiente todos los aspectos de la captación de fondos: onboarding, verificación, trazabilidad del activo y comunicación con inversores.</p>
+                    </div>
+                    <div class="highlight-row">
+                        <div class="highlight-dot"><i data-lucide="scale" class="w-4 h-4"></i></div>
+                        <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Cumplimiento permanente:</strong> el diseño de smart contracts de Token City y su asesoramiento experto garantizaron que cada transacción, verificación de identidad y transferencia de tokens cumpliese con la normativa aplicable.</p>
+                    </div>
+                    <div class="highlight-row">
+                        <div class="highlight-dot"><i data-lucide="lock" class="w-4 h-4"></i></div>
+                        <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Arquitectura resiliente y segura:</strong> la seguridad por capas —incluido wallets respaldadas por identidad y protocolos de recuperación de tokens— protegió al emisor y los inversores frente a riesgos operativos y ciberamenazas.</p>
+                    </div>
+                    <div class="highlight-row">
+                        <div class="highlight-dot"><i data-lucide="trending-up" class="w-4 h-4"></i></div>
+                        <p class="text-sm leading-relaxed body-text"><strong class="heading-text">Ejecución financiera estratégica:</strong> con el apoyo de Token City, Dianelum estructuró su propuesta financiera para alinearla con su objetivo de atraer a los inversores adecuados, con una oferta tecnológica y jurídicamente sólida.</p>
+                    </div>
                 </article>
+
+                <!-- 4 SOLUCIONES -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <article class="case-card reveal-growth">
+                        <div class="usecase-icon"><i data-lucide="layout-dashboard" class="w-6 h-6"></i></div>
+                        <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Plataforma personalizada de inversión</h3>
+                        <p class="text-sm leading-relaxed body-text">Token City proporcionó una plataforma de marca personalizada con la identidad de Dianelum. Un portal web que permite a los inversores acceder a la documentación de la oferta, completar el proceso KYC y realizar inversiones tokenizadas de forma fácil y segura.</p>
+                    </article>
+                    <article class="case-card reveal-growth delay-100">
+                        <div class="usecase-icon"><i data-lucide="link-2" class="w-6 h-6"></i></div>
+                        <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Servicio blockchain</h3>
+                        <p class="text-sm leading-relaxed body-text">Activos totalmente digitales, regulados y seguros mediante la emisión de tokens ERC3643, ERC734 y ERC735, con funcionalidad modular para el cumplimiento normativo, la gestión de identidad, la gestión de activos y la capa de seguridad.</p>
+                    </article>
+                    <article class="case-card reveal-growth delay-200">
+                        <div class="usecase-icon"><i data-lucide="landmark" class="w-6 h-6"></i></div>
+                        <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Flujo regulatorio con ERIR</h3>
+                        <p class="text-sm leading-relaxed body-text">Token City habilitó una conexión nativa con Ursus-3Capital, la ERIR del proyecto, y aseguró una integración fluida con el custodio designado. La plataforma ERIR de Ursus-3Capital también utiliza tecnología de Token City.</p>
+                    </article>
+                    <article class="case-card reveal-growth delay-300">
+                        <div class="usecase-icon"><i data-lucide="briefcase" class="w-6 h-6"></i></div>
+                        <h3 class="text-lg font-extrabold heading-text tracking-tight mb-3">Asesoramiento legal y estratégico</h3>
+                        <p class="text-sm leading-relaxed body-text">El equipo legal y financiero de Token City trabajó mano a mano con Dianelum para estructurar la oferta conforme a MiFID, MiCA, DORA, AML/CTF y las demás normativas aplicables.</p>
+                    </article>
+                </div>
+
+                <!-- CTA FINAL -->
+                <div class="promo-card reveal-growth">
+                    <p class="promo-title">¿Buscando más información?</p>
+                    <p class="promo-text">Descarga el white paper</p>
+                    <a class="promo-button" href="https://cms-prod.token-city.com/wp-content/uploads/2026/01/WHITEPAPER-DIanelum.pdf" target="_blank" rel="noopener noreferrer">
+                        Descargar ahora <i data-lucide="download" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- ════════════════════════════════════════
+         MODAL DE REDIRECCIÓN
+    ════════════════════════════════════════ -->
+    <div id="redirectModal" class="modal-backdrop" onclick="handleBackdropClick(event)">
+        <div class="modal-box" id="modalBox">
+
+            <!-- Cerrar -->
+            <button onclick="closeRedirectModal()"
+                class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-all"
+                style="color: var(--text-muted); background: transparent;"
+                onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+                onmouseout="this.style.background='transparent'">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Icono del cliente — varía por cliente -->
+            <div class="modal-icon-ring">
+                <span class="mat-icon material-symbols-outlined"
+                    style="font-size:1.75rem; color: var(--accent);">diamond</span>
             </div>
 
-            <!-- CTA FINAL -->
-            <div class="promo-card reveal-growth">
-                <p class="promo-title">¿Buscando más información?</p>
-                <p class="promo-text">Descarga el white paper</p>
-                <a class="promo-button" href="https://cms-prod.token-city.com/wp-content/uploads/2026/01/WHITEPAPER-DIanelum.pdf" target="_blank" rel="noopener noreferrer">
-                    Descargar ahora <i data-lucide="download" class="w-4 h-4"></i>
+            <!-- Título -->
+            <h2 class="text-xl font-extrabold text-center mb-1 heading-text">Dianelum</h2>
+            <p class="text-xs text-center mb-5 body-text lang-es">Vas a salir de Token City</p>
+            <p class="text-xs text-center mb-5 body-text lang-en">You are leaving Token City</p>
+
+            <!-- Destino -->
+            <div class="modal-dest-row">
+                <div class="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center p-1 overflow-hidden"
+                    style="background: rgba(var(--accent-rgb), 0.15); border: 1.5px solid rgba(var(--accent-rgb), 0.35);">
+                    <img src="Logos/dianelum.png" alt="Dianelum" class="w-full h-full object-contain">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <!-- ← URL visible cambia por cliente -->
+                    <p class="text-xs font-bold heading-text">dianelum.com</p>
+                    <p class="text-[10px] truncate body-text lang-es">Sitio externo — operado por Dianelum</p>
+                    <p class="text-[10px] truncate body-text lang-en">External site — operated by Dianelum</p>
+                </div>
+                <i data-lucide="external-link" class="w-3.5 h-3.5 flex-shrink-0 body-text"></i>
+            </div>
+
+            <!-- Aviso legal -->
+            <p class="modal-disclaimer lang-es">
+                Serás redirigido a una plataforma externa operada por Dianelum bajo sus propios términos y condiciones. Token City no es responsable del contenido ni los servicios de dicha plataforma.
+            </p>
+            <p class="modal-disclaimer lang-en">
+                You will be redirected to an external platform operated by Dianelum under its own terms and conditions. Token City is not responsible for the content or services of that platform.
+            </p>
+
+            <!-- Acciones -->
+            <div class="flex flex-col gap-2">
+                <!-- ← href destino cambia por cliente -->
+                <a href="https://dianelum.com" target="_blank" rel="noopener noreferrer"
+                    onclick="closeRedirectModal()"
+                    class="w-full flex items-center justify-center gap-2 py-3.5 font-extrabold rounded-[12px] text-sm text-white transition-all"
+                    style="background: var(--accent);">
+                    <span class="lang-es">Continuar a Dianelum</span>
+                    <span class="lang-en">Continue to Dianelum</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
+                <button onclick="closeRedirectModal()"
+                    class="w-full py-3 font-bold rounded-[12px] text-sm transition-all"
+                    style="color: var(--text-muted); border: 1px solid var(--glass-border); background: transparent;">
+                    <span class="lang-es">Cancelar</span>
+                    <span class="lang-en">Cancel</span>
+                </button>
             </div>
 
         </div>
-    </main>
+    </div>
+
 
     <div data-component="components/footer-component.html"></div>
     <div data-component="components/floating-controls-component.html"></div>
 
     <script>
-        let __caseInit = false;
+        /* ── Modal ── */
+        function openRedirectModal() {
+            document.getElementById('redirectModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeRedirectModal() {
+            document.getElementById('redirectModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        function handleBackdropClick(e) {
+            if (e.target === document.getElementById('redirectModal')) closeRedirectModal();
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeRedirectModal(); });
 
-        function initCasePage() {
-            if (__caseInit) return;
-            __caseInit = true;
-            if (window.__isThemeLight) document.body.classList.add('light-mode');
-
-            const drawer = document.getElementById('mobileDrawer');
-            if (drawer) drawer.classList.remove('open');
-
-            const overlay = document.getElementById('navOverlay');
-            if (overlay) {
-                overlay.style.visibility = 'hidden';
-                overlay.style.opacity = '0';
-            }
-
-            const controlsBar = document.querySelector('.controls-bar');
-            if (controlsBar) controlsBar.style.display = 'flex';
-
-            updateToggleVisuals();
+        /* ── Init ── */
+        let __pageInited = false;
+        function initPage() {
+            if (__pageInited) return;
+            __pageInited = true;
             if (window.lucide) window.lucide.createIcons();
+            const obs = new IntersectionObserver(
+                entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); }),
+                { threshold: 0.08 }
+            );
+            document.querySelectorAll('.reveal-growth').forEach(el => obs.observe(el));
+            updateToggleVisuals();
+        }
+        window.addEventListener('tcav:components-loaded', initPage);
+        if (document.readyState !== 'loading') {
+            setTimeout(() => { if (!__pageInited && document.querySelector('#navbar')) initPage(); }, 150);
         }
 
-        window.addEventListener('tcav:components-loaded', initCasePage);
-
+        /* ── Theme / Lang — idéntico a equipo.html ── */
         function toggleTheme() {
             const body = document.body;
             const html = document.documentElement;
             const isLight = body.classList.toggle('light-mode');
-            if (isLight) {
-                html.classList.remove('dark');
-                localStorage.setItem('themePreference', 'light');
-            } else {
-                html.classList.add('dark');
-                localStorage.setItem('themePreference', 'dark');
-            }
-            updateToggleVisuals();
-        }
-
-        function toggleLanguage() {
-            document.body.classList.toggle('lang-en');
+            if (isLight) { html.classList.remove('dark'); localStorage.setItem('themePreference', 'light'); }
+            else { html.classList.add('dark'); localStorage.setItem('themePreference', 'dark'); }
             updateToggleVisuals();
         }
 
@@ -794,6 +694,7 @@
             document.querySelectorAll('.lang-label-es').forEach(el => el.classList.toggle('active', !isEn));
             document.querySelectorAll('.lang-label-en').forEach(el => el.classList.toggle('active', isEn));
 
+            const activeIconName = isLight ? 'sun' : 'moon';
             const trackHTML = `
                 <div class="absolute left-1 md:left-1.5 top-1/2 -translate-y-1/2 pointer-events-none ${isLight ? '' : 'opacity-0'} transition-opacity duration-300">
                     <i data-lucide="moon" class="toggle-track-icon"></i>
@@ -802,15 +703,16 @@
                     <i data-lucide="sun" class="toggle-track-icon"></i>
                 </div>
                 <div class="theme-toggle-thumb">
-                    <i data-lucide="${isLight ? 'sun' : 'moon'}" class="thumb-icon"></i>
+                    <i data-lucide="${activeIconName}" class="thumb-icon"></i>
                 </div>
             `;
-
-            document.querySelectorAll('.theme-toggle').forEach(toggle => {
-                toggle.innerHTML = trackHTML;
-            });
-
+            document.querySelectorAll('.theme-toggle').forEach(toggle => { toggle.innerHTML = trackHTML; });
             if (window.lucide) window.lucide.createIcons();
+        }
+
+        function toggleLanguage() {
+            document.body.classList.toggle('lang-en');
+            updateToggleVisuals();
         }
 
         function toggleMobileMenu() {
@@ -825,37 +727,9 @@
         }
 
         function toggleSubmenu(id) {
-            const submenu = document.getElementById(id);
-            if (submenu) submenu.classList.toggle('open');
+            const node = document.getElementById(id);
+            if (node) node.classList.toggle('open');
         }
-
-        // ── Scroll Reveal Animation ──
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.remove('reverse');
-                    e.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        const observerReverse = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (!e.isIntersecting && e.boundingClientRect.top > 0) {
-                    e.target.classList.remove('active');
-                    e.target.classList.add('reverse');
-                    setTimeout(() => {
-                        e.target.classList.remove('reverse');
-                    }, 1500);
-                }
-            });
-        }, { threshold: 0 });
-
-        document.querySelectorAll('.reveal-growth').forEach(el => {
-            observer.observe(el);
-            observerReverse.observe(el);
-        });
     </script>
 </body>
-
 </html>
