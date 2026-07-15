@@ -357,51 +357,8 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        .mega-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: var(--space-3);
-        }
-
-        .mega-title {
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #60a5fa; /* always light blue — mega-menu bg is always dark */
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .mega-link {
-            display: block;
-            padding: var(--space-1) 0;
-            font-size: 0.875rem;
-            color: var(--nav-text-muted);
-            transition: all 0.2s ease;
-        }
-
-        .mega-link:hover {
-            color: var(--nav-text);
-            padding-left: 0.5rem;
-        }
-
-        .mega-link-feat {
-            display: block;
-            background: rgba(24, 85, 186, 0.03);
-            border-radius: var(--radius-sm);
-            padding: var(--space-2);
-            margin-top: 0.5rem;
-            border: 1px solid rgba(24, 85, 186, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .mega-link-feat:hover {
-            border-color: rgba(24, 85, 186, 0.6);
-            background: rgba(24, 85, 186, 0.08);
-            box-shadow: 0 10px 25px -5px rgba(24, 85, 186, 0.2);
-            transform: translateY(-4px);
-        }
+        /* .mega-grid / .mega-title / .mega-link / .mega-link-feat ahora viven
+           centralizadas en styles-tcav.css (se aplican a todas las páginas). */
 
         .nav-link {
             display: flex;

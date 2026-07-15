@@ -1064,3 +1064,64 @@ body.light-mode .article-hero nav span {
 body.light-mode .article-hero nav [data-lucide] {
     color: rgba(5, 7, 10, 0.40);
 }
+
+/* ==============================================
+   MEGA-MENU DEL HEADER COMPARTIDO (components/header-component.html)
+   Estas clases faltaban en la mayoría de páginas — solo home.html las
+   tenía duplicadas inline, por lo que el desplegable se veía sin
+   formato (sin grid, links pegados) en el resto del sitio.
+   ============================================== */
+.mega-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+}
+
+.mega-title {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #60a5fa; /* siempre azul claro — el fondo del mega-menu siempre es oscuro */
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.mega-link {
+    display: block;
+    padding: var(--space-1) 0;
+    font-size: 0.875rem;
+    color: var(--nav-text-muted);
+    transition: all 0.2s ease;
+}
+
+.mega-link:hover {
+    color: var(--nav-text);
+    padding-left: 0.5rem;
+}
+
+.mega-link.active {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.mega-link-feat {
+    display: block;
+    background: rgba(24, 85, 186, 0.03);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2);
+    margin-top: 0.5rem;
+    border: 1px solid rgba(24, 85, 186, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mega-link-feat:hover {
+    border-color: rgba(24, 85, 186, 0.6);
+    background: rgba(24, 85, 186, 0.08);
+    box-shadow: 0 10px 25px -5px rgba(24, 85, 186, 0.2);
+    transform: translateY(-4px);
+}
+
+@media (max-width: 1024px) {
+    .mega-grid { grid-template-columns: repeat(2, 1fr); }
+}
