@@ -368,8 +368,12 @@
             const locLabel = l => l === 'Online' ? `<i data-lucide="video" class="w-3 h-3"></i> Online` : `<i data-lucide="map-pin" class="w-3 h-3"></i> ${l}`;
             const readMore = isEn ? 'Read more' : 'Leer más';
 
+            const localSlugs = ['webinar-otesa-calella-living-todo-lo-que-quieras-preguntar-sobre-la-emision-del-1er-bono-tokenizado-con-garantia-hipotecaria'];
+            const eventHref = e => localSlugs.includes(e.slug) ? 'evento-detalle.html' : `https://www.token-city.com/es/evento/${e.slug}`;
+            const eventTarget = e => localSlugs.includes(e.slug) ? '' : ' target="_blank" rel="noopener noreferrer"';
+
             grid.innerHTML = filtered.map(e => `
-                <a href="https://www.token-city.com/es/evento/${e.slug}" target="_blank" rel="noopener noreferrer" class="event-card reveal-growth">
+                <a href="${eventHref(e)}"${eventTarget(e)} class="event-card reveal-growth">
                     <div><span class="event-type-badge badge-${e.t}">${label(e)}</span></div>
                     <p class="event-title">${e.ti}</p>
                     <div class="event-card-bottom">
