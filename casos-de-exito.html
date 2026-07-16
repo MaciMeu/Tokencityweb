@@ -105,8 +105,10 @@
             color: #ffffff;
         }
 
+        /* El hero siempre se ve sobre imagen + overlay oscuro (independiente del tema),
+           así que el subtítulo debe quedarse claro en ambos modos, igual que el h1. */
         .hero-subtitle { color: #e2e8f0; }
-        body.light-mode .hero-subtitle { color: #0f172a; }
+        body.light-mode .hero-subtitle { color: #e2e8f0; }
 
         .hero-grid {
             background-image:
