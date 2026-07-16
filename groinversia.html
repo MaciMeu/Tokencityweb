@@ -99,10 +99,10 @@
         }
         .hero-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(rgba(5,7,10,0.85) 0%, rgba(5,7,10,0.5) 50%, #05070a 100%);
+            background: linear-gradient(rgba(5,7,10,0.9) 0%, rgba(5,7,10,0.9) 70%, #05070a 100%);
         }
         body.light-mode .hero-overlay {
-            background: linear-gradient(rgba(5, 7, 10, 0.85) 0%, rgb(5 7 10 / 50%) 50%, #f8fafc 100%);
+            background: linear-gradient(rgba(5, 7, 10, 0.9) 0%, rgba(5, 7, 10, 0.9) 70%, #f8fafc 100%);
         }
         .hero-grid {
             position: absolute; inset: 0;
@@ -127,11 +127,10 @@
         .hero-wrap .body-text,
         .hero-wrap p:not(.section-label):not(.hero-tagline) { color: #cbd5e1 !important; }
         .hero-wrap .section-label { color: #7eb3ff !important; }
-        /* Texto claro fijo en ambos temas + sombra oscura: el tagline puede caer
-           en la zona ya clara del degradado (según cuánto contenido haya antes),
-           así que el color solo no basta para garantizar contraste. */
-        .hero-tagline { color: #e2e8f0; text-shadow: 0 2px 10px rgba(0,0,0,0.85); }
-        body.light-mode .hero-tagline { color: #e2e8f0; text-shadow: 0 2px 10px rgba(0,0,0,0.85); }
+        /* El degradado se mantiene sólido y oscuro durante todo el contenido del
+           hero (hasta 70%), así el texto claro siempre tiene contraste AA garantizado. */
+        .hero-tagline { color: #e2e8f0; }
+        body.light-mode .hero-tagline { color: #e2e8f0; }
 
 
         /* ─── Logo — glass transparente ─── */
