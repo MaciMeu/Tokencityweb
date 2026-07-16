@@ -102,7 +102,7 @@
             background: linear-gradient(rgba(5,7,10,0.9) 0%, rgba(5,7,10,0.9) 70%, #05070a 100%);
         }
         body.light-mode .hero-overlay {
-            background: linear-gradient(rgba(5, 7, 10, 0.9) 0%, rgba(5, 7, 10, 0.9) 70%, #f8fafc 100%);
+            background: linear-gradient(rgba(248,250,252,0.55) 0%, rgba(248,250,252,0.88) 70%, #f8fafc 100%);
         }
         .hero-grid {
             position: absolute; inset: 0;
@@ -127,10 +127,16 @@
         .hero-wrap .body-text,
         .hero-wrap p:not(.section-label):not(.hero-tagline) { color: #cbd5e1 !important; }
         .hero-wrap .section-label { color: #7eb3ff !important; }
+        /* Variante clara del hero: fondo claro real (no oscuro forzado), texto oscuro. */
+        body.light-mode .hero-wrap .heading-text,
+        body.light-mode .hero-wrap h1 { color: #0f172a !important; }
+        body.light-mode .hero-wrap .body-text,
+        body.light-mode .hero-wrap p:not(.section-label):not(.hero-tagline) { color: #475569 !important; }
+        body.light-mode .hero-wrap .section-label { color: var(--accent) !important; }
         /* El degradado se mantiene sólido y oscuro durante todo el contenido del
            hero (hasta 70%), así el texto claro siempre tiene contraste AA garantizado. */
         .hero-tagline { color: #e2e8f0; }
-        body.light-mode .hero-tagline { color: #e2e8f0; }
+        body.light-mode .hero-tagline { color: #475569; }
 
 
         /* ─── Logo — glass transparente ─── */
@@ -161,10 +167,8 @@
         body.light-mode .ptag-market { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
         body.light-mode .ptag-token  { background: transparent; color: #334155; border-color: #94a3b8; }
 
-        /* hero siempre oscuro — revertir light-mode en los tags del hero */
-        body.light-mode .hero-wrap .ptag-sector { background: rgba(var(--accent-rgb),0.18); color: #7eb3ff; border-color: rgba(var(--accent-rgb),0.35); }
-        body.light-mode .hero-wrap .ptag-market { background: rgba(255,255,255,0.08); color: #cbd5e1; border-color: rgba(255,255,255,0.14); }
-        body.light-mode .hero-wrap .ptag-token  { background: transparent; color: #cbd5e1; border-color: rgba(255,255,255,0.22); }
+        /* Variante clara del hero: los tags usan los colores normales de modo claro
+           (ya definidos arriba en body.light-mode .ptag-*), no forzamos estilo oscuro. */
 
         /* ─── Info cards ─── */
         .info-card {
