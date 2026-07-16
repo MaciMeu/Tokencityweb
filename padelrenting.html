@@ -86,14 +86,21 @@
         /* Parallax real: la imagen se fija a la ventana (no al hero-wrap) y la
            siguiente sección (opaca) la cubre de forma natural al hacer scroll. */
         .hero-bg {
-            position: fixed; inset: 0;
-            z-index: -1;
+
+            position: absolute; inset: 0;
             background-image: url('mercado.jpg'); /* ← cambiar por cliente */
             background-size: cover; background-position: center;
+
+            background-attachment: fixed;
+
         }
+
         @media (max-width: 768px) {
-            /* position:fixed backgrounds son poco fiables en iOS Safari */
-            .hero-bg { position: absolute; }
+
+            /* background-attachment:fixed es poco fiable en iOS Safari */
+
+            .hero-bg { background-attachment: scroll; }
+
         }
         .hero-overlay {
             position: absolute; inset: 0;

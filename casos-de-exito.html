@@ -76,20 +76,18 @@
             overflow: hidden;
         }
 
-        /* Parallax real: la imagen se fija a la ventana (no al hero-blog) y la
-           siguiente sección (opaca) la cubre de forma natural al hacer scroll. */
         .hero-media {
-            position: fixed;
+            position: absolute;
             inset: 0;
-            z-index: -1;
             background-image: url('mercado.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
         }
         @media (max-width: 768px) {
-            /* position:fixed backgrounds son poco fiables en iOS Safari */
-            .hero-media { position: absolute; }
+            /* background-attachment:fixed es poco fiable en iOS Safari */
+            .hero-media { background-attachment: scroll; }
         }
 
         .hero-overlay {
