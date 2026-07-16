@@ -96,23 +96,18 @@
             background: linear-gradient(rgba(5, 7, 10, 0.9) 0%, rgba(5, 7, 10, 0.9) 70%, var(--bg-color) 100%);
             pointer-events: none;
         }
-        /* Variante clara del hero: fondo claro real (no oscuro forzado), texto oscuro. */
-        body.light-mode .hero-overlay {
-            background: linear-gradient(rgba(248,250,252,0.55) 0%, rgba(248,250,252,0.88) 70%, var(--bg-color) 100%);
-        }
 
         .hero-blog-title {
             color: #ffffff;
         }
 
         body.light-mode .hero-blog-title {
-            color: #0f172a;
+            color: #ffffff;
         }
 
-        /* El degradado se mantiene sólido durante todo el contenido del hero
-           (hasta 70%) en ambos temas, así el texto siempre tiene contraste AA. */
+        /* El degradado se mantiene sólido y oscuro durante todo el contenido del
+           hero (hasta 70%), así el texto claro siempre tiene contraste AA garantizado. */
         .hero-subtitle { color: #e2e8f0; }
-        body.light-mode .hero-subtitle { color: #475569; }
         body.light-mode .hero-subtitle { color: #e2e8f0; }
 
         .hero-grid {
