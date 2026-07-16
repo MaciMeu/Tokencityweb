@@ -58,12 +58,6 @@
             --glass-border: rgba(255, 255, 255, 0.08);
         }
 
-        html {
-            /* Evita que el navegador propague el fondo del body al canvas raíz,
-               lo que lo pintaría por debajo de .hero-media (position:fixed, z-index:-1). */
-            background-color: var(--bg-color);
-        }
-
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--bg-color);
@@ -74,6 +68,7 @@
         .hero-blog {
             position: relative;
             overflow: hidden;
+            background: #05070a;
         }
 
         .hero-media {
@@ -83,17 +78,13 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-        @media (max-width: 768px) {
-            /* background-attachment:fixed es poco fiable en iOS Safari */
-            .hero-media { background-attachment: scroll; }
+            transform: scale(1.03);
         }
 
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(rgba(5, 7, 10, 0.9) 0%, rgba(5, 7, 10, 0.9) 70%, var(--bg-color) 100%);
+            background: linear-gradient(rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.5), var(--bg-color));
             pointer-events: none;
         }
 
