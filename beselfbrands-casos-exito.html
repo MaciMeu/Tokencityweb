@@ -127,10 +127,10 @@
         .hero-wrap .body-text,
         .hero-wrap p:not(.section-label):not(.hero-tagline) { color: #cbd5e1 !important; }
         .hero-wrap .section-label { color: #7eb3ff !important; }
-        .hero-tagline { color: #cbd5e1; }
-        /* El hero de casos de éxito tiene poco contenido antes del tagline,
-           así que sigue en zona oscura del degradado incluso en modo claro. */
-        body.light-mode .hero-tagline { color: #e2e8f0; }
+        /* Texto claro fijo en ambos temas + sombra oscura: el tagline puede caer
+           en la zona ya clara del degradado, así que el color solo no basta. */
+        .hero-tagline { color: #e2e8f0; text-shadow: 0 2px 10px rgba(0,0,0,0.85); }
+        body.light-mode .hero-tagline { color: #e2e8f0; text-shadow: 0 2px 10px rgba(0,0,0,0.85); }
 
 
         .hero-muted-link {
