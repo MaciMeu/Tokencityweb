@@ -432,14 +432,11 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
-        /* Sector tag: color por sector */
+        /* Sector tag: color por sector, fondo 100 via color-mix (igual que .ptag-sector) */
         .market-tag.sector-tag {
-            background: color-mix(in srgb, var(--sector-color, #1855BA) 28%, transparent);
+            background: color-mix(in srgb, var(--sector-color, #1855BA) 12%, var(--bg-color));
             color: var(--sector-color, #1855BA);
-        }
-        body:not(.light-mode) .market-tag.sector-tag {
-            background: var(--sector-color, #1855BA);
-            color: #fff;
+            border: 1px solid var(--sector-color, #1855BA);
         }
         /* Mercado tag: fondo negro, texto gris */
         .market-tag.market-tag-mercado {
@@ -464,40 +461,6 @@
         .market-tag.market-tag-token i {
             color: #111;
         }
-
-                /* Crowdfunding: fondo gris, texto negro */
-        .market-tag.market-tag-crowdfunding {
-            background: #e5e7eb;
-            color: #111;
-            border-color: #e5e7eb;
-        }
-        .market-tag.market-tag-crowdfunding i {
-            color: #111;
-        }
-        body:not(.light-mode) .market-tag.market-tag-crowdfunding {
-            background: #374151;
-            color: #f3f4f6;
-            border-color: #374151;
-        }
-        body:not(.light-mode) .market-tag.market-tag-crowdfunding i {
-            color: #f3f4f6;
-        }
-        /* Security: borde gris, texto gris */
-        .market-tag.market-tag-security {
-            border-color: #9ca3af;
-            color: #6b7280;
-        }
-        .market-tag.market-tag-security i {
-            color: #6b7280;
-        }
-        body:not(.light-mode) .market-tag.market-tag-security {
-            border-color: #6b7280;
-            color: #9ca3af;
-        }
-        body:not(.light-mode) .market-tag.market-tag-security i {
-            color: #9ca3af;
-        }
-
         .market-tag .mat-icon {
             font-size: 1rem;
             line-height: 1;
@@ -1161,8 +1124,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
-                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Token City Exchange</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1186,8 +1149,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Adventurees</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1211,8 +1174,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Ökohaus</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1236,8 +1199,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Groinversia</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1261,8 +1224,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Padel Renting</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1286,8 +1249,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="tractor" class="w-3 h-3"></i> Agroindustria</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Finka</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1311,8 +1274,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">HDS</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1336,8 +1299,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="diamond" class="w-3 h-3"></i> Commodities</span>
-                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Global Gold</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1361,8 +1324,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Armahabitatum</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1386,8 +1349,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Tokenix</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1411,8 +1374,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Equito</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1436,8 +1399,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="music" class="w-3 h-3"></i> Música</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">The Muxic</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1461,8 +1424,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="diamond" class="w-3 h-3"></i> Commodities</span>
-                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Dianelum</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1486,8 +1449,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="map" class="w-3 h-3"></i> Turismo</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">WAYS</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1511,8 +1474,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="palette" class="w-3 h-3"></i> Arte</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Codigoo</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1536,8 +1499,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
-                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Medulio Capital</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1561,8 +1524,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
-                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Block4e</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1586,8 +1549,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Realbites</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1611,8 +1574,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
-                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Valorix</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1636,8 +1599,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="palette" class="w-3 h-3"></i> Arte</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Beself Brands</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1661,8 +1624,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Elevio Rent</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1686,8 +1649,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
-                            <span class="market-tag market-tag-token market-tag-utility"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">bolt</span> Utility</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">TokenGO</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1711,8 +1674,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Equalice</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1736,8 +1699,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="building-2" class="w-3 h-3"></i> Real Estate</span>
-                            <span class="market-tag market-tag-mercado market-tag-crowdfunding"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">groups</span> Crowdfunding</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Marv</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
@@ -1761,8 +1724,8 @@
                     <div class="p-5">
                         <div class="flex flex-wrap gap-1.5 mb-3">
                             <span class="market-tag sector-tag"><i data-lucide="landmark" class="w-3 h-3"></i> Finanzas</span>
-                            <span class="market-tag market-tag-mercado market-tag-exchange"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
-                            <span class="market-tag market-tag-token market-tag-security"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
+                            <span class="market-tag market-tag-mercado"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">swap_horiz</span> Exchange</span>
+                            <span class="market-tag market-tag-token"><span class="mat-icon material-symbols-outlined" style="font-size:1rem;line-height:1;">verified_user</span> Security</span>
                         </div>
                         <h3 class="font-extrabold text-lg heading-text mb-2">Tokenbit</h3>
                         <p class="text-sm body-text leading-relaxed mb-4">
