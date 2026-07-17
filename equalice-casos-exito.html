@@ -155,15 +155,19 @@
         }
         /* dark — todos sobre fondo ~#05070a */
         .ptag-sector { background: rgba(var(--accent-rgb),0.18); color: var(--accent); border: 1px solid rgba(var(--accent-rgb),0.35); }
+        .ptag-marketplace { background: rgba(var(--accent-rgb),0.18); color: var(--accent); border: 1px solid rgba(var(--accent-rgb),0.35); transition: background-color 0.2s ease; }
+        .ptag-marketplace:hover { background: rgba(var(--accent-rgb),0.28); }
         .ptag-market { background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.14); }
         .ptag-token  { background: transparent; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.22); }
         /* light — sobre fondo ~#f8fafc (cards section) */
         body.light-mode .ptag-sector { background: rgba(var(--accent-rgb),0.08); color: var(--accent); border-color: rgba(var(--accent-rgb),0.25); }
+        body.light-mode .ptag-marketplace { background: rgba(var(--accent-rgb),0.08); color: var(--accent); border-color: rgba(var(--accent-rgb),0.25); }
         body.light-mode .ptag-market { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
         body.light-mode .ptag-token  { background: transparent; color: #334155; border-color: #94a3b8; }
 
         /* hero siempre oscuro — revertir light-mode en los tags del hero */
         body.light-mode .hero-wrap .ptag-sector { background: rgba(var(--accent-rgb),0.18); color: var(--accent); border-color: rgba(var(--accent-rgb),0.35); }
+        body.light-mode .hero-wrap .ptag-marketplace { background: rgba(var(--accent-rgb),0.18); color: var(--accent); border-color: rgba(var(--accent-rgb),0.35); }
         body.light-mode .hero-wrap .ptag-market { background: rgba(255,255,255,0.08); color: #cbd5e1; border-color: rgba(255,255,255,0.14); }
         body.light-mode .hero-wrap .ptag-token  { background: transparent; color: #cbd5e1; border-color: rgba(255,255,255,0.22); }
 
@@ -350,10 +354,8 @@
 
                 <!-- Breadcrumb + Tag en la misma fila -->
                 <div class="flex flex-wrap gap-3 justify-center items-center mb-6 reveal-growth delay-100">
-                    <a href="marketplace.html"
-                        class="inline-flex items-center gap-1.5 text-xs font-bold group"
-                        style="color: #94a3b8;">
-                        <i data-lucide="arrow-left" class="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1"></i>
+                    <a href="marketplace.html" class="ptag ptag-marketplace group">
+                        <i data-lucide="arrow-left" class="w-3 h-3 transition-transform group-hover:-translate-x-1"></i>
                         <span class="lang-es">Marketplace</span>
                         <span class="lang-en">Marketplace</span>
                     </a>
