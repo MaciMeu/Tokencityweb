@@ -164,10 +164,10 @@
            mercado: azul, token: morado. Claro/oscuro usan el mismo 500
            salvo mercado/token, que aclaran su tono en oscuro para AA. */
         .ptag-sector { background: color-mix(in srgb, var(--accent) 12%, var(--bg-color)); color: var(--accent); border: 1px solid var(--accent); }
-        .ptag-market { background: color-mix(in srgb, #1855BA 12%, var(--bg-color)); color: #1855BA; border: 1px solid #1855BA; }
-        body:not(.light-mode) .ptag-market { background: color-mix(in srgb, #60a5fa 12%, var(--bg-color)); color: #60a5fa; border: 1px solid #60a5fa; }
-        .ptag-token { background: color-mix(in srgb, #7c3aed 12%, var(--bg-color)); color: #7c3aed; border: 1px solid #7c3aed; }
-        body:not(.light-mode) .ptag-token { background: color-mix(in srgb, #a78bfa 12%, var(--bg-color)); color: #a78bfa; border: 1px solid #a78bfa; }
+        .ptag-market { background: #111; color: #d1d5db; border: 1.5px solid #111; }
+        body:not(.light-mode) .ptag-market { background: #222; color: #e5e7eb; border-color: #222; }
+        .ptag-token { background: transparent; color: #111; border: 1.5px solid #111; }
+        body:not(.light-mode) .ptag-token { background: transparent; color: #fff; border-color: #fff; }
 
         /* ─── Info cards ─── */
         .info-card {
