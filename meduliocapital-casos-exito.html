@@ -161,19 +161,19 @@
         }
         /* dark — todos sobre fondo ~#05070a */
         .ptag-sector { background: rgba(var(--accent-rgb),0.18); color: var(--accent); border: 1px solid rgba(var(--accent-rgb),0.35); }
-        .ptag-marketplace { background: rgba(var(--accent-rgb),0.18); color: var(--accent); border: 1px solid rgba(var(--accent-rgb),0.35); transition: background-color 0.2s ease; }
-        .ptag-marketplace:hover { background: rgba(var(--accent-rgb),0.28); }
+        .ptag-marketplace { background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.18); transition: background-color 0.2s ease; }
+        .ptag-marketplace:hover { background: rgba(255,255,255,0.14); }
         .ptag-market { background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.14); }
         .ptag-token  { background: transparent; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.22); }
         /* light — sobre fondo ~#f8fafc (cards section) */
         body.light-mode .ptag-sector { background: rgba(var(--accent-rgb),0.08); color: var(--accent); border-color: rgba(var(--accent-rgb),0.25); }
-        body.light-mode .ptag-marketplace { background: rgba(var(--accent-rgb),0.08); color: var(--accent); border-color: rgba(var(--accent-rgb),0.25); }
+        body.light-mode .ptag-marketplace { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
         body.light-mode .ptag-market { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
         body.light-mode .ptag-token  { background: transparent; color: #334155; border-color: #94a3b8; }
 
         /* hero siempre oscuro — revertir light-mode en los tags del hero */
         body.light-mode .hero-wrap .ptag-sector { background: rgba(var(--accent-rgb),0.18); color: var(--accent); border-color: rgba(var(--accent-rgb),0.35); }
-        body.light-mode .hero-wrap .ptag-marketplace { background: rgba(var(--accent-rgb),0.18); color: var(--accent); border-color: rgba(var(--accent-rgb),0.35); }
+        body.light-mode .hero-wrap .ptag-marketplace { background: rgba(255,255,255,0.08); color: #cbd5e1; border-color: rgba(255,255,255,0.18); }
         body.light-mode .hero-wrap .ptag-market { background: rgba(255,255,255,0.08); color: #cbd5e1; border-color: rgba(255,255,255,0.14); }
         body.light-mode .hero-wrap .ptag-token  { background: transparent; color: #cbd5e1; border-color: rgba(255,255,255,0.22); }
 
@@ -375,7 +375,7 @@
                 <h1 class="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-4 reveal-growth delay-100">
                     Acceso digital a activos exclusivos
                 </h1>
-                <p class="hero-tagline text-base mb-8 reveal-growth delay-200 max-w-sm mx-auto" style="line-height: 1.6;">
+                <p class="hero-tagline text-base mb-8 max-w-sm mx-auto" style="line-height: 1.6;">
                     <span class="lang-es">El rigor de la banca de inversión con la agilidad de la tecnología blockchain unidas para ofrecer oportunidades únicas de rentabilidad.</span>
                     <span class="lang-en">The rigor of investment banking with the agility of blockchain technology, joined together to offer unique profitability opportunities.</span>
                 </p>
