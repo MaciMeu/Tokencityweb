@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token City · Dossier General</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles-tcav.css">
+
+<style>
+  html, body { height: 100dvh; overflow: hidden; background: var(--bg-color); }
+  body { font-family: 'Montserrat', sans-serif; }
+
+  /* ---------- Deck shell ---------- */
+  #deck {
+    position: relative;
+    height: 100dvh;
+    width: 100vw;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    text-align: center;
+    padding: clamp(64px, 10dvh, 110px) clamp(20px, 6vw, 112px) clamp(88px, 12dvh, 130px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(24px) scale(.98);
+    transition: opacity .5s ease, transform .6s cubic-bezier(.4,0,.2,1), visibility .5s;
+    overflow-y: auto;
+  }
+  .slide > * { margin-left: auto; margin-right: auto; }
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    z-index: 10;
+  }
+
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(24,85,186,.35), transparent 60%),
+      radial-gradient(900px 500px at 110% 110%, rgba(24,85,186,.18), transparent 60%),
+      linear-gradient(180deg, #05070a 0%, #060a12 100%);
+  }
+  .slide-bg::after {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(180deg, transparent, black 30%, black 70%, transparent);
+  }
+
+  .slide-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: .72rem;
+    color: var(--primary-blue);
+    font-weight: 700;
+  }
+
+  .slide-title {
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: var(--text-main);
+    line-height: 1.08;
+    font-size: clamp(1.85rem, 1.15rem + 2.6vw, 3.4rem) !important;
+  }
+
+  .slide-lead {
+    color: var(--text-muted);
+    max-width: 68ch;
+    font-size: clamp(.95rem, .82rem + .5vw, 1.15rem) !important;
+    line-height: 1.55;
+  }
+
+  /* Fluid content widths — scale with viewport instead of fixed px breakpoints */
+  .max-w-4xl { max-width: clamp(520px, 78vw, 1180px) !important; width: 100%; }
+  .max-w-5xl { max-width: clamp(560px, 84vw, 1340px) !important; width: 100%; }
+  .max-w-6xl { max-width: clamp(600px, 90vw, 1520px) !important; width: 100%; }
+  .max-w-lg  { max-width: clamp(360px, 60vw, 620px) !important; width: 100%; }
+
+  /* ---------- Client logo tile (image-based) ---------- */
+  .client-logo-box {
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    height: clamp(120px, 16vh, 190px);
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,.06);
+    border: 1px solid var(--glass-border);
+    padding: clamp(1rem, 2.2vw, 1.75rem);
+    transition: all .3s ease;
+  }
+  .client-logo-box img {
+    height: 74%;
+    width: auto;
+    max-width: 90%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: .92;
+    transition: opacity .3s ease;
+  }
+  .client-logo-box:hover {
+    background: rgba(255,255,255,.11);
+    transform: translateY(-3px);
+  }
+  .client-logo-box:hover img { opacity: 1; }
+  .client-logo-wrap { display: flex; flex-direction: column; align-items: stretch; gap: .5rem; width: 100%; }
+  .client-logo-url {
+    display: block;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color .2s ease;
+  }
+  .client-logo-url:hover { color: var(--primary-blue); }
+
+  .brand-logo { height: clamp(16px, 2vh, 22px); width: auto; display: block; }
+
+  /* Center card/list content by default */
+  .glass-card, .step-node, .index-item { text-align: center; }
+  .glass-card ul, .step-node ul { text-align: center; }
+
+  /* ---------- Bento card (with oversized translucent ghost icon) ---------- */
+  .bento-card {
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    border-radius: var(--radius-md);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-left: 4px solid var(--accent, var(--primary-blue));
+    padding: clamp(1.4rem, 2.4vw, 2.1rem);
+    min-height: 168px;
+    display: flex;
+    align-items: center;
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  .bento-card:hover {
+    transform: translateY(-6px);
+  }
+  .bento-card-wide { min-height: 128px; }
+  .bento-content { position: relative; z-index: 2; max-width: 78%; }
+  .bento-icon-badge {
+    width: 40px; height: 40px;
+    border-radius: var(--radius-xs);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .bento-ghost {
+    position: absolute;
+    right: clamp(-22px, -2.4vw, -10px);
+    bottom: clamp(-22px, -2.4vw, -10px);
+    width: clamp(100px, 11vw, 168px) !important;
+    height: clamp(100px, 11vw, 168px) !important;
+    color: var(--accent, var(--primary-blue));
+    opacity: .09;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity .4s ease, transform .5s cubic-bezier(.4,0,.2,1);
+  }
+  .bento-card:hover .bento-ghost {
+    opacity: .2;
+    transform: scale(1.08);
+  }
+
+  /* ---------- Glass card ---------- */
+  .glass-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    backdrop-filter: blur(14px);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  .glass-card:hover {
+    transform: translateY(-6px);
+  }
+
+  /* ---------- LED border-glow hover (shared across all cards, not tables) ----------
+     Two-layer technique (matches INdex2.html "Agencia de Valores..." panel):
+     .led-wrap = static ring-shaped mask aligned to the card (never rotates)
+     .led-spin = oversized (220%) conic-gradient INSIDE it that rotates —
+     rotating the light instead of the masked shape keeps the ring perfectly
+     aligned to the card at every angle (rotating the mask itself on a
+     rectangle made it drift outside the corners). */
+  .glass-card, .bento-card, .step-node, .client-logo-box, .vc-box {
+    position: relative;
+    --accent: var(--primary-blue);
+  }
+  .led-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 2px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+    opacity: 0;
+    transition: opacity .3s ease;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .led-spin {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 220%; height: 220%;
+    background: conic-gradient(from 0deg,
+      transparent 55%,
+      color-mix(in srgb, var(--accent) 60%, white) 68%,
+      var(--accent) 73%,
+      color-mix(in srgb, var(--accent) 60%, white) 78%,
+      transparent 88%);
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: led-rotate 3.2s linear infinite;
+    animation-play-state: paused;
+  }
+  .led-spin-glow { filter: blur(10px); opacity: .6; }
+  @keyframes led-rotate { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+  .glass-card:hover .led-wrap, .bento-card:hover .led-wrap, .step-node:hover .led-wrap, .client-logo-box:hover .led-wrap, .vc-box:hover .led-wrap {
+    opacity: 1;
+  }
+  .glass-card:hover .led-spin, .bento-card:hover .led-spin, .step-node:hover .led-spin, .client-logo-box:hover .led-spin, .vc-box:hover .led-spin {
+    animation-play-state: running;
+  }
+
+  .icon-badge {
+    width: 56px; height: 56px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--primary-blue) 22%, transparent);
+    border: 1px solid color-mix(in srgb, var(--primary-blue) 45%, transparent);
+    color: #bcd3f7;
+    flex-shrink: 0;
+  }
+
+  /* ---------- Target / "diana" icon with LED spinner on hover ---------- */
+  .target-icon {
+    position: relative;
+    width: clamp(96px, 9vw, 132px); height: clamp(96px, 9vw, 132px);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    color: #dce8fb;
+    background:
+      radial-gradient(circle, color-mix(in srgb, var(--primary-blue) 55%, transparent) 0%, color-mix(in srgb, var(--primary-blue) 55%, transparent) 32%, transparent 33%, transparent 46%, color-mix(in srgb, var(--primary-blue) 30%, transparent) 47%, color-mix(in srgb, var(--primary-blue) 30%, transparent) 60%, transparent 61%);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--primary-blue) 40%, transparent),
+      0 0 0 11px rgba(24,85,186,.08),
+      0 0 0 21px rgba(24,85,186,.04);
+    transition: transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s ease;
+  }
+  .target-icon i { width: clamp(30px, 2.6vw, 40px) !important; height: clamp(30px, 2.6vw, 40px) !important; }
+  .target-icon::after {
+    content: "";
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0 72%, #a9c8ff 84%, #4d8dff 91%, #a9c8ff 97%, transparent 100%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+    opacity: 0;
+    animation: led-spin 1.4s linear infinite;
+    animation-play-state: paused;
+    transition: opacity .3s ease;
+    pointer-events: none;
+  }
+  .target-item:hover .target-icon {
+    transform: scale(1.06);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--primary-blue) 65%, transparent),
+      0 0 0 11px rgba(24,85,186,.16),
+      0 0 0 21px rgba(24,85,186,.08),
+      0 0 36px rgba(24,85,186,.45);
+  }
+  .target-item:hover .target-icon::after {
+    opacity: 1;
+    animation-play-state: running;
+  }
+  @keyframes led-spin { to { transform: rotate(360deg); } }
+
+  /* ---------- RWA feature icons ---------- */
+  .rwa-icon {
+    width: clamp(52px, 5vw, 68px); height: clamp(52px, 5vw, 68px);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--primary-blue) 35%, transparent);
+    border: 1px solid color-mix(in srgb, var(--primary-blue) 60%, transparent);
+    color: #cfe0fb;
+    box-shadow: 0 0 0 0 rgba(24,85,186,.5);
+    transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease, background .3s ease;
+    animation: rwa-pulse 3.4s ease-in-out infinite;
+  }
+  .rwa-icon i { width: 60% !important; height: 60% !important; }
+  .rwa-icon.rwa-icon-muted {
+    background: rgba(255,255,255,.08);
+    border-color: var(--glass-border);
+    color: var(--text-muted);
+    animation: none;
+  }
+  .rwa-icon:hover {
+    transform: scale(1.12) rotate(6deg);
+    background: color-mix(in srgb, var(--primary-blue) 50%, transparent);
+    box-shadow: 0 0 24px rgba(24,85,186,.55);
+  }
+  .rwa-icon.rwa-icon-amber:hover {
+    background: color-mix(in srgb, #e08a3c 50%, transparent);
+    box-shadow: 0 0 24px rgba(224,138,60,.55);
+  }
+  @keyframes rwa-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(24,85,186,.35); }
+    50% { box-shadow: 0 0 0 10px rgba(24,85,186,0); }
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .35rem .9rem;
+    border-radius: var(--radius-pill);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .04em;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,.05);
+    color: var(--text-muted);
+  }
+  .pill-sector {
+    color: var(--sector, var(--text-muted));
+    background: color-mix(in srgb, var(--sector, var(--text-muted)) 16%, transparent);
+    border-color: color-mix(in srgb, var(--sector, var(--text-muted)) 45%, transparent);
+    font-weight: 700;
+  }
+  .pill-sector i { color: var(--sector, var(--text-muted)); }
+
+  .step-node {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    transition: transform .3s ease;
+  }
+  .step-node:hover {
+    transform: translateY(-4px);
+  }
+
+  /* number badge for process steps */
+  .step-num {
+    width: 34px; height: 34px;
+    border-radius: var(--radius-circle);
+    background: var(--primary-blue);
+    color: #fff;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* table styling */
+  .tc-table { border-collapse: collapse; width: 100%; }
+  .tc-table th {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: .9rem clamp(1.25rem, 2.5vw, 2.25rem);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .tc-table td {
+    padding: 1rem clamp(1.25rem, 2.5vw, 2.25rem);
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-main);
+    font-size: .92rem;
+    text-align: right;
+  }
+  .tc-table th:first-child,
+  .tc-table td:first-child {
+    text-align: left;
+    padding-left: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .tc-table th:last-child,
+  .tc-table td:last-child {
+    padding-right: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .tc-table tr:last-child td { border-bottom: none; }
+
+  /* Row-level hover only — the table's card wrapper must stay static */
+  .glass-card.table-card:hover {
+    transform: none;
+    border-color: var(--glass-border);
+    background: var(--glass-bg);
+    box-shadow: none;
+  }
+  .tc-table tbody tr {
+    transition: background-color .2s ease;
+  }
+  .tc-table tbody tr:hover td {
+    background: rgba(24,85,186,.14);
+  }
+
+  /* logo tiles */
+  .logo-tile {
+    display: flex; align-items: center; justify-content: center;
+    height: 88px;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: .02em;
+    transition: all .3s ease;
+    text-align: center;
+    padding: .5rem 1rem;
+  }
+  .logo-tile:hover {
+    background: rgba(255,255,255,.09);
+    border-color: var(--primary-blue);
+    transform: translateY(-3px);
+  }
+
+  /* ---------- Value chain diagram (flowchart with connectors) ---------- */
+  .vc-grid {
+    display: grid;
+    grid-template-columns: 1fr 18px 1.15fr 18px 1.15fr 18px 1.15fr;
+    grid-template-rows: auto 18px auto 18px auto 18px auto;
+    align-items: stretch;
+  }
+  .vc-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(.9rem, 1.6vw, 1.5rem);
+    border-radius: var(--radius-md);
+    border: 1.5px solid transparent;
+    min-height: 64px;
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+  }
+  .vc-box:hover { transform: translateY(-4px); }
+  .vc-green { background: rgba(34,197,94,.24); border-color: rgba(34,197,94,.65); }
+  .vc-blue  { background: rgba(24,85,186,.28); border-color: rgba(77,141,255,.65); }
+  .vc-purple{ background: rgba(139,92,246,.22); border-color: rgba(139,92,246,.65); }
+  .vc-blockchain { background: linear-gradient(90deg, rgba(24,85,186,.35), rgba(139,92,246,.28)); }
+
+  .vconn {
+    grid-column-start: span 1;
+    justify-self: center;
+    width: 2px;
+    height: 100%;
+    background: rgba(255,255,255,.3);
+  }
+  .hconn {
+    grid-row-start: span 1;
+    align-self: center;
+    height: 2px;
+    width: 100%;
+    background: rgba(255,255,255,.3);
+  }
+
+  /* ---------- Chrome: nav, progress, controls ---------- */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px;
+    pointer-events: none;
+  }
+  #topbar .brand { pointer-events: auto; font-weight: 800; letter-spacing: .04em; color: #fff; font-size: .95rem; }
+  #topbar .counter { pointer-events: auto; font-family:'JetBrains Mono',monospace; font-size:.8rem; color: var(--text-muted); }
+
+  #progress-track {
+    position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60;
+    background: rgba(255,255,255,.06);
+  }
+  #progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-blue), #4d8dff);
+    width: 0%;
+    transition: width .5s cubic-bezier(.4,0,.2,1);
+  }
+
+  #dots {
+    position: fixed;
+    right: 22px; top: 50%; transform: translateY(-50%);
+    z-index: 50;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,.22);
+    cursor: pointer;
+    transition: all .25s ease;
+  }
+  .dot:hover { background: rgba(255,255,255,.55); }
+  .dot.active { background: var(--primary-blue); width: 10px; height: 22px; border-radius: var(--radius-pill); }
+
+  #arrows {
+    position: fixed; bottom: 26px; right: 32px; z-index: 50;
+    display: flex; gap: 10px;
+  }
+  .arrow-btn, .aux-btn {
+    width: 46px; height: 46px;
+    border-radius: var(--radius-circle);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .25s ease;
+    backdrop-filter: blur(10px);
+  }
+  .arrow-btn:hover, .aux-btn:hover { background: var(--primary-blue); border-color: var(--primary-blue); transform: translateY(-2px); }
+  .arrow-btn:disabled { opacity: .3; cursor: not-allowed; transform: none; }
+
+  #aux-controls {
+    position: fixed; bottom: 26px; left: 32px; z-index: 50;
+    display: flex; gap: 10px;
+  }
+
+  #slide-num-badge {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    z-index: 50;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .78rem;
+    color: var(--text-muted);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(10px);
+  }
+
+  /* index overlay */
+  #index-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(3,5,9,.92);
+    backdrop-filter: blur(6px);
+    display: none;
+    padding: 90px 6vw 60px;
+    overflow-y: auto;
+  }
+  #index-overlay.show { display: block; }
+  .index-item {
+    cursor: pointer;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,.03);
+    transition: all .2s ease;
+  }
+  .index-item:hover { background: rgba(24,85,186,.15); border-color: var(--primary-blue); transform: translateX(4px); }
+
+  /* ---------- PowerPoint-style black/white stage screen ---------- */
+  #stage-overlay {
+    position: fixed; inset: 0; z-index: 300;
+    display: none;
+    cursor: pointer;
+  }
+  #stage-overlay.show { display: block; }
+  #stage-overlay.stage-black { background: #000; }
+  #stage-overlay.stage-white { background: #fff; }
+
+  /* ---------- Auto-hide presentation chrome after inactivity ---------- */
+  #topbar, #progress-track, #dots, #arrows, #aux-controls, #slide-num-badge {
+    transition: opacity .4s ease;
+    opacity: 1;
+  }
+  body.ui-hidden #topbar,
+  body.ui-hidden #progress-track,
+  body.ui-hidden #dots,
+  body.ui-hidden #arrows,
+  body.ui-hidden #aux-controls,
+  body.ui-hidden #slide-num-badge {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 4px; }
+
+  .fade-up { animation: fadeUp .7s cubic-bezier(.4,0,.2,1) both; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+  .d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.19s}.d4{animation-delay:.26s}.d5{animation-delay:.33s}.d6{animation-delay:.4s}
+
+  /* ---------- Breakpoints ---------- */
+  @media (min-width: 1600px) {
+    #topbar { padding: 24px 44px; }
+    .arrow-btn, .aux-btn { width: 52px; height: 52px; }
+  }
+
+  @media (max-width: 1024px) {
+    #dots { right: 14px; }
+  }
+
+  @media (max-width: 768px) {
+    #dots { display: none; }
+    #topbar { padding: 14px 18px; }
+    #topbar .counter { font-size: .7rem; }
+    .arrow-btn, .aux-btn { width: 40px; height: 40px; }
+    #arrows { bottom: 16px; right: 16px; gap: 8px; }
+    #aux-controls { bottom: 16px; left: 16px; gap: 8px; }
+    #slide-num-badge { display: none; }
+    .slide {
+      padding: 76px clamp(16px, 5vw, 32px) 84px;
+      justify-content: flex-start;
+    }
+    .glass-card { border-radius: var(--radius-sm); }
+  }
+
+  @media (max-width: 480px) {
+    .slide-kicker { font-size: .64rem; }
+    .icon-badge { width: 46px; height: 46px; }
+  }
+
+  @media (max-height: 620px) {
+    .slide { padding-top: 60px; padding-bottom: 60px; justify-content: flex-start; }
+    #topbar { padding: 10px 20px; }
+  }
+
+  @media (orientation: landscape) and (max-height: 480px) {
+    .slide { justify-content: flex-start; padding-top: 56px; }
+    #dots { display: none; }
+  }
+
+  /* ---------- Print / Save as PDF ---------- */
+  @media print {
+    /* Without this, browsers strip background colors/images/gradients when printing,
+       even if the user enables "Background graphics" in the print dialog. */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    #topbar, #progress-track, #dots, #arrows, #aux-controls, #slide-num-badge, #index-overlay { display: none !important; }
+    html, body { height: auto; overflow: visible; background: #05070a; }
+    #deck { position: static; height: auto; }
+    .slide {
+      /* Must stay a positioning context (not static) so .slide-bg's
+         position:absolute confines to THIS slide's page instead of
+         escaping to the print document's root and stacking on page 1. */
+      position: relative !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      display: flex !important;
+      width: 100%;
+      height: 100vh;
+      page-break-after: always;
+      break-after: page;
+      overflow: visible !important;
+      /* .slide-bg (the gradients + grid) relies on z-index:-1 to sit behind the
+         slide's content — several browsers' print/pagination engines don't paint
+         negative-z-index elements reliably, which is why only the flat html/body
+         color was showing up. A box's OWN background always paints first, with
+         no z-index needed, so we duplicate the same gradients + an unmasked grid
+         directly on .slide itself as a print-only, guaranteed-to-render fallback. */
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(24,85,186,.35), transparent 60%),
+        radial-gradient(900px 500px at 110% 110%, rgba(24,85,186,.18), transparent 60%),
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(180deg, #05070a 0%, #060a12 100%) !important;
+      background-size: auto, auto, 48px 48px, 48px 48px, auto !important;
+    }
+    .slide:last-child { page-break-after: auto; break-after: auto; }
+    .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .glass-card:hover, .bento-card:hover, .step-node:hover, .client-logo-box:hover, .vc-box:hover, .target-item:hover .target-icon, .rwa-icon:hover { transform: none !important; box-shadow: none !important; }
+    .led-wrap { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-track"><div id="progress-bar"></div></div>
+
+<div id="topbar">
+  <div class="brand flex items-center gap-3">
+    <img src="../TOKEN%20CITY.svg" alt="Token City" class="brand-logo">
+    <span style="color:var(--text-muted);font-weight:500;font-size:.85em;">/ Dossier</span>
+  </div>
+  <div class="counter"><span id="topbar-current">01</span> — 25</div>
+</div>
+
+<div id="deck"></div>
+
+<div id="dots"></div>
+
+<div id="slide-num-badge"><span id="badge-current">1</span> / 25</div>
+
+<div id="arrows">
+  <button class="arrow-btn" id="prevBtn" aria-label="Anterior"><i data-lucide="chevron-left" style="width:20px;height:20px"></i></button>
+  <button class="arrow-btn" id="nextBtn" aria-label="Siguiente"><i data-lucide="chevron-right" style="width:20px;height:20px"></i></button>
+</div>
+
+<div id="aux-controls">
+  <button class="aux-btn" id="indexBtn" title="Índice"><i data-lucide="layout-grid" style="width:18px;height:18px"></i></button>
+  <button class="aux-btn" id="fsBtn" title="Pantalla completa"><i data-lucide="maximize" style="width:18px;height:18px"></i></button>
+  <button class="aux-btn" id="pdfBtn" title="Guardar como PDF"><i data-lucide="download" style="width:18px;height:18px"></i></button>
+</div>
+
+<div id="index-overlay">
+  <div class="flex items-center justify-between mb-8">
+    <h2 class="text-2xl font-extrabold text-white">Índice de la presentación</h2>
+    <button class="aux-btn" id="closeIndexBtn"><i data-lucide="x" style="width:18px;height:18px"></i></button>
+  </div>
+  <div id="index-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+</div>
+
+<div id="stage-overlay"></div>
+
+<!-- Editor.html reads/writes this. Empty by default: the 25 slides below are the
+     fallback bootstrap. Once saved from the editor, this holds the full deck
+     (as {id,type:'raw'|'blocks',...} entries) and takes over completely. -->
+<script type="application/json" id="slides-data">[]</script>
+
+<script>
+/* ============================================================
+   SLIDE DATA — one entry per Presentacion PDF page
+   ============================================================ */
+const slides = [];
+function addSlide(html){ slides.push(html); }
+
+/* ---- 1. Cover ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<div class="flex flex-col items-center justify-center text-center h-full">
+  <div class="pill mb-8 fade-up"><i data-lucide="sparkles" style="width:14px;height:14px"></i> Julio 2026</div>
+  <img src="../TOKEN%20CITY.svg" alt="Token City" class="fade-up d1" style="width:clamp(220px,32vw,560px);height:auto;">
+  <p class="fade-up d2 text-lg md:text-xl mt-6" style="color:var(--text-muted)">Agile, Secure &amp; Liquid</p>
+  <div class="fade-up d3 mt-14 border-t border-b py-6 px-10" style="border-color:var(--glass-border)">
+    <p class="text-sm tracking-widest uppercase" style="color:var(--text-muted)">Dossier</p>
+    <p class="text-4xl md:text-5xl font-light" style="color:var(--text-main)">GENERAL</p>
+  </div>
+</div>
+`);
+
+/* ---- 2. Índice ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-10">Índice</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl fade-up d2" id="toc-list"></div>
+`);
+
+/* ---- 3. ¿Qué es la tokenización? ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-6">¿Qué es la tokenización?</h2>
+<p class="slide-lead fade-up d2 text-lg mb-12">Es una forma de representar digitalmente <b style="color:var(--text-main)">ACTIVOS</b> económicos (patrimonio, derechos económicos, etc.) en pequeñas unidades llamadas <b style="color:var(--text-main)">TOKENS</b>, con <b style="color:var(--text-main)">pleno reconocimiento jurídico</b>, que se pueden comprar y vender de forma directa y global.</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
+  <div class="glass-card p-8 flex flex-col items-center text-center gap-4 fade-up d3">
+    <div class="icon-badge"><i data-lucide="file-signature" style="width:26px;height:26px"></i></div>
+    <h3 class="font-bold text-white text-lg">Activo</h3>
+    <p class="text-sm" style="color:var(--text-muted)">Registro tradicional</p>
+  </div>
+  <div class="glass-card p-8 flex flex-col items-center text-center gap-4 fade-up d4">
+    <div class="icon-badge"><i data-lucide="coins" style="width:26px;height:26px"></i></div>
+    <h3 class="font-bold text-white text-lg">Token</h3>
+    <p class="text-sm" style="color:var(--text-muted)">Registro digital en Blockchain</p>
+  </div>
+  <div class="glass-card p-8 flex flex-col items-center text-center gap-4 fade-up d5">
+    <div class="icon-badge"><i data-lucide="wallet" style="width:26px;height:26px"></i></div>
+    <h3 class="font-bold text-white text-lg">Wallet</h3>
+    <p class="text-sm" style="color:var(--text-muted)">Cartera de los inversores</p>
+  </div>
+</div>
+`);
+
+/* ---- 4. RWAs ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-6">¿Qué son los Real World Assets (RWAs)?</h2>
+<p class="slide-lead fade-up d2 text-lg mb-10">Los activos tradicionales tokenizados —como inmobiliario o energía— se agrupan bajo el término RWA. Dentro de esta categoría están los instrumentos financieros tokenizados (Security Tokens), diferenciados de los demás "criptoactivos".</p>
+<div class="flex flex-col md:flex-row items-stretch gap-6 max-w-6xl">
+  <div class="glass-card p-6 fade-up d3 flex flex-col" style="border-color:rgba(24,85,186,.5);flex:1.6 1 0%">
+    <p class="pill mb-4">Real World Assets (RWAs)</p>
+    <div class="grid grid-cols-2 gap-3 flex-1">
+      <div class="p-4 rounded-[16px] flex flex-col items-center justify-center" style="background:rgba(24,85,186,.18);border:1px solid rgba(24,85,186,.4)">
+        <div class="rwa-icon"><i data-lucide="trending-up" style="width:26px;height:26px"></i></div>
+        <p class="font-semibold text-white text-sm mt-3">Instrumentos financieros<br>(Security Tokens)</p>
+        <p class="text-xs mt-2" style="color:var(--text-muted)">Mercado de Valores</p>
+      </div>
+      <div class="p-4 rounded-[16px] flex flex-col items-center justify-center" style="background:rgba(24,85,186,.18);border:1px solid rgba(24,85,186,.4)">
+        <div class="rwa-icon"><i data-lucide="badge-check" style="width:26px;height:26px"></i></div>
+        <p class="font-semibold text-white text-sm mt-3">Otros RWAs</p>
+        <p class="text-xs mt-2" style="color:var(--text-muted)">MiCA</p>
+      </div>
+    </div>
+  </div>
+  <div class="glass-card p-6 fade-up d4 flex flex-col" style="flex:1 1 0%;--accent:#e08a3c;border-color:rgba(224,138,60,.5)">
+    <p class="pill mb-4">Criptos</p>
+    <div class="p-4 rounded-[16px] flex-1 flex flex-col justify-center items-center text-center" style="background:rgba(224,138,60,.14);border:1px solid rgba(224,138,60,.4)">
+      <div class="rwa-icon rwa-icon-amber" style="background:color-mix(in srgb, #e08a3c 35%, transparent);border-color:color-mix(in srgb, #e08a3c 60%, transparent);color:#f6d2ab;animation:none"><i data-lucide="shapes" style="width:26px;height:26px"></i></div>
+      <p class="font-semibold text-white text-sm mt-3">Otros criptoactivos</p>
+      <p class="text-xs mt-2" style="color:var(--text-muted)">MiCA</p>
+    </div>
+  </div>
+</div>
+`);
+
+/* ---- 5. ¿Qué valor tienen? ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-6">¿Qué valor tienen los tokens?</h2>
+<p class="slide-lead fade-up d2 text-lg mb-10">Depende de lo que representen. Típicamente los RWAs ofrecen participación en un negocio, interés sobre una deuda, participación en la rentabilidad u otros productos más complejos.</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mb-5">
+  <div class="bento-card fade-up d3" style="--accent:#b5474d">
+    <div class="bento-content">
+      <div class="bento-icon-badge" style="background:rgba(181,71,77,.16);color:#e2a3a7"><i data-lucide="users" style="width:20px;height:20px"></i></div>
+      <h3 class="font-bold text-white text-lg mt-4">Acciones</h3>
+      <p class="text-xs mt-1" style="color:var(--text-muted)">Participación en el capital del negocio</p>
+    </div>
+    <i data-lucide="users" class="bento-ghost"></i>
+  </div>
+  <div class="bento-card fade-up d4" style="--accent:#7a5aa8">
+    <div class="bento-content">
+      <div class="bento-icon-badge" style="background:rgba(122,90,168,.16);color:#c9b8e4"><i data-lucide="check-check" style="width:20px;height:20px"></i></div>
+      <h3 class="font-bold text-white text-lg mt-4">Deuda</h3>
+      <p class="text-xs mt-1" style="color:var(--text-muted)">Interés sobre un préstamo o bono</p>
+    </div>
+    <i data-lucide="check-check" class="bento-ghost"></i>
+  </div>
+  <div class="bento-card fade-up d5" style="--accent:#9a8f3a">
+    <div class="bento-content">
+      <div class="bento-icon-badge" style="background:rgba(154,143,58,.16);color:#dcd39a"><i data-lucide="bar-chart-3" style="width:20px;height:20px"></i></div>
+      <h3 class="font-bold text-white text-lg mt-4">Ganancias</h3>
+      <p class="text-xs mt-1" style="color:var(--text-muted)">Participación en la rentabilidad</p>
+    </div>
+    <i data-lucide="bar-chart-3" class="bento-ghost"></i>
+  </div>
+</div>
+<div class="bento-card bento-card-wide max-w-6xl fade-up d6" style="--accent:#4d8dff">
+  <div class="bento-content">
+    <div class="bento-icon-badge" style="background:rgba(24,85,186,.2);color:#bcd3f7"><i data-lucide="layers" style="width:20px;height:20px"></i></div>
+    <h3 class="font-bold text-white text-lg mt-4">Otros</h3>
+    <p class="text-xs mt-1" style="color:var(--text-muted)">Productos financieros más complejos, combinación de los anteriores</p>
+  </div>
+  <i data-lucide="layers" class="bento-ghost"></i>
+</div>
+`);
+
+/* ---- 6. Proceso de tokenización ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-8">¿Cómo es el proceso de tokenización?</h2>
+<div class="flex flex-wrap justify-center gap-3 max-w-6xl" id="process-steps"></div>
+`);
+
+/* ---- 7. Por qué tokenizar ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-10">¿Por qué tokenizar tus activos?</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl">
+  <div class="glass-card p-7 fade-up d2">
+    <div class="flex items-center justify-center gap-3 mb-2"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-bold text-white text-lg">Canal alternativo de financiación</h3></div>
+    <p class="text-sm" style="color:var(--text-muted)">Cualquiera con conexión a internet puede invertir en tus proyectos.</p>
+  </div>
+  <div class="glass-card p-7 fade-up d3">
+    <div class="flex items-center justify-center gap-3 mb-2"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-bold text-white text-lg">Flexible, directo y global</h3></div>
+    <p class="text-sm" style="color:var(--text-muted)">Tú defines las condiciones. El alcance es directo y global.</p>
+  </div>
+  <div class="glass-card p-7 fade-up d4">
+    <div class="flex items-center justify-center gap-3 mb-2"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-bold text-white text-lg">Se puede vender más fácil</h3></div>
+    <p class="text-sm" style="color:var(--text-muted)">Negociando tus activos en mercados privados o regulados.</p>
+  </div>
+  <div class="glass-card p-7 fade-up d5">
+    <div class="flex items-center justify-center gap-3 mb-2"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-bold text-white text-lg">Eficiencia y transparencia</h3></div>
+    <p class="text-sm" style="color:var(--text-muted)">Ahorras tiempo y costes con procesos automatizados.</p>
+  </div>
+</div>
+`);
+
+/* ---- 8. Por qué con Token City ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-10">¿Por qué con Token City?</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
+  <div class="glass-card p-8 fade-up d2">
+    <div class="icon-badge mb-4"><i data-lucide="shield-check" style="width:26px;height:26px"></i></div>
+    <h3 class="font-bold text-white text-xl mb-3">Institución financiera regulada en la UE</h3>
+    <ul class="space-y-2 text-sm" style="color:var(--text-muted)">
+      <li>• Token City Exchange Agencia de Valores S.A., autorizada por la CNMV</li>
+      <li>• Bolsa de Valores tokenizados regulada a nivel europeo (4T 2026)</li>
+    </ul>
+  </div>
+  <div class="glass-card p-8 fade-up d3">
+    <div class="icon-badge mb-4"><i data-lucide="trophy" style="width:26px;height:26px"></i></div>
+    <h3 class="font-bold text-white text-xl mb-3">A la vanguardia en tokenización</h3>
+    <ul class="space-y-2 text-sm" style="color:var(--text-muted)">
+      <li>• 1ª plataforma regulada de venta de activos tokenizados</li>
+      <li>• 1ª solución de registro nativo en blockchain (ERIR)</li>
+      <li>• 1er bono tokenizado plenamente regulado</li>
+      <li>• 1ª emisión de acciones tokenizadas con reconocimiento jurídico</li>
+      <li>• 1er bono hipotecario tokenizado</li>
+      <li>• 1ª sociedad inmobiliaria tokenizada</li>
+      <li>• Clientes en 5 países en Europa y Latinoamérica</li>
+    </ul>
+  </div>
+</div>
+`);
+
+/* ---- 9. Qué ofrece Token City ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-6">¿Qué ofrece Token City?</h2>
+<p class="slide-lead fade-up d2 text-lg mb-12">Soluciones "end-to-end": asesoramiento, cobertura regulatoria, infraestructura tecnológica y mercados para emitir, distribuir y negociar activos tokenizados.</p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl">
+  <div class="target-item flex flex-col items-center gap-4 fade-up d3">
+    <div class="target-icon"><i data-lucide="briefcase" style="width:28px;height:28px"></i></div>
+    <p class="font-semibold text-white text-center text-sm">Asesoría</p>
+  </div>
+  <div class="target-item flex flex-col items-center gap-4 fade-up d4">
+    <div class="target-icon"><i data-lucide="scale" style="width:28px;height:28px"></i></div>
+    <p class="font-semibold text-white text-center text-sm">Cobertura regulatoria</p>
+  </div>
+  <div class="target-item flex flex-col items-center gap-4 fade-up d5">
+    <div class="target-icon"><i data-lucide="server" style="width:28px;height:28px"></i></div>
+    <p class="font-semibold text-white text-center text-sm">Infraestructura tecnológica</p>
+  </div>
+  <div class="target-item flex flex-col items-center gap-4 fade-up d6">
+    <div class="target-icon"><i data-lucide="landmark" style="width:28px;height:28px"></i></div>
+    <p class="font-semibold text-white text-center text-sm">Mercados</p>
+  </div>
+</div>
+`);
+
+/* ---- 10. Asesoría ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-6">Asesoría</h2>
+<p class="slide-lead fade-up d2 text-lg mb-10">Token City ha adquirido un amplio know-how en tokenización de activos, en casos de uso, industrias y países diversos. Por ello, puede prestar apoyo para:</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
+  <div class="glass-card p-7 fade-up d3"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-bold text-white mt-3">Estructurar las tokenizaciones</h3></div>
+  <div class="glass-card p-7 fade-up d4"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-bold text-white mt-3">Cumplir requisitos regulatorios y mercantiles</h3></div>
+  <div class="glass-card p-7 fade-up d5"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-bold text-white mt-3">Diseñar la estrategia de distribución y compra-venta</h3></div>
+</div>
+`);
+
+/* ---- 11. Cobertura regulatoria ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-6">Cobertura regulatoria</h2>
+<p class="slide-lead fade-up d2 text-lg mb-10">Token City posee las licencias para prestar los servicios regulados necesarios para la emisión y gestión de activos tokenizados:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl">
+  <div class="glass-card p-6 fade-up d3"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-semibold text-white mt-3">Validación del Documento de Emisión o Registro de Folleto ante CNMV</h3></div>
+  <div class="glass-card p-6 fade-up d4"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-semibold text-white mt-3">Servicio de E.R.I.R. para el registro de activos tokenizados</h3></div>
+  <div class="glass-card p-6 fade-up d5"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-semibold text-white mt-3">Colocación de instrumentos financieros a través de Agencia de Valores o Crowdfunding</h3></div>
+  <div class="glass-card p-6 fade-up d6"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-semibold text-white mt-3">Recepción y transmisión de órdenes (RTO) por cuenta de clientes</h3></div>
+</div>
+`);
+
+/* ---- 12. Infraestructura tecnológica ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-6">Infraestructura tecnológica</h2>
+<p class="slide-lead fade-up d2 text-lg mb-10">Soluciones tecnológicas robustas para empresas e instituciones financieras: tokenización, registro y compra-venta de instrumentos financieros tokenizados.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl">
+  <div class="glass-card p-6 fade-up d3"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-semibold text-white mt-3">Desarrollo de Smart Contracts y gestión de Wallets</h3></div>
+  <div class="glass-card p-6 fade-up d4"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-semibold text-white mt-3">Infraestructura para mercado privado en marca blanca</h3></div>
+  <div class="glass-card p-6 fade-up d5"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-semibold text-white mt-3">Solución de ERIR para inscripción y registro de tokens</h3></div>
+  <div class="glass-card p-6 fade-up d6"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-semibold text-white mt-3">Integración con canales de venta y negociación regulados</h3></div>
+  <div class="glass-card p-6 fade-up d6"><i data-lucide="check-circle-2" style="width:22px;height:22px;color:#4d8dff"></i><h3 class="font-semibold text-white mt-3">Infraestructura tecnológica a través de API</h3></div>
+</div>
+`);
+
+/* ---- 13. Mercados ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-6">Mercados</h2>
+<p class="slide-lead fade-up d2 text-lg mb-10">Token City facilita la distribución y negociación de instrumentos financieros tokenizados a través de sus infraestructuras reguladas, así como a través de terceros.</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
+  <div class="glass-card p-7 fade-up d3"><i data-lucide="landmark" style="width:24px;height:24px;color:#4d8dff"></i><h3 class="font-bold text-white mt-3">Token City European Exchange AV, Agencia de Valores</h3></div>
+  <div class="glass-card p-7 fade-up d4"><i data-lucide="handshake" style="width:24px;height:24px;color:#4d8dff"></i><h3 class="font-bold text-white mt-3">Alius Capital <span class="block text-sm font-normal mt-1" style="color:var(--text-muted)">Crowdfunding tokenizado, emisiones &lt; 5M€</span></h3></div>
+  <div class="glass-card p-7 fade-up d5"><i data-lucide="network" style="width:24px;height:24px;color:#4d8dff"></i><h3 class="font-bold text-white mt-3">Terceros distribuidores</h3></div>
+</div>
+`);
+
+/* ---- 14. Cadena de valor completa ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-8">Cadena de valor completa</h2>
+<div class="max-w-6xl fade-up d2 vc-grid">
+  <div class="vc-box vc-green" style="grid-column:1/2;grid-row:1/2;--accent:#22c55e"><p class="font-semibold text-white text-sm">Clientes inversores<span class="block font-normal text-xs mt-1" style="color:rgba(255,255,255,.75)">(Ecosistema del cliente Emisor)</span></p></div>
+  <div class="vc-box vc-blue" style="grid-column:3/8;grid-row:1/2;--accent:#4d8dff"><p class="font-semibold text-white text-sm">Clientes inversores<span class="block font-normal text-xs mt-1" style="color:rgba(255,255,255,.75)">(Ecosistema de Token City)</span></p></div>
+
+  <div class="vc-box vc-green" style="grid-column:1/2;grid-row:3/6;--accent:#22c55e"><p class="font-semibold text-white text-sm">Cliente<br>Emisor</p></div>
+  <div class="vc-box vc-blue" style="grid-column:3/4;grid-row:3/4;--accent:#4d8dff"><p class="font-semibold text-white text-sm">Plataforma de tokenización<br>y emisión primaria<span class="block font-normal text-xs mt-1" style="color:rgba(255,255,255,.75)">(Personalizada con la marca del cliente Emisor)</span></p></div>
+  <div class="vc-box vc-blue" style="grid-column:5/6;grid-row:3/4;--accent:#4d8dff"><p class="font-semibold text-white text-sm">Plataforma de tokenización<br>y emisión primaria<span class="block font-normal text-xs mt-1" style="color:rgba(255,255,255,.75)">(Plataforma regulada de Token City)</span></p></div>
+  <div class="vc-box vc-purple" style="grid-column:7/8;grid-row:3/6;border-style:dashed;--accent:#8b5cf6"><p class="font-semibold text-white text-sm">Mercado secundario<span class="block font-normal text-xs mt-1" style="color:rgba(255,255,255,.75)">(Plataforma regulada de Token City)</span></p></div>
+
+  <div class="vc-box vc-blue" style="grid-column:3/6;grid-row:5/6;--accent:#4d8dff"><p class="font-semibold text-white text-sm">ERIR<span class="font-normal text-xs" style="color:rgba(255,255,255,.75)"> (Plataforma regulada de Token City)</span></p></div>
+
+  <div class="vc-box vc-blue vc-blockchain" style="grid-column:1/8;grid-row:7/8;--accent:#4d8dff"><p class="font-semibold text-white text-sm tracking-wide">SERVICIO BLOCKCHAIN</p></div>
+
+  <div class="vconn" style="grid-column:1/2;grid-row:2/3"></div>
+  <div class="vconn" style="grid-column:5/6;grid-row:2/3"></div>
+  <div class="vconn" style="grid-column:3/4;grid-row:4/5"></div>
+  <div class="vconn" style="grid-column:5/6;grid-row:4/5"></div>
+  <div class="vconn" style="grid-column:4/5;grid-row:6/7"></div>
+
+  <div class="hconn" style="grid-column:2/3;grid-row:3/4"></div>
+  <div class="hconn" style="grid-column:4/5;grid-row:3/4"></div>
+  <div class="hconn" style="grid-column:6/7;grid-row:3/4"></div>
+  <div class="hconn" style="grid-column:2/3;grid-row:5/6"></div>
+  <div class="hconn" style="grid-column:6/7;grid-row:5/6"></div>
+</div>
+`);
+
+/* ---- 15. Tarifas — Asesoría ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-4">Tarifas — Asesoría</h2>
+<p class="slide-lead fade-up d2 mb-8">Se definen a medida en función de las necesidades y se proveen por el equipo interno de Token City y sus colaboradores especializados.</p>
+<div class="glass-card table-card overflow-hidden max-w-4xl fade-up d3">
+  <table class="tc-table">
+    <thead><tr><th>Servicios de asesoría</th><th>Fijo</th><th>Variable</th></tr></thead>
+    <tbody>
+      <tr><td>Estructuración del producto financiero y la tokenización</td><td rowspan="5" style="vertical-align:middle">Consultar</td><td></td></tr>
+      <tr><td>Asesoramiento para el cumplimiento normativo</td><td></td></tr>
+      <tr><td>Constitución de vehículos para las emisiones</td><td></td></tr>
+      <tr><td>Elaboración de contratos de emisión</td><td></td></tr>
+      <tr><td>Otros</td><td></td></tr>
+    </tbody>
+  </table>
+</div>
+`);
+
+/* ---- 16. Tarifas — Cobertura regulatoria ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-4">Tarifas — Cobertura regulatoria</h2>
+<p class="slide-lead fade-up d2 mb-8">Al ser una entidad regulada, Token City puede proveer la cobertura regulatoria necesaria en los casos en los que se requiera.</p>
+<div class="glass-card table-card overflow-hidden max-w-4xl fade-up d3">
+  <table class="tc-table">
+    <thead><tr><th>Servicios regulados</th><th>Fijo</th><th>Variable</th></tr></thead>
+    <tbody>
+      <tr><td>Validación del documento de emisión (ESI) <span class="text-xs" style="color:var(--text-muted)">(&lt;12M€)</span></td><td class="font-bold">3.000€</td><td></td></tr>
+      <tr><td>Servicios de inscripción y registro (ERIR)</td><td></td><td class="font-bold">0,2% <span class="block text-xs font-normal" style="color:var(--text-muted)">min. 3k€/año · max. 25k€/año</span></td></tr>
+    </tbody>
+  </table>
+</div>
+<p class="text-xs mt-4 max-w-4xl fade-up d4" style="color:var(--text-muted)">El coste de 3.000€ de la validación (&lt;12M€) se deduce de los costes posteriores de vehiculización y colocación en la emisión primaria.</p>
+`);
+
+/* ---- 17. Tarifas — Infraestructura tecnológica ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-6">Tarifas — Infraestructura tecnológica</h2>
+<div class="glass-card table-card overflow-hidden max-w-5xl fade-up d2" style="max-height:64vh;overflow-y:auto">
+  <table class="tc-table">
+    <thead><tr><th>Servicios tecnológicos</th><th>Fijo</th><th>Variable anual</th></tr></thead>
+    <tbody>
+      <tr><td>SetUp plataforma personalizada — Marca Blanca</td><td>Desde 5.000€ <span class="block text-xs font-normal" style="color:var(--text-muted)">+10.000€ multi-emisión · +5.000€ web · +5.000€ API</span></td><td></td></tr>
+      <tr><td>Desarrollo de Smart Contracts</td><td>5.000€ <span class="block text-xs font-normal" style="color:var(--text-muted)">por tipo de activo, despliegues ilimitados</span></td><td></td></tr>
+      <tr><td>Servicio de vehiculización y mantenimiento</td><td></td><td>0,1 – 0,3% <span class="block text-xs font-normal" style="color:var(--text-muted)">del volumen (mín. 6.000€/año)</span></td></tr>
+      <tr><td>Gestión de Wallets</td><td></td><td>1,2€ – 3€ /wallet/año</td></tr>
+      <tr><td>KYC / KYB / AML</td><td>3€ (física) · 25€ (jurídica)</td><td>0,2€/pax (monitorización anual)</td></tr>
+      <tr><td>Gestión automatizada de pagos a inversores</td><td></td><td>0,2% del importe transaccionado</td></tr>
+    </tbody>
+  </table>
+</div>
+`);
+
+/* ---- 18. Tarifas — Crowdfunding ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-4">Tarifas — Mercados — Crowdfunding (&lt;5M€)</h2>
+<p class="slide-lead fade-up d2 mb-8">Para operaciones &lt; 5M€, las emisiones se canalizan a través de la subsidiaria de crowdfunding, Alius Capital.</p>
+<div class="glass-card table-card overflow-hidden max-w-4xl fade-up d3">
+  <table class="tc-table">
+    <thead><tr><th>Crowdfunding — Alius Capital</th><th>Fijo</th><th>Variable</th></tr></thead>
+    <tbody>
+      <tr><td>Admisión</td><td class="font-bold">1.500€ *</td><td></td></tr>
+      <tr><td>Smart Contract y vehiculización</td><td></td><td>0,5% del volumen</td></tr>
+      <tr><td>Colocación</td><td></td><td>1,5% del volumen</td></tr>
+      <tr><td>Mango Pay (Escrow)</td><td></td><td>0,5% del volumen</td></tr>
+      <tr><td>Gestión automatizada de pagos</td><td></td><td>0,2% del importe transaccionado</td></tr>
+    </tbody>
+  </table>
+</div>
+<p class="text-xs mt-4 max-w-4xl fade-up d4" style="color:var(--text-muted)">* Deducible de los fees de vehiculización y colocación. También se deducirá, en su caso, el coste de 3.000€ de validación del documento de emisión (&lt;8M€).</p>
+`);
+
+/* ---- 19. Tarifas — Agencia de Valores ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-4">Tarifas — Mercados — Agencia de Valores (&gt;5M€)</h2>
+<p class="slide-lead fade-up d2 mb-8">Para operaciones &gt; 5M€, las emisiones se canalizan a través de Token City European Exchange AV S.A.</p>
+<div class="glass-card table-card overflow-hidden max-w-4xl fade-up d3">
+  <table class="tc-table">
+    <thead><tr><th>Agencia de Valores — TC Exchange (Primario)</th><th>Fijo</th><th>Variable</th></tr></thead>
+    <tbody>
+      <tr><td>Admisión</td><td class="font-bold">3.000€ *</td><td></td></tr>
+      <tr><td>Smart Contract y vehiculización</td><td></td><td>0,1% – 0,3% del volumen</td></tr>
+      <tr><td>Colocación</td><td></td><td>1% – 1,5% del volumen</td></tr>
+      <tr><td>Gestión automatizada de pagos</td><td></td><td>0,2% del importe transaccionado</td></tr>
+    </tbody>
+  </table>
+</div>
+<p class="text-xs mt-4 max-w-4xl fade-up d4" style="color:var(--text-muted)">* Deducible de los fees de vehiculización y colocación, incluyendo, en su caso, el coste de 3.000€ de la validación del documento de emisión (&lt;8M€).</p>
+`);
+
+/* ---- 20. Tarifas — Secundario ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-4">Tarifas — Mercados — Secundario</h2>
+<p class="slide-lead fade-up d2 mb-8">El mercado regulado de Token City para negociación secundaria de activos tokenizados se habilitará, previsiblemente, a finales de 2026.</p>
+<div class="glass-card table-card overflow-hidden max-w-4xl fade-up d3">
+  <table class="tc-table">
+    <thead><tr><th>Agencia de Valores — TC Exchange (Secundario)</th><th>Fijo</th><th>Variable</th></tr></thead>
+    <tbody>
+      <tr><td>Admisión</td><td class="font-bold">10.000€</td><td></td></tr>
+      <tr><td>Listado y registro <span class="text-xs block" style="color:var(--text-muted)">(incluye el coste de la ERIR)</span></td><td></td><td>0,1% – 0,25% <span class="block text-xs font-normal" style="color:var(--text-muted)">anual de la capitalización (mín. 15k€/año)</span></td></tr>
+    </tbody>
+  </table>
+</div>
+`);
+
+/* ---- 21. Clientes — Inmobiliario ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-5">Ejemplos de clientes</h2>
+<p class="pill fade-up d2 mb-8">Inmobiliario</p>
+<p class="slide-lead fade-up d3 mb-8">Plataformas personalizadas, servicio a través de API y servicios regulados para negocios inmobiliarios.</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
+  <div class="client-logo-wrap fade-up d4">
+    <a class="client-logo-box" href="https://equalice.es/" target="_blank" rel="noopener"><img src="../Logos/equalice.png" alt="Equalice" loading="lazy"></a>
+    <a class="client-logo-url" href="https://equalice.es/" target="_blank" rel="noopener">equalice.es</a>
+  </div>
+  <div class="client-logo-wrap fade-up d5">
+    <a class="client-logo-box" href="https://www.equito.app/es" target="_blank" rel="noopener"><img src="../Logos/equito.png" alt="Equito" loading="lazy"></a>
+    <a class="client-logo-url" href="https://www.equito.app/es" target="_blank" rel="noopener">equito.app/es</a>
+  </div>
+  <div class="client-logo-wrap fade-up d6">
+    <a class="client-logo-box" href="https://www.arcahabitatum.com/" target="_blank" rel="noopener"><img src="../Logos/arcahabitatum.png" alt="Arca Habitatum Capital" loading="lazy"></a>
+    <a class="client-logo-url" href="https://www.arcahabitatum.com/" target="_blank" rel="noopener">arcahabitatum.com</a>
+  </div>
+</div>
+`);
+
+/* ---- 22. Clientes — Alius/OTESA ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-8">Ejemplos de clientes</h2>
+<div class="glass-card p-8 max-w-4xl fade-up d2 flex flex-col md:flex-row items-center gap-8">
+  <div class="client-logo-box flex-shrink-0" style="height:150px;width:230px"><img src="../Logos/alius capital.png" alt="Alius Capital" loading="lazy"></div>
+  <div class="text-center">
+    <h3 class="text-3xl font-light text-white mb-2">OTESA Calella Living</h3>
+    <p class="pill mb-5"><i data-lucide="award" style="width:14px;height:14px"></i> Primer bono hipotecario tokenizado plenamente regulado</p>
+    <a href="https://aliuscap.com/invest" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm" style="color:#4d8dff">
+      aliuscap.com/invest <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i>
+    </a>
+  </div>
+</div>
+`);
+
+/* ---- 23. Clientes — sectores ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-8">Ejemplos de clientes</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl">
+  <div class="fade-up d2">
+    <p class="pill pill-sector mb-3" style="--sector:#eab308"><i data-lucide="zap" style="width:12px;height:12px"></i> Energía</p>
+    <div class="client-logo-wrap mb-5">
+      <a class="client-logo-box" href="http://www.exeraenergia.es" target="_blank" rel="noopener" style="--accent:#eab308"><img src="assets/logo-exeraV2.png" alt="Exera" loading="lazy"></a>
+      <a class="client-logo-url" href="http://www.exeraenergia.es" target="_blank" rel="noopener">exeraenergia.es</a>
+    </div>
+    <p class="pill pill-sector mb-3" style="--sector:#7c3aed"><i data-lucide="music" style="width:12px;height:12px"></i> Música</p>
+    <div class="client-logo-wrap">
+      <a class="client-logo-box" href="https://themuxic.com" target="_blank" rel="noopener" style="--accent:#7c3aed"><img src="assets/muxic-crop.png" alt="The Muxic" loading="lazy"></a>
+      <a class="client-logo-url" href="https://themuxic.com" target="_blank" rel="noopener">themuxic.com</a>
+    </div>
+  </div>
+  <div class="fade-up d3">
+    <p class="pill pill-sector mb-3" style="--sector:#b45309"><i data-lucide="gem" style="width:12px;height:12px"></i> Materias primas</p>
+    <div class="client-logo-wrap mb-5">
+      <a class="client-logo-box" href="https://globalgold.es/" target="_blank" rel="noopener" style="--accent:#b45309"><img src="assets/globalgold-crop.png" alt="Global Gold International" loading="lazy"></a>
+      <a class="client-logo-url" href="https://globalgold.es/" target="_blank" rel="noopener">globalgold.es</a>
+    </div>
+    <p class="pill pill-sector mb-3" style="--sector:#b91c5c"><i data-lucide="palette" style="width:12px;height:12px"></i> Arte</p>
+    <div class="client-logo-wrap">
+      <a class="client-logo-box" href="http://www.meduliocapital.com" target="_blank" rel="noopener" style="--accent:#b91c5c"><img src="../Logos/medulio.png" alt="Medulio Capital" loading="lazy"></a>
+      <a class="client-logo-url" href="http://www.meduliocapital.com" target="_blank" rel="noopener">meduliocapital.com</a>
+    </div>
+  </div>
+  <div class="fade-up d4">
+    <p class="pill pill-sector mb-3" style="--sector:#64748b"><i data-lucide="banknote" style="width:12px;height:12px"></i> Finanzas</p>
+    <div class="client-logo-wrap mb-5">
+      <a class="client-logo-box" href="https://www.tokenix.co/" target="_blank" rel="noopener" style="--accent:#64748b"><img src="../Logos/valorix.png" alt="Valorix" loading="lazy"></a>
+      <a class="client-logo-url" href="https://www.tokenix.co/" target="_blank" rel="noopener">tokenix.co</a>
+    </div>
+    <p class="pill pill-sector mb-3" style="--sector:#dc2626"><i data-lucide="shield" style="width:12px;height:12px"></i> Defensa</p>
+    <div class="client-logo-wrap">
+      <a class="client-logo-box" href="https://hds-hdf.es" target="_blank" rel="noopener" style="--accent:#dc2626"><img src="../Logos/hds.png" alt="Hispania Defense Solutions" loading="lazy"></a>
+      <a class="client-logo-url" href="https://hds-hdf.es" target="_blank" rel="noopener">hds-hdf.es</a>
+    </div>
+  </div>
+</div>
+`);
+
+/* ---- 24. Clientes — ERIR ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Token City</span>
+<h2 class="slide-title fade-up d1 text-3xl md:text-4xl mt-3 mb-5">Ejemplos de clientes</h2>
+<p class="pill fade-up d2 mb-6">Registro y la inscripción de activos tokenizados (E.R.I.R.)</p>
+<p class="slide-lead fade-up d3 mb-10">Token City provee la infraestructura tecnológica para prestar el servicio de ERIR a instituciones financieras, incluida su propia Agencia de Valores.</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
+  <div class="client-logo-box fade-up d4" style="--accent:#4d8dff"><img src="assets/bestinver.svg" alt="Bestinver · Acciona" loading="lazy"></div>
+  <div class="client-logo-box fade-up d5" style="--accent:#4d8dff"><img src="assets/Ursus.png" alt="Ursus 3 Capital" loading="lazy"></div>
+  <div class="client-logo-box fade-up d6" style="--accent:#4d8dff"><img src="assets/TOKENCITYEXCHANGE.png" alt="Token City Exchange" loading="lazy"></div>
+</div>
+`);
+
+/* ---- 25. Contacto ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<div class="flex flex-col items-center justify-center text-center h-full">
+  <img src="../TOKEN%20CITY.svg" alt="Token City" class="fade-up" style="width:clamp(180px,24vw,380px);height:auto;">
+  <p class="fade-up d1 text-lg mt-4 mb-14" style="color:var(--text-muted)">Agile, Secure &amp; Liquid</p>
+
+  <div class="fade-up d2 flex flex-col md:flex-row items-center gap-6 max-w-2xl mb-14">
+    <div class="glass-card p-8 flex flex-col items-center gap-4 flex-1" style="min-width:280px">
+      <img src="assets/yael.jpg" alt="Yael H. Oaknin" style="width:76px;height:76px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.2)">
+      <div class="text-center">
+        <p class="font-bold text-white text-lg">Yael H. Oaknin</p>
+        <p class="text-sm mb-2" style="color:var(--text-muted)">Chief Executive Officer | CEO</p>
+        <p class="text-sm" style="color:#4d8dff"><a href="mailto:yael@token-city.com">yael@token-city.com</a></p>
+        <p class="text-sm" style="color:var(--text-muted)">+34 687 89 20 19</p>
+      </div>
+    </div>
+    <div class="glass-card p-6 flex flex-col items-center gap-3" style="--accent:#4d8dff">
+      <div style="background:#fff;padding:10px;border-radius:var(--radius-sm)">
+        <img src="assets/yael-qr.svg" alt="Código QR — guardar contacto de Yael H. Oaknin" style="width:132px;height:132px;display:block">
+      </div>
+      <p class="text-xs text-center" style="color:var(--text-muted);max-width:150px">Escanea para guardar el contacto</p>
+    </div>
+  </div>
+
+  <div class="fade-up d3 text-sm" style="color:var(--text-muted)">
+    <p class="font-bold text-white mb-1">TOKEN CITY</p>
+    <p>Calle de Henri Dunant, 17 · 28036 Madrid</p>
+    <p><a href="https://www.token-city.com" target="_blank" rel="noopener" style="color:#4d8dff">www.token-city.com</a></p>
+  </div>
+</div>
+`);
+
+/* ============================================================
+   Process steps data for slide 6 (dynamic build)
+   ============================================================ */
+const processSteps = [
+  { n:0, title:"Fase Previa", sub:"Estructuración de la emisión", desc:"Se define el modelo de negocio, el tipo de activo a tokenizar y la viabilidad jurídica y financiera.", icon:"lightbulb" },
+  { n:1, title:"Validación del Documento de Emisión o Folleto", sub:"", desc:"Se elabora el documento con las características del instrumento. Según volumen y perfil inversor, se valida por una ESI o CNMV.", icon:"file-text" },
+  { n:2, title:"Infraestructura de tokenización y emisión", sub:"", desc:"Se selecciona la infraestructura tecnológica de soporte (plataforma propia, Token City Exchange, Alius Capital, otras).", icon:"cloud" },
+  { n:3, title:"ERIR (Inscripción y Registro)", sub:"", desc:"Se designa la ERIR encargada de la inscripción y registro de los activos tokenizados.", icon:"link" },
+  { n:4, title:"Formalización mercantil", sub:"", desc:"Cuando la Ley lo exige, se formaliza la emisión ante notario y se procede a su registro público.", icon:"stamp" },
+  { n:5, title:"Inscripción ERIR en CNMV y solicitud de ISIN", sub:"", desc:"Se tramita la inscripción de la ERIR en CNMV. Posteriormente, se puede solicitar el ISIN.", icon:"landmark" },
+  { n:6, title:"Colocación primaria y negociación secundaria", sub:"", desc:"Se colocan los tokens entre los inversores suscriptores y, en su caso, se habilita la compra-venta secundaria.", icon:"rocket" },
+];
+
+/* ============================================================
+   Table of contents entries
+   ============================================================ */
+const tocEntries = [
+  "¿Qué es la tokenización?",
+  "¿Qué son los Real World Assets (RWAs)?",
+  "¿Qué valor tienen los tokens?",
+  "¿Cómo es el proceso de tokenización?",
+  "¿Por qué tokenizar tus activos?",
+  "¿Por qué con Token City?",
+  "¿Qué ofrece Token City?",
+  "Tarifas",
+  "Ejemplos de clientes",
+];
+
+/* ============================================================
+   Generic block renderer — used for slides created/edited in Editor.html.
+   Legacy slides (the 25 above) are stored as {type:'raw', html} instead,
+   and are injected verbatim, unchanged.
+   ============================================================ */
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+function renderCardBlock(b) {
+  const accent = b.accent || '#4d8dff';
+  return `
+  <div class="bento-card" style="--accent:${accent}">
+    <div class="bento-content">
+      <div class="bento-icon-badge" style="background:color-mix(in srgb, ${accent} 22%, transparent);color:${accent}">
+        ${b.icon ? `<i data-lucide="${escapeHtml(b.icon)}" style="width:20px;height:20px"></i>` : ''}
+      </div>
+      <h3 class="font-bold text-white text-lg mt-4">${escapeHtml(b.title)}</h3>
+      ${b.desc ? `<p class="text-xs mt-1" style="color:var(--text-muted)">${escapeHtml(b.desc)}</p>` : ''}
+    </div>
+    ${b.icon ? `<i data-lucide="${escapeHtml(b.icon)}" class="bento-ghost"></i>` : ''}
+  </div>`;
+}
+
+function renderLogoBlock(b) {
+  const accent = b.accent || '#4d8dff';
+  return `
+  <div class="client-logo-wrap">
+    <a class="client-logo-box" href="${escapeHtml(b.url || '#')}" target="_blank" rel="noopener" style="--accent:${accent}">
+      ${b.imgSrc ? `<img src="${escapeHtml(b.imgSrc)}" alt="${escapeHtml(b.name || '')}" loading="lazy">` : escapeHtml(b.name || '')}
+    </a>
+    ${b.url ? `<a class="client-logo-url" href="${escapeHtml(b.url)}" target="_blank" rel="noopener">${escapeHtml(b.name || b.url)}</a>` : ''}
+  </div>`;
+}
+
+function renderTableBlock(b) {
+  const headers = b.headers || [];
+  const rows = b.rows || [];
+  return `
+  <div class="glass-card table-card overflow-hidden max-w-5xl">
+    <table class="tc-table">
+      <thead><tr>${headers.map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
+      <tbody>${rows.map(r => `<tr>${r.map(c => `<td>${escapeHtml(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+    </table>
+  </div>`;
+}
+
+function renderImageBlock(b) {
+  return `
+  <figure class="max-w-4xl">
+    <img src="${escapeHtml(b.src)}" alt="${escapeHtml(b.caption || '')}" style="width:100%;border-radius:var(--radius-md);border:1px solid var(--glass-border)">
+    ${b.caption ? `<figcaption class="text-xs mt-2" style="color:var(--text-muted)">${escapeHtml(b.caption)}</figcaption>` : ''}
+  </figure>`;
+}
+
+/** Maps a block's explicit "width" (set in the editor's properties panel) to a flex-basis,
+    so cards/logos/images placed side by side honor exactly what the user chose there —
+    instead of guessing a column count from how many similar blocks happen to be adjacent. */
+function widthToFlexBasis(width) {
+  switch (width) {
+    case 'half': return 'calc(50% - 12px)';
+    case 'third': return 'calc(33.333% - 16px)';
+    case 'quarter': return 'calc(25% - 18px)';
+    default: return '100%';
+  }
+}
+
+function renderBlocksSlideToHTML(blocks) {
+  let html = `<div class="slide-bg"></div><span class="slide-kicker fade-up">Token City</span>`;
+  html += `<div class="blocks-flow" style="display:flex;flex-wrap:wrap;gap:24px;width:100%;max-width:1520px">`;
+  for (const b of blocks) {
+    let inner = '';
+    let width = b.width || 'full';
+    if (b.type === 'title') {
+      inner = `<h2 class="slide-title fade-up mt-3 mb-2">${escapeHtml(b.text)}</h2>`;
+      width = 'full';
+    } else if (b.type === 'subtitle') {
+      inner = `<h3 class="font-bold text-white fade-up" style="font-size:clamp(1.1rem,1.6vw,1.6rem)">${escapeHtml(b.text)}</h3>`;
+      width = 'full';
+    } else if (b.type === 'paragraph') {
+      inner = `<p class="slide-lead fade-up">${escapeHtml(b.text)}</p>`;
+      width = 'full';
+    } else if (b.type === 'table') {
+      inner = renderTableBlock(b);
+      width = 'full';
+    } else if (b.type === 'image') {
+      inner = renderImageBlock(b);
+    } else if (b.type === 'card') {
+      inner = renderCardBlock(b);
+    } else if (b.type === 'logo') {
+      inner = renderLogoBlock(b);
+    } else if (b.type === 'raw') {
+      inner = b.html || '';
+    } else {
+      continue; // unknown block type — skip
+    }
+    html += `<div style="flex:1 1 ${widthToFlexBasis(width)};max-width:${widthToFlexBasis(width)}">${inner}</div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+/* ============================================================
+   Render deck — from saved editor data if present, else the 25 slides above
+   ============================================================ */
+const deck = document.getElementById('deck');
+
+let slideEntries;
+try {
+  const saved = JSON.parse(document.getElementById('slides-data').textContent || '[]');
+  slideEntries = (saved && saved.length) ? saved : slides.map((html, i) => ({ id: 'legacy-' + i, type: 'raw', html }));
+} catch (e) {
+  slideEntries = slides.map((html, i) => ({ id: 'legacy-' + i, type: 'raw', html }));
+}
+
+slideEntries.forEach((entry, i) => {
+  const el = document.createElement('div');
+  el.className = 'slide';
+  el.id = 'slide-' + i;
+  el.dataset.entryId = entry.id ?? ('slide-' + i);
+  el.innerHTML = entry.type === 'blocks' ? renderBlocksSlideToHTML(entry.blocks || []) : (entry.html || '');
+  deck.appendChild(el);
+});
+
+/* TOC on slide 2 */
+const tocList = document.getElementById('toc-list');
+tocEntries.forEach((t, i) => {
+  const d = document.createElement('div');
+  d.className = 'glass-card px-6 py-4 flex items-center justify-center gap-4 cursor-pointer';
+  d.innerHTML = `<span style="color:var(--primary-blue);font-family:'JetBrains Mono',monospace;font-weight:700">0${i+1}</span><span class="text-white font-medium">${t}</span>`;
+  d.addEventListener('click', () => goTo(sectionIndexFor(t)));
+  tocList.appendChild(d);
+});
+function sectionIndexFor(title){
+  const map = {
+    "¿Qué es la tokenización?":2,
+    "¿Qué son los Real World Assets (RWAs)?":3,
+    "¿Qué valor tienen los tokens?":4,
+    "¿Cómo es el proceso de tokenización?":5,
+    "¿Por qué tokenizar tus activos?":6,
+    "¿Por qué con Token City?":7,
+    "¿Qué ofrece Token City?":8,
+    "Tarifas":14,
+    "Ejemplos de clientes":20,
+  };
+  return map[title] ?? 0;
+}
+
+/* Process steps on slide 6 */
+const processContainer = document.getElementById('process-steps');
+processSteps.forEach((s, i) => {
+  const d = document.createElement('div');
+  d.className = `step-node p-5 flex flex-col items-center gap-3 fade-up d${Math.min(i+1,6)}`;
+  d.style.flex = '1 1 260px';
+  d.style.maxWidth = 'min(340px, calc(25% - 12px))';
+  d.innerHTML = `
+    <div class="flex items-center justify-center gap-3">
+      <div class="step-num">${s.n}</div>
+      <i data-lucide="${s.icon}" style="width:20px;height:20px;color:#4d8dff"></i>
+    </div>
+    <h3 class="font-bold text-white text-sm leading-snug">${s.title}</h3>
+    ${s.sub ? `<p class="text-xs" style="color:var(--text-muted)">${s.sub}</p>` : ''}
+    <p class="text-xs leading-relaxed" style="color:var(--text-muted)">${s.desc}</p>
+  `;
+  processContainer.appendChild(d);
+});
+
+/* Dots */
+const dotsContainer = document.getElementById('dots');
+slideEntries.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  dot.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(dot);
+});
+
+/* Index overlay grid — derives each label from the rendered slide itself,
+   so it stays correct however many slides exist (25 fixed, or edited/added/removed). */
+const indexGrid = document.getElementById('index-grid');
+function labelForSlide(slideEl, i) {
+  const h1 = slideEl.querySelector('h1');
+  const h2 = slideEl.querySelector('h2');
+  const text = (h2 || h1)?.textContent?.trim();
+  return text || `Diapositiva ${i + 1}`;
+}
+document.querySelectorAll('#deck .slide').forEach((slideEl, i) => {
+  const item = document.createElement('div');
+  item.className = 'index-item';
+  item.innerHTML = `<span style="color:var(--primary-blue);font-family:'JetBrains Mono',monospace;font-size:.75rem">${String(i + 1).padStart(2, '0')}</span>
+    <p class="text-white font-medium mt-1">${escapeHtml(labelForSlide(slideEl, i))}</p>`;
+  item.addEventListener('click', () => { goTo(i); toggleIndex(false); });
+  indexGrid.appendChild(item);
+});
+
+/* ============================================================
+   Navigation logic
+   ============================================================ */
+let current = 0;
+const total = slideEntries.length;
+
+function render(){
+  document.querySelectorAll('.slide').forEach((el, i) => el.classList.toggle('active', i === current));
+  document.querySelectorAll('.dot').forEach((el, i) => el.classList.toggle('active', i === current));
+  document.getElementById('topbar-current').textContent = String(current+1).padStart(2,'0');
+  document.getElementById('badge-current').textContent = current+1;
+  document.getElementById('progress-bar').style.width = ((current+1)/total*100) + '%';
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  lucide.createIcons();
+}
+
+function goTo(i){
+  current = Math.max(0, Math.min(total-1, i));
+  render();
+}
+function next(){ if (current < total-1) goTo(current+1); }
+function prev(){ if (current > 0) goTo(current-1); }
+
+document.getElementById('nextBtn').addEventListener('click', next);
+document.getElementById('prevBtn').addEventListener('click', prev);
+
+/* PowerPoint-style black/white stage screen (press B / W, any key or click resumes) */
+let stageState = null;
+function setStage(mode){
+  stageState = (mode === stageState) ? null : mode;
+  const el = document.getElementById('stage-overlay');
+  el.className = stageState ? `show stage-${stageState}` : '';
+}
+
+window.addEventListener('keydown', (e) => {
+  if (stageState && !['b','B','w','W'].includes(e.key)) { setStage(null); return; }
+  if (e.key === 'b' || e.key === 'B') { setStage('black'); return; }
+  if (e.key === 'w' || e.key === 'W') { setStage('white'); return; }
+  if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); next(); }
+  if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End') goTo(total-1);
+  if (e.key === 'Escape') toggleIndex(false);
+});
+document.getElementById('stage-overlay').addEventListener('click', () => setStage(null));
+
+/* PowerPoint-style click navigation: left-click on empty slide area advances,
+   right-click goes back. Ignored on links, buttons and the on-screen controls. */
+const INTERACTIVE_SELECTOR = 'a, button, input, textarea, .dot, #index-overlay, #topbar, #arrows, #aux-controls, #slide-num-badge';
+deck.addEventListener('click', (e) => {
+  if (e.target.closest(INTERACTIVE_SELECTOR)) return;
+  if (document.getElementById('index-overlay').classList.contains('show')) return;
+  next();
+});
+deck.addEventListener('contextmenu', (e) => {
+  if (e.target.closest(INTERACTIVE_SELECTOR)) return;
+  e.preventDefault();
+  prev();
+});
+
+/* Auto-hide chrome after inactivity, like PowerPoint/Keynote slideshow mode */
+let inactivityTimer;
+function wakeChrome(){
+  document.body.classList.remove('ui-hidden');
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => document.body.classList.add('ui-hidden'), 3000);
+}
+['mousemove', 'mousedown', 'keydown', 'touchstart'].forEach(evt => window.addEventListener(evt, wakeChrome));
+wakeChrome();
+
+/* touch / swipe */
+let touchStartX = null;
+deck.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+deck.addEventListener('touchend', e => {
+  if (touchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (dx > 60) prev();
+  if (dx < -60) next();
+  touchStartX = null;
+});
+
+/* fullscreen */
+document.getElementById('fsBtn').addEventListener('click', () => {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+});
+
+/* save as PDF (uses browser print → "Guardar como PDF") */
+document.getElementById('pdfBtn').addEventListener('click', () => {
+  toggleIndex(false);
+  window.print();
+});
+
+/* index overlay toggle */
+function toggleIndex(force){
+  const overlay = document.getElementById('index-overlay');
+  const show = force !== undefined ? force : !overlay.classList.contains('show');
+  overlay.classList.toggle('show', show);
+}
+document.getElementById('indexBtn').addEventListener('click', () => toggleIndex());
+document.getElementById('closeIndexBtn').addEventListener('click', () => toggleIndex(false));
+
+/* LED border-glow hover — inject the two-layer wrapper into every card, but never into tables */
+document.querySelectorAll('.glass-card:not(.table-card), .bento-card, .step-node, .client-logo-box, .vc-box').forEach(card => {
+  const wrap = document.createElement('div');
+  wrap.className = 'led-wrap';
+  wrap.innerHTML = '<div class="led-spin led-spin-glow"></div><div class="led-spin"></div>';
+  card.insertBefore(wrap, card.firstChild);
+});
+
+render();
+</script>
+</body>
+</html>
