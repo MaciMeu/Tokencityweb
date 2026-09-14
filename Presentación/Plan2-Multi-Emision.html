@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token City · Marca Blanca · Plan 2 — Multi-Emisión</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles-tcav.css">
+
+<style>
+  html, body { height: 100dvh; overflow: hidden; background: var(--bg-color); }
+  body { font-family: 'Montserrat', sans-serif; }
+
+  /* ---------- Deck shell ---------- */
+  #deck {
+    position: relative;
+    height: 100dvh;
+    width: 100vw;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    text-align: center;
+    padding: clamp(64px, 10dvh, 110px) clamp(20px, 6vw, 112px) clamp(88px, 12dvh, 130px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(24px) scale(.98);
+    transition: opacity .5s ease, transform .6s cubic-bezier(.4,0,.2,1), visibility .5s;
+    overflow-y: auto;
+  }
+  .slide > * { margin-left: auto; margin-right: auto; }
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    z-index: 10;
+  }
+
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(24,85,186,.35), transparent 60%),
+      radial-gradient(900px 500px at 110% 110%, rgba(24,85,186,.18), transparent 60%),
+      linear-gradient(180deg, #05070a 0%, #060a12 100%);
+  }
+  .slide-bg::after {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(180deg, transparent, black 30%, black 70%, transparent);
+  }
+
+  .slide-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: .72rem;
+    color: var(--primary-blue);
+    font-weight: 700;
+  }
+
+  .slide-title {
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: var(--text-main);
+    line-height: 1.08;
+    font-size: clamp(1.85rem, 1.15rem + 2.6vw, 3.4rem) !important;
+  }
+
+  .slide-lead {
+    color: var(--text-muted);
+    max-width: 68ch;
+    font-size: clamp(.95rem, .82rem + .5vw, 1.15rem) !important;
+    line-height: 1.55;
+  }
+
+  /* Fluid content widths — scale with viewport instead of fixed px breakpoints */
+  .max-w-4xl { max-width: clamp(520px, 78vw, 1180px) !important; width: 100%; }
+  .max-w-5xl { max-width: clamp(560px, 84vw, 1340px) !important; width: 100%; }
+  .max-w-6xl { max-width: clamp(600px, 90vw, 1520px) !important; width: 100%; }
+  .max-w-lg  { max-width: clamp(360px, 60vw, 620px) !important; width: 100%; }
+
+  .brand-logo { height: clamp(16px, 2vh, 22px); width: auto; display: block; }
+
+  /* Center card/list content by default */
+  .glass-card, .step-node, .index-item { text-align: center; }
+  .glass-card ul, .step-node ul { text-align: center; }
+
+  /* ---------- Bento card (with oversized translucent ghost icon) ---------- */
+  .bento-card {
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    border-radius: var(--radius-md);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-left: 4px solid var(--accent, var(--primary-blue));
+    padding: clamp(1.4rem, 2.4vw, 2.1rem);
+    min-height: 168px;
+    display: flex;
+    align-items: center;
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  .bento-card:hover {
+    transform: translateY(-6px);
+  }
+  .bento-card-wide { min-height: 128px; }
+  .bento-content { position: relative; z-index: 2; max-width: 78%; }
+  .bento-icon-badge {
+    width: 40px; height: 40px;
+    border-radius: var(--radius-xs);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .bento-ghost {
+    position: absolute;
+    right: clamp(-22px, -2.4vw, -10px);
+    bottom: clamp(-22px, -2.4vw, -10px);
+    width: clamp(100px, 11vw, 168px) !important;
+    height: clamp(100px, 11vw, 168px) !important;
+    color: var(--accent, var(--primary-blue));
+    opacity: .09;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity .4s ease, transform .5s cubic-bezier(.4,0,.2,1);
+  }
+  .bento-card:hover .bento-ghost {
+    opacity: .2;
+    transform: scale(1.08);
+  }
+
+  /* ---------- Glass card ---------- */
+  .glass-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    backdrop-filter: blur(14px);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  .glass-card:hover {
+    transform: translateY(-6px);
+  }
+
+  /* ---------- LED border-glow hover (shared across all cards, not tables) ---------- */
+  .glass-card, .bento-card, .step-node, .price-hero {
+    position: relative;
+    --accent: var(--primary-blue);
+  }
+  .led-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 2px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+    opacity: 0;
+    transition: opacity .3s ease;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .led-spin {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 220%; height: 220%;
+    background: conic-gradient(from 0deg,
+      transparent 55%,
+      color-mix(in srgb, var(--accent) 60%, white) 68%,
+      var(--accent) 73%,
+      color-mix(in srgb, var(--accent) 60%, white) 78%,
+      transparent 88%);
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: led-rotate 3.2s linear infinite;
+    animation-play-state: paused;
+  }
+  .led-spin-glow { filter: blur(10px); opacity: .6; }
+  @keyframes led-rotate { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+  .glass-card:hover .led-wrap, .bento-card:hover .led-wrap, .step-node:hover .led-wrap, .price-hero:hover .led-wrap {
+    opacity: 1;
+  }
+  .glass-card:hover .led-spin, .bento-card:hover .led-spin, .step-node:hover .led-spin, .price-hero:hover .led-spin {
+    animation-play-state: running;
+  }
+
+  .icon-badge {
+    width: 56px; height: 56px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--primary-blue) 22%, transparent);
+    border: 1px solid color-mix(in srgb, var(--primary-blue) 45%, transparent);
+    color: #bcd3f7;
+    flex-shrink: 0;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .35rem .9rem;
+    border-radius: var(--radius-pill);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .04em;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,.05);
+    color: var(--text-muted);
+  }
+
+  .step-node {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    transition: transform .3s ease;
+  }
+  .step-node:hover {
+    transform: translateY(-4px);
+  }
+
+  /* table styling */
+  .tc-table { border-collapse: collapse; width: 100%; }
+  .tc-table th {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: .9rem clamp(1.25rem, 2.5vw, 2.25rem);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .tc-table td {
+    padding: 1rem clamp(1.25rem, 2.5vw, 2.25rem);
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-main);
+    font-size: .92rem;
+    text-align: right;
+  }
+  .tc-table th:first-child,
+  .tc-table td:first-child {
+    text-align: left;
+    padding-left: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .tc-table th:last-child,
+  .tc-table td:last-child {
+    padding-right: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .tc-table tr:last-child td { border-bottom: none; }
+
+  /* Row-level hover only — the table's card wrapper must stay static */
+  .glass-card.table-card:hover {
+    transform: none;
+    border-color: var(--glass-border);
+    background: var(--glass-bg);
+    box-shadow: none;
+  }
+  .tc-table tbody tr {
+    transition: background-color .2s ease;
+  }
+  .tc-table tbody tr:hover td {
+    background: rgba(24,85,186,.14);
+  }
+
+  /* ---------- Price hero card (setup / pago único) ---------- */
+  .price-hero {
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: linear-gradient(160deg, rgba(24,85,186,.45), rgba(9,20,45,.9));
+    border: 1px solid rgba(77,141,255,.45);
+    text-align: center;
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  .price-hero:hover { transform: translateY(-6px); }
+  .price-amount {
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: #fff;
+    font-size: clamp(2.4rem, 1.6rem + 3vw, 4rem);
+    line-height: 1;
+  }
+
+  /* checklist item */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .8rem;
+    text-align: left;
+  }
+  .check-item i { flex-shrink: 0; margin-top: 2px; }
+
+  /* ---------- Chrome: nav, progress, controls ---------- */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px;
+    pointer-events: none;
+  }
+  #topbar .brand { pointer-events: auto; font-weight: 800; letter-spacing: .04em; color: #fff; font-size: .95rem; }
+  #topbar .counter { pointer-events: auto; font-family:'JetBrains Mono',monospace; font-size:.8rem; color: var(--text-muted); }
+
+  #progress-track {
+    position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60;
+    background: rgba(255,255,255,.06);
+  }
+  #progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-blue), #4d8dff);
+    width: 0%;
+    transition: width .5s cubic-bezier(.4,0,.2,1);
+  }
+
+  #dots {
+    position: fixed;
+    right: 22px; top: 50%; transform: translateY(-50%);
+    z-index: 50;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,.22);
+    cursor: pointer;
+    transition: all .25s ease;
+  }
+  .dot:hover { background: rgba(255,255,255,.55); }
+  .dot.active { background: var(--primary-blue); width: 10px; height: 22px; border-radius: var(--radius-pill); }
+
+  #arrows {
+    position: fixed; bottom: 26px; right: 32px; z-index: 50;
+    display: flex; gap: 10px;
+  }
+  .arrow-btn, .aux-btn {
+    width: 46px; height: 46px;
+    border-radius: var(--radius-circle);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .25s ease;
+    backdrop-filter: blur(10px);
+  }
+  .arrow-btn:hover, .aux-btn:hover { background: var(--primary-blue); border-color: var(--primary-blue); transform: translateY(-2px); }
+  .arrow-btn:disabled { opacity: .3; cursor: not-allowed; transform: none; }
+
+  #aux-controls {
+    position: fixed; bottom: 26px; left: 32px; z-index: 50;
+    display: flex; gap: 10px;
+  }
+
+  #slide-num-badge {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    z-index: 50;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .78rem;
+    color: var(--text-muted);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(10px);
+  }
+
+  /* index overlay */
+  #index-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(3,5,9,.92);
+    backdrop-filter: blur(6px);
+    display: none;
+    padding: 90px 6vw 60px;
+    overflow-y: auto;
+  }
+  #index-overlay.show { display: block; }
+  .index-item {
+    cursor: pointer;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,.03);
+    transition: all .2s ease;
+  }
+  .index-item:hover { background: rgba(24,85,186,.15); border-color: var(--primary-blue); transform: translateX(4px); }
+
+  /* ---------- PowerPoint-style black/white stage screen ---------- */
+  #stage-overlay {
+    position: fixed; inset: 0; z-index: 300;
+    display: none;
+    cursor: pointer;
+  }
+  #stage-overlay.show { display: block; }
+  #stage-overlay.stage-black { background: #000; }
+  #stage-overlay.stage-white { background: #fff; }
+
+  /* ---------- Auto-hide presentation chrome after inactivity ---------- */
+  #topbar, #progress-track, #dots, #arrows, #aux-controls, #slide-num-badge {
+    transition: opacity .4s ease;
+    opacity: 1;
+  }
+  body.ui-hidden #topbar,
+  body.ui-hidden #progress-track,
+  body.ui-hidden #dots,
+  body.ui-hidden #arrows,
+  body.ui-hidden #aux-controls,
+  body.ui-hidden #slide-num-badge {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 4px; }
+
+  .fade-up { animation: fadeUp .7s cubic-bezier(.4,0,.2,1) both; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+  .d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.19s}.d4{animation-delay:.26s}.d5{animation-delay:.33s}.d6{animation-delay:.4s}
+
+  /* ---------- Breakpoints ---------- */
+  @media (min-width: 1600px) {
+    #topbar { padding: 24px 44px; }
+    .arrow-btn, .aux-btn { width: 52px; height: 52px; }
+  }
+
+  @media (max-width: 1024px) {
+    #dots { right: 14px; }
+  }
+
+  @media (max-width: 768px) {
+    #dots { display: none; }
+    #topbar { padding: 14px 18px; }
+    #topbar .counter { font-size: .7rem; }
+    .arrow-btn, .aux-btn { width: 40px; height: 40px; }
+    #arrows { bottom: 16px; right: 16px; gap: 8px; }
+    #aux-controls { bottom: 16px; left: 16px; gap: 8px; }
+    #slide-num-badge { display: none; }
+    .slide {
+      padding: 76px clamp(16px, 5vw, 32px) 84px;
+      justify-content: flex-start;
+    }
+    .glass-card { border-radius: var(--radius-sm); }
+  }
+
+  @media (max-width: 480px) {
+    .slide-kicker { font-size: .64rem; }
+    .icon-badge { width: 46px; height: 46px; }
+  }
+
+  @media (max-height: 620px) {
+    .slide { padding-top: 60px; padding-bottom: 60px; justify-content: flex-start; }
+    #topbar { padding: 10px 20px; }
+  }
+
+  @media (orientation: landscape) and (max-height: 480px) {
+    .slide { justify-content: flex-start; padding-top: 56px; }
+    #dots { display: none; }
+  }
+
+  /* ---------- Print / Save as PDF ---------- */
+  @media print {
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    #topbar, #progress-track, #dots, #arrows, #aux-controls, #slide-num-badge, #index-overlay { display: none !important; }
+    html, body { height: auto; overflow: visible; background: #05070a; }
+    #deck { position: static; height: auto; }
+    .slide {
+      position: relative !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      display: flex !important;
+      width: 100%;
+      height: 100vh;
+      page-break-after: always;
+      break-after: page;
+      overflow: visible !important;
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(24,85,186,.35), transparent 60%),
+        radial-gradient(900px 500px at 110% 110%, rgba(24,85,186,.18), transparent 60%),
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(180deg, #05070a 0%, #060a12 100%) !important;
+      background-size: auto, auto, 48px 48px, 48px 48px, auto !important;
+    }
+    .slide:last-child { page-break-after: auto; break-after: auto; }
+    .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .glass-card:hover, .bento-card:hover, .step-node:hover, .price-hero:hover { transform: none !important; box-shadow: none !important; }
+    .led-wrap { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-track"><div id="progress-bar"></div></div>
+
+<div id="topbar">
+  <div class="brand flex items-center gap-3">
+    <img src="../TOKEN%20CITY.svg" alt="Token City" class="brand-logo">
+    <span style="color:var(--text-muted);font-weight:500;font-size:.85em;">/ Marca Blanca · Plan 2 · Multi-Emisión</span>
+  </div>
+  <div class="counter"><span id="topbar-current">01</span> — <span id="topbar-total">06</span></div>
+</div>
+
+<div id="deck"></div>
+
+<div id="dots"></div>
+
+<div id="slide-num-badge"><span id="badge-current">1</span> / <span id="badge-total">6</span></div>
+
+<div id="arrows">
+  <button class="arrow-btn" id="prevBtn" aria-label="Anterior"><i data-lucide="chevron-left" style="width:20px;height:20px"></i></button>
+  <button class="arrow-btn" id="nextBtn" aria-label="Siguiente"><i data-lucide="chevron-right" style="width:20px;height:20px"></i></button>
+</div>
+
+<div id="aux-controls">
+  <button class="aux-btn" id="indexBtn" title="Índice"><i data-lucide="layout-grid" style="width:18px;height:18px"></i></button>
+  <button class="aux-btn" id="fsBtn" title="Pantalla completa"><i data-lucide="maximize" style="width:18px;height:18px"></i></button>
+  <button class="aux-btn" id="pdfBtn" title="Guardar como PDF"><i data-lucide="download" style="width:18px;height:18px"></i></button>
+</div>
+
+<div id="index-overlay">
+  <div class="flex items-center justify-between mb-8">
+    <h2 class="text-2xl font-extrabold text-white">Índice de la presentación</h2>
+    <button class="aux-btn" id="closeIndexBtn"><i data-lucide="x" style="width:18px;height:18px"></i></button>
+  </div>
+  <div id="index-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+</div>
+
+<div id="stage-overlay"></div>
+
+<script>
+/* ============================================================
+   SLIDE DATA — Marca Blanca · Plan 2 · Multi-Emisión
+   ============================================================ */
+const slides = [];
+function addSlide(html){ slides.push(html); }
+
+/* ---- 1. Cover ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<div class="flex flex-col items-center justify-center text-center h-full">
+  <div class="pill mb-8 fade-up"><i data-lucide="layers" style="width:14px;height:14px"></i> MARCA BLANCA · PLAN 2</div>
+  <img src="../TOKEN%20CITY.svg" alt="Token City" class="fade-up d1" style="width:clamp(200px,28vw,480px);height:auto;">
+  <p class="fade-up d2 text-lg md:text-xl mt-6" style="color:var(--text-muted)">Agile, Secure &amp; Liquid</p>
+  <div class="fade-up d3 mt-14 border-t border-b py-6 px-10" style="border-color:var(--glass-border)">
+    <p class="text-sm tracking-widest uppercase" style="color:var(--text-muted)">Marca Blanca · Plan 2</p>
+    <p class="text-4xl md:text-5xl font-light" style="color:var(--text-main)">MULTI-EMISIÓN</p>
+  </div>
+  <p class="fade-up d4 slide-lead text-lg mt-8">La misma infraestructura, sin límite de emisiones.</p>
+</div>
+`);
+
+/* ---- 2. Qué incluye — Tokenización ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Qué incluye</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-10">Tokenización</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
+  <div class="bento-card fade-up d2" style="--accent:#4d8dff">
+    <div class="bento-content">
+      <div class="bento-icon-badge" style="background:rgba(24,85,186,.2);color:#bcd3f7"><i data-lucide="infinity" style="width:20px;height:20px"></i></div>
+      <h3 class="font-bold text-white text-lg mt-4">Emisiones ilimitadas</h3>
+      <p class="text-xs mt-1" style="color:var(--text-muted)">Emisiones múltiples e ilimitadas bajo una misma plataforma</p>
+    </div>
+    <i data-lucide="infinity" class="bento-ghost"></i>
+  </div>
+  <div class="bento-card fade-up d3" style="--accent:#7a5aa8">
+    <div class="bento-content">
+      <div class="bento-icon-badge" style="background:rgba(122,90,168,.16);color:#c9b8e4"><i data-lucide="shapes" style="width:20px;height:20px"></i></div>
+      <h3 class="font-bold text-white text-lg mt-4">Múltiples categorías de activos</h3>
+      <p class="text-xs mt-1" style="color:var(--text-muted)">Acciones, deuda, fondos y otros activos</p>
+    </div>
+    <i data-lucide="shapes" class="bento-ghost"></i>
+  </div>
+  <div class="bento-card fade-up d4" style="--accent:#22c55e">
+    <div class="bento-content">
+      <div class="bento-icon-badge" style="background:rgba(34,197,94,.16);color:#a8e2bd"><i data-lucide="file-code-2" style="width:20px;height:20px"></i></div>
+      <h3 class="font-bold text-white text-lg mt-4">Smart Contracts</h3>
+      <p class="text-xs mt-1" style="color:var(--text-muted)">Desarrollo y despliegue de Smart Contracts</p>
+    </div>
+    <i data-lucide="file-code-2" class="bento-ghost"></i>
+  </div>
+</div>
+`);
+
+/* ---- 3. Qué incluye — Infraestructura & Plataforma ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Qué incluye</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-10">Infraestructura &amp; Plataforma</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl">
+  <div class="glass-card p-5 fade-up d2 check-item"><i data-lucide="check-circle-2" style="width:20px;height:20px;color:#4d8dff"></i><p class="text-sm text-white font-medium">Setup de la plataforma personalizada, habilitada para emisiones múltiples e ilimitadas y desplegada en el dominio propio del cliente</p></div>
+  <div class="glass-card p-5 fade-up d2 check-item"><i data-lucide="check-circle-2" style="width:20px;height:20px;color:#4d8dff"></i><p class="text-sm text-white font-medium">Panel de gestión para emisores e inversores</p></div>
+  <div class="glass-card p-5 fade-up d3 check-item"><i data-lucide="check-circle-2" style="width:20px;height:20px;color:#4d8dff"></i><p class="text-sm text-white font-medium">Gestión de Wallets</p></div>
+  <div class="glass-card p-5 fade-up d3 check-item"><i data-lucide="check-circle-2" style="width:20px;height:20px;color:#4d8dff"></i><p class="text-sm text-white font-medium">KYC / KYB / AML</p></div>
+  <div class="glass-card p-5 fade-up d4 check-item"><i data-lucide="check-circle-2" style="width:20px;height:20px;color:#4d8dff"></i><p class="text-sm text-white font-medium">Gestión automatizada de pagos a inversores</p></div>
+  <div class="glass-card p-5 fade-up d4 check-item"><i data-lucide="check-circle-2" style="width:20px;height:20px;color:#4d8dff"></i><p class="text-sm text-white font-medium">Integrada con E.R.I.R. para la inscripción y registro de los tokens</p></div>
+  <div class="glass-card p-5 fade-up d5 check-item" style="--accent:#e08a3c"><i data-lucide="plus-circle" style="width:20px;height:20px;color:#e08a3c"></i><p class="text-sm font-medium" style="color:var(--text-muted)">Página web informativa — <span style="color:#e08a3c">disponible como extra</span></p></div>
+  <div class="glass-card p-5 fade-up d5 check-item" style="--accent:#e08a3c"><i data-lucide="plus-circle" style="width:20px;height:20px;color:#e08a3c"></i><p class="text-sm font-medium" style="color:var(--text-muted)">Acceso vía API — <span style="color:#e08a3c">disponible como extra</span></p></div>
+</div>
+`);
+
+/* ---- 4. Qué incluye — Soporte & Cobertura Regulatoria ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Qué incluye</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-10">Soporte &amp; Cobertura Regulatoria</h2>
+<div class="grid grid-cols-1 gap-5 max-w-4xl">
+  <div class="glass-card p-7 fade-up d2 check-item"><i data-lucide="users" style="width:22px;height:22px;color:#4d8dff"></i>
+    <div class="text-left">
+      <h3 class="font-bold text-white text-lg">Acompañamiento del equipo Token City</h3>
+      <p class="text-sm mt-1" style="color:var(--text-muted)">Durante la puesta en marcha y la emisión.</p>
+    </div>
+  </div>
+  <div class="glass-card p-7 fade-up d3 check-item"><i data-lucide="landmark" style="width:22px;height:22px;color:#4d8dff"></i>
+    <div class="text-left">
+      <h3 class="font-bold text-white text-lg">Acceso a canales de colocación regulados propios</h3>
+      <p class="text-sm mt-1" style="color:var(--text-muted)"><b style="color:var(--text-main)">Alius Capital</b> (operaciones &lt;5M€) y <b style="color:var(--text-main)">Token City Exchange, Agencia de Valores</b> (&gt;5M€) — se contratan de forma independiente.</p>
+    </div>
+  </div>
+  <div class="glass-card p-7 fade-up d4 check-item"><i data-lucide="scale" style="width:22px;height:22px;color:#4d8dff"></i>
+    <div class="text-left">
+      <h3 class="font-bold text-white text-lg">Cobertura regulatoria como servicio adicional</h3>
+      <p class="text-sm mt-1" style="color:var(--text-muted)">Validación del documento de emisión (<b style="color:var(--text-main)">3.000€</b>) e inscripción E.R.I.R. (<b style="color:var(--text-main)">0,2%</b> · mín. 3.000€ – máx. 25.000€/año).</p>
+    </div>
+  </div>
+</div>
+`);
+
+/* ---- 5. Inversión — Setup, costes variables y extras ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<span class="slide-kicker fade-up">Marca Blanca · Plan 2 · Multi-Emisión</span>
+<h2 class="slide-title fade-up d1 text-4xl md:text-5xl mt-3 mb-10">Inversión</h2>
+<div class="flex flex-col lg:flex-row items-stretch gap-6 max-w-6xl">
+  <div class="price-hero p-8 fade-up d2 flex flex-col justify-center" style="flex:1 1 0%">
+    <p class="text-xs tracking-widest uppercase mb-4" style="font-family:'JetBrains Mono',monospace;color:#a9c8ff">Setup — Pago único</p>
+    <p class="price-amount">20.000€</p>
+    <p class="text-sm mt-5" style="color:rgba(255,255,255,.75)">Setup de la plataforma para emisiones múltiples e ilimitadas. Incluye una misma categoría de activos.</p>
+  </div>
+  <div class="glass-card table-card overflow-hidden fade-up d3 text-left" style="flex:1.7 1 0%">
+    <table class="tc-table">
+      <thead><tr><th>Costes variables</th><th>Tarifa</th></tr></thead>
+      <tbody>
+        <tr><td>Vehiculización y mantenimiento</td><td class="font-bold">0,1% – 0,3% <span class="block text-xs font-normal" style="color:var(--text-muted)">del volumen (mín. 500€/mes)</span></td></tr>
+        <tr><td>Gestión de Wallets</td><td class="font-bold">1,2€ – 3€ <span class="block text-xs font-normal" style="color:var(--text-muted)">por wallet/año</span></td></tr>
+        <tr><td>KYC / KYB / AML</td><td class="font-bold">3€ física · 25€ jurídica <span class="block text-xs font-normal" style="color:var(--text-muted)">+ 0,2€/inversor/año</span></td></tr>
+        <tr><td>Gestión de pagos a inversores</td><td class="font-bold">0,2% <span class="block text-xs font-normal" style="color:var(--text-muted)">del importe transaccionado</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="glass-card p-6 fade-up d4 flex flex-col justify-center gap-4" style="flex:1 1 0%">
+    <p class="text-xs tracking-widest uppercase" style="font-family:'JetBrains Mono',monospace;color:var(--text-muted)">Extras</p>
+    <div class="check-item"><i data-lucide="globe" style="width:18px;height:18px;color:#4d8dff"></i><p class="text-sm text-white">Página web informativa — <b>5.000€</b> <span style="color:var(--text-muted)">(pago único)</span></p></div>
+    <div class="check-item"><i data-lucide="plug-zap" style="width:18px;height:18px;color:#4d8dff"></i><p class="text-sm text-white">Acceso API — <b>5.000€</b> <span style="color:var(--text-muted)">(pago único)</span></p></div>
+    <div class="check-item"><i data-lucide="shapes" style="width:18px;height:18px;color:#4d8dff"></i><p class="text-sm text-white">Setup de una categoría de activo adicional — <b>5.000€</b></p></div>
+  </div>
+</div>
+`);
+
+/* ---- 6. Contacto ---- */
+addSlide(`
+<div class="slide-bg"></div>
+<div class="flex flex-col items-center justify-center text-center h-full">
+  <img src="../TOKEN%20CITY.svg" alt="Token City" class="fade-up" style="width:clamp(180px,24vw,380px);height:auto;">
+  <p class="fade-up d1 text-lg mt-4 mb-12" style="color:var(--text-muted)">Agile, Secure &amp; Liquid</p>
+  <div class="glass-card p-8 max-w-lg fade-up d2 flex flex-col items-center gap-3">
+    <div class="icon-badge"><i data-lucide="mail" style="width:24px;height:24px"></i></div>
+    <p class="font-bold text-white text-lg">¿Hablamos?</p>
+    <p class="text-sm" style="color:#4d8dff"><a href="mailto:sales@token-city.com">sales@token-city.com</a></p>
+  </div>
+  <div class="fade-up d3 text-sm mt-10" style="color:var(--text-muted)">
+    <p class="font-bold text-white mb-1">TOKEN CITY</p>
+    <p>Calle de Henri Dunant, 17 · 28036 Madrid</p>
+    <p><a href="https://www.token-city.com" target="_blank" rel="noopener" style="color:#4d8dff">www.token-city.com</a></p>
+  </div>
+</div>
+`);
+
+/* ============================================================
+   Render deck
+   ============================================================ */
+const deck = document.getElementById('deck');
+
+slides.forEach((html, i) => {
+  const el = document.createElement('div');
+  el.className = 'slide';
+  el.id = 'slide-' + i;
+  el.innerHTML = html;
+  deck.appendChild(el);
+});
+
+/* Dots */
+const dotsContainer = document.getElementById('dots');
+slides.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  dot.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(dot);
+});
+
+/* Index overlay grid — derives each label from the rendered slide itself */
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+const indexGrid = document.getElementById('index-grid');
+function labelForSlide(slideEl, i) {
+  const h1 = slideEl.querySelector('h1');
+  const h2 = slideEl.querySelector('h2');
+  const text = (h2 || h1)?.textContent?.trim();
+  return text || `Diapositiva ${i + 1}`;
+}
+document.querySelectorAll('#deck .slide').forEach((slideEl, i) => {
+  const item = document.createElement('div');
+  item.className = 'index-item';
+  item.innerHTML = `<span style="color:var(--primary-blue);font-family:'JetBrains Mono',monospace;font-size:.75rem">${String(i + 1).padStart(2, '0')}</span>
+    <p class="text-white font-medium mt-1">${escapeHtml(labelForSlide(slideEl, i))}</p>`;
+  item.addEventListener('click', () => { goTo(i); toggleIndex(false); });
+  indexGrid.appendChild(item);
+});
+
+/* ============================================================
+   Navigation logic
+   ============================================================ */
+let current = 0;
+const total = slides.length;
+
+document.getElementById('topbar-total').textContent = String(total).padStart(2,'0');
+document.getElementById('badge-total').textContent = total;
+
+function render(){
+  document.querySelectorAll('.slide').forEach((el, i) => el.classList.toggle('active', i === current));
+  document.querySelectorAll('.dot').forEach((el, i) => el.classList.toggle('active', i === current));
+  document.getElementById('topbar-current').textContent = String(current+1).padStart(2,'0');
+  document.getElementById('badge-current').textContent = current+1;
+  document.getElementById('progress-bar').style.width = ((current+1)/total*100) + '%';
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  lucide.createIcons();
+}
+
+function goTo(i){
+  current = Math.max(0, Math.min(total-1, i));
+  render();
+}
+function next(){ if (current < total-1) goTo(current+1); }
+function prev(){ if (current > 0) goTo(current-1); }
+
+document.getElementById('nextBtn').addEventListener('click', next);
+document.getElementById('prevBtn').addEventListener('click', prev);
+
+/* PowerPoint-style black/white stage screen (press B / W, any key or click resumes) */
+let stageState = null;
+function setStage(mode){
+  stageState = (mode === stageState) ? null : mode;
+  const el = document.getElementById('stage-overlay');
+  el.className = stageState ? `show stage-${stageState}` : '';
+}
+
+window.addEventListener('keydown', (e) => {
+  if (stageState && !['b','B','w','W'].includes(e.key)) { setStage(null); return; }
+  if (e.key === 'b' || e.key === 'B') { setStage('black'); return; }
+  if (e.key === 'w' || e.key === 'W') { setStage('white'); return; }
+  if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); next(); }
+  if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End') goTo(total-1);
+  if (e.key === 'Escape') toggleIndex(false);
+});
+document.getElementById('stage-overlay').addEventListener('click', () => setStage(null));
+
+/* PowerPoint-style click navigation: left-click advances, right-click goes back */
+const INTERACTIVE_SELECTOR = 'a, button, input, textarea, .dot, #index-overlay, #topbar, #arrows, #aux-controls, #slide-num-badge';
+deck.addEventListener('click', (e) => {
+  if (e.target.closest(INTERACTIVE_SELECTOR)) return;
+  if (document.getElementById('index-overlay').classList.contains('show')) return;
+  next();
+});
+deck.addEventListener('contextmenu', (e) => {
+  if (e.target.closest(INTERACTIVE_SELECTOR)) return;
+  e.preventDefault();
+  prev();
+});
+
+/* Auto-hide chrome after inactivity */
+let inactivityTimer;
+function wakeChrome(){
+  document.body.classList.remove('ui-hidden');
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => document.body.classList.add('ui-hidden'), 3000);
+}
+['mousemove', 'mousedown', 'keydown', 'touchstart'].forEach(evt => window.addEventListener(evt, wakeChrome));
+wakeChrome();
+
+/* touch / swipe */
+let touchStartX = null;
+deck.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+deck.addEventListener('touchend', e => {
+  if (touchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (dx > 60) prev();
+  if (dx < -60) next();
+  touchStartX = null;
+});
+
+/* fullscreen */
+document.getElementById('fsBtn').addEventListener('click', () => {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+});
+
+/* save as PDF (uses browser print → "Guardar como PDF") */
+document.getElementById('pdfBtn').addEventListener('click', () => {
+  toggleIndex(false);
+  window.print();
+});
+
+/* index overlay toggle */
+function toggleIndex(force){
+  const overlay = document.getElementById('index-overlay');
+  const show = force !== undefined ? force : !overlay.classList.contains('show');
+  overlay.classList.toggle('show', show);
+}
+document.getElementById('indexBtn').addEventListener('click', () => toggleIndex());
+document.getElementById('closeIndexBtn').addEventListener('click', () => toggleIndex(false));
+
+/* LED border-glow hover — inject the two-layer wrapper into every card, but never into tables */
+document.querySelectorAll('.glass-card:not(.table-card), .bento-card, .step-node, .price-hero').forEach(card => {
+  const wrap = document.createElement('div');
+  wrap.className = 'led-wrap';
+  wrap.innerHTML = '<div class="led-spin led-spin-glow"></div><div class="led-spin"></div>';
+  card.insertBefore(wrap, card.firstChild);
+});
+
+render();
+</script>
+</body>
+</html>
