@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token City | Club</title>
+    <meta name="description" content="Únete a Token City Club: acceso anticipado a oportunidades de inversión en activos tokenizados, eventos con expertos y networking con inversores y emisores.">
+    <!-- Versión de la landing con el estilo de la web actual (www.token-city.com): Work Sans + Roboto, azul #1855BA, fondo claro, botones pill -->
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
+    <style>
+        :root {
+            --tc-blue: #1855BA;
+            --tc-blue-dark: #134495;
+            --tc-heading: #282828;
+            --tc-text: #222222;
+            --tc-muted: #9b9b9b;
+            --tc-gray-bg: #f8f8f8;
+            --tc-footer: #222222;
+            --tc-black: #000000;
+            --container: 1110px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Roboto', sans-serif; font-size: 16px; line-height: 24px; color: var(--tc-muted); background: #fff; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+        .container { width: 100%; max-width: calc(var(--container) + 30px); margin: 0 auto; padding: 0 15px; }
+
+        /* Idioma */
+        body:not(.lang-en) .lang-en { display: none !important; }
+        body.lang-en .lang-es { display: none !important; }
+
+        .msi { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; line-height: 1; display: inline-block; -webkit-font-smoothing: antialiased; font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+
+        /* ───── Botones (pill, como la web actual) ───── */
+        .tc-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            height: 50px; padding: 0 20px; border-radius: 50px;
+            font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.26px;
+            transition: background-color .25s ease, color .25s ease, border-color .25s ease; cursor: pointer; border: 2px solid transparent;
+        }
+        .tc-btn-primary { background: var(--tc-blue); color: #fff; }
+        .tc-btn-primary:hover { background: var(--tc-blue-dark); }
+        .tc-btn-outline { background: transparent; color: #fff; border-color: #fff; }
+        .tc-btn-outline:hover { background: #fff; color: var(--tc-blue); }
+        .tc-btn .msi { font-size: 20px; }
+
+        /* ───── Cabecera ───── */
+        .tc-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; transition: background-color .3s ease; }
+        .tc-header.scrolled { background: var(--tc-black); }
+        .tc-header .bar { height: 80px; display: flex; align-items: center; justify-content: space-between; }
+        .tc-logo img { height: 18px; width: auto; }
+        .tc-nav { display: flex; align-items: center; gap: 30px; }
+        .tc-nav-item { position: relative; }
+        .tc-nav-link { display: flex; align-items: center; gap: 4px; color: #fff; font-size: 14px; font-weight: 700; padding: 28px 0; cursor: pointer; }
+        .tc-nav-link::after { content: ''; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; margin-left: 10px; }
+        .tc-dropdown {
+            position: absolute; top: 100%; left: -16px; min-width: 230px; background: #fff; border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.15); padding: 10px 0; opacity: 0; visibility: hidden; transform: translateY(8px); transition: all .2s ease;
+        }
+        .tc-nav-item:hover .tc-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+        .tc-dropdown a { display: block; padding: 8px 20px; font-size: 14px; color: var(--tc-text); }
+        .tc-dropdown a:hover { color: var(--tc-blue); }
+        .tc-dropdown .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--tc-muted); padding: 8px 20px 4px; }
+        .tc-lang { display: flex; align-items: center; gap: 8px; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; user-select: none; }
+        .tc-lang .sw { width: 22px; height: 12px; border: 1.5px solid #fff; border-radius: 12px; position: relative; }
+        .tc-lang .sw::after { content: ''; position: absolute; top: 1.5px; left: 2px; width: 6px; height: 6px; border-radius: 50%; background: #fff; transition: transform .25s ease; }
+        body.lang-en .tc-lang .sw::after { transform: translateX(9px); }
+        .tc-lang .off { opacity: .55; }
+        .tc-header-cta { height: 36px; padding: 0 15px; font-size: 14px; border-width: 1px; }
+        .tc-burger { display: none; background: none; border: 0; color: #fff; cursor: pointer; }
+        .tc-burger .msi { font-size: 30px; }
+        .tc-mobile { display: none; background: var(--tc-black); padding: 10px 15px 20px; }
+        .tc-mobile.open { display: block; }
+        .tc-mobile a { display: block; color: #fff; font-size: 15px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+        .tc-mobile .tc-btn { margin-top: 16px; width: 100%; }
+
+        /* ───── Hero (slider de la home: foto + velo oscuro, texto a la izquierda) ───── */
+        .tc-hero { position: relative; min-height: 100vh; display: flex; align-items: center; background: #000; overflow: hidden; }
+        .tc-hero-bg { position: absolute; inset: 0; background: url('landing-club-tc.jpeg') center / cover no-repeat; }
+        .tc-hero-bg::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,.55); }
+        .tc-hero .container { position: relative; padding-top: 80px; }
+        .tc-hero-inner { max-width: 800px; padding-left: 93px; }
+        .slide-bio { color: #fff; font-size: 16px; margin-bottom: 12px; }
+        .slide-title { font-family: 'Work Sans', sans-serif; font-weight: 700; color: #fff; font-size: 48px; line-height: 1.2; margin-bottom: 20px; }
+        .slide-desc { color: rgba(255,255,255,.85); font-size: 18px; line-height: 30px; max-width: 640px; margin-bottom: 32px; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 15px; }
+
+        /* Animación de entrada del slider actual ("barridobottom") */
+        .barrido { opacity: 0; transform: translateY(40px); animation: barridobottom .9s cubic-bezier(.2,.7,.2,1) forwards; }
+        .d1 { animation-delay: .15s; } .d2 { animation-delay: .35s; } .d3 { animation-delay: .55s; } .d4 { animation-delay: .75s; }
+        @keyframes barridobottom { to { opacity: 1; transform: translateY(0); } }
+
+        /* ───── Secciones ───── */
+        .tc-section { padding: 60px 0; }
+        .tc-section.gray { background: var(--tc-gray-bg); }
+        .heading { text-align: center; max-width: 950px; margin: 0 auto 60px; }
+        .heading--subtitle { color: var(--tc-blue); font-size: 14px; font-weight: 700; line-height: 14px; margin-bottom: 7px; }
+        .heading--title { font-family: 'Work Sans', sans-serif; font-weight: 700; color: var(--tc-heading); font-size: 36px; line-height: 45px; margin-bottom: 20px; }
+        .heading--desc { font-size: 16px; color: var(--tc-muted); }
+
+        .grid { display: grid; gap: 30px; }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+        /* Tarjetas de "Nuestros productos y servicios" */
+        .feature-card { background: var(--tc-gray-bg); border-radius: 4px; padding: 30px; text-align: center; transition: box-shadow .3s ease, transform .3s ease; }
+        .feature-card:hover { box-shadow: 0 15px 35px rgba(0,0,0,.07); transform: translateY(-4px); }
+        .feature-card .msi { font-size: 64px; color: var(--tc-blue); font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 48; margin-bottom: 20px; }
+        .feature-card-title { font-family: 'Work Sans', sans-serif; font-weight: 600; color: var(--tc-text); font-size: 18px; line-height: 29px; margin-bottom: 12px; }
+        .feature-card p { font-size: 14px; line-height: 26px; color: var(--tc-muted); }
+
+        /* Tarjetas de evento (estilo tarjetas de blog de la home) */
+        .blog-card { background: #fff; border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; transition: box-shadow .3s ease; }
+        .blog-card:hover { box-shadow: 0 15px 35px rgba(0,0,0,.08); }
+        .blog-card-img { aspect-ratio: 2 / 1; overflow: hidden; }
+        .blog-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+        .blog-card:hover .blog-card-img img { transform: scale(1.05); }
+        .blog-card-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+        .blog-meta { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--tc-text); }
+        .blog-meta span:first-child { display: flex; align-items: center; gap: 6px; }
+        .blog-meta .msi { font-size: 16px; color: var(--tc-muted); }
+        .blog-meta .cat { color: var(--tc-blue); font-weight: 700; }
+        .blog-card-title { font-family: 'Roboto', sans-serif; font-weight: 700; color: #000; font-size: 20px; line-height: 23px; }
+        .blog-card-more { margin-top: auto; padding-top: 12px; display: flex; justify-content: flex-end; align-items: center; gap: 6px; color: var(--tc-blue); font-size: 14px; font-weight: 700; }
+        .blog-card-more .msi { font-size: 22px; font-variation-settings: 'wght' 500; }
+
+        /* Pasos (estilo tarjetas "Nuestros clientes") */
+        .step-card { padding: 40px 30px; }
+        .step-num { width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; border: 1.5px solid var(--tc-blue); color: var(--tc-blue); display: flex; align-items: center; justify-content: center; font-family: 'Work Sans', sans-serif; font-size: 24px; font-weight: 600; }
+        .step-title { font-family: 'Roboto', sans-serif; font-weight: 500; color: var(--tc-text); font-size: 18px; margin-bottom: 10px; }
+        .step-sub { color: var(--tc-blue); font-size: 16px; margin-bottom: 16px; }
+        .step-card p { font-size: 14px; line-height: 21px; color: var(--tc-muted); }
+
+        /* Cita del equipo (estilo testimonios) */
+        .quote { max-width: 820px; margin: 0 auto; text-align: center; }
+        .quote p { font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 24px; line-height: 32px; color: var(--tc-muted); margin-bottom: 24px; }
+        .quote strong { display: block; font-family: 'Work Sans', sans-serif; color: var(--tc-text); font-size: 16px; }
+        .quote small { color: var(--tc-blue); font-size: 14px; }
+
+        /* Franja CTA azul */
+        .tc-cta { background: var(--tc-blue); padding: 20px 0; }
+        .tc-cta .container { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .tc-cta h3 { font-family: 'Work Sans', sans-serif; font-weight: 700; color: #fff; font-size: 24px; line-height: 30px; }
+
+        /* ───── Footer ───── */
+        .tc-footer { background: var(--tc-footer); color: var(--tc-muted); padding-top: 60px; font-size: 14px; }
+        .tc-footer .top { text-align: center; margin-bottom: 40px; }
+        .tc-footer .top a { color: var(--tc-blue); font-size: 16px; }
+        .tc-footer .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 0.9fr; gap: 30px; }
+        .tc-footer .brand { display: flex; align-items: center; gap: 6px; color: var(--tc-muted); margin-bottom: 20px; }
+        .tc-footer .brand img { height: 16px; }
+        .tc-footer .about { line-height: 26px; margin-bottom: 20px; }
+        .tc-footer .contact b { color: var(--tc-muted); font-weight: 700; }
+        .tc-footer .widget-title { color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 20px; }
+        .tc-footer ul { list-style: none; margin-bottom: 25px; }
+        .tc-footer li { margin-bottom: 6px; }
+        .tc-footer li a:hover { color: #fff; }
+        .tc-footer .news { display: flex; background: #1b1b1b; border-radius: 2px; height: 42px; margin-bottom: 25px; }
+        .tc-footer .news input { flex: 1; min-width: 0; background: transparent; border: 0; color: #fff; padding: 0 15px; font-size: 12px; outline: none; }
+        .tc-footer .news button { background: none; border: 0; color: var(--tc-blue); padding: 0 12px; cursor: pointer; }
+        .tc-footer .social { display: flex; gap: 20px; }
+        .tc-footer .social a { color: #6b6b6b; font-weight: 700; }
+        .tc-footer .social a:hover { color: #fff; }
+        .tc-footer .gov { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 40px 60px; padding: 60px 0; }
+        .tc-footer .gov img { height: 60px; width: auto; }
+        .tc-footer .legal { border-top: 1px solid rgba(255,255,255,.06); padding: 20px 0 30px; }
+        .tc-footer .legal a { color: var(--tc-blue); font-size: 16px; margin-right: 12px; }
+
+        /* Aparición suave al hacer scroll */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+        .reveal.r1 { transition-delay: .1s; } .reveal.r2 { transition-delay: .2s; } .reveal.r3 { transition-delay: .3s; }
+
+        /* ───── Responsive ───── */
+        @media (max-width: 1199px) {
+            .tc-nav { display: none; }
+            .tc-burger { display: block; }
+        }
+        @media (max-width: 991px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: 1fr; }
+            .tc-footer .cols { grid-template-columns: 1fr 1fr; }
+            .tc-hero-inner { padding-left: 0; }
+        }
+        @media (max-width: 640px) {
+            .grid-4 { grid-template-columns: 1fr; }
+            .slide-title { font-size: 34px; }
+            .heading--title { font-size: 28px; line-height: 36px; }
+            .tc-cta .container { flex-direction: column; text-align: center; }
+            .tc-footer .cols { grid-template-columns: 1fr; }
+            .hero-actions .tc-btn { width: 100%; }
+            .tc-footer .gov img { height: 44px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ───── Cabecera ───── -->
+    <header class="tc-header" id="tcHeader">
+        <div class="container bar">
+            <a href="https://www.token-city.com/es" class="tc-logo"><img src="TOKEN%20CITY.svg" alt="Token City"></a>
+
+            <nav class="tc-nav">
+                <div class="tc-nav-item">
+                    <span class="tc-nav-link"><span class="lang-es">Mercados</span><span class="lang-en">Markets</span></span>
+                    <div class="tc-dropdown">
+                        <p class="tag"><span class="lang-es">Regulados</span><span class="lang-en">Regulated</span></p>
+                        <a href="https://exchange.token-city.com" target="_blank" rel="noopener">Token City Exchange</a>
+                        <a href="https://www.aliuscap.com/" target="_blank" rel="noopener">Alius Capital – Crowdfunding</a>
+                        <a href="https://www.token-city.com/es/marketplace">+ Marketplace</a>
+                    </div>
+                </div>
+                <div class="tc-nav-item">
+                    <span class="tc-nav-link"><span class="lang-es">Productos</span><span class="lang-en">Products</span></span>
+                    <div class="tc-dropdown">
+                        <a href="https://www.token-city.com/es/plataforma/maas">Plataforma Marca Blanca</a>
+                        <a href="https://www.token-city.com/es/plataforma/blockchain">Token City API</a>
+                        <a href="https://www.token-city.com/es/plataforma/erir">Infraestructura ERIR</a>
+                    </div>
+                </div>
+                <div class="tc-nav-item">
+                    <span class="tc-nav-link"><span class="lang-es">Clientes</span><span class="lang-en">Clients</span></span>
+                    <div class="tc-dropdown">
+                        <a href="https://www.token-city.com/es/real-estate">Inmobiliario</a>
+                        <a href="https://www.token-city.com/es/scaleups">Scaleups</a>
+                        <a href="https://www.token-city.com/es/energy">Energía</a>
+                        <a href="https://www.token-city.com/es/marketplace">Otros</a>
+                    </div>
+                </div>
+                <div class="tc-nav-item">
+                    <span class="tc-nav-link"><span class="lang-es">Ecosistema</span><span class="lang-en">Ecosystem</span></span>
+                    <div class="tc-dropdown">
+                        <a href="https://www.token-city.com/es/recursos/categoria/token-city-tv">Token City Talks</a>
+                        <a href="https://www.token-city.com/es/eventos">Eventos</a>
+                        <a href="https://www.token-city.com/es/recursos/categoria/blog">Blog</a>
+                        <a href="https://www.token-city.com/es/recursos/categoria/noticias">Noticias</a>
+                    </div>
+                </div>
+                <div class="tc-nav-item">
+                    <span class="tc-nav-link"><span class="lang-es">Nosotros</span><span class="lang-en">About</span></span>
+                    <div class="tc-dropdown">
+                        <a href="https://www.token-city.com/es/acerca-de/equipo">Directivos &amp; Consejeros</a>
+                        <a href="https://www.token-city.com/es/presskit">Dosier de prensa</a>
+                        <a href="https://www.token-city.com/es/contacto">Contacto</a>
+                    </div>
+                </div>
+                <div class="tc-lang" onclick="toggleLanguage()">
+                    <span class="l-es">ES</span><span class="sw"></span><span class="l-en off">EN</span>
+                </div>
+                <a href="https://club.token-city.com/home" target="_blank" rel="noopener" class="tc-btn tc-btn-outline tc-header-cta">
+                    <span class="msi">groups</span>
+                    <span class="lang-es">Únete al club</span><span class="lang-en">Join the club</span>
+                </a>
+            </nav>
+
+            <button class="tc-burger" onclick="document.getElementById('tcMobile').classList.toggle('open')" aria-label="Menú">
+                <span class="msi">menu</span>
+            </button>
+        </div>
+        <div class="tc-mobile" id="tcMobile">
+            <a href="https://exchange.token-city.com" target="_blank" rel="noopener">Token City Exchange</a>
+            <a href="https://www.token-city.com/es/marketplace">Marketplace</a>
+            <a href="https://www.token-city.com/es/plataforma/maas">Plataforma Marca Blanca</a>
+            <a href="https://www.token-city.com/es/eventos">Eventos</a>
+            <a href="https://www.token-city.com/es/acerca-de/equipo">Nosotros</a>
+            <a href="https://www.token-city.com/es/contacto">Contacto</a>
+            <a href="javascript:void(0)" onclick="toggleLanguage()">ES / EN</a>
+            <a href="https://club.token-city.com/home" target="_blank" rel="noopener" class="tc-btn tc-btn-primary">
+                <span class="msi">groups</span><span class="lang-es">Únete al club</span><span class="lang-en">Join the club</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- ───── Hero ───── -->
+        <section class="tc-hero">
+            <div class="tc-hero-bg"></div>
+            <div class="container">
+                <div class="tc-hero-inner">
+                    <p class="slide-bio barrido d1">
+                        <span class="lang-es">Token City Club · Comunidad de inversores</span>
+                        <span class="lang-en">Token City Club · Investor community</span>
+                    </p>
+                    <h1 class="slide-title barrido d2">
+                        <span class="lang-es">Llega antes a las mejores oportunidades tokenizadas</span>
+                        <span class="lang-en">Get first access to the best tokenized opportunities</span>
+                    </h1>
+                    <p class="slide-desc barrido d3">
+                        <span class="lang-es">El club privado de Token City reúne a inversores, emisores y expertos. Descubre emisiones antes de su lanzamiento, aprende de quienes lideran el sector y conecta con el ecosistema.</span>
+                        <span class="lang-en">Token City's private club brings together investors, issuers and experts. Discover offerings before launch, learn from the people leading the industry and connect with the ecosystem.</span>
+                    </p>
+                    <div class="hero-actions barrido d4">
+                        <a href="https://club.token-city.com/home" target="_blank" rel="noopener" class="tc-btn tc-btn-primary">
+                            <span class="lang-es">Únete al club</span><span class="lang-en">Join the club</span>
+                        </a>
+                        <a href="#beneficios" class="tc-btn tc-btn-outline">
+                            <span class="lang-es">Qué incluye</span><span class="lang-en">What's included</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ───── Beneficios ───── -->
+        <section class="tc-section" id="beneficios">
+            <div class="container">
+                <div class="heading reveal">
+                    <p class="heading--subtitle"><span class="lang-es">Qué vas a encontrar</span><span class="lang-en">What you'll find</span></p>
+                    <h2 class="heading--title"><span class="lang-es">Todo lo que necesitas para invertir con criterio</span><span class="lang-en">Everything you need to invest with confidence</span></h2>
+                    <p class="heading--desc"><span class="lang-es">Información, formación y contactos en un mismo lugar</span><span class="lang-en">Information, education and connections in one place</span></p>
+                </div>
+                <div class="grid grid-4">
+                    <div class="feature-card reveal">
+                        <span class="msi">rocket_launch</span>
+                        <h3 class="feature-card-title"><span class="lang-es">Oportunidades antes que nadie</span><span class="lang-en">Opportunities before anyone else</span></h3>
+                        <p><span class="lang-es">Conoce las nuevas oportunidades de inversión en activos tokenizados antes de su lanzamiento</span><span class="lang-en">Discover new tokenized investment opportunities before their launch</span></p>
+                    </div>
+                    <div class="feature-card reveal r1">
+                        <span class="msi">school</span>
+                        <h3 class="feature-card-title"><span class="lang-es">Eventos y conocimiento experto</span><span class="lang-en">Events and expert knowledge</span></h3>
+                        <p><span class="lang-es">Webinars, encuentros y contenido para entender cómo invertir en activos tokenizados</span><span class="lang-en">Webinars, meetups and content to understand how to invest in tokenized assets</span></p>
+                    </div>
+                    <div class="feature-card reveal r2">
+                        <span class="msi">handshake</span>
+                        <h3 class="feature-card-title"><span class="lang-es">Contacto con el ecosistema</span><span class="lang-en">Connect with the ecosystem</span></h3>
+                        <p><span class="lang-es">Relación directa con otros inversores, con los emisores y con los socios de Token City</span><span class="lang-en">Direct contact with other investors, issuers and Token City's partners</span></p>
+                    </div>
+                    <div class="feature-card reveal r3">
+                        <span class="msi">auto_awesome</span>
+                        <h3 class="feature-card-title"><span class="lang-es">Y mucho más</span><span class="lang-en">And much more</span></h3>
+                        <p><span class="lang-es">Una experiencia personalizada para sacarle el máximo partido al ecosistema</span><span class="lang-en">A personalised experience to get the most out of the ecosystem</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ───── Eventos ───── -->
+        <section class="tc-section gray">
+            <div class="container">
+                <div class="heading reveal">
+                    <p class="heading--subtitle"><span class="lang-es">Conocimiento experto</span><span class="lang-en">Expert knowledge</span></p>
+                    <h2 class="heading--title"><span class="lang-es">Aprende de quienes están construyendo el sector</span><span class="lang-en">Learn from the people building the industry</span></h2>
+                    <p class="heading--desc"><span class="lang-es">Más de 45 eventos desde 2020</span><span class="lang-en">More than 45 events since 2020</span></p>
+                </div>
+                <div class="grid grid-3">
+                    <a href="https://www.token-city.com/es/evento/webinar-otesa-calella-living-todo-lo-que-quieras-preguntar-sobre-la-emision-del-1er-bono-tokenizado-con-garantia-hipotecaria" target="_blank" rel="noopener" class="blog-card reveal">
+                        <div class="blog-card-img"><img src="https://cms-prod.token-city.com/wp-content/uploads/2025/04/4db37414-3111-a02d-b0e2-eff956c4c7d4-400x200.png" alt="" loading="lazy"></div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta"><span><span class="msi">schedule</span>26 nov 2025</span><span class="cat">Webinar</span></div>
+                            <h3 class="blog-card-title">OTESA Calella Living: <span class="lang-es">1er bono tokenizado con garantía hipotecaria</span><span class="lang-en">1st mortgage-backed tokenized bond</span></h3>
+                            <span class="blog-card-more"><span class="lang-es">Leer Más</span><span class="lang-en">Read More</span><span class="msi">keyboard_double_arrow_right</span></span>
+                        </div>
+                    </a>
+                    <a href="https://www.token-city.com/es/evento/tokenizacion-inmobiliaria-modelos-de-negocio-y-oportunidades" target="_blank" rel="noopener" class="blog-card reveal r1">
+                        <div class="blog-card-img"><img src="https://cms-prod.token-city.com/wp-content/uploads/2025/11/1761669040780-400x200.jpg" alt="" loading="lazy"></div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta"><span><span class="msi">schedule</span>31 oct 2025</span><span class="cat">Barcelona</span></div>
+                            <h3 class="blog-card-title"><span class="lang-es">Tokenización inmobiliaria, modelos de negocio y oportunidades</span><span class="lang-en">Real estate tokenization, business models and opportunities</span></h3>
+                            <span class="blog-card-more"><span class="lang-es">Leer Más</span><span class="lang-en">Read More</span><span class="msi">keyboard_double_arrow_right</span></span>
+                        </div>
+                    </a>
+                    <a href="https://www.token-city.com/es/evento/npls-real-estate-summit-2025" target="_blank" rel="noopener" class="blog-card reveal r2">
+                        <div class="blog-card-img"><img src="https://cms-prod.token-city.com/wp-content/uploads/2025/06/1749628441173-400x200.jpg" alt="" loading="lazy"></div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta"><span><span class="msi">schedule</span>18 jun 2025</span><span class="cat">Summit</span></div>
+                            <h3 class="blog-card-title">NPLs &amp; Real Estate Summit 2025</h3>
+                            <span class="blog-card-more"><span class="lang-es">Leer Más</span><span class="lang-en">Read More</span><span class="msi">keyboard_double_arrow_right</span></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ───── Cómo empezar ───── -->
+        <section class="tc-section">
+            <div class="container">
+                <div class="heading reveal">
+                    <p class="heading--subtitle"><span class="lang-es">Cómo empezar</span><span class="lang-en">How to start</span></p>
+                    <h2 class="heading--title"><span class="lang-es">Tres pasos y estás dentro</span><span class="lang-en">Three steps and you're in</span></h2>
+                    <p class="heading--desc"><span class="lang-es">Empieza a disfrutar de todo lo que te espera</span><span class="lang-en">Start enjoying everything that awaits you</span></p>
+                </div>
+                <div class="grid grid-3">
+                    <div class="step-card feature-card reveal">
+                        <div class="step-num">1</div>
+                        <h3 class="step-title"><span class="lang-es">Accede a la plataforma</span><span class="lang-en">Access the platform</span></h3>
+                        <p class="step-sub"><span class="lang-es">En menos de un minuto</span><span class="lang-en">In under a minute</span></p>
+                        <p><span class="lang-es">Entra en Token City Club con tu cuenta o créala desde cero.</span><span class="lang-en">Sign in to Token City Club with your account or create one from scratch.</span></p>
+                    </div>
+                    <div class="step-card feature-card reveal r1">
+                        <div class="step-num">2</div>
+                        <h3 class="step-title"><span class="lang-es">Completa tu perfil al 100%</span><span class="lang-en">Complete your profile</span></h3>
+                        <p class="step-sub"><span class="lang-es">Una experiencia a tu medida</span><span class="lang-en">An experience built for you</span></p>
+                        <p><span class="lang-es">Cuéntanos qué te interesa para ofrecerte las oportunidades que encajan contigo.</span><span class="lang-en">Tell us what interests you so we can show you the right opportunities.</span></p>
+                    </div>
+                    <div class="step-card feature-card reveal r2">
+                        <div class="step-num">3</div>
+                        <h3 class="step-title"><span class="lang-es">Explora y participa</span><span class="lang-en">Explore and take part</span></h3>
+                        <p class="step-sub"><span class="lang-es">Todo el ecosistema a tu alcance</span><span class="lang-en">The whole ecosystem at hand</span></p>
+                        <p><span class="lang-es">Descubre emisiones, apúntate a eventos y conecta con la comunidad.</span><span class="lang-en">Discover offerings, sign up for events and connect with the community.</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ───── Mensaje del equipo (estilo testimonios) ───── -->
+        <section class="tc-section gray">
+            <div class="container">
+                <div class="quote reveal">
+                    <p>
+                        <span class="lang-es">“¿Empezamos? Accede a la plataforma, completa tu perfil y empieza a disfrutar de la experiencia.”</span>
+                        <span class="lang-en">“Shall we begin? Access the platform, complete your profile and start enjoying the experience.”</span>
+                    </p>
+                    <strong><span class="lang-es">Equipo Token City</span><span class="lang-en">The Token City Team</span></strong>
+                    <small>Token City Club</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- ───── Franja CTA ───── -->
+        <section class="tc-cta">
+            <div class="container">
+                <h3><span class="lang-es">Únete a la comunidad de inversores de Token City</span><span class="lang-en">Join Token City's investor community</span></h3>
+                <a href="https://club.token-city.com/home" target="_blank" rel="noopener" class="tc-btn tc-btn-outline">
+                    <span class="lang-es">Acceder a la plataforma</span><span class="lang-en">Access the platform</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- ───── Footer ───── -->
+    <footer class="tc-footer">
+        <div class="container">
+            <div class="top"><a href="https://www.token-city.com/documents/11_06_26_Convocatoria_JG_Token_City_Firmado.pdf" target="_blank" rel="noopener">Junta General de Socios de Token City</a></div>
+            <div class="cols">
+                <div>
+                    <div class="brand"><img src="TOKEN%20CITY.svg" alt="Token City"><span>© 2026</span></div>
+                    <p class="about"><span class="lang-es">Mejora la liquidez de tus activos digitales gracias a tecnología Blockchain.</span><span class="lang-en">Improve the liquidity of your digital assets with Blockchain technology.</span></p>
+                    <p class="contact"><b><span class="lang-es">Teléfono principal:</span><span class="lang-en">Main phone:</span></b> +34 919 890 429<br>
+                        <b><span class="lang-es">Email de ventas:</span><span class="lang-en">Sales email:</span></b> sales@token-city.com<br>
+                        <b><span class="lang-es">Email de soporte:</span><span class="lang-en">Support email:</span></b> support@token-city.com</p>
+                </div>
+                <div>
+                    <p class="widget-title"><span class="lang-es">Mercados</span><span class="lang-en">Markets</span></p>
+                    <ul>
+                        <li><a href="https://exchange.token-city.com/es" target="_blank" rel="noopener">Token City Exchange</a></li>
+                        <li><a href="https://www.aliuscap.com" target="_blank" rel="noopener">Alius Capital – Crowdfunding</a></li>
+                        <li><a href="https://www.token-city.com/es/marketplace">Marketplace</a></li>
+                    </ul>
+                    <p class="widget-title"><span class="lang-es">Productos</span><span class="lang-en">Products</span></p>
+                    <ul>
+                        <li><a href="https://www.token-city.com/es/plataforma/maas">Plataforma Marca Blanca</a></li>
+                        <li><a href="https://www.token-city.com/es/plataforma/blockchain">Token City API</a></li>
+                        <li><a href="https://www.token-city.com/es/plataforma/erir">Infraestructura ERIR</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="widget-title"><span class="lang-es">Clientes</span><span class="lang-en">Clients</span></p>
+                    <ul>
+                        <li><a href="https://www.token-city.com/es/real-estate">Inmobiliario</a></li>
+                        <li><a href="https://www.token-city.com/es/scaleups">Scaleups</a></li>
+                        <li><a href="https://www.token-city.com/es/energy">Energía</a></li>
+                        <li><a href="https://www.token-city.com/es/marketplace">Otros</a></li>
+                    </ul>
+                    <p class="widget-title"><span class="lang-es">Ecosistema</span><span class="lang-en">Ecosystem</span></p>
+                    <ul>
+                        <li><a href="https://www.token-city.com/es/recursos/categoria/token-city-tv">Token City Talks</a></li>
+                        <li><a href="https://www.token-city.com/es/eventos">Eventos</a></li>
+                        <li><a href="https://www.token-city.com/es/recursos/categoria/blog">Blog</a></li>
+                        <li><a href="https://www.token-city.com/es/recursos/categoria/noticias">Noticias</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="widget-title"><span class="lang-es">Nosotros</span><span class="lang-en">About</span></p>
+                    <ul>
+                        <li><a href="https://www.token-city.com/es/acerca-de/equipo">Directivos &amp; Consejeros</a></li>
+                        <li><a href="https://www.token-city.com/es/presskit">Dosier De Prensa</a></li>
+                        <li><a href="https://www.token-city.com/es/contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="widget-title"><span class="lang-es">Mantente Al Día</span><span class="lang-en">Stay Updated</span></p>
+                    <form class="news" onsubmit="event.preventDefault(); this.reset();">
+                        <input type="email" placeholder="e-mail" required>
+                        <button type="submit" aria-label="Suscribirse"><span class="msi">arrow_right_alt</span></button>
+                    </form>
+                    <p class="widget-title"><span class="lang-es">Síguenos</span><span class="lang-en">Follow us</span></p>
+                    <div class="social">
+                        <a href="https://x.com/token_city" target="_blank" rel="noopener" aria-label="X">𝕏</a>
+                        <a href="https://t.me/joinchat/RfFH7UQbTRFNEHpm" target="_blank" rel="noopener" aria-label="Telegram"><span class="msi" style="font-size:18px">send</span></a>
+                        <a href="https://www.linkedin.com/company/69725110" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+                    </div>
+                </div>
+            </div>
+            <div class="gov">
+                <img src="1.png" alt="Gobierno de España - Ministerio de Ciencia, Innovación y Universidades">
+                <img src="2.png" alt="Funded by the European Union - NextGenerationEU">
+                <img src="3.png" alt="Plan de Recuperación, Transformación y Resiliencia">
+                <img src="4.png" alt="CDTI Innovación">
+                <img src="MINISTERIO.png" alt="Ministerio para la Transformación Digital y de la Función Pública">
+                <img src="MADRID.png" alt="Comunidad de Madrid">
+            </div>
+        </div>
+        <div class="legal">
+            <div class="container">
+                <a href="https://www.token-city.com/es/aviso-legal">Aviso Legal</a>
+                <a href="https://www.token-city.com/es/politica-privacidad">Política de privacidad</a>
+                <a href="https://www.token-city.com/es/politica-cookies">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cabecera: transparente sobre el hero, negra al hacer scroll (como la web actual)
+        const header = document.getElementById('tcHeader');
+        const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
+        window.addEventListener('scroll', onScroll); onScroll();
+
+        // Idioma ES/EN
+        function toggleLanguage() {
+            const en = document.body.classList.toggle('lang-en');
+            document.querySelectorAll('.tc-lang .l-es').forEach(e => e.classList.toggle('off', en));
+            document.querySelectorAll('.tc-lang .l-en').forEach(e => e.classList.toggle('off', !en));
+        }
+
+        // Aparición al hacer scroll
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
+</body>
+
+</html>
